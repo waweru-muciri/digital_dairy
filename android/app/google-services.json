@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "531521445222",
+    "project_id": "dairymanager-a5095",
+    "storage_bucket": "dairymanager-a5095.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531521445222:android:72da3f75718dec9ef07ca7",
+        "android_client_info": {
+          "package_name": "com.example.digital_dairy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531521445222-rebsfg4rrtnutda0p5e9fq9faodg86a9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp84ox_vWZYzhuc76kyOt_6wIQ7_OoFts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531521445222-rebsfg4rrtnutda0p5e9fq9faodg86a9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
