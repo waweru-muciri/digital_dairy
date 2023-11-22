@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../models/daily_milk_production.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -41,17 +40,18 @@ class MilkProductionService {
 //add a milk production
   Future<DailyMilkProduction> addMilkProduction(
       DailyMilkProduction milkProduction) async {
-    String milkProductionId = await _milkProductionReference
+    String docRefId = await _milkProductionReference
         .add(milkProduction)
         .then((docRef) => docRef.id);
-    return milkProduction;
+    return await _milkProductionReference.doc(docRefId).get();
   }
 
 //update a milk production
   Future<DailyMilkProduction> updateMilkProduction(
       DailyMilkProduction milkProduction) async {
-    await _milkProductionReference.doc(milkProduction.id)
-        .update(milkProduction.toJson())
+    await _milkProductionReference
+        .doc(milkProduction.id)
+        .update(milkProduction.toJson());
     return milkProduction;
   }
 }
