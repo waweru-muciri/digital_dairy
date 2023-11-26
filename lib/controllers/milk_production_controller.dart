@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../services/milk_production_service.dart';
 import '../models/daily_milk_production.dart';
 
@@ -7,10 +6,10 @@ import '../models/daily_milk_production.dart';
 /// milk production details.
 ///
 class MilkProductionController with ChangeNotifier {
-  MilkProductionController(this._milkProductionService);
+  MilkProductionController();
 
   // Make MilkProductionService a private variable so it is not used directly.
-  final MilkProductionService _milkProductionService;
+  final MilkProductionService _milkProductionService = MilkProductionService();
 
   /// Internal, private state of the current day milk production.
   final List<DailyMilkProduction> _currentDayMilkProductionList = [];

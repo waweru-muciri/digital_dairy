@@ -1,4 +1,4 @@
-name: Digital Dairy
+name: DigitalDairy
 description: "A new Flutter project."
 
 # Prevent accidental publishing to pub.dev.
@@ -11,13 +11,13 @@ environment:
 
 dependencies:
   cloud_firestore: ^4.13.2
+  cupertino_icons:
   firebase_core: ^2.23.0
   firebase_storage: ^11.5.2
   firebase_ui_auth: ^1.10.0
+  provider:
   firebase_auth:
   flutter:
-    sdk: flutter
-  flutter_localizations:
     sdk: flutter
   google_fonts: ^6.1.0
 
@@ -29,6 +29,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: false
   fonts:
     - family: Lato
       fonts:
@@ -44,9 +45,6 @@ flutter:
           weight: 100
         - asset: assets/fonts/Lato-Italic.ttf
           style: italic
-
-  # Enable generation of localized Strings from arb files.
-  generate: true
 
   assets:
     # Add assets from the images directory to the application.
