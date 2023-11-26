@@ -1,3 +1,5 @@
+import "package:cloud_firestore/cloud_firestore.dart";
+
 class DailyMilkProduction {
   late String? id;
   late final double amQuantity;
@@ -12,21 +14,29 @@ class DailyMilkProduction {
       this.id,
       required this.milkProductionDate});
 
-  DailyMilkProduction.fromJson(Map<String, Object?> json)
-      : this(
-          milkProductionDate: json['milkProductionDate']! as DateTime,
-          amQuantity: json["amQuantity"]! as double,
-          noonQuantity: json["noonQuantity"]! as double,
-          pmQuantity: json["pmQuantity"]! as double,
-          id: json["id"]! as String,
-        );
-  Map<String, Object?> toJson() {
+  factory DailyMilkProduction.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    final String id = snapshot.id;
+
+    return DailyMilkProduction(
+        milkProductionDate: data?["milkProductionDate"],
+        amQuantity: data?["amQuantity"],
+        noonQuantity: data?["noonQuantity"],
+        pmQuantity: data?["pmQuantity"],
+        id: id);
+  }
+
+  Map<String, dynamic> toFirestore() {
     return {
       'milkProductionDate': milkProductionDate,
       'amQuantity': amQuantity,
       'noonQuantity': noonQuantity,
       'pmQuantity': pmQuantity,
-      "id": id,
+      //only return the id if it is not null
+      if (id != null) "id": id,
     };
   }
 
