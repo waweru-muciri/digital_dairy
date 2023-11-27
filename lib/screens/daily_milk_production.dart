@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import "../controllers/milk_production_controller.dart";
 import 'package:provider/provider.dart';
 
-class MilkProductionListView extends StatefulWidget {
-  const MilkProductionListView({super.key});
+class DailyMilkProductionScreen extends StatefulWidget {
+  const DailyMilkProductionScreen({super.key});
 
-  static const routeName = '/milk_production';
+  static const routeName = 'daily_milk_production';
 
   @override
-  State<StatefulWidget> createState() => MilkProductionListViewState();
+  State<StatefulWidget> createState() => DailyMilkProductionScreenState();
 }
 
-class MilkProductionListViewState extends State<MilkProductionListView> {
+class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
   late TextEditingController _cowNameController;
   late List<DailyMilkProduction> _milkProductionList;
 
