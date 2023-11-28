@@ -53,7 +53,8 @@ class MilkProductionController with ChangeNotifier {
     final savedMilkProduction =
         await _milkProductionService.editMilkProduction(milkProduction);
     // remove the old milk production item and replace with today's in the list of items
-    _currentDayMilkProductionList.remove(milkProduction);
+    _currentDayMilkProductionList.retainWhere(
+        (milkProductionFilter) => milkProductionFilter.id != milkProduction.id);
     _currentDayMilkProductionList.add(savedMilkProduction);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
@@ -63,7 +64,8 @@ class MilkProductionController with ChangeNotifier {
     //call to the service to delete the item in the database
     await _milkProductionService.deleteMilkProduction(milkProduction);
     // remove the milk production item to today's list of items
-    _currentDayMilkProductionList.remove(milkProduction);
+    _currentDayMilkProductionList.retainWhere(
+        (milkProductionFilter) => milkProductionFilter.id != milkProduction.id);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

@@ -1,3 +1,5 @@
+import 'package:DigitalDairy/controllers/client_controller.dart';
+import 'package:DigitalDairy/screens/clients.dart';
 import 'package:go_router/go_router.dart';
 import './home_screen.dart';
 import 'package:provider/provider.dart';
@@ -12,51 +14,60 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 class AppRouter {
 // GoRouter configuration
   static final appRouter = GoRouter(
-      routes: [
-        GoRoute(
-            name: "sign-in",
-            path: '/sign-in',
-            builder: (context, state) => const FirebaseSignInScreen()),
-        GoRoute(
-          name: "home",
-          path: '/',
-          builder: (context, state) => ChangeNotifierProvider(
-            create: (_) => MilkProductionController(),
-            child: const HomeScreen(),
-          ),
+    routes: [
+      GoRoute(
+          name: "sign-in",
+          path: '/sign-in',
+          builder: (context, state) => const FirebaseSignInScreen()),
+      GoRoute(
+        name: "home",
+        path: '/',
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (_) => MilkProductionController(),
+          child: const HomeScreen(),
         ),
-        GoRoute(
-          name: "dailyMilkProduction",
-          path: DailyMilkProductionScreen.routeName,
-          builder: (context, state) => ChangeNotifierProvider(
-            create: (_) => MilkProductionController(),
-            child: const DailyMilkProductionScreen(),
-          ),
+      ),
+      GoRoute(
+        name: "dailyMilkProduction",
+        path: DailyMilkProductionScreen.routeName,
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (_) => MilkProductionController(),
+          child: const DailyMilkProductionScreen(),
         ),
-        GoRoute(
-            name: "cows",
-            path: CowsScreen.routeName,
-            builder: (context, state) => ChangeNotifierProvider(
-                  create: (_) => MilkProductionController(),
-                  child: CowsScreen(
-                    activeStatus: state.uri.queryParameters["activeStatus"],
-                    cowType: state.uri.queryParameters["cowType"],
-                  ),
-                ),
-            routes: [
-              GoRoute(
-                name: "cowDetailsScreen",
-                path: CowDetailsScreen.routeName,
-                builder: (context, state) => ChangeNotifierProvider(
-                  create: (_) => MilkProductionController(),
-                  child: CowDetailsScreen(cowId: state.pathParameters['cowId']),
+      ),
+      GoRoute(
+        name: "clients",
+        path: ClientsScreen.routeName,
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (_) => ClientController(),
+          child: const ClientsScreen(),
+        ),
+      ),
+      GoRoute(
+          name: "cows",
+          path: CowsScreen.routeName,
+          builder: (context, state) => ChangeNotifierProvider(
+                create: (_) => MilkProductionController(),
+                child: CowsScreen(
+                  activeStatus: state.uri.queryParameters["activeStatus"],
+                  cowType: state.uri.queryParameters["cowType"],
                 ),
               ),
-            ]),
-      ],
-      redirect: (BuildContext context, GoRouterState state) {
-        return FirebaseAuth.instance.currentUser == null ? '/sign-in' : null;
-      });
+          routes: [
+            GoRoute(
+              name: "cowDetailsScreen",
+              path: CowDetailsScreen.routeName,
+              builder: (context, state) => ChangeNotifierProvider(
+                create: (_) => MilkProductionController(),
+                child: CowDetailsScreen(cowId: state.pathParameters['cowId']),
+              ),
+            ),
+          ]),
+    ],
+    // redirect: (BuildContext context, GoRouterState state) {
+    //   return FirebaseAuth.instance.currentUser == null ? '/sign-in' : null;
+    // }
+  );
 }
 
 class FirebaseSignInScreen extends StatelessWidget {

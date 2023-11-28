@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class DailyMilkProductionScreen extends StatefulWidget {
   const DailyMilkProductionScreen({super.key});
 
-  static const routeName = 'daily_milk_production';
+  static const routeName = '/daily_milk_production';
 
   @override
   State<StatefulWidget> createState() => DailyMilkProductionScreenState();
