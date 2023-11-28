@@ -3,12 +3,12 @@ import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/screens/clients.dart';
 import 'package:DigitalDairy/screens/milk_consumers.dart';
 import 'package:go_router/go_router.dart';
-import './home_screen.dart';
+import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:provider/provider.dart';
-import "../controllers/milk_production_controller.dart";
-import 'daily_milk_production.dart';
-import './cow_details_screen.dart';
-import "./cows.dart";
+import "package:DigitalDairy/controllers/milk_production_controller.dart";
+import 'package:DigitalDairy/screens/daily_milk_production.dart';
+import 'package:DigitalDairy/screens/cow_details_screen.dart';
+import "package:DigitalDairy/screens/cows.dart";
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
@@ -23,7 +23,7 @@ class AppRouter {
           builder: (context, state) => const FirebaseSignInScreen()),
       GoRoute(
         name: "home",
-        path: '/',
+        path: HomeScreen.routeName,
         builder: (context, state) => ChangeNotifierProvider(
           create: (_) => MilkProductionController(),
           child: const HomeScreen(),

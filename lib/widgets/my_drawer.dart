@@ -28,21 +28,26 @@ class _MyDrawerState extends State<MyDrawer> {
         padding: EdgeInsets.zero,
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/flutter_logo.png'),
-                  radius: 100,
-                ),
-                Text('Brian Waweru'),
-              ],
+            child: UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage("assets/images/flutter_logo.png"),
+              ),
+              currentAccountPictureSize: Size(100, 100),
+              accountName: Text(
+                'Brian Muciri',
+                style: TextStyle(fontSize: 24.0),
+              ),
+              accountEmail: Text('jane.doe@example.com'),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+              ),
             ),
           ),
           ListTile(
-            title: const Text('Dashboard'),
+            title: const Text(
+              'Dashboard',
+              style: TextStyle(fontSize: 24.0),
+            ),
             selected: _selectedIndex == 0,
             onTap: () {
               // Update the state of the app

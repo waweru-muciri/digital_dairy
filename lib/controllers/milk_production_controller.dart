@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/milk_production_service.dart';
-import '../models/daily_milk_production.dart';
+import 'package:DigitalDairy/services/milk_production_service.dart';
+import 'package:DigitalDairy/models/daily_milk_production.dart';
 
 /// A class that many Widgets can interact with to read milk production, update and delete
 /// milk production details.

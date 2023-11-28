@@ -1,6 +1,6 @@
 import 'package:DigitalDairy/models/daily_milk_production.dart';
 import 'package:flutter/material.dart';
-import "../controllers/milk_production_controller.dart";
+import "package:DigitalDairy/controllers/milk_production_controller.dart";
 import 'package:provider/provider.dart';
 
 class CowsScreen extends StatefulWidget {

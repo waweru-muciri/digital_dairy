@@ -6,11 +6,13 @@ class Client {
   final String lastName;
   final String contacts;
   final String location;
+  final double unitPrice;
 
   Client(
       {this.id = "",
       this.location = "",
       this.contacts = "",
+      this.unitPrice = 0,
       required this.firstName,
       required this.lastName});
 
@@ -25,6 +27,8 @@ class Client {
         firstName: data?["firstName"],
         lastName: data?["lastName"],
         location: data?["location"],
+        unitPrice: data?["unitPrice"],
+        contacts: data?["contacts"],
         id: id);
   }
 
@@ -33,8 +37,8 @@ class Client {
       'location': location,
       'lastName': lastName,
       'firstName': firstName,
-      //only return the id if it is not null
-      if (id != null) "id": id,
+      'contacts': contacts,
+      'unitPrice': unitPrice,
     };
   }
 

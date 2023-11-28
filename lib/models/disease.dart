@@ -1,42 +1,33 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
-class Client {
+class Disease {
   final String id;
-  final String firstName;
-  final String lastName;
-  final String contacts;
-  final String location;
+  final String name;
+  final String details;
+  final DateTime dateDiscovered;
 
-  Client(
-      {this.id = "",
-      this.location = "",
-      this.contacts = "",
-      required this.firstName,
-      required this.lastName});
+  Disease({
+    this.id = "",
+    this.details = "",
+    required this.dateDiscovered,
+    required this.name,
+  });
 
-  factory Client.fromFirestore(
+  factory Disease.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
     final String id = snapshot.id;
 
-    return Client(
-        firstName: data?["firstName"],
-        lastName: data?["lastName"],
-        location: data?["location"],
+    return Disease(
+        name: data?["name"],
+        dateDiscovered: data?["dateDiscovered"],
+        details: data?["details"],
         id: id);
   }
 
   Map<String, dynamic> toFirestore() {
-    return {
-      'location': location,
-      'lastName': lastName,
-      'firstName': firstName,
-      //only return the id if it is not null
-      if (id != null) "id": id,
-    };
+    return {'details': details, 'name': name, "dateDiscovered": dateDiscovered};
   }
-
-  String get clientName => '$firstName  $lastName';
 }

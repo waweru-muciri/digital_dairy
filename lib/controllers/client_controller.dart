@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/client_service.dart';
-import '../models/client.dart';
+import 'package:DigitalDairy/services/client_service.dart';
+import 'package:DigitalDairy/models/client.dart';
 
 /// A class that many Widgets can interact with to read client, update and delete
 /// client details.

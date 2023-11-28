@@ -1,42 +1,38 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
-class Client {
+class Income {
   final String id;
-  final String firstName;
-  final String lastName;
-  final String contacts;
-  final String location;
+  final String source;
+  final double amount;
+  final DateTime incomeDate;
 
-  Client(
+  Income(
       {this.id = "",
-      this.location = "",
-      this.contacts = "",
-      required this.firstName,
-      required this.lastName});
+      required this.amount,
+      required this.source,
+      required this.incomeDate});
 
-  factory Client.fromFirestore(
+  factory Income.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
     final String id = snapshot.id;
 
-    return Client(
-        firstName: data?["firstName"],
-        lastName: data?["lastName"],
-        location: data?["location"],
+    return Income(
+        source: data?["source"],
+        incomeDate: data?["incomeDate"],
+        amount: data?["amount"],
         id: id);
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'location': location,
-      'lastName': lastName,
-      'firstName': firstName,
-      //only return the id if it is not null
-      if (id != null) "id": id,
+      'amount': amount,
+      'incomeDate': incomeDate,
+      'source': source,
     };
   }
 
-  String get clientName => '$firstName  $lastName';
+  String get getIncomeDetails => '$source Ksh: $amount';
 }

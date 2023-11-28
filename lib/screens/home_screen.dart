@@ -1,12 +1,13 @@
 import 'package:DigitalDairy/models/daily_milk_production.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
-import "../controllers/milk_production_controller.dart";
+import "package:DigitalDairy/controllers/milk_production_controller.dart";
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  static const routeName = '/milk_production';
+  static const routeName = '/';
 
   @override
   State<StatefulWidget> createState() => HomeScreenState();
@@ -44,6 +45,7 @@ class HomeScreenState extends State<HomeScreen> {
             style: TextStyle(color: Colors.blueGrey),
           ),
         )),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
