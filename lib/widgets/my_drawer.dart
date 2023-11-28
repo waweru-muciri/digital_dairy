@@ -31,7 +31,15 @@ class _MyDrawerState extends State<MyDrawer> {
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
-            child: Text('Brian Waweru'),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/flutter_logo.png'),
+                  radius: 100,
+                ),
+                Text('Brian Waweru'),
+              ],
+            ),
           ),
           ListTile(
             title: const Text('Dashboard'),

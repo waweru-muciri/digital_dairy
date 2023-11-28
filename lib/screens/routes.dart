@@ -1,5 +1,7 @@
 import 'package:DigitalDairy/controllers/client_controller.dart';
+import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/screens/clients.dart';
+import 'package:DigitalDairy/screens/milk_consumers.dart';
 import 'package:go_router/go_router.dart';
 import './home_screen.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +43,14 @@ class AppRouter {
         builder: (context, state) => ChangeNotifierProvider(
           create: (_) => ClientController(),
           child: const ClientsScreen(),
+        ),
+      ),
+      GoRoute(
+        name: "consumers",
+        path: MilkConsumersScreen.routeName,
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (_) => MilkConsumerController(),
+          child: const MilkConsumersScreen(),
         ),
       ),
       GoRoute(

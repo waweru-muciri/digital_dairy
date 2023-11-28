@@ -1,26 +1,27 @@
-import 'package:DigitalDairy/controllers/client_controller.dart';
-import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
+import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ClientsScreen extends StatefulWidget {
-  const ClientsScreen({super.key});
+class MilkConsumersScreen extends StatefulWidget {
+  const MilkConsumersScreen({super.key});
 
-  static const routeName = '/clients';
+  static const routeName = '/milkConsumers';
 
   @override
-  State<StatefulWidget> createState() => ClientsScreenState();
+  State<StatefulWidget> createState() => MilkConsumersScreenState();
 }
 
-class ClientsScreenState extends State<ClientsScreen> {
+class MilkConsumersScreenState extends State<MilkConsumersScreen> {
   late TextEditingController _cowNameController;
-  late List<Client> _clientsList;
+  late List<MilkConsumer> _milkConsumersList;
 
   @override
   void initState() {
     super.initState();
     _cowNameController = TextEditingController();
-    Provider.of<ClientController>(context, listen: false).getClients();
+    Provider.of<MilkConsumerController>(context, listen: false)
+        .getMilkConsumers();
   }
 
   @override
@@ -31,12 +32,13 @@ class ClientsScreenState extends State<ClientsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _clientsList = context.watch<ClientController>().clientsList;
+    _milkConsumersList =
+        context.watch<MilkConsumerController>().milkConsumersList;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Farm Clients',
+          'Farm MilkConsumers',
           style: TextStyle(),
         ),
       ),
@@ -44,7 +46,7 @@ class ClientsScreenState extends State<ClientsScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(children: [
           PaginatedDataTable(
-              header: const Text("Clients List"),
+              header: const Text("Milk Consumers List"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               columns: const [
@@ -52,7 +54,7 @@ class ClientsScreenState extends State<ClientsScreen> {
                 DataColumn(label: Text("Last Name")),
                 DataColumn(label: Text("Contacts")),
               ],
-              source: _DataSource(data: _clientsList))
+              source: _DataSource(data: _milkConsumersList))
         ]),
       ),
     );
@@ -60,7 +62,7 @@ class ClientsScreenState extends State<ClientsScreen> {
 }
 
 class _DataSource extends DataTableSource {
-  final List<Client> data;
+  final List<MilkConsumer> data;
 
   _DataSource({required this.data});
 
