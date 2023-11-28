@@ -1,19 +1,18 @@
 import 'package:DigitalDairy/models/daily_milk_production.dart';
 import 'package:flutter/material.dart';
-import "../controllers/milk_production_controller.dart";
+import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:provider/provider.dart';
 
-class CowDetailsScreen extends StatefulWidget {
-  const CowDetailsScreen({super.key, this.cowId});
+class DailyMilkProductionScreen extends StatefulWidget {
+  const DailyMilkProductionScreen({super.key});
 
-  final String? cowId;
-  static const routeName = 'details/:cowId';
+  static const routeName = '/daily_milk_production';
 
   @override
-  State<StatefulWidget> createState() => CowDetailsScreenState();
+  State<StatefulWidget> createState() => DailyMilkProductionScreenState();
 }
 
-class CowDetailsScreenState extends State<CowDetailsScreen> {
+class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
   late TextEditingController _cowNameController;
   late List<DailyMilkProduction> _milkProductionList;
 

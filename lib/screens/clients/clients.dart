@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 class ClientsScreen extends StatefulWidget {
   const ClientsScreen({super.key});
-
   static const routeName = '/clients';
 
   @override
@@ -13,8 +12,8 @@ class ClientsScreen extends StatefulWidget {
 }
 
 class ClientsScreenState extends State<ClientsScreen> {
-  late TextEditingController _cowNameController;
   late List<Client> _clientsList;
+  late TextEditingController _cowNameController;
 
   @override
   void initState() {

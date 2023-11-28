@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../controllers/settings_controller.dart';
+import 'package:DigitalDairy/controllers/settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
