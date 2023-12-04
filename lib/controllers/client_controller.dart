@@ -28,10 +28,9 @@ class ClientController with ChangeNotifier {
           .where((item) =>
               item.clientName.toLowerCase().contains(query.toLowerCase()))
           .toList();
-      _filteredClientList.clear();
-      _filteredClientList.addAll(filteredList);
+      _filteredClientList.setAll(0, filteredList);
     } else {
-      _filteredClientList.addAll(_clientList);
+      _filteredClientList.setAll(0, _clientList);
     }
     notifyListeners();
   }
@@ -39,10 +38,9 @@ class ClientController with ChangeNotifier {
   Future<void> getClients() async {
     _isLoading = true;
     notifyListeners();
-    _clientList.clear();
     List<Client> loadedList = await _clientService.getClientsList();
-    _clientList.addAll(loadedList);
-    _filteredClientList.addAll(loadedList);
+    _clientList.setAll(0, loadedList);
+    _filteredClientList.setAll(0, loadedList);
     _isLoading = false;
     // Important! Inform listeners a change has occurred.
     notifyListeners();

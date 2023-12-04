@@ -62,7 +62,7 @@ class ClientsScreenState extends State<ClientsScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     FilterInputField(
                         onQueryChanged:
                             context.read<ClientController>().filterClients),
