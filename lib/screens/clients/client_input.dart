@@ -16,12 +16,13 @@ class ClientInputScreen extends StatefulWidget {
 // Create a corresponding State class.
 // This class holds data related to the form.
 class ClientFormState extends State<ClientInputScreen> {
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _contactsController;
-  late TextEditingController _locationController;
-  late TextEditingController _unitPriceController;
-  late bool _loadingStatus;
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _contactsController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _unitPriceController =
+      TextEditingController(text: "0");
+  bool _loadingStatus = false;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -33,11 +34,6 @@ class ClientFormState extends State<ClientInputScreen> {
   @override
   void initState() {
     super.initState();
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
-    _contactsController = TextEditingController();
-    _locationController = TextEditingController();
-    _unitPriceController = TextEditingController(text: "0");
   }
 
   @override

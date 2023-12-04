@@ -14,19 +14,18 @@ class ClientsScreen extends StatefulWidget {
 
 class ClientsScreenState extends State<ClientsScreen> {
   late List<Client> _clientsList;
-  late TextEditingController _cowNameController;
+  final TextEditingController _cowNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _cowNameController = TextEditingController();
     Future.microtask(() => context.read<ClientController>().getClients());
   }
 
   @override
   void dispose() {
-    super.dispose();
     _cowNameController.dispose();
+    super.dispose();
   }
 
   @override
