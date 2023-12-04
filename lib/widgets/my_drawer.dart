@@ -91,12 +91,12 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            title: const Text('Consumers'),
+            title: const Text('Clients'),
             selected: _selectedIndex == 2,
             onTap: () {
               // Update the state of the app
               _onItemTapped(2);
-              context.goNamed("consumers");
+              context.goNamed("clients");
               // Then close the drawer
               Navigator.pop(context);
             },

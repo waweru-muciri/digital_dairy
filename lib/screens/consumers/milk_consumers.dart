@@ -36,28 +36,29 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
         context.watch<MilkConsumerController>().milkConsumersList;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Farm MilkConsumers',
-          style: TextStyle(),
+        appBar: AppBar(
+          title: const Text(
+            'Farm MilkConsumers',
+            style: TextStyle(),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(children: [
-          PaginatedDataTable(
-              header: const Text("Milk Consumers List"),
-              rowsPerPage: 20,
-              availableRowsPerPage: const [20, 30, 50],
-              columns: const [
-                DataColumn(label: Text("First Name")),
-                DataColumn(label: Text("Last Name")),
-                DataColumn(label: Text("Contacts")),
-              ],
-              source: _DataSource(data: _milkConsumersList))
-        ]),
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(children: [
+              PaginatedDataTable(
+                  header: const Text("Milk Consumers List"),
+                  rowsPerPage: 20,
+                  availableRowsPerPage: const [20, 30, 50],
+                  columns: const [
+                    DataColumn(label: Text("First Name")),
+                    DataColumn(label: Text("Last Name")),
+                    DataColumn(label: Text("Contacts")),
+                  ],
+                  source: _DataSource(data: _milkConsumersList))
+            ]),
+          ),
+        ));
   }
 }
 

@@ -20,7 +20,7 @@ class ClientsScreenState extends State<ClientsScreen> {
   void initState() {
     super.initState();
     _cowNameController = TextEditingController();
-    Provider.of<ClientController>(context, listen: false).getClients();
+    Future.microtask(() => context.read<ClientController>().getClients());
   }
 
   @override
@@ -34,37 +34,38 @@ class ClientsScreenState extends State<ClientsScreen> {
     _clientsList = context.watch<ClientController>().clientsList;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Farm Clients',
-          style: TextStyle(),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-            child: OutlinedButton(
-              onPressed: () {
-                context.goNamed("addClientDetails");
-              },
-              child: const Text("Add Client"),
-            ),
+        appBar: AppBar(
+          title: const Text(
+            'Farm Clients',
+            style: TextStyle(),
           ),
-          PaginatedDataTable(
-              header: const Text("Clients List"),
-              rowsPerPage: 20,
-              availableRowsPerPage: const [20, 30, 50],
-              columns: const [
-                DataColumn(label: Text("First Name")),
-                DataColumn(label: Text("Last Name")),
-                DataColumn(label: Text("Contacts")),
-              ],
-              source: _DataSource(data: _clientsList))
-        ]),
-      ),
-    );
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                child: OutlinedButton(
+                  onPressed: () {
+                    context.goNamed("addClientDetails");
+                  },
+                  child: const Text("Add Client"),
+                ),
+              ),
+              PaginatedDataTable(
+                  header: const Text("Clients List"),
+                  rowsPerPage: 20,
+                  availableRowsPerPage: const [20, 30, 50],
+                  columns: const [
+                    DataColumn(label: Text("Name")),
+                    DataColumn(label: Text("Contacts")),
+                    DataColumn(label: Text("Unit Price (Ksh)")),
+                  ],
+                  source: _DataSource(data: _clientsList))
+            ]),
+          ),
+        ));
   }
 }
 
@@ -82,9 +83,9 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.firstName)),
-      DataCell(Text(item.lastName)),
+      DataCell(Text(item.clientName)),
       DataCell(Text(item.contacts)),
+      DataCell(Text('${item.unitPrice}')),
     ], onLongPress: () => {});
   }
 

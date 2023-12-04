@@ -36,32 +36,33 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
         context.watch<MilkProductionController>().todaysMilkProductionList;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Daily Milk Production',
-          style: TextStyle(),
+        appBar: AppBar(
+          title: const Text(
+            'Daily Milk Production',
+            style: TextStyle(),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(children: [
-          Text(
-              'Milk data for today ${context.read<MilkProductionController>().todaysMilkProductionList.length}'),
-          PaginatedDataTable(
-              header: const Text("Milk Production List"),
-              rowsPerPage: 20,
-              availableRowsPerPage: const [20, 30, 50],
-              columns: const [
-                DataColumn(label: Text("Cow Name")),
-                DataColumn(label: Text("Am")),
-                DataColumn(label: Text("Noon")),
-                DataColumn(label: Text("Pm")),
-                DataColumn(label: Text("Total"))
-              ],
-              source: _DataSource(data: _milkProductionList))
-        ]),
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(children: [
+              Text(
+                  'Milk data for today ${context.read<MilkProductionController>().todaysMilkProductionList.length}'),
+              PaginatedDataTable(
+                  header: const Text("Milk Production List"),
+                  rowsPerPage: 20,
+                  availableRowsPerPage: const [20, 30, 50],
+                  columns: const [
+                    DataColumn(label: Text("Cow Name")),
+                    DataColumn(label: Text("Am")),
+                    DataColumn(label: Text("Noon")),
+                    DataColumn(label: Text("Pm")),
+                    DataColumn(label: Text("Total"))
+                  ],
+                  source: _DataSource(data: _milkProductionList))
+            ]),
+          ),
+        ));
   }
 }
 
@@ -83,7 +84,7 @@ class _DataSource extends DataTableSource {
       DataCell(Text(item.amQuantity.toString())),
       DataCell(Text(item.noonQuantity.toString())),
       DataCell(Text(item.pmQuantity.toString())),
-      DataCell(Text(item.totalMilkQuantity.toString())),
+      DataCell(Text('${item.totalMilkQuantity}')),
     ], onLongPress: () => {});
   }
 
