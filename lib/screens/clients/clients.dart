@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -42,14 +43,30 @@ class ClientsScreenState extends State<ClientsScreen> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(children: [
+            child: Column(mainAxisSize: MainAxisSize.max, children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: OutlinedButton(
-                  onPressed: () {
-                    context.goNamed("addClientDetails");
-                  },
-                  child: const Text("Add Client"),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        OutlinedButton.icon(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            context.pushNamed("addClientDetails");
+                          },
+                          label: const Text("Add Client"),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    FilterInputField(
+                        onQueryChanged:
+                            context.read<ClientController>().filterClients),
+                  ],
                 ),
               ),
               PaginatedDataTable(
@@ -59,7 +76,7 @@ class ClientsScreenState extends State<ClientsScreen> {
                   columns: const [
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Contacts")),
-                    DataColumn(label: Text("Unit Price (Ksh)")),
+                    DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
                   ],
                   source: _DataSource(data: _clientsList))
             ]),

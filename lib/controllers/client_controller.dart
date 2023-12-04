@@ -16,10 +16,25 @@ class ClientController with ChangeNotifier {
 
   /// Internal, private state of the current day client.
   final List<Client> _clientList = [];
+  final List<Client> _filteredClientList = [];
 
   // Allow Widgets to read the clients list.
-  List<Client> get clientsList => _clientList;
+  List<Client> get clientsList => _filteredClientList;
   bool get loadingStatus => _isLoading;
+
+  void filterClients(String? query) {
+    if (query != null && query.isNotEmpty) {
+      List<Client> filteredList = _clientList
+          .where((item) =>
+              item.clientName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      _filteredClientList.clear();
+      _filteredClientList.addAll(filteredList);
+    } else {
+      _filteredClientList.addAll(_clientList);
+    }
+    notifyListeners();
+  }
 
   Future<void> getClients() async {
     _isLoading = true;
@@ -27,6 +42,7 @@ class ClientController with ChangeNotifier {
     _clientList.clear();
     List<Client> loadedList = await _clientService.getClientsList();
     _clientList.addAll(loadedList);
+    _filteredClientList.addAll(loadedList);
     _isLoading = false;
     // Important! Inform listeners a change has occurred.
     notifyListeners();

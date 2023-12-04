@@ -51,6 +51,11 @@ class ClientFormState extends State<ClientInputScreen> {
     _loadingStatus = context.watch<ClientController>().loadingStatus;
     // Build a Form widget using the _formKey created above.
     return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Client Details',
+          ),
+        ),
         body: _loadingStatus
             ? const Column(
                 mainAxisSize: MainAxisSize.max,
