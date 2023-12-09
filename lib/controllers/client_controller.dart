@@ -25,12 +25,16 @@ class ClientController with ChangeNotifier {
   void filterClients(String? query) {
     if (query != null && query.isNotEmpty) {
       List<Client> filteredList = _clientList
-          .where((item) =>
-              item.clientName.toLowerCase().contains(query.toLowerCase()))
+          .where((item) => item.clientName
+              .trim()
+              .toLowerCase()
+              .contains(query.toLowerCase()))
           .toList();
-      _filteredClientList.setAll(0, filteredList);
+      _filteredClientList.clear();
+      _filteredClientList.addAll(filteredList);
     } else {
-      _filteredClientList.setAll(0, _clientList);
+      _filteredClientList.clear();
+      _filteredClientList.addAll(_clientList);
     }
     notifyListeners();
   }
@@ -39,8 +43,8 @@ class ClientController with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     List<Client> loadedList = await _clientService.getClientsList();
-    _clientList.setAll(0, loadedList);
-    _filteredClientList.setAll(0, loadedList);
+    _clientList.addAll(loadedList);
+    _filteredClientList.addAll(loadedList);
     _isLoading = false;
     // Important! Inform listeners a change has occurred.
     notifyListeners();

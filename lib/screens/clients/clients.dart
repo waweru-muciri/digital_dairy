@@ -55,9 +55,8 @@ class ClientsScreenState extends State<ClientsScreen> {
                       children: [
                         OutlinedButton.icon(
                           icon: const Icon(Icons.add),
-                          onPressed: () {
-                            context.pushNamed("addClientDetails");
-                          },
+                          onPressed: () =>
+                              context.pushNamed("addClientDetails"),
                           label: const Text("Add Client"),
                         ),
                       ],
@@ -77,8 +76,10 @@ class ClientsScreenState extends State<ClientsScreen> {
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Contacts")),
                     DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
+                    DataColumn(label: Text("Edit")),
+                    DataColumn(label: Text("Delete")),
                   ],
-                  source: _DataSource(data: _clientsList))
+                  source: _DataSource(data: _clientsList, context: context))
             ]),
           ),
         ));
@@ -87,8 +88,8 @@ class ClientsScreenState extends State<ClientsScreen> {
 
 class _DataSource extends DataTableSource {
   final List<Client> data;
-
-  _DataSource({required this.data});
+  final BuildContext context;
+  _DataSource({required this.data, required this.context});
 
   @override
   DataRow? getRow(int index) {
@@ -102,7 +103,9 @@ class _DataSource extends DataTableSource {
       DataCell(Text(item.clientName)),
       DataCell(Text(item.contacts)),
       DataCell(Text('${item.unitPrice}')),
-    ], onLongPress: () => {});
+      DataCell(const Icon(Icons.edit), onTap: () {}),
+      DataCell(const Icon(Icons.delete), onTap: () => {}),
+    ]);
   }
 
   @override

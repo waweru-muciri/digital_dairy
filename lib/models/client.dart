@@ -1,7 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Client {
-  final String id;
+  final String? id;
   final String firstName;
   final String lastName;
   final String contacts;
@@ -39,8 +39,9 @@ class Client {
       'firstName': firstName,
       'contacts': contacts,
       'unitPrice': unitPrice,
+      'id': id,
     };
   }
 
-  String get clientName => '$firstName  $lastName';
+  String get clientName => '$firstName $lastName';
 }

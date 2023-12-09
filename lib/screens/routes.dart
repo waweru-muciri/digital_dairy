@@ -55,6 +55,14 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        name: "editClientDetails",
+        path: '/edit_client_details/:clientId',
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (_) => ClientController(),
+          child: const ClientInputScreen(),
+        ),
+      ),
+      GoRoute(
         name: "consumers",
         path: MilkConsumersScreen.routeName,
         builder: (context, state) => ChangeNotifierProvider(
@@ -62,29 +70,29 @@ class AppRouter {
           child: const MilkConsumersScreen(),
         ),
       ),
-      GoRoute(
-          name: "cows",
-          path: CowsScreen.routeName,
-          builder: (context, state) => ChangeNotifierProvider(
-                create: (_) => MilkProductionController(),
-                child: CowsScreen(
-                  activeStatus: state.uri.queryParameters["activeStatus"],
-                  cowType: state.uri.queryParameters["cowType"],
-                ),
-              ),
-          routes: [
-            GoRoute(
-              name: "cowDetailsScreen",
-              path: CowDetailsScreen.routeName,
-              builder: (context, state) => ChangeNotifierProvider(
-                create: (_) => MilkProductionController(),
-                child: CowDetailsScreen(cowId: state.pathParameters['cowId']),
-              ),
-            ),
-          ]),
+      //   GoRoute(
+      //       name: "cows",
+      //       path: CowsScreen.routeName,
+      //       builder: (context, state) => ChangeNotifierProvider(
+      //             create: (_) => MilkProductionController(),
+      //             child: CowsScreen(
+      //               activeStatus: state.uri.queryParameters["activeStatus"],
+      //               cowType: state.uri.queryParameters["cowType"],
+      //             ),
+      //           ),
+      //       routes: [
+      //         GoRoute(
+      //           name: "cowDetailsScreen",
+      //           path: CowDetailsScreen.routeName,
+      //           builder: (context, state) => ChangeNotifierProvider(
+      //             create: (_) => MilkProductionController(),
+      //             child: CowDetailsScreen(cowId: state.pathParameters['cowId']),
+      //           ),
+      //         ),
+      //       ]),
     ],
-    // redirect: (BuildContext context, GoRouterState state) {
-    //   return FirebaseAuth.instance.currentUser == null ? '/sign-in' : null;
+    // // redirect: (BuildContext context, GoRouterState state) {
+    // //   return FirebaseAuth.instance.currentUser == null ? '/sign-in' : null;
     // }
   );
 }
