@@ -1,14 +1,14 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class MilkConsumer {
-  final String id;
+  final String? id;
   final String firstName;
   final String lastName;
   final String contacts;
   final String location;
 
   MilkConsumer(
-      {this.id = "",
+      {this.id,
       this.location = "",
       this.contacts = "",
       required this.firstName,
@@ -24,6 +24,7 @@ class MilkConsumer {
     return MilkConsumer(
         firstName: data?["firstName"],
         lastName: data?["lastName"],
+        contacts: data?["contacts"],
         location: data?["location"],
         id: id);
   }
@@ -33,8 +34,10 @@ class MilkConsumer {
       'location': location,
       'lastName': lastName,
       'firstName': firstName,
+      'contacts': contacts,
+      "id": id,
     };
   }
 
-  String get clientName => '$firstName  $lastName';
+  String get milkConsumerName => '$firstName  $lastName';
 }

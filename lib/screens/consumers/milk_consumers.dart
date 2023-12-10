@@ -2,6 +2,7 @@ import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 class MilkConsumersScreen extends StatefulWidget {
   const MilkConsumersScreen({super.key});
@@ -51,11 +52,14 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
                   columns: const [
-                    DataColumn(label: Text("First Name")),
-                    DataColumn(label: Text("Last Name")),
+                    DataColumn(label: Text("Consumer Name")),
                     DataColumn(label: Text("Contacts")),
+                    DataColumn(label: Text("Location")),
+                    DataColumn(label: Text("Edit")),
+                    DataColumn(label: Text("Delete")),
                   ],
-                  source: _DataSource(data: _milkConsumersList))
+                  source:
+                      _DataSource(data: _milkConsumersList, context: context))
             ]),
           ),
         ));
@@ -64,8 +68,9 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
 
 class _DataSource extends DataTableSource {
   final List<MilkConsumer> data;
+  final BuildContext context;
 
-  _DataSource({required this.data});
+  _DataSource({required this.data, required this.context});
 
   @override
   DataRow? getRow(int index) {
@@ -76,10 +81,16 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.firstName)),
-      DataCell(Text(item.lastName)),
+      DataCell(Text(item.milkConsumerName)),
       DataCell(Text(item.contacts)),
-    ], onLongPress: () => {});
+      DataCell(Text(item.location)),
+      DataCell(const Icon(Icons.edit),
+          onTap: () => context.pushNamed("editClientDetails",
+              pathParameters: {"editClientId": '${item.id}'})),
+      DataCell(const Icon(Icons.delete), onTap: () async {
+        await context.read<MilkConsumerController>().deleteMilkConsumer(item);
+      }),
+    ]);
   }
 
   @override

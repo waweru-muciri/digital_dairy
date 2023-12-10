@@ -3,6 +3,7 @@ import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/screens/clients/client_input.dart';
 import 'package:DigitalDairy/screens/clients/clients.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers.dart';
+import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +54,18 @@ class AppRouter {
         name: "consumers",
         path: MilkConsumersScreen.routeName,
         builder: (context, state) => const MilkConsumersScreen(),
+      ),
+      GoRoute(
+        name: "addConsumerDetails",
+        path: "/add_consumer_details",
+        builder: (context, state) => const MilkConsumerInputScreen(),
+      ),
+      GoRoute(
+        name: "editClientDetails",
+        path: '/edit_client_details/:editClientId',
+        builder: (context, state) => ClientInputScreen(
+          editClientId: state.pathParameters["editClientId"],
+        ),
       ),
       //   GoRoute(
       //       name: "cows",
