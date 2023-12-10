@@ -106,7 +106,9 @@ class _DataSource extends DataTableSource {
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editClientDetails",
               pathParameters: {"editClientId": '${item.id}'})),
-      DataCell(const Icon(Icons.delete), onTap: () => {}),
+      DataCell(const Icon(Icons.delete), onTap: () async {
+        await context.read<ClientController>().deleteClient(item);
+      }),
     ]);
   }
 

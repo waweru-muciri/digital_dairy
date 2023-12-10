@@ -25,52 +25,34 @@ class AppRouter {
       GoRoute(
         name: "home",
         path: HomeScreen.routeName,
-        builder: (context, state) => ChangeNotifierProvider(
-          create: (_) => MilkProductionController(),
-          child: const HomeScreen(),
-        ),
+        builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
         name: "dailyMilkProduction",
         path: DailyMilkProductionScreen.routeName,
-        builder: (context, state) => ChangeNotifierProvider(
-          create: (_) => MilkProductionController(),
-          child: const DailyMilkProductionScreen(),
-        ),
+        builder: (context, state) => const DailyMilkProductionScreen(),
       ),
       GoRoute(
         name: "clients",
         path: ClientsScreen.routeName,
-        builder: (context, state) => ChangeNotifierProvider(
-          create: (_) => ClientController(),
-          child: const ClientsScreen(),
-        ),
+        builder: (context, state) => const ClientsScreen(),
       ),
       GoRoute(
         name: "addClientDetails",
         path: "/add_client_details",
-        builder: (context, state) => ChangeNotifierProvider(
-          create: (_) => ClientController(),
-          child: const ClientInputScreen(),
-        ),
+        builder: (context, state) => const ClientInputScreen(),
       ),
       GoRoute(
         name: "editClientDetails",
         path: '/edit_client_details/:editClientId',
-        builder: (context, state) => ChangeNotifierProvider(
-          create: (_) => ClientController(),
-          child: ClientInputScreen(
-            editClientId: state.pathParameters["editClientId"],
-          ),
+        builder: (context, state) => ClientInputScreen(
+          editClientId: state.pathParameters["editClientId"],
         ),
       ),
       GoRoute(
         name: "consumers",
         path: MilkConsumersScreen.routeName,
-        builder: (context, state) => ChangeNotifierProvider(
-          create: (_) => MilkConsumerController(),
-          child: const MilkConsumersScreen(),
-        ),
+        builder: (context, state) => const MilkConsumersScreen(),
       ),
       //   GoRoute(
       //       name: "cows",

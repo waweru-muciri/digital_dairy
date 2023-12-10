@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 
 // Create a Form widget.
 class ClientInputScreen extends StatefulWidget {
-  const ClientInputScreen({super.key, String? editClientId});
+  const ClientInputScreen({super.key, this.editClientId});
+  final String? editClientId;
 
   @override
   ClientFormState createState() {
@@ -23,7 +24,6 @@ class ClientFormState extends State<ClientInputScreen> {
   final TextEditingController _unitPriceController =
       TextEditingController(text: "0");
   bool _loadingStatus = false;
-  String? editClientId;
   late Client? clientDetails;
 
   // Create a global key that uniquely identifies the Form widget
@@ -51,19 +51,27 @@ class ClientFormState extends State<ClientInputScreen> {
   @override
   Widget build(BuildContext context) {
     _loadingStatus = context.watch<ClientController>().loadingStatus;
-    clientDetails = context
-        .read<ClientController>()
-        .clientsList
-        .where((client) => client.id == editClientId)
-        .firstOrNull;
-    _firstNameController.value =
-        TextEditingValue(text: clientDetails!.firstName);
-    _lastNameController.value = TextEditingValue(text: clientDetails!.lastName);
-    _contactsController.value = TextEditingValue(text: clientDetails!.contacts);
-    _locationController.value = TextEditingValue(text: clientDetails!.location);
-    _unitPriceController.value =
-        TextEditingValue(text: clientDetails!.unitPrice.toString());
-
+    String? editClientId = widget.editClientId;
+    if (editClientId != null) {
+      final clientsList = context.read<ClientController>().clientsList;
+      final matchingClientsList =
+          clientsList.where((client) => client.id == editClientId);
+      if (matchingClientsList.isNotEmpty) {
+        clientDetails = matchingClientsList.first;
+        if (clientDetails != null) {
+          _firstNameController.value =
+              TextEditingValue(text: clientDetails!.firstName);
+          _lastNameController.value =
+              TextEditingValue(text: clientDetails!.lastName);
+          _contactsController.value =
+              TextEditingValue(text: clientDetails!.contacts);
+          _locationController.value =
+              TextEditingValue(text: clientDetails!.location);
+          _unitPriceController.value =
+              TextEditingValue(text: clientDetails!.unitPrice.toString());
+        }
+      }
+    }
     // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
