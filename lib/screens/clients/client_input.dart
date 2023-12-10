@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,7 @@ class ClientFormState extends State<ClientInputScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //get the current loading status of the screen
     _loadingStatus = context.watch<ClientController>().loadingStatus;
     String? editClientId = widget.editClientId;
     if (editClientId != null) {
@@ -75,8 +77,8 @@ class ClientFormState extends State<ClientInputScreen> {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Client Details',
+          title: Text(
+            editClientId != null ? 'Edit Client Details' : 'Add Client Details',
           ),
         ),
         body: SingleChildScrollView(
@@ -170,10 +172,10 @@ class ClientFormState extends State<ClientInputScreen> {
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          String firstName = _firstNameController.text;
-                          String lastName = _lastNameController.text;
-                          String contacts = _contactsController.text;
-                          String location = _locationController.text;
+                          String firstName = _firstNameController.text.trim();
+                          String lastName = _lastNameController.text.trim();
+                          String contacts = _contactsController.text.trim();
+                          String location = _locationController.text.trim();
                           double unitPrice =
                               double.parse(_unitPriceController.text);
 
@@ -182,22 +184,35 @@ class ClientFormState extends State<ClientInputScreen> {
                               lastName: lastName,
                               contacts: contacts,
                               location: location,
-                              unitPrice: unitPrice);
-
-                          //save the client in the db
-                          await context
-                              .read<ClientController>()
-                              .addClient(newClient)
-                              .then((value) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text('Client added successfully.')));
-                          }).catchError((error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Saving failed!')));
-                          });
+                              unitPrice: unitPrice,
+                              id: editClientId);
+                          if (editClientId != null) {
+                            //update the client in the db
+                            await context
+                                .read<ClientController>()
+                                .editClient(newClient)
+                                .then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  successSnackBar(
+                                      "Client added successfully."));
+                            }).catchError((error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  errorSnackBar("Saving failed!"));
+                            });
+                          } else {
+                            //add the client in the db
+                            await context
+                                .read<ClientController>()
+                                .addClient(newClient)
+                                .then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  successSnackBar(
+                                      "Client added successfully."));
+                            }).catchError((error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  errorSnackBar("Saving failed!"));
+                            });
+                          }
                         }
                       },
                       child: const Text("Save"))

@@ -9,7 +9,7 @@ class Client {
   final double unitPrice;
 
   Client(
-      {this.id = "",
+      {this.id,
       this.location = "",
       this.contacts = "",
       this.unitPrice = 0,
