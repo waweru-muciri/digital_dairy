@@ -103,7 +103,9 @@ class _DataSource extends DataTableSource {
       DataCell(Text(item.clientName)),
       DataCell(Text(item.contacts)),
       DataCell(Text('${item.unitPrice}')),
-      DataCell(const Icon(Icons.edit), onTap: () {}),
+      DataCell(const Icon(Icons.edit),
+          onTap: () => context.pushNamed("editClientDetails",
+              pathParameters: {"editClientId": '${item.id}'})),
       DataCell(const Icon(Icons.delete), onTap: () => {}),
     ]);
   }

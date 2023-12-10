@@ -5,8 +5,7 @@ import 'package:provider/provider.dart';
 
 // Create a Form widget.
 class ClientInputScreen extends StatefulWidget {
-  const ClientInputScreen({super.key});
-  static const routeName = '/add_client_details';
+  const ClientInputScreen({super.key, String? editClientId});
 
   @override
   ClientFormState createState() {
@@ -24,7 +23,7 @@ class ClientFormState extends State<ClientInputScreen> {
   final TextEditingController _unitPriceController =
       TextEditingController(text: "0");
   bool _loadingStatus = false;
-  String? clientId;
+  String? editClientId;
   late Client? clientDetails;
 
   // Create a global key that uniquely identifies the Form widget
@@ -55,7 +54,7 @@ class ClientFormState extends State<ClientInputScreen> {
     clientDetails = context
         .read<ClientController>()
         .clientsList
-        .where((client) => client.id == clientId)
+        .where((client) => client.id == editClientId)
         .firstOrNull;
     _firstNameController.value =
         TextEditingValue(text: clientDetails!.firstName);

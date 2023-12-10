@@ -48,7 +48,7 @@ class AppRouter {
       ),
       GoRoute(
         name: "addClientDetails",
-        path: ClientInputScreen.routeName,
+        path: "/add_client_details",
         builder: (context, state) => ChangeNotifierProvider(
           create: (_) => ClientController(),
           child: const ClientInputScreen(),
@@ -56,10 +56,12 @@ class AppRouter {
       ),
       GoRoute(
         name: "editClientDetails",
-        path: '/edit_client_details/:clientId',
+        path: '/edit_client_details/:editClientId',
         builder: (context, state) => ChangeNotifierProvider(
           create: (_) => ClientController(),
-          child: const ClientInputScreen(),
+          child: ClientInputScreen(
+            editClientId: state.pathParameters["editClientId"],
+          ),
         ),
       ),
       GoRoute(
