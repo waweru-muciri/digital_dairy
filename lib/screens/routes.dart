@@ -1,16 +1,10 @@
-import 'package:DigitalDairy/controllers/client_controller.dart';
-import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/screens/clients/client_input.dart';
 import 'package:DigitalDairy/screens/clients/clients.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
-import 'package:provider/provider.dart';
-import "package:DigitalDairy/controllers/milk_production_controller.dart";
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart';
-import 'package:DigitalDairy/screens/herd/cow_details_screen.dart';
-import 'package:DigitalDairy/screens/herd/cows.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
@@ -56,15 +50,15 @@ class AppRouter {
         builder: (context, state) => const MilkConsumersScreen(),
       ),
       GoRoute(
-        name: "addConsumerDetails",
+        name: "addMilkConsumerDetails",
         path: "/add_consumer_details",
         builder: (context, state) => const MilkConsumerInputScreen(),
       ),
       GoRoute(
-        name: "editClientDetails",
-        path: '/edit_client_details/:editClientId',
-        builder: (context, state) => ClientInputScreen(
-          editClientId: state.pathParameters["editClientId"],
+        name: "editMilkConsumerDetails",
+        path: '/edit_client_details/:editMilkConsumerId',
+        builder: (context, state) => MilkConsumerInputScreen(
+          editMilkConsumerId: state.pathParameters["editMilkConsumerId"],
         ),
       ),
       //   GoRoute(

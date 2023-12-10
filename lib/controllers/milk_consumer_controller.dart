@@ -13,16 +13,34 @@ class MilkConsumerController with ChangeNotifier {
 
   /// Internal, private state of the current day milkConsumer.
   final List<MilkConsumer> _milkConsumerList = [];
+  final List<MilkConsumer> _filteredMilkConsumersList = [];
 
-  // Allow Widgets to read the milkConsumers list.
-  List<MilkConsumer> get milkConsumersList => _milkConsumerList;
+  // Allow Widgets to read the filtered milkConsumers list.
+  List<MilkConsumer> get milkConsumersList => _filteredMilkConsumersList;
 
   Future<void> getMilkConsumers() async {
-    _milkConsumerList.clear();
     List<MilkConsumer> loadedList =
         await _milkConsumerService.getMilkConsumersList();
     _milkConsumerList.addAll(loadedList);
+    _filteredMilkConsumersList.addAll(loadedList);
     // Important! Inform listeners a change has occurred.
+    notifyListeners();
+  }
+
+  void filterMilkConsumers(String? query) {
+    if (query != null && query.isNotEmpty) {
+      List<MilkConsumer> filteredList = _milkConsumerList
+          .where((item) => item.milkConsumerName
+              .trim()
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .toList();
+      _filteredMilkConsumersList.clear();
+      _filteredMilkConsumersList.addAll(filteredList);
+    } else {
+      _filteredMilkConsumersList.clear();
+      _filteredMilkConsumersList.addAll(_milkConsumerList);
+    }
     notifyListeners();
   }
 

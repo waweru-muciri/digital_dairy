@@ -18,7 +18,7 @@ class ClientController with ChangeNotifier {
   final List<Client> _clientList = [];
   final List<Client> _filteredClientList = [];
 
-  // Allow Widgets to read the clients list.
+  // Allow Widgets to read the filtered clients list.
   List<Client> get clientsList => _filteredClientList;
   bool get loadingStatus => _isLoading;
 

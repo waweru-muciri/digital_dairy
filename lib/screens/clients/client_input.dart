@@ -195,6 +195,8 @@ class ClientFormState extends State<ClientInputScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
                                       "Client added successfully."));
+                              //reset the form
+                              _formKey.currentState!.reset();
                             }).catchError((error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));

@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -40,6 +41,7 @@ class ClientsScreenState extends State<ClientsScreen> {
             style: TextStyle(),
           ),
         ),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),

@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 // Create a Form widget.
 class MilkConsumerInputScreen extends StatefulWidget {
-  const MilkConsumerInputScreen({super.key, this.editConsumerId});
-  final String? editConsumerId;
+  const MilkConsumerInputScreen({super.key, this.editMilkConsumerId});
+  final String? editMilkConsumerId;
 
   @override
   MilkConsumerFormState createState() {
@@ -47,12 +47,12 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? editConsumerId = widget.editConsumerId;
-    if (editConsumerId != null) {
+    String? editMilkConsumerId = widget.editMilkConsumerId;
+    if (editMilkConsumerId != null) {
       final clientsList =
           context.read<MilkConsumerController>().milkConsumersList;
       final matchingConsumersList =
-          clientsList.where((client) => client.id == editConsumerId);
+          clientsList.where((client) => client.id == editMilkConsumerId);
       if (matchingConsumersList.isNotEmpty) {
         milkConsumerDetails = matchingConsumersList.first;
         if (milkConsumerDetails != null) {
@@ -71,7 +71,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editConsumerId != null
+            editMilkConsumerId != null
                 ? 'Edit Consumer Details'
                 : 'Add Consumer Details',
           ),
@@ -158,8 +158,8 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                               lastName: lastName,
                               contacts: contacts,
                               location: location,
-                              id: editConsumerId);
-                          if (editConsumerId != null) {
+                              id: editMilkConsumerId);
+                          if (editMilkConsumerId != null) {
                             //update the client in the db
                             await context
                                 .read<MilkConsumerController>()

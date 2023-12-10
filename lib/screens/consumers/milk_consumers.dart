@@ -1,8 +1,10 @@
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:DigitalDairy/widgets/search_bar.dart';
 
 class MilkConsumersScreen extends StatefulWidget {
   const MilkConsumersScreen({super.key});
@@ -39,20 +41,46 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Farm MilkConsumers',
+            'Milk Consumers',
             style: TextStyle(),
           ),
         ),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(children: [
+            child: Column(mainAxisSize: MainAxisSize.max, children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        OutlinedButton.icon(
+                          icon: const Icon(Icons.add),
+                          onPressed: () =>
+                              context.pushNamed("addMilkConsumerDetails"),
+                          label: const Text("Add Consumer"),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    FilterInputField(
+                        onQueryChanged: context
+                            .read<MilkConsumerController>()
+                            .filterMilkConsumers),
+                  ],
+                ),
+              ),
               PaginatedDataTable(
                   header: const Text("Milk Consumers List"),
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
                   columns: const [
-                    DataColumn(label: Text("Consumer Name")),
+                    DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Contacts")),
                     DataColumn(label: Text("Location")),
                     DataColumn(label: Text("Edit")),
@@ -85,8 +113,8 @@ class _DataSource extends DataTableSource {
       DataCell(Text(item.contacts)),
       DataCell(Text(item.location)),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editClientDetails",
-              pathParameters: {"editClientId": '${item.id}'})),
+          onTap: () => context.pushNamed("editMilkConsumerDetails",
+              pathParameters: {"editMilkConsumerId": '${item.id}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         await context.read<MilkConsumerController>().deleteMilkConsumer(item);
       }),
