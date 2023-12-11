@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +54,7 @@ class ClientFormState extends State<ClientInputScreen> {
   Widget build(BuildContext context) {
     //get the current loading status of the screen
     _loadingStatus = context.watch<ClientController>().loadingStatus;
+
     String? editClientId = widget.editClientId;
     if (editClientId != null) {
       final clientsList = context.read<ClientController>().clientsList;
@@ -81,6 +83,7 @@ class ClientFormState extends State<ClientInputScreen> {
             editClientId != null ? 'Edit Client Details' : 'Add Client Details',
           ),
         ),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,

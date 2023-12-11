@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +77,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                 : 'Add Consumer Details',
           ),
         ),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
