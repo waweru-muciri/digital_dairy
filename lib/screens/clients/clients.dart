@@ -74,6 +74,8 @@ class ClientsScreenState extends State<ClientsScreen> {
                   header: const Text("Clients List"),
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
+                  sortAscending: false,
+                  sortColumnIndex: 0,
                   columns: const [
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Contacts")),

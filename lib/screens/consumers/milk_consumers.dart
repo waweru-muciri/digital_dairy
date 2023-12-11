@@ -79,6 +79,8 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                   header: const Text("Milk Consumers List"),
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
+                  sortAscending: false,
+                  sortColumnIndex: 0,
                   columns: const [
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Contacts")),
