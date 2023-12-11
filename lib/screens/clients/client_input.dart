@@ -52,9 +52,6 @@ class ClientFormState extends State<ClientInputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //get the current loading status of the screen
-    _loadingStatus = context.watch<ClientController>().loadingStatus;
-
     String? editClientId = widget.editClientId;
     if (editClientId != null) {
       final clientsList = context.read<ClientController>().clientsList;
