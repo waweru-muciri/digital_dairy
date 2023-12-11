@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/widgets/delete_dialog.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';
@@ -173,6 +174,8 @@ class ClientFormState extends State<ClientInputScreen> {
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
+                          //show a loading dialog to the user while we save the info
+                          showLoadingDialog(context);
                           String firstName = _firstNameController.text.trim();
                           String lastName = _lastNameController.text.trim();
                           String contacts = _contactsController.text.trim();
@@ -193,10 +196,14 @@ class ClientFormState extends State<ClientInputScreen> {
                                 .read<ClientController>()
                                 .editClient(newClient)
                                 .then((value) {
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
                                       "Client edited successfully!"));
                             }).catchError((error) {
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));
                             });
@@ -206,12 +213,21 @@ class ClientFormState extends State<ClientInputScreen> {
                                 .read<ClientController>()
                                 .addClient(newClient)
                                 .then((value) {
+                              //reset the form
+                              _firstNameController.clear();
+                              _lastNameController.clear();
+                              _contactsController.clear();
+                              _locationController.clear();
+                              _unitPriceController.clear();
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
+                              //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
                                       "Client added successfully."));
-                              //reset the form
-                              _formKey.currentState!.reset();
                             }).catchError((error) {
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));
                             });

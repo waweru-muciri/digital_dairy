@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/widgets/delete_dialog.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,11 @@ class _DataSource extends DataTableSource {
           onTap: () => context.pushNamed("editClientDetails",
               pathParameters: {"editClientId": '${item.id}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
-        await context.read<ClientController>().deleteClient(item);
+        deleteFunc() async {
+          return await context.read<ClientController>().deleteClient(item);
+        }
+
+        await showDeleteItemDialog(context, deleteFunc);
       }),
     ]);
   }
