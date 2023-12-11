@@ -1,8 +1,8 @@
-import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
+import 'package:DigitalDairy/widgets/delete_dialog.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
-import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:provider/provider.dart';
 
 // Create a Form widget.
@@ -29,7 +29,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
   // and allows validation of the form.
   //
   // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<ConsumerFormState>.
+  // not a GlobalKey<MilkConsumerFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -52,10 +52,10 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
     if (editMilkConsumerId != null) {
       final clientsList =
           context.read<MilkConsumerController>().milkConsumersList;
-      final matchingConsumersList =
+      final matchingMilkConsumersList =
           clientsList.where((client) => client.id == editMilkConsumerId);
-      if (matchingConsumersList.isNotEmpty) {
-        milkConsumerDetails = matchingConsumersList.first;
+      if (matchingMilkConsumersList.isNotEmpty) {
+        milkConsumerDetails = matchingMilkConsumersList.first;
         if (milkConsumerDetails != null) {
           _firstNameController.value =
               TextEditingValue(text: milkConsumerDetails!.firstName);
@@ -73,11 +73,10 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
         appBar: AppBar(
           title: Text(
             editMilkConsumerId != null
-                ? 'Edit Consumer Details'
-                : 'Add Consumer Details',
+                ? 'Edit Milk Consumer Details'
+                : 'Add Milk Consumer Details',
           ),
         ),
-        drawer: const MyDrawer(),
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
@@ -131,7 +130,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 controller: _contactsController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Consumer Contacts',
+                                  labelText: 'Contacts',
                                 ),
                               )),
                           Padding(
@@ -141,7 +140,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 controller: _locationController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Consumer Location',
+                                  labelText: 'Location',
                                 ),
                               )),
                         ],
@@ -150,12 +149,14 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
+                          //show a loading dialog to the user while we save the info
+                          showLoadingDialog(context);
                           String firstName = _firstNameController.text.trim();
                           String lastName = _lastNameController.text.trim();
                           String contacts = _contactsController.text.trim();
                           String location = _locationController.text.trim();
 
-                          final MilkConsumer newConsumer = MilkConsumer(
+                          final MilkConsumer newMilkConsumer = MilkConsumer(
                               firstName: firstName,
                               lastName: lastName,
                               contacts: contacts,
@@ -165,12 +166,16 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                             //update the client in the db
                             await context
                                 .read<MilkConsumerController>()
-                                .editMilkConsumer(newConsumer)
+                                .editMilkConsumer(newMilkConsumer)
                                 .then((value) {
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Consumer added successfully."));
+                                      "Consumer edited successfully!"));
                             }).catchError((error) {
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));
                             });
@@ -178,19 +183,29 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                             //add the client in the db
                             await context
                                 .read<MilkConsumerController>()
-                                .addMilkConsumer(newConsumer)
+                                .addMilkConsumer(newMilkConsumer)
                                 .then((value) {
+                              //reset the form
+                              _firstNameController.clear();
+                              _lastNameController.clear();
+                              _contactsController.clear();
+                              _locationController.clear();
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
+                              //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Consumer added successfully."));
+                                      "MilkConsumer added successfully."));
                             }).catchError((error) {
+                              //remove the loading dialog
+                              Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));
                             });
                           }
                         }
                       },
-                      child: const Text("Save"))
+                      child: const Text("Save Details"))
                 ],
               )),
         )));

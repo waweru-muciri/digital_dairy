@@ -1,13 +1,13 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Disease {
-  final String id;
+  final String? id;
   final String name;
   final String details;
   final DateTime dateDiscovered;
 
   Disease({
-    this.id = "",
+    this.id,
     this.details = "",
     required this.dateDiscovered,
     required this.name,
@@ -28,6 +28,11 @@ class Disease {
   }
 
   Map<String, dynamic> toFirestore() {
-    return {'details': details, 'name': name, "dateDiscovered": dateDiscovered};
+    return {
+      'details': details,
+      'name': name,
+      "dateDiscovered": dateDiscovered,
+      'id': id
+    };
   }
 }

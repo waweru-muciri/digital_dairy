@@ -25,7 +25,6 @@ class ClientFormState extends State<ClientInputScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _unitPriceController =
       TextEditingController(text: "0");
-  bool _loadingStatus = false;
   late Client? clientDetails;
 
   // Create a global key that uniquely identifies the Form widget

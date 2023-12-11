@@ -21,6 +21,10 @@ class MilkConsumerController with ChangeNotifier {
   Future<void> getMilkConsumers() async {
     List<MilkConsumer> loadedList =
         await _milkConsumerService.getMilkConsumersList();
+    //clear the items present in the list to avoid duplication
+    _milkConsumerList.clear();
+    _filteredMilkConsumersList.clear();
+    //add loaded items to the lists
     _milkConsumerList.addAll(loadedList);
     _filteredMilkConsumersList.addAll(loadedList);
     // Important! Inform listeners a change has occurred.
@@ -51,6 +55,7 @@ class MilkConsumerController with ChangeNotifier {
     // add the milkConsumer item to today's list of items
     if (savedConsumer != null) {
       _milkConsumerList.add(savedConsumer);
+      _filteredMilkConsumersList.add(savedConsumer);
     }
     // Important! Inform listeners a change has occurred.
     notifyListeners();
@@ -60,10 +65,13 @@ class MilkConsumerController with ChangeNotifier {
     final savedConsumer =
         await _milkConsumerService.editMilkConsumer(milkConsumer);
     //remove the old milkConsumer from the list
-    _milkConsumerList.retainWhere(
-        (milkConsumerToFilter) => milkConsumerToFilter.id != milkConsumer.id);
+    _milkConsumerList.removeWhere(
+        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
+    _filteredMilkConsumersList.removeWhere(
+        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
     //add the updated milkConsumer to the list
     _milkConsumerList.add(savedConsumer);
+    _filteredMilkConsumersList.add(savedConsumer);
     notifyListeners();
   }
 
@@ -71,8 +79,11 @@ class MilkConsumerController with ChangeNotifier {
     //call to the service to delete the item in the database
     await _milkConsumerService.deleteMilkConsumer(milkConsumer);
     // remove the milkConsumer item to today's list of items
-    _milkConsumerList.retainWhere(
-        (milkConsumerToFilter) => milkConsumerToFilter.id != milkConsumer.id);
+    _milkConsumerList.removeWhere(
+        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
+    _filteredMilkConsumersList.removeWhere(
+        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
+
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

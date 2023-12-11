@@ -1,47 +1,45 @@
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
+import 'package:DigitalDairy/widgets/delete_dialog.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class MilkConsumersScreen extends StatefulWidget {
   const MilkConsumersScreen({super.key});
-
-  static const routeName = '/milkConsumers';
+  static const routeName = '/milk_consumers';
 
   @override
   State<StatefulWidget> createState() => MilkConsumersScreenState();
 }
 
 class MilkConsumersScreenState extends State<MilkConsumersScreen> {
-  late TextEditingController _cowNameController;
-  late List<MilkConsumer> _milkConsumersList;
+  late List<MilkConsumer> _clientsList;
+  final TextEditingController _cowNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _cowNameController = TextEditingController();
-    Provider.of<MilkConsumerController>(context, listen: false)
-        .getMilkConsumers();
+    Future.microtask(
+        () => context.read<MilkConsumerController>().getMilkConsumers());
   }
 
   @override
   void dispose() {
-    super.dispose();
     _cowNameController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _milkConsumersList =
-        context.watch<MilkConsumerController>().milkConsumersList;
+    _clientsList = context.watch<MilkConsumerController>().milkConsumersList;
 
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Milk Consumers',
+            'Farm Milk Consumers',
             style: TextStyle(),
           ),
         ),
@@ -63,7 +61,7 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                           icon: const Icon(Icons.add),
                           onPressed: () =>
                               context.pushNamed("addMilkConsumerDetails"),
-                          label: const Text("Add Consumer"),
+                          label: const Text("Add MilkConsumer"),
                         ),
                       ],
                     ),
@@ -88,8 +86,7 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                     DataColumn(label: Text("Edit")),
                     DataColumn(label: Text("Delete")),
                   ],
-                  source:
-                      _DataSource(data: _milkConsumersList, context: context))
+                  source: _DataSource(data: _clientsList, context: context))
             ]),
           ),
         ));
@@ -99,7 +96,6 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
 class _DataSource extends DataTableSource {
   final List<MilkConsumer> data;
   final BuildContext context;
-
   _DataSource({required this.data, required this.context});
 
   @override
@@ -118,7 +114,13 @@ class _DataSource extends DataTableSource {
           onTap: () => context.pushNamed("editMilkConsumerDetails",
               pathParameters: {"editMilkConsumerId": '${item.id}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
-        await context.read<MilkConsumerController>().deleteMilkConsumer(item);
+        deleteFunc() async {
+          return await context
+              .read<MilkConsumerController>()
+              .deleteMilkConsumer(item);
+        }
+
+        await showDeleteItemDialog(context, deleteFunc);
       }),
     ]);
   }
