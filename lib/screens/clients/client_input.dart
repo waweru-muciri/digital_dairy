@@ -1,6 +1,5 @@
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
-import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:provider/provider.dart';
@@ -83,14 +82,13 @@ class ClientFormState extends State<ClientInputScreen> {
             editClientId != null ? 'Edit Client Details' : 'Add Client Details',
           ),
         ),
-        drawer: const MyDrawer(),
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
           child: Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
@@ -98,8 +96,8 @@ class ClientFormState extends State<ClientInputScreen> {
                           const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 36),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           TextFormField(
                             controller: _firstNameController,
@@ -171,7 +169,7 @@ class ClientFormState extends State<ClientInputScreen> {
                               ))
                         ],
                       )),
-                  OutlinedButton(
+                  FilledButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
@@ -197,9 +195,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                 .then((value) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Client added successfully."));
-                              //reset the form
-                              _formKey.currentState!.reset();
+                                      "Client edited successfully!"));
                             }).catchError((error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));
@@ -213,6 +209,8 @@ class ClientFormState extends State<ClientInputScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
                                       "Client added successfully."));
+                              //reset the form
+                              _formKey.currentState!.reset();
                             }).catchError((error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));
@@ -220,7 +218,7 @@ class ClientFormState extends State<ClientInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save"))
+                      child: const Text("Save Details"))
                 ],
               )),
         )));

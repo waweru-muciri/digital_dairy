@@ -84,7 +84,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
           child: Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
@@ -92,8 +92,8 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                           const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 36),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           TextFormField(
                             controller: _firstNameController,
@@ -146,7 +146,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                               )),
                         ],
                       )),
-                  OutlinedButton(
+                  FilledButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

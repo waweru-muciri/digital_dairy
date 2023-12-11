@@ -85,7 +85,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(2);
-              context.goNamed("customers");
+              context.goNamed("milkConsumers");
               // Then close the drawer
               Navigator.pop(context);
             },

@@ -45,7 +45,7 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        name: "consumers",
+        name: "milkConsumers",
         path: MilkConsumersScreen.routeName,
         builder: (context, state) => const MilkConsumersScreen(),
       ),

@@ -28,7 +28,7 @@ class ClientController with ChangeNotifier {
           .where((item) => item.clientName
               .trim()
               .toLowerCase()
-              .contains(query.toLowerCase()))
+              .contains(query.trim().toLowerCase()))
           .toList();
       _filteredClientList.clear();
       _filteredClientList.addAll(filteredList);
@@ -58,6 +58,7 @@ class ClientController with ChangeNotifier {
     // add the client item to today's list of items
     if (savedClient != null) {
       _clientList.add(savedClient);
+      _filteredClientList.add(savedClient);
     }
     _isLoading = false;
     // Important! Inform listeners a change has occurred.
@@ -69,9 +70,12 @@ class ClientController with ChangeNotifier {
     notifyListeners();
     final savedClient = await _clientService.editClient(client);
     //remove the old client from the list
-    _clientList.retainWhere((clientToFilter) => clientToFilter.id != client.id);
+    _filteredClientList
+        .removeWhere((clientToFilter) => clientToFilter.id == client.id);
+    _clientList.removeWhere((clientToFilter) => clientToFilter.id == client.id);
     //add the updated client to the list
     _clientList.add(savedClient);
+    _filteredClientList.add(savedClient);
     _isLoading = false;
     notifyListeners();
   }
@@ -82,7 +86,10 @@ class ClientController with ChangeNotifier {
     //call to the service to delete the item in the database
     await _clientService.deleteClient(client);
     // remove the client item to today's list of items
-    _clientList.retainWhere((clientToFilter) => clientToFilter.id != client.id);
+    _filteredClientList
+        .removeWhere((clientToFilter) => clientToFilter.id == client.id);
+    _clientList.removeWhere((clientToFilter) => clientToFilter.id == client.id);
+
     // Important! Inform listeners a change has occurred.
     _isLoading = false;
     notifyListeners();

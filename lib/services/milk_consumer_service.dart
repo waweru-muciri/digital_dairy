@@ -1,11 +1,12 @@
+import 'package:DigitalDairy/services/db_service.dart';
+
 import '../models/milk_consumer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// A service that gets, updates and deletes milkConsumer information.
 ///
 class MilkConsumerService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _milkConsumerReference = FirebaseFirestore.instance
+  final _milkConsumerReference = DbService.clientReference
       .collection('consumers')
       .withConverter<MilkConsumer>(
         fromFirestore: MilkConsumer.fromFirestore,

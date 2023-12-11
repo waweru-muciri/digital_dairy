@@ -1,18 +1,15 @@
 import '../models/client.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import "db_service.dart";
 
 /// A service that gets, updates and deletes client information.
 ///
 class ClientService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _clientReference = FirebaseFirestore.instance
-      .collection("farmers")
-      .doc("UYeFZgo47bsbaLDsRGnA")
-      .collection('clients')
-      .withConverter<Client>(
-        fromFirestore: Client.fromFirestore,
-        toFirestore: (Client client, _) => client.toFirestore(),
-      );
+  final _clientReference =
+      DbService.clientReference.collection('clients').withConverter<Client>(
+            fromFirestore: Client.fromFirestore,
+            toFirestore: (Client client, _) => client.toFirestore(),
+          );
 
   /// Loads the clients list from firebase firestore.
   Future<List<Client>> getClientsList() async {
