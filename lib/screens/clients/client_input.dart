@@ -1,5 +1,5 @@
 import 'package:DigitalDairy/models/client.dart';
-import 'package:DigitalDairy/widgets/delete_dialog.dart';
+import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';

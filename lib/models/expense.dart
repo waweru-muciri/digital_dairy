@@ -1,16 +1,33 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Expense {
-  final String id;
-  final String source;
-  final double amount;
-  final DateTime expenseDate;
+  String? _id;
+  late double _expenseAmount;
+  late DateTime _expenseDate;
+  late String _details;
 
-  Expense(
-      {this.id = "",
-      required this.amount,
-      required this.source,
-      required this.expenseDate});
+  Expense();
+
+  set setExpenseId(String? id) {
+    _id = id;
+  }
+
+  set setExpenseDate(DateTime expenseDate) {
+    _expenseDate = expenseDate;
+  }
+
+  set seExpenseDetails(String details) {
+    _details = details;
+  }
+
+  set setExpenseAmount(double expenseAmount) {
+    _expenseAmount = expenseAmount;
+  }
+
+  double get getExpenseAmount => _expenseAmount;
+  DateTime get getExpenseDate => _expenseDate;
+  String? get getId => _id;
+  String get getDetails => _details;
 
   factory Expense.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -19,20 +36,20 @@ class Expense {
     final data = snapshot.data();
     final String id = snapshot.id;
 
-    return Expense(
-        source: data?["source"],
-        expenseDate: data?["expenseDate"],
-        amount: data?["amount"],
-        id: id);
+    Expense newExpense = Expense();
+    newExpense._id = data?["id"];
+    newExpense._expenseDate = data?["expenseDate"];
+    newExpense._expenseAmount = data?["expenseAmount"];
+    newExpense._details = data?["details"];
+
+    return newExpense;
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'amount': amount,
-      'expenseDate': expenseDate,
-      'source': source,
+      'details': _details,
+      'expenseDate': _expenseDate,
+      'expenseAmount': _expenseAmount,
     };
   }
-
-  String get getExpenseDetails => '$source Ksh: $amount';
 }

@@ -1,29 +1,29 @@
-import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
-import 'package:DigitalDairy/models/milk_consumer.dart';
+import 'package:DigitalDairy/controllers/expense_controller.dart';
+import 'package:DigitalDairy/models/expense.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
-class MilkConsumersScreen extends StatefulWidget {
-  const MilkConsumersScreen({super.key});
-  static const routeName = '/milk_consumers';
+class ExpensesScreen extends StatefulWidget {
+  const ExpensesScreen({super.key});
+  static const routeName = '/expenses';
 
   @override
-  State<StatefulWidget> createState() => MilkConsumersScreenState();
+  State<StatefulWidget> createState() => ExpensesScreenState();
 }
 
-class MilkConsumersScreenState extends State<MilkConsumersScreen> {
-  late List<MilkConsumer> _clientsList;
+class ExpensesScreenState extends State<ExpensesScreen> {
+  late List<Expense> _expensesList;
   final TextEditingController _cowNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<MilkConsumerController>().getMilkConsumers());
+    Future.microtask(() => context.read<ExpenseController>().getExpenses());
   }
 
   @override
@@ -34,12 +34,12 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _clientsList = context.watch<MilkConsumerController>().milkConsumersList;
+    _expensesList = context.watch<ExpenseController>().expensesList;
 
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Milk Consumers',
+            'Expenses',
             style: TextStyle(),
           ),
         ),
@@ -60,21 +60,20 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                         OutlinedButton.icon(
                           icon: const Icon(Icons.add),
                           onPressed: () =>
-                              context.pushNamed("addMilkConsumerDetails"),
-                          label: const Text("Add MilkConsumer"),
+                              context.pushNamed("addExpenseDetails"),
+                          label: const Text("Add Expense"),
                         ),
                       ],
                     ),
                     const SizedBox(height: 15),
                     FilterInputField(
-                        onQueryChanged: context
-                            .read<MilkConsumerController>()
-                            .filterMilkConsumers),
+                        onQueryChanged:
+                            context.read<ExpenseController>().filterExpenses),
                   ],
                 ),
               ),
               PaginatedDataTable(
-                  header: const Text("Milk Consumers List"),
+                  header: const Text("Expenses List"),
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
                   sortAscending: false,
@@ -82,11 +81,11 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                   columns: const [
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Contacts")),
-                    DataColumn(label: Text("Location")),
+                    DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
                     DataColumn(label: Text("Edit")),
                     DataColumn(label: Text("Delete")),
                   ],
-                  source: _DataSource(data: _clientsList, context: context))
+                  source: _DataSource(data: _expensesList, context: context))
             ]),
           ),
         ));
@@ -94,7 +93,7 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
 }
 
 class _DataSource extends DataTableSource {
-  final List<MilkConsumer> data;
+  final List<Expense> data;
   final BuildContext context;
   _DataSource({required this.data, required this.context});
 
@@ -107,17 +106,15 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.milkConsumerName)),
-      DataCell(Text(item.contacts)),
-      DataCell(Text(item.location)),
+      DataCell(Text(DateFormat("dd/MM/yyyy").format(item.getExpenseDate))),
+      DataCell(Text(item.getDetails)),
+      DataCell(Text('${item.getExpenseAmount}')),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editMilkConsumerDetails",
-              pathParameters: {"editMilkConsumerId": '${item.id}'})),
+          onTap: () => context.pushNamed("editExpenseDetails",
+              pathParameters: {"editExpenseId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
-          return await context
-              .read<MilkConsumerController>()
-              .deleteMilkConsumer(item);
+          return await context.read<ExpenseController>().deleteExpense(item);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

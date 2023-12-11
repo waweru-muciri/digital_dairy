@@ -1,35 +1,39 @@
-import 'package:DigitalDairy/models/milk_consumer.dart';
+import 'package:DigitalDairy/models/expense.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
+import 'package:DigitalDairy/controllers/expense_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 // Create a Form widget.
-class MilkConsumerInputScreen extends StatefulWidget {
-  const MilkConsumerInputScreen({super.key, this.editMilkConsumerId});
-  final String? editMilkConsumerId;
+class ExpenseInputScreen extends StatefulWidget {
+  const ExpenseInputScreen({super.key, this.editExpenseId});
+  final String? editExpenseId;
 
   @override
-  MilkConsumerFormState createState() {
-    return MilkConsumerFormState();
+  ExpenseFormState createState() {
+    return ExpenseFormState();
   }
 }
 
 // Create a corresponding State class.
 // This class holds data related to the form.
-class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _contactsController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  late MilkConsumer? milkConsumerDetails;
+class ExpenseFormState extends State<ExpenseInputScreen> {
+  final TextEditingController _expenseDetailsController =
+      TextEditingController();
+  final TextEditingController _expenseDateController = TextEditingController(
+      text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+  final TextEditingController _expenseAmountController =
+      TextEditingController(text: "0");
+  late Expense? expenseDetails;
+  DateTime selectedDate = DateTime.now();
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
   // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MilkConsumerFormState>.
+  // not a GlobalKey<ExpenseFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -39,32 +43,29 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _contactsController.dispose();
-    _locationController.dispose();
+    _expenseDetailsController.dispose();
+    _expenseDateController.dispose();
+    _expenseAmountController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    String? editMilkConsumerId = widget.editMilkConsumerId;
-    if (editMilkConsumerId != null) {
-      final clientsList =
-          context.read<MilkConsumerController>().milkConsumersList;
-      final matchingMilkConsumersList =
-          clientsList.where((client) => client.id == editMilkConsumerId);
-      if (matchingMilkConsumersList.isNotEmpty) {
-        milkConsumerDetails = matchingMilkConsumersList.first;
-        if (milkConsumerDetails != null) {
-          _firstNameController.value =
-              TextEditingValue(text: milkConsumerDetails!.firstName);
-          _lastNameController.value =
-              TextEditingValue(text: milkConsumerDetails!.lastName);
-          _contactsController.value =
-              TextEditingValue(text: milkConsumerDetails!.contacts);
-          _locationController.value =
-              TextEditingValue(text: milkConsumerDetails!.location);
+    String? editExpenseId = widget.editExpenseId;
+    if (editExpenseId != null) {
+      final clientsList = context.read<ExpenseController>().expensesList;
+      final matchingExpensesList =
+          clientsList.where((client) => client.getId == editExpenseId);
+      if (matchingExpensesList.isNotEmpty) {
+        expenseDetails = matchingExpensesList.first;
+        if (expenseDetails != null) {
+          _expenseDetailsController.value =
+              TextEditingValue(text: expenseDetails!.getDetails);
+          _expenseDateController.value = TextEditingValue(
+              text: DateFormat("dd/MM/yyyy")
+                  .format(expenseDetails!.getExpenseDate));
+          _expenseAmountController.value = TextEditingValue(
+              text: expenseDetails!.getExpenseAmount.toString());
         }
       }
     }
@@ -72,9 +73,9 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editMilkConsumerId != null
-                ? 'Edit Milk Consumer Details'
-                : 'Add Milk Consumer Details',
+            editExpenseId != null
+                ? 'Edit Expense Details'
+                : 'Add Expense Details',
           ),
         ),
         body: SingleChildScrollView(
@@ -95,54 +96,67 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextFormField(
-                            controller: _firstNameController,
+                            controller: _expenseDetailsController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'First name cannot be empty';
+                                return 'Date cannot be empty';
                               }
                               return null;
                             },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'First Name',
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              labelText: 'Date',
+                              suffixIcon: IconButton(
+                                  onPressed: () async {
+                                    final DateTime pickedDateTime =
+                                        await selectDate(context, selectedDate);
+                                    setState(() {
+                                      selectedDate = pickedDateTime;
+                                    });
+                                  },
+                                  icon: const Align(
+                                      widthFactor: 1.0,
+                                      heightFactor: 1.0,
+                                      child: Icon(
+                                        Icons.calendar_view_day,
+                                      ))),
                             ),
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 20, 0, 0),
                               child: TextFormField(
-                                controller: _lastNameController,
+                                controller: _expenseDateController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Last name cannot be empty';
+                                    return 'Details cannot be empty';
                                   }
                                   return null;
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Last Name',
+                                  labelText: 'Details',
                                 ),
                               )),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 20, 0, 0),
                               child: TextFormField(
-                                controller: _contactsController,
+                                controller: _expenseAmountController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Expense Amount cannot be empty';
+                                  } else if (double.tryParse(value) == null) {
+                                    return "Amount must be a number";
+                                  }
+                                  return null;
+                                },
+                                keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Contacts',
+                                  labelText: 'Amount (Ksh)',
                                 ),
-                              )),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
-                              child: TextFormField(
-                                controller: _locationController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Location',
-                                ),
-                              )),
+                              ))
                         ],
                       )),
                   FilledButton(
@@ -151,28 +165,29 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          String firstName = _firstNameController.text.trim();
-                          String lastName = _lastNameController.text.trim();
-                          String contacts = _contactsController.text.trim();
-                          String location = _locationController.text.trim();
+                          String expenseDetails =
+                              _expenseDetailsController.text.trim();
+                          String expenseDate =
+                              _expenseDateController.text.trim();
+                          double expenseAmount = double.parse(
+                              _expenseAmountController.text.trim());
 
-                          final MilkConsumer newMilkConsumer = MilkConsumer(
-                              firstName: firstName,
-                              lastName: lastName,
-                              contacts: contacts,
-                              location: location,
-                              id: editMilkConsumerId);
-                          if (editMilkConsumerId != null) {
+                          Expense newExpense = Expense();
+                          newExpense.setExpenseAmount = expenseAmount;
+                          newExpense.setExpenseDate = selectedDate;
+                          newExpense.seExpenseDetails = expenseDetails;
+
+                          if (editExpenseId != null) {
                             //update the client in the db
                             await context
-                                .read<MilkConsumerController>()
-                                .editMilkConsumer(newMilkConsumer)
+                                .read<ExpenseController>()
+                                .editExpense(newExpense)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Consumer edited successfully!"));
+                                      "Expense edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -182,20 +197,19 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                           } else {
                             //add the client in the db
                             await context
-                                .read<MilkConsumerController>()
-                                .addMilkConsumer(newMilkConsumer)
+                                .read<ExpenseController>()
+                                .addExpense(newExpense)
                                 .then((value) {
                               //reset the form
-                              _firstNameController.clear();
-                              _lastNameController.clear();
-                              _contactsController.clear();
-                              _locationController.clear();
+                              _expenseDetailsController.clear();
+                              _expenseDateController.clear();
+                              _expenseAmountController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "MilkConsumer added successfully."));
+                                      "Expense added successfully."));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
