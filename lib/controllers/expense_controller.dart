@@ -78,7 +78,6 @@ class ExpenseController with ChangeNotifier {
         (expenseToFilter) => expenseToFilter.getId == expense.getId);
     _expenseList.removeWhere(
         (expenseToFilter) => expenseToFilter.getId == expense.getId);
-
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

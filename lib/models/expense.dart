@@ -8,7 +8,7 @@ class Expense {
 
   Expense();
 
-  set setExpenseId(String? id) {
+  set setId(String? id) {
     _id = id;
   }
 
@@ -16,7 +16,7 @@ class Expense {
     _expenseDate = expenseDate;
   }
 
-  set seExpenseDetails(String details) {
+  set setExpenseDetails(String details) {
     _details = details;
   }
 
@@ -37,10 +37,10 @@ class Expense {
     final String id = snapshot.id;
 
     Expense newExpense = Expense();
-    newExpense._id = data?["id"];
-    newExpense._expenseDate = data?["expenseDate"];
-    newExpense._expenseAmount = data?["expenseAmount"];
-    newExpense._details = data?["details"];
+    newExpense.setId = id;
+    newExpense.setExpenseDate = (data?["expenseDate"] as Timestamp).toDate();
+    newExpense.setExpenseAmount = data?["expenseAmount"];
+    newExpense.setExpenseDetails = data?["details"];
 
     return newExpense;
   }
@@ -50,6 +50,7 @@ class Expense {
       'details': _details,
       'expenseDate': _expenseDate,
       'expenseAmount': _expenseAmount,
+      'id': _id,
     };
   }
 }

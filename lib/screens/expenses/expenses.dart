@@ -79,9 +79,9 @@ class ExpensesScreenState extends State<ExpensesScreen> {
                   sortAscending: false,
                   sortColumnIndex: 0,
                   columns: const [
-                    DataColumn(label: Text("Name")),
-                    DataColumn(label: Text("Contacts")),
-                    DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
+                    DataColumn(label: Text("Date")),
+                    DataColumn(label: Text("Amount (Ksh)"), numeric: true),
+                    DataColumn(label: Text("Details")),
                     DataColumn(label: Text("Edit")),
                     DataColumn(label: Text("Delete")),
                   ],

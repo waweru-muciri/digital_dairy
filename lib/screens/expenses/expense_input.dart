@@ -22,11 +22,10 @@ class ExpenseInputScreen extends StatefulWidget {
 class ExpenseFormState extends State<ExpenseInputScreen> {
   final TextEditingController _expenseDetailsController =
       TextEditingController();
-  final TextEditingController _expenseDateController = TextEditingController(
-      text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+  final TextEditingController _expenseDateController = TextEditingController();
   final TextEditingController _expenseAmountController =
       TextEditingController(text: "0");
-  late Expense? expenseDetails;
+  late final Expense _expense;
   DateTime selectedDate = DateTime.now();
 
   // Create a global key that uniquely identifies the Form widget
@@ -54,20 +53,15 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
     String? editExpenseId = widget.editExpenseId;
     if (editExpenseId != null) {
       final clientsList = context.read<ExpenseController>().expensesList;
-      final matchingExpensesList =
-          clientsList.where((client) => client.getId == editExpenseId);
-      if (matchingExpensesList.isNotEmpty) {
-        expenseDetails = matchingExpensesList.first;
-        if (expenseDetails != null) {
-          _expenseDetailsController.value =
-              TextEditingValue(text: expenseDetails!.getDetails);
-          _expenseDateController.value = TextEditingValue(
-              text: DateFormat("dd/MM/yyyy")
-                  .format(expenseDetails!.getExpenseDate));
-          _expenseAmountController.value = TextEditingValue(
-              text: expenseDetails!.getExpenseAmount.toString());
-        }
-      }
+      _expense = clientsList.firstWhere(
+          (client) => client.getId == editExpenseId,
+          orElse: () => Expense());
+      _expenseDetailsController.value =
+          TextEditingValue(text: _expense.getDetails);
+      _expenseDateController.text =
+          DateFormat("dd/MM/yyyy").format(_expense.getExpenseDate);
+      _expenseAmountController.value =
+          TextEditingValue(text: _expense.getExpenseAmount.toString());
     }
     // Build a Form widget using the _formKey created above.
     return Scaffold(
@@ -95,8 +89,13 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text("Date",
+                                style: Theme.of(context).textTheme.titleLarge),
+                          ),
                           TextFormField(
-                            controller: _expenseDetailsController,
+                            controller: _expenseDateController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Date cannot be empty';
@@ -110,6 +109,9 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                   onPressed: () async {
                                     final DateTime pickedDateTime =
                                         await selectDate(context, selectedDate);
+                                    _expenseDateController.text =
+                                        DateFormat("dd/MM/yyyy")
+                                            .format(pickedDateTime);
                                     setState(() {
                                       selectedDate = pickedDateTime;
                                     });
@@ -118,15 +120,20 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                       widthFactor: 1.0,
                                       heightFactor: 1.0,
                                       child: Icon(
-                                        Icons.calendar_view_day,
+                                        Icons.calendar_month,
                                       ))),
                             ),
                           ),
                           Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text("Expense Details",
+                                style: Theme.of(context).textTheme.titleLarge),
+                          ),
+                          Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 0),
                               child: TextFormField(
-                                controller: _expenseDateController,
+                                controller: _expenseDetailsController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Details cannot be empty';
@@ -139,8 +146,13 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                 ),
                               )),
                           Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text("Expense Amount",
+                                style: Theme.of(context).textTheme.titleLarge),
+                          ),
+                          Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 0),
                               child: TextFormField(
                                 controller: _expenseAmountController,
                                 validator: (value) {
@@ -167,21 +179,18 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                           showLoadingDialog(context);
                           String expenseDetails =
                               _expenseDetailsController.text.trim();
-                          String expenseDate =
-                              _expenseDateController.text.trim();
                           double expenseAmount = double.parse(
                               _expenseAmountController.text.trim());
 
-                          Expense newExpense = Expense();
-                          newExpense.setExpenseAmount = expenseAmount;
-                          newExpense.setExpenseDate = selectedDate;
-                          newExpense.seExpenseDetails = expenseDetails;
+                          _expense.setExpenseAmount = expenseAmount;
+                          _expense.setExpenseDate = selectedDate;
+                          _expense.setExpenseDetails = expenseDetails;
 
                           if (editExpenseId != null) {
                             //update the client in the db
                             await context
                                 .read<ExpenseController>()
-                                .editExpense(newExpense)
+                                .editExpense(_expense)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -198,11 +207,10 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                             //add the client in the db
                             await context
                                 .read<ExpenseController>()
-                                .addExpense(newExpense)
+                                .addExpense(_expense)
                                 .then((value) {
                               //reset the form
                               _expenseDetailsController.clear();
-                              _expenseDateController.clear();
                               _expenseAmountController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();

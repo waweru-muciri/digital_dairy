@@ -2,6 +2,7 @@ import 'package:DigitalDairy/screens/clients/client_input.dart';
 import 'package:DigitalDairy/screens/clients/clients.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
+import 'package:DigitalDairy/screens/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses/expenses.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
@@ -70,13 +71,13 @@ class AppRouter {
       GoRoute(
         name: "addExpenseDetails",
         path: "/add_expense_details",
-        builder: (context, state) => const ClientInputScreen(),
+        builder: (context, state) => const ExpenseInputScreen(),
       ),
       GoRoute(
         name: "editExpenseDetails",
         path: '/edit_expense_details/:editExpenseId',
-        builder: (context, state) => ClientInputScreen(
-          editClientId: state.pathParameters["editExpenseId"],
+        builder: (context, state) => ExpenseInputScreen(
+          editExpenseId: state.pathParameters["editExpenseId"],
         ),
       ),
       //   GoRoute(
