@@ -1,18 +1,34 @@
+import "package:DigitalDairy/models/milk_consumer.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class MilkConsumption {
-  final String id;
-  final String firstName;
-  final String lastName;
-  final String contacts;
-  final String location;
+  String? _id;
+  late double _milkConsumptionAmount;
+  late DateTime _milkConsumptionDate;
+  late MilkConsumer _milkConsumer;
 
-  MilkConsumption(
-      {this.id = "",
-      this.location = "",
-      this.contacts = "",
-      required this.firstName,
-      required this.lastName});
+  MilkConsumption();
+
+  set setId(String? id) {
+    _id = id;
+  }
+
+  set setMilkConsumptionDate(DateTime milkConsumptionDate) {
+    _milkConsumptionDate = milkConsumptionDate;
+  }
+
+  set setMilkConsumptionDetails(MilkConsumer milkConsumer) {
+    _milkConsumer = milkConsumer;
+  }
+
+  set setMilkConsumptionAmount(double milkConsumptionAmount) {
+    _milkConsumptionAmount = milkConsumptionAmount;
+  }
+
+  double get getMilkConsumptionAmount => _milkConsumptionAmount;
+  DateTime get getMilkConsumptionDate => _milkConsumptionDate;
+  String? get getId => _id;
+  MilkConsumer get getMilkConsumer => _milkConsumer;
 
   factory MilkConsumption.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -21,22 +37,23 @@ class MilkConsumption {
     final data = snapshot.data();
     final String id = snapshot.id;
 
-    return MilkConsumption(
-        firstName: data?["firstName"],
-        lastName: data?["lastName"],
-        location: data?["location"],
-        id: id);
+    MilkConsumption newMilkConsumption = MilkConsumption();
+    newMilkConsumption.setId = id;
+    newMilkConsumption.setMilkConsumptionDate =
+        (data?["milkConsumptionDate"] as Timestamp).toDate();
+    newMilkConsumption.setMilkConsumptionAmount =
+        data?["milkConsumptionAmount"];
+    newMilkConsumption.setMilkConsumptionDetails = data?["consumer"];
+
+    return newMilkConsumption;
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'location': location,
-      'lastName': lastName,
-      'firstName': firstName,
-      //only return the id if it is not null
-      if (id != null) "id": id,
+      'consumer': _milkConsumer,
+      'milkConsumptionDate': _milkConsumptionDate,
+      'milkConsumptionAmount': _milkConsumptionAmount,
+      'id': _id,
     };
   }
-
-  String get clientName => '$firstName  $lastName';
 }
