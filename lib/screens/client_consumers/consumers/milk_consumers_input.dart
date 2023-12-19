@@ -50,10 +50,10 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
   Widget build(BuildContext context) {
     String? editMilkConsumerId = widget.editMilkConsumerId;
     if (editMilkConsumerId != null) {
-      final clientsList =
+      final milkConsumersList =
           context.read<MilkConsumerController>().milkConsumersList;
       final matchingMilkConsumersList =
-          clientsList.where((client) => client.id == editMilkConsumerId);
+      milkConsumersList.where((client) => client.id == editMilkConsumerId);
       if (matchingMilkConsumersList.isNotEmpty) {
         milkConsumerDetails = matchingMilkConsumersList.first;
         if (milkConsumerDetails != null) {
@@ -72,16 +72,18 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editMilkConsumerId != null
-                ? 'Edit Milk Consumer Details'
-                : 'Add Milk Consumer Details',
-          ),
+        editMilkConsumerId != null
+        ? 'Edit Milk Consumer Details'
+            : 'Add Milk Consumer Details',
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         ),
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
           child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -90,11 +92,23 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 36),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          TextFormField(
+                          // Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), child: Text(
+                          //   editMilkConsumerId != null
+                          //       ? 'Edit Milk Consumer Details'
+                          //       : 'Add Milk Consumer Details',
+                          //   textAlign: TextAlign.left,
+                          //   style: Theme.of(context).textTheme.titleLarge,
+                          // ),),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "First Name",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: TextFormField(
                             controller: _firstNameController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -104,12 +118,16 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                             },
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'First Name',
                             ),
-                          ),
+                          ),),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "Last Name",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _lastNameController,
                                 validator: (value) {
@@ -120,32 +138,39 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Last Name',
                                 ),
                               )),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "Contacts",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _contactsController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Contacts',
                                 ),
                               )),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "Location",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _locationController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Location',
                                 ),
                               )),
                         ],
                       )),
-                  FilledButton(
+                  OutlinedButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

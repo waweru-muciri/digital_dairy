@@ -83,7 +83,7 @@ class ClientFormState extends State<ClientInputScreen> {
             child: Form(
           key: _formKey,
           child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -92,10 +92,19 @@ class ClientFormState extends State<ClientInputScreen> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 36),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "First Name",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 10, 0, 10),
+                            child:
                           TextFormField(
                             controller: _firstNameController,
                             validator: (value) {
@@ -106,12 +115,16 @@ class ClientFormState extends State<ClientInputScreen> {
                             },
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'First Name',
                             ),
-                          ),
+                          )),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "Last Name",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _lastNameController,
                                 validator: (value) {
@@ -122,32 +135,44 @@ class ClientFormState extends State<ClientInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Last Name',
                                 ),
                               )),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "Contacts",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _contactsController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Client Contacts',
                                 ),
                               )),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "Location",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _locationController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Client Location',
                                 ),
                               )),
+                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
+                            "Unit Price",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 20, 0, 0),
+                                  0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _unitPriceController,
                                 validator: (value) {
@@ -161,12 +186,11 @@ class ClientFormState extends State<ClientInputScreen> {
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Unit Price',
                                 ),
                               ))
                         ],
                       )),
-                  FilledButton(
+                  OutlinedButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

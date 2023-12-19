@@ -1,7 +1,6 @@
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -37,13 +36,6 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
     _clientsList = context.watch<MilkConsumerController>().milkConsumersList;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Milk Consumers',
-            style: TextStyle(),
-          ),
-        ),
-        drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -61,7 +53,7 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                           icon: const Icon(Icons.add),
                           onPressed: () =>
                               context.pushNamed("addMilkConsumerDetails"),
-                          label: const Text("Add MilkConsumer"),
+                          label: const Text("Add Consumer"),
                         ),
                       ],
                     ),
