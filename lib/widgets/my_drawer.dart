@@ -112,6 +112,17 @@ class _MyDrawerState extends State<MyDrawer> {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+            title: const Text('Incomes'),
+            selected: _selectedIndex == 5,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(5);
+              context.goNamed("incomes");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
         ],
       ),
     );

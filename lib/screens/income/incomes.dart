@@ -9,15 +9,15 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class IncomeScreen extends StatefulWidget {
-  const IncomeScreen({super.key});
+class IncomesScreen extends StatefulWidget {
+  const IncomesScreen({super.key});
   static const routeName = '/incomes';
 
   @override
   State<StatefulWidget> createState() => IncomeScreenState();
 }
 
-class IncomeScreenState extends State<IncomeScreen> {
+class IncomeScreenState extends State<IncomesScreen> {
   late List<Income> _expensesList;
   final TextEditingController _cowNameController = TextEditingController();
 

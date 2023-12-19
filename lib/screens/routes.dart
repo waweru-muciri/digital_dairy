@@ -10,6 +10,8 @@ import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart'
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:DigitalDairy/screens/income/income_input.dart';
+import 'package:DigitalDairy/screens/income/incomes.dart';
 
 class AppRouter {
 // GoRouter configuration
@@ -78,6 +80,23 @@ class AppRouter {
         path: '/edit_expense_details/:editExpenseId',
         builder: (context, state) => ExpenseInputScreen(
           editExpenseId: state.pathParameters["editExpenseId"],
+        ),
+      ),
+      GoRoute(
+        name: "incomes",
+        path: IncomesScreen.routeName,
+        builder: (context, state) => const IncomesScreen(),
+      ),
+      GoRoute(
+        name: "addIncomeDetails",
+        path: "/add_income_details",
+        builder: (context, state) => const IncomeInputScreen(),
+      ),
+      GoRoute(
+        name: "editIncomeDetails",
+        path: '/edit_income_details/:editIncomeId',
+        builder: (context, state) => IncomeInputScreen(
+          editIncomeId: state.pathParameters["editIncomeId"],
         ),
       ),
       //   GoRoute(
