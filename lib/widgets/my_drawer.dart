@@ -80,45 +80,23 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            title: const Text('Consumers'),
-            selected: _selectedIndex == 3,
-            onTap: () {
-              // Update the state of the app
-              _onItemTapped(3);
-              context.goNamed("milkConsumers");
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Clients'),
+            title: const Text('Clients & Consumers'),
             selected: _selectedIndex == 4,
             onTap: () {
               // Update the state of the app
               _onItemTapped(4);
-              context.goNamed("clients");
+              context.goNamed("clients_consumers");
               // Then close the drawer
               Navigator.pop(context);
             },
           ),
           ListTile(
-            title: const Text('Expenses'),
+            title: const Text('Expenses & Income'),
             selected: _selectedIndex == 5,
             onTap: () {
               // Update the state of the app
               _onItemTapped(5);
-              context.goNamed("expenses");
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Incomes'),
-            selected: _selectedIndex == 5,
-            onTap: () {
-              // Update the state of the app
-              _onItemTapped(5);
-              context.goNamed("incomes");
+              context.goNamed("expenses_incomes");
               // Then close the drawer
               Navigator.pop(context);
             },

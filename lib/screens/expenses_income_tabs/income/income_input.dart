@@ -79,7 +79,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
             child: Form(
           key: _formKey,
           child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -92,10 +92,13 @@ class IncomeFormState extends State<IncomeInputScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text("Date",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child:
                           TextFormField(
                             controller: _expenseDateController,
                             readOnly: true,
@@ -127,15 +130,15 @@ class IncomeFormState extends State<IncomeInputScreen> {
                                         Icons.calendar_month,
                                       ))),
                             ),
-                          ),
+                          )),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text(DisplayTextUtil.incomeDetails,
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _expenseDetailsController,
                                 validator: (value) {
@@ -150,12 +153,12 @@ class IncomeFormState extends State<IncomeInputScreen> {
                                 ),
                               )),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text("Income Amount",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _expenseAmountController,
                                 validator: (value) {
@@ -174,7 +177,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
                               ))
                         ],
                       )),
-                  FilledButton(
+                  OutlinedButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

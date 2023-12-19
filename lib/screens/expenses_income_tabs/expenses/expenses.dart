@@ -38,13 +38,6 @@ class ExpensesScreenState extends State<ExpensesScreen> {
     _expensesList = context.watch<ExpenseController>().expensesList;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            DisplayTextUtil.expenses,
-            style: TextStyle(),
-          ),
-        ),
-        drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),

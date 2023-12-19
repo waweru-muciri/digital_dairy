@@ -1,17 +1,15 @@
-import 'package:DigitalDairy/screens/clients/client_input.dart';
-import 'package:DigitalDairy/screens/clients/clients.dart';
-import 'package:DigitalDairy/screens/consumers/milk_consumers.dart';
-import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
-import 'package:DigitalDairy/screens/expenses/expense_input.dart';
-import 'package:DigitalDairy/screens/expenses/expenses.dart';
+import 'package:DigitalDairy/screens/client_consumers/client_consumers_tabs.dart';
+import 'package:DigitalDairy/screens/client_consumers/clients/client_input.dart';
+import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers_input.dart';
+import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
+import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:DigitalDairy/screens/income/income_input.dart';
-import 'package:DigitalDairy/screens/income/incomes.dart';
+import 'package:DigitalDairy/screens/expenses_income_tabs/income/income_input.dart';
 
 class AppRouter {
 // GoRouter configuration
@@ -31,11 +29,7 @@ class AppRouter {
         path: DailyMilkProductionScreen.routeName,
         builder: (context, state) => const DailyMilkProductionScreen(),
       ),
-      GoRoute(
-        name: "clients",
-        path: ClientsScreen.routeName,
-        builder: (context, state) => const ClientsScreen(),
-      ),
+
       GoRoute(
         name: "addClientDetails",
         path: "/add_client_details",
@@ -49,26 +43,16 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        name: "milkConsumers",
-        path: MilkConsumersScreen.routeName,
-        builder: (context, state) => const MilkConsumersScreen(),
-      ),
-      GoRoute(
         name: "addMilkConsumerDetails",
         path: "/add_consumer_details",
         builder: (context, state) => const MilkConsumerInputScreen(),
       ),
       GoRoute(
         name: "editMilkConsumerDetails",
-        path: '/edit_client_details/:editMilkConsumerId',
+        path: '/edit_consumer/:editMilkConsumerId',
         builder: (context, state) => MilkConsumerInputScreen(
           editMilkConsumerId: state.pathParameters["editMilkConsumerId"],
         ),
-      ),
-      GoRoute(
-        name: "expenses",
-        path: ExpensesScreen.routeName,
-        builder: (context, state) => const ExpensesScreen(),
       ),
       GoRoute(
         name: "addExpenseDetails",
@@ -83,11 +67,6 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        name: "incomes",
-        path: IncomesScreen.routeName,
-        builder: (context, state) => const IncomesScreen(),
-      ),
-      GoRoute(
         name: "addIncomeDetails",
         path: "/add_income_details",
         builder: (context, state) => const IncomeInputScreen(),
@@ -97,6 +76,18 @@ class AppRouter {
         path: '/edit_income_details/:editIncomeId',
         builder: (context, state) => IncomeInputScreen(
           editIncomeId: state.pathParameters["editIncomeId"],
+        ),
+      ),
+      GoRoute(
+        name: "clients_consumers",
+        path: '/clients_consumers',
+        builder: (context, state) => const ClientConsumersTabView(
+        ),
+      ),
+      GoRoute(
+        name: "expenses_incomes",
+        path: '/expenses_incomes',
+        builder: (context, state) => const ExpensesIncomesTabView(
         ),
       ),
       //   GoRoute(

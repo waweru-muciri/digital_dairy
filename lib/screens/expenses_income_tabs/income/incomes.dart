@@ -38,13 +38,6 @@ class IncomeScreenState extends State<IncomesScreen> {
     _expensesList = context.watch<IncomeController>().incomesList;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            DisplayTextUtil.incomes,
-            style: TextStyle(),
-          ),
-        ),
-        drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
