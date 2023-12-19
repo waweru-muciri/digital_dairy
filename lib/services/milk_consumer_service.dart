@@ -6,7 +6,7 @@ import '../models/milk_consumer.dart';
 ///
 class MilkConsumerService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _milkConsumerReference = DbService.clientReference
+  final _milkConsumerReference = DbService.currentUserDbReference
       .collection('consumers')
       .withConverter<MilkConsumer>(
         fromFirestore: MilkConsumer.fromFirestore,

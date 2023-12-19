@@ -1,40 +1,41 @@
-import '../models/client.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/income.dart';
+import "db_service.dart";
 
-/// A service that gets, updates and deletes client information.
+/// A service that gets, updates and deletes income information.
 ///
-class ClientService {
+class IncomeService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _clientReference =
-      FirebaseFirestore.instance.collection('clients').withConverter<Client>(
-            fromFirestore: Client.fromFirestore,
-            toFirestore: (Client client, _) => client.toFirestore(),
-          );
+  final _incomeReference = DbService.currentUserDbReference
+      .collection('incomes')
+      .withConverter<Income>(
+        fromFirestore: Income.fromFirestore,
+        toFirestore: (Income income, _) => income.toFirestore(),
+      );
 
-  /// Loads the clients list from firebase firestore.
-  Future<List<Client>> getClientsList() async {
-    return await _clientReference.get().then((querySnapshot) => querySnapshot
+  /// Loads the incomes list from firebase firestore.
+  Future<List<Income>> getIncomesList() async {
+    return await _incomeReference.get().then((querySnapshot) => querySnapshot
         .docs
         .map((documentSnapshot) => documentSnapshot.data())
         .toList());
   }
 
-//add a client
-  Future<Client?> addClient(Client client) async {
-    return await _clientReference
-        .add(client)
+//add a income
+  Future<Income?> addIncome(Income income) async {
+    return await _incomeReference
+        .add(income)
         .then((docRef) => docRef.get())
         .then((docSnap) => docSnap.data());
   }
 
-//add a client
-  Future<void> deleteClient(Client client) async {
-    return await _clientReference.doc(client.id).delete();
+//add a income
+  Future<void> deleteIncome(Income income) async {
+    return await _incomeReference.doc(income.getId).delete();
   }
 
-//update a client
-  Future<Client> editClient(Client client) async {
-    await _clientReference.doc(client.id).update(client.toFirestore());
-    return client;
+//update a income
+  Future<Income> editIncome(Income income) async {
+    await _incomeReference.doc(income.getId).update(income.toFirestore());
+    return income;
   }
 }

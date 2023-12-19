@@ -1,38 +1,38 @@
-import 'package:DigitalDairy/models/expense.dart';
+import 'package:DigitalDairy/models/income.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:DigitalDairy/controllers/expense_controller.dart';
+import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 // Create a Form widget.
-class ExpenseInputScreen extends StatefulWidget {
-  const ExpenseInputScreen({super.key, this.editExpenseId});
-  final String? editExpenseId;
+class IncomeInputScreen extends StatefulWidget {
+  const IncomeInputScreen({super.key, this.editIncomeId});
+  final String? editIncomeId;
 
   @override
-  ExpenseFormState createState() {
-    return ExpenseFormState();
+  IncomeFormState createState() {
+    return IncomeFormState();
   }
 }
 
 // Create a corresponding State class.
 // This class holds data related to the form.
-class ExpenseFormState extends State<ExpenseInputScreen> {
+class IncomeFormState extends State<IncomeInputScreen> {
   final TextEditingController _expenseDetailsController =
       TextEditingController();
   late TextEditingController _expenseDateController;
   final TextEditingController _expenseAmountController =
       TextEditingController(text: "0");
-  late Expense _expense;
+  late Income _expense;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
   // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<ExpenseFormState>.
+  // not a GlobalKey<IncomeFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -52,27 +52,27 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? editExpenseId = widget.editExpenseId;
-    if (editExpenseId != null) {
-      final clientsList = context.read<ExpenseController>().expensesList;
+    String? editIncomeId = widget.editIncomeId;
+    if (editIncomeId != null) {
+      final clientsList = context.read<IncomeController>().incomesList;
       _expense = clientsList.firstWhere(
-          (client) => client.getId == editExpenseId,
-          orElse: () => Expense());
+          (client) => client.getId == editIncomeId,
+          orElse: () => Income());
       _expenseDetailsController.value =
           TextEditingValue(text: _expense.getDetails);
       _expenseDateController.value = TextEditingValue(
-          text: DateFormat("dd/MM/yyyy").format(_expense.getExpenseDate));
+          text: DateFormat("dd/MM/yyyy").format(_expense.getIncomeDate));
       _expenseAmountController.value =
-          TextEditingValue(text: _expense.getExpenseAmount.toString());
+          TextEditingValue(text: _expense.getIncomeAmount.toString());
     } else {
-      _expense = Expense();
+      _expense = Income();
     } // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editExpenseId != null
-                ? 'Edit ${DisplayTextUtil.expenseDetails}'
-                : 'Add ${DisplayTextUtil.expenseDetails}',
+            editIncomeId != null
+                ? 'Edit ${DisplayTextUtil.incomeDetails}'
+                : 'Add ${DisplayTextUtil.incomeDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -113,8 +113,8 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                     final DateTime pickedDateTime =
                                         await selectDate(
                                             context,
-                                            editExpenseId != null
-                                                ? _expense.getExpenseDate
+                                            editIncomeId != null
+                                                ? _expense.getIncomeDate
                                                 : DateTime.now());
                                     _expenseDateController.text =
                                         DateFormat("dd/MM/yyyy")
@@ -130,7 +130,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Text(DisplayTextUtil.expenseDetails,
+                            child: Text(DisplayTextUtil.incomeDetails,
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
@@ -151,7 +151,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Text("Expense Amount",
+                            child: Text("Income Amount",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
@@ -160,7 +160,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                 controller: _expenseAmountController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Expense Amount cannot be empty';
+                                    return 'Income Amount cannot be empty';
                                   } else if (double.tryParse(value) == null) {
                                     return "Amount must be a number";
                                   }
@@ -185,22 +185,22 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                           double expenseAmount = double.parse(
                               _expenseAmountController.text.trim());
 
-                          _expense.setExpenseAmount = expenseAmount;
-                          _expense.setExpenseDate = DateFormat("dd/MM/yyyy")
+                          _expense.setIncomeAmount = expenseAmount;
+                          _expense.setIncomeDate = DateFormat("dd/MM/yyyy")
                               .parse(_expenseDateController.text);
-                          _expense.setExpenseDetails = expenseDetails;
+                          _expense.setIncomeDetails = expenseDetails;
 
-                          if (editExpenseId != null) {
+                          if (editIncomeId != null) {
                             //update the client in the db
                             await context
-                                .read<ExpenseController>()
-                                .editExpense(_expense)
+                                .read<IncomeController>()
+                                .editIncome(_expense)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Expense edited successfully!"));
+                                      "Income edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -210,8 +210,8 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                           } else {
                             //add the client in the db
                             await context
-                                .read<ExpenseController>()
-                                .addExpense(_expense)
+                                .read<IncomeController>()
+                                .addIncome(_expense)
                                 .then((value) {
                               //reset the form
                               _expenseDetailsController.clear();
@@ -221,7 +221,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Expense added successfully."));
+                                      "Income added successfully."));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();

@@ -51,7 +51,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          inherit: false,
           letterSpacing: 0.5,
           textBaseline: TextBaseline.alphabetic),
       bodyMedium: TextStyle(
@@ -60,7 +59,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 14,
           fontWeight: FontWeight.w400,
-          inherit: false,
           letterSpacing: 0.25,
           textBaseline: TextBaseline.alphabetic),
       bodySmall: TextStyle(
@@ -69,7 +67,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 12,
           fontWeight: FontWeight.w400,
-          inherit: false,
           letterSpacing: 0.4,
           textBaseline: TextBaseline.alphabetic),
       labelLarge: TextStyle(
@@ -78,7 +75,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          inherit: false,
           letterSpacing: 1.25,
           textBaseline: TextBaseline.alphabetic),
       labelMedium: TextStyle(
@@ -87,7 +83,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 11,
           fontWeight: FontWeight.w400,
-          inherit: false,
           letterSpacing: 1.5,
           textBaseline: TextBaseline.alphabetic),
       labelSmall: TextStyle(
@@ -96,7 +91,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 10,
           fontWeight: FontWeight.w400,
-          inherit: false,
           letterSpacing: 1.5,
           textBaseline: TextBaseline.alphabetic),
       titleLarge: TextStyle(
@@ -105,7 +99,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 20,
           fontWeight: FontWeight.w500,
-          inherit: false,
           letterSpacing: 0.15,
           textBaseline: TextBaseline.alphabetic),
       titleMedium: TextStyle(
@@ -114,7 +107,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          inherit: false,
           letterSpacing: 0.15,
           textBaseline: TextBaseline.alphabetic),
       titleSmall: TextStyle(
@@ -123,7 +115,6 @@ final ThemeData myTheme = ThemeData(
           fontFamily: "Lato",
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          inherit: false,
           letterSpacing: 0.1,
           textBaseline: TextBaseline.alphabetic)),
 
@@ -136,7 +127,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        inherit: false,
         letterSpacing: 0.5,
         textBaseline: TextBaseline.alphabetic),
     // the middle text uses "bodyMedium".
@@ -146,7 +136,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        inherit: false,
         letterSpacing: 0.25,
         textBaseline: TextBaseline.alphabetic),
     bodySmall: TextStyle(
@@ -155,7 +144,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 12,
         fontWeight: FontWeight.w400,
-        inherit: false,
         letterSpacing: 0.4,
         textBaseline: TextBaseline.alphabetic),
     labelLarge: TextStyle(
@@ -164,7 +152,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        inherit: false,
         letterSpacing: 1.25,
         textBaseline: TextBaseline.alphabetic),
     labelMedium: TextStyle(
@@ -173,7 +160,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 11,
         fontWeight: FontWeight.w400,
-        inherit: false,
         letterSpacing: 1.5,
         textBaseline: TextBaseline.alphabetic),
     labelSmall: TextStyle(
@@ -182,7 +168,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 10,
         fontWeight: FontWeight.w400,
-        inherit: false,
         letterSpacing: 1.5,
         textBaseline: TextBaseline.alphabetic),
     //           The title uses "titleLarge"
@@ -192,7 +177,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 20,
         fontWeight: FontWeight.w500,
-        inherit: false,
         letterSpacing: 0.15,
         textBaseline: TextBaseline.alphabetic),
     titleMedium: TextStyle(
@@ -201,7 +185,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        inherit: false,
         letterSpacing: 0.15,
         textBaseline: TextBaseline.alphabetic),
     titleSmall: TextStyle(
@@ -210,7 +193,6 @@ final ThemeData myTheme = ThemeData(
         fontFamily: "Lato",
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        inherit: false,
         letterSpacing: 0.1,
         textBaseline: TextBaseline.alphabetic),
   ),

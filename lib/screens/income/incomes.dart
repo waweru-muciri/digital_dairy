@@ -1,5 +1,5 @@
-import 'package:DigitalDairy/controllers/expense_controller.dart';
-import 'package:DigitalDairy/models/expense.dart';
+import 'package:DigitalDairy/controllers/income_controller.dart';
+import 'package:DigitalDairy/models/income.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
@@ -9,22 +9,22 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class ExpensesScreen extends StatefulWidget {
-  const ExpensesScreen({super.key});
-  static const routeName = '/expenses';
+class IncomeScreen extends StatefulWidget {
+  const IncomeScreen({super.key});
+  static const routeName = '/incomes';
 
   @override
-  State<StatefulWidget> createState() => ExpensesScreenState();
+  State<StatefulWidget> createState() => IncomeScreenState();
 }
 
-class ExpensesScreenState extends State<ExpensesScreen> {
-  late List<Expense> _expensesList;
+class IncomeScreenState extends State<IncomeScreen> {
+  late List<Income> _expensesList;
   final TextEditingController _cowNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<ExpenseController>().getExpenses());
+    Future.microtask(() => context.read<IncomeController>().getIncomes());
   }
 
   @override
@@ -35,12 +35,12 @@ class ExpensesScreenState extends State<ExpensesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _expensesList = context.watch<ExpenseController>().expensesList;
+    _expensesList = context.watch<IncomeController>().incomesList;
 
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            DisplayTextUtil.expenses,
+            DisplayTextUtil.incomes,
             style: TextStyle(),
           ),
         ),
@@ -61,20 +61,20 @@ class ExpensesScreenState extends State<ExpensesScreen> {
                         OutlinedButton.icon(
                           icon: const Icon(Icons.add),
                           onPressed: () =>
-                              context.pushNamed("addExpenseDetails"),
-                          label: const Text("Add Expense"),
+                              context.pushNamed("addIncomeDetails"),
+                          label: const Text("Add Income"),
                         ),
                       ],
                     ),
                     const SizedBox(height: 15),
                     FilterInputField(
                         onQueryChanged:
-                            context.read<ExpenseController>().filterExpenses),
+                            context.read<IncomeController>().filterIncomes),
                   ],
                 ),
               ),
               PaginatedDataTable(
-                  header: const Text("Expenses List"),
+                  header: const Text("Incomes List"),
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
                   sortAscending: false,
@@ -94,7 +94,7 @@ class ExpensesScreenState extends State<ExpensesScreen> {
 }
 
 class _DataSource extends DataTableSource {
-  final List<Expense> data;
+  final List<Income> data;
   final BuildContext context;
   _DataSource({required this.data, required this.context});
 
@@ -107,15 +107,15 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(DateFormat("dd/MM/yyyy").format(item.getExpenseDate))),
-      DataCell(Text('${item.getExpenseAmount}')),
+      DataCell(Text(DateFormat("dd/MM/yyyy").format(item.getIncomeDate))),
+      DataCell(Text('${item.getIncomeAmount}')),
       DataCell(Text(item.getDetails)),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editExpenseDetails",
-              pathParameters: {"editExpenseId": '${item.getId}'})),
+          onTap: () => context.pushNamed("editIncomeDetails",
+              pathParameters: {"editIncomeId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
-          return await context.read<ExpenseController>().deleteExpense(item);
+          return await context.read<IncomeController>().deleteIncome(item);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

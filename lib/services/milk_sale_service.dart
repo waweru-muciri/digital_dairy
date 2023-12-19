@@ -1,40 +1,43 @@
-import '../models/client.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/milk_sale.dart';
+import "db_service.dart";
 
-/// A service that gets, updates and deletes client information.
+/// A service that gets, updates and deletes milkSale information.
 ///
-class ClientService {
+class MilkSaleService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _clientReference =
-      FirebaseFirestore.instance.collection('clients').withConverter<Client>(
-            fromFirestore: Client.fromFirestore,
-            toFirestore: (Client client, _) => client.toFirestore(),
-          );
+  final milkSaleCollectionReference = DbService.currentUserDbReference
+      .collection('milk_sales')
+      .withConverter<MilkSale>(
+        fromFirestore: MilkSale.fromFirestore,
+        toFirestore: (MilkSale milkSale, _) => milkSale.toFirestore(),
+      );
 
-  /// Loads the clients list from firebase firestore.
-  Future<List<Client>> getClientsList() async {
-    return await _clientReference.get().then((querySnapshot) => querySnapshot
-        .docs
-        .map((documentSnapshot) => documentSnapshot.data())
-        .toList());
+  /// Loads the milkSales list from firebase firestore.
+  Future<List<MilkSale>> getMilkSalesList() async {
+    return await milkSaleCollectionReference.get().then((querySnapshot) =>
+        querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
   }
 
-//add a client
-  Future<Client?> addClient(Client client) async {
-    return await _clientReference
-        .add(client)
+//add a milkSale
+  Future<MilkSale?> addMilkSale(MilkSale milkSale) async {
+    return await milkSaleCollectionReference
+        .add(milkSale)
         .then((docRef) => docRef.get())
         .then((docSnap) => docSnap.data());
   }
 
-//add a client
-  Future<void> deleteClient(Client client) async {
-    return await _clientReference.doc(client.id).delete();
+//add a milkSale
+  Future<void> deleteMilkSale(MilkSale milkSale) async {
+    return await milkSaleCollectionReference.doc(milkSale.getId).delete();
   }
 
-//update a client
-  Future<Client> editClient(Client client) async {
-    await _clientReference.doc(client.id).update(client.toFirestore());
-    return client;
+//update a milkSale
+  Future<MilkSale> editMilkSale(MilkSale milkSale) async {
+    await milkSaleCollectionReference
+        .doc(milkSale.getId)
+        .update(milkSale.toFirestore());
+    return milkSale;
   }
 }
