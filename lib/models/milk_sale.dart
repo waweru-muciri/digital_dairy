@@ -17,7 +17,7 @@ class MilkSale {
     _milkSaleDate = milkSaleDate;
   }
 
-  set setMilkSaleDetails(Client client) {
+  set setClient(Client client) {
     _client = client;
   }
 
@@ -41,7 +41,7 @@ class MilkSale {
     newMilkSale.setId = id;
     newMilkSale.setMilkSaleDate = (data?["milkSaleDate"] as Timestamp).toDate();
     newMilkSale.setMilkSaleAmount = data?["milkSaleAmount"];
-    newMilkSale.setMilkSaleDetails = data?["client"];
+    newMilkSale.setClient = data?["client"] as Client;
 
     return newMilkSale;
   }

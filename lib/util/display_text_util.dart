@@ -3,4 +3,6 @@ class DisplayTextUtil {
   static const expenses = "Expenses";
   static const incomes = "Incomes";
   static const incomeDetails = "Income Details";
+  static const milkConsumptionDetails = "Milk Consumption Details";
+  static const milkSaleDetails = "Milk Sale Details";
 }

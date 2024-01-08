@@ -2,7 +2,6 @@ import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +16,14 @@ class MilkSalesScreen extends StatefulWidget {
 }
 
 class MilkSalesScreenState extends State<MilkSalesScreen> {
-  late List<MilkSale> _expensesList;
+  late List<MilkSale> _milkSalesList;
   final TextEditingController _cowNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<MilkSaleController>().getMilkSales());
+    Future.microtask(
+        () => context.read<MilkSaleController>().getTodaysMilkSales());
   }
 
   @override
@@ -34,7 +34,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _expensesList = context.watch<MilkSaleController>().expensesList;
+    _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -58,26 +58,23 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                   ],
                 ),
                 const SizedBox(height: 15),
-                FilterInputField(
-                    onQueryChanged:
-                        context.read<MilkSaleController>().filterMilkSales),
               ],
             ),
           ),
           PaginatedDataTable(
-              header: const Text("MilkSales List"),
+              header: const Text("Milk Sales List"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               sortAscending: false,
               sortColumnIndex: 0,
               columns: const [
-                DataColumn(label: Text("Date")),
+                DataColumn(label: Text("Client Name")),
+                DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
                 DataColumn(label: Text("Amount (Ksh)"), numeric: true),
-                DataColumn(label: Text("Details")),
                 DataColumn(label: Text("Edit")),
                 DataColumn(label: Text("Delete")),
               ],
-              source: _DataSource(data: _expensesList, context: context))
+              source: _DataSource(data: _milkSalesList, context: context))
         ]),
       ),
     ));
@@ -98,9 +95,9 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(DateFormat("dd/MM/yyyy").format(item.getMilkSaleDate))),
+      DataCell(Text(item.getClient.clientName)),
       DataCell(Text('${item.getMilkSaleAmount}')),
-      DataCell(Text(item.getDetails)),
+      DataCell(Text('${item.getMilkSaleAmount * item.getClient.unitPrice}')),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editMilkSaleDetails",
               pathParameters: {"editMilkSaleId": '${item.getId}'})),

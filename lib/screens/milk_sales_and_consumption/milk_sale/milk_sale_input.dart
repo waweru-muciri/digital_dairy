@@ -1,3 +1,5 @@
+import 'package:DigitalDairy/controllers/client_controller.dart';
+import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
@@ -21,12 +23,13 @@ class MilkSaleInputScreen extends StatefulWidget {
 // Create a corresponding State class.
 // This class holds data related to the form.
 class MilkSaleFormState extends State<MilkSaleInputScreen> {
-  final TextEditingController _milkSaleDetailsController =
-      TextEditingController();
   late TextEditingController _milkSaleDateController;
   final TextEditingController _milkSaleAmountController =
       TextEditingController(text: "0");
+  final TextEditingController _clientController = TextEditingController();
+  late List<Client> _clientsList;
   late MilkSale _milkSale;
+  late Client? selectedClient;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -44,7 +47,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
 
   @override
   void dispose() {
-    _milkSaleDetailsController.dispose();
+    _clientController.dispose();
     _milkSaleDateController.dispose();
     _milkSaleAmountController.dispose();
     super.dispose();
@@ -52,14 +55,14 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _clientsList = context.watch<ClientController>().clientsList;
+
     String? editMilkSaleId = widget.editMilkSaleId;
     if (editMilkSaleId != null) {
       final clientsList = context.read<MilkSaleController>().milkSalesList;
       _milkSale = clientsList.firstWhere(
           (client) => client.getId == editMilkSaleId,
           orElse: () => MilkSale());
-      _milkSaleDetailsController.value =
-          TextEditingValue(text: _milkSale.getDetails);
       _milkSaleDateController.value = TextEditingValue(
           text: DateFormat("dd/MM/yyyy").format(_milkSale.getMilkSaleDate));
       _milkSaleAmountController.value =
@@ -132,28 +135,48 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(DisplayTextUtil.milkSaleDetails,
+                            child: Text("Client",
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _milkSaleDetailsController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Details cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Details',
-                                ),
-                              )),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: DropdownMenu<Client>(
+                              initialSelection: _clientsList.first,
+                              controller: _clientController,
+                              // requestFocusOnTap is enabled/disabled by platforms when it is null.
+                              // On mobile platforms, this is false by default. Setting this to true will
+                              // trigger focus request on the text field and virtual keyboard will appear
+                              // afterward. On desktop platforms however, this defaults to true.
+                              requestFocusOnTap: true,
+                              label: const Text('Client'),
+                              onSelected: (Client? client) {
+                                setState(() {
+                                  selectedClient = client;
+                                });
+                              },
+                              errorText: selectedClient == null
+                                  ? 'Client cannot be empty!'
+                                  : null,
+                              enableFilter: true,
+                              enableSearch: true,
+                              dropdownMenuEntries: _clientsList
+                                  .map<DropdownMenuEntry<Client>>(
+                                      (Client client) {
+                                return DropdownMenuEntry<Client>(
+                                  value: client,
+                                  label: client.clientName,
+                                  enabled: true,
+                                  style: MenuItemButton.styleFrom(
+                                    foregroundColor: Colors.amber,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("MilkSale Amount",
+                            child: Text("Milk Sale Quantity",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
@@ -162,16 +185,15 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                 controller: _milkSaleAmountController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'MilkSale Amount cannot be empty';
+                                    return 'Quantity cannot be empty';
                                   } else if (double.tryParse(value) == null) {
-                                    return "Amount must be a number";
+                                    return "Quantity must be a number";
                                   }
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  hintText: 'Amount (Ksh)',
                                 ),
                               ))
                         ],
@@ -182,15 +204,12 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          String milkSaleDetails =
-                              _milkSaleDetailsController.text.trim();
                           double milkSaleAmount = double.parse(
                               _milkSaleAmountController.text.trim());
-
                           _milkSale.setMilkSaleAmount = milkSaleAmount;
                           _milkSale.setMilkSaleDate = DateFormat("dd/MM/yyyy")
                               .parse(_milkSaleDateController.text);
-                          _milkSale.setMilkSaleDetails = milkSaleDetails;
+                          _milkSale.setClient = selectedClient!;
 
                           if (editMilkSaleId != null) {
                             //update the client in the db
@@ -216,7 +235,10 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                 .addMilkSale(_milkSale)
                                 .then((value) {
                               //reset the form
-                              _milkSaleDetailsController.clear();
+                              _clientController.clear();
+                              setState(() {
+                                selectedClient = null;
+                              });
                               _milkSaleAmountController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
