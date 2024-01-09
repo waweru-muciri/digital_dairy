@@ -2,7 +2,9 @@ import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/controllers/expense_controller.dart';
 import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
+import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:DigitalDairy/controllers/milk_production_controller.dart';
+import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/screens/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +36,8 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => MilkConsumerController()),
             ChangeNotifierProvider(create: (_) => ExpenseController()),
             ChangeNotifierProvider(create: (_) => IncomeController()),
+            ChangeNotifierProvider(create: (_) => MilkSaleController()),
+            ChangeNotifierProvider(create: (_) => MilkConsumptionController()),
           ],
           builder: (context, child) {
             return MaterialApp.router(
