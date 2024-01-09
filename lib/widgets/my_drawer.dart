@@ -52,29 +52,29 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(0);
-              context.goNamed("home");
+              context.goNamed("dashboard");
               // Then close the drawer
               Navigator.pop(context);
             },
           ),
           ListTile(
-            title: const Text('Daily Milk Production'),
-            selected: _selectedIndex == 1,
-            onTap: () {
-              // Update the state of the app
-              _onItemTapped(1);
-              context.goNamed("dailyMilkProduction");
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Herd'),
+            title: const Text('Herd Management'),
             selected: _selectedIndex == 2,
             onTap: () {
               // Update the state of the app
               _onItemTapped(2);
-              context.goNamed("cows");
+              context.goNamed("herd_management");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Milk Production'),
+            selected: _selectedIndex == 2,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(2);
+              context.goNamed("milk_production");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -84,8 +84,19 @@ class _MyDrawerState extends State<MyDrawer> {
             selected: _selectedIndex == 4,
             onTap: () {
               // Update the state of the app
-              _onItemTapped(4);
+              _onItemTapped(3);
               context.goNamed("milk_sales_consumption");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Health Management'),
+            selected: _selectedIndex == 4,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(4);
+              context.goNamed("health_management");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -95,7 +106,7 @@ class _MyDrawerState extends State<MyDrawer> {
             selected: _selectedIndex == 4,
             onTap: () {
               // Update the state of the app
-              _onItemTapped(4);
+              _onItemTapped(5);
               context.goNamed("clients_consumers");
               // Then close the drawer
               Navigator.pop(context);
@@ -106,7 +117,7 @@ class _MyDrawerState extends State<MyDrawer> {
             selected: _selectedIndex == 5,
             onTap: () {
               // Update the state of the app
-              _onItemTapped(5);
+              _onItemTapped(6);
               context.goNamed("expenses_incomes");
               // Then close the drawer
               Navigator.pop(context);

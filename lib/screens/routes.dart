@@ -1,13 +1,11 @@
-import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/screens/client_consumers/client_consumers_tabs.dart';
 import 'package:DigitalDairy/screens/client_consumers/clients/client_input.dart';
 import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
+import 'package:DigitalDairy/screens/herd_management/cows.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
-import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumptions.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
-import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sales.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
@@ -25,17 +23,31 @@ class AppRouter {
           name: "sign-in",
           path: '/sign-in',
           builder: (context, state) => const FirebaseSignInScreen()),
+      //dashboard route
       GoRoute(
-        name: "home",
+        name: "dashboard",
         path: HomeScreen.routeName,
         builder: (context, state) => const HomeScreen(),
       ),
+      //main milk production route
       GoRoute(
-        name: "dailyMilkProduction",
+        name: "milk_production",
         path: DailyMilkProductionScreen.routeName,
         builder: (context, state) => const DailyMilkProductionScreen(),
       ),
-
+      //main herd management route
+      GoRoute(
+        name: "herd_management",
+        path: CowsScreen.routeName,
+        builder: (context, state) => const CowsScreen(),
+      ),
+      //main clients & consumers tab view
+      GoRoute(
+        name: "clients_consumers",
+        path: '/clients_consumers',
+        builder: (context, state) => const ClientConsumersTabView(),
+      ),
+      //add & edit clients routes
       GoRoute(
         name: "addClientDetails",
         path: "/add_client_details",
@@ -48,6 +60,7 @@ class AppRouter {
           editClientId: state.pathParameters["editClientId"],
         ),
       ),
+      //add & edit milk consumers routes
       GoRoute(
         name: "addMilkConsumerDetails",
         path: "/add_consumer_details",
@@ -60,6 +73,13 @@ class AppRouter {
           editMilkConsumerId: state.pathParameters["editMilkConsumerId"],
         ),
       ),
+      //main expenses & income routes
+      GoRoute(
+        name: "expenses_incomes",
+        path: '/expenses_incomes',
+        builder: (context, state) => const ExpensesIncomesTabView(),
+      ),
+      //add & edit expenses routes
       GoRoute(
         name: "addExpenseDetails",
         path: "/add_expense_details",
@@ -72,6 +92,7 @@ class AppRouter {
           editExpenseId: state.pathParameters["editExpenseId"],
         ),
       ),
+      //add & edit income routes
       GoRoute(
         name: "addIncomeDetails",
         path: "/add_income_details",
@@ -84,21 +105,13 @@ class AppRouter {
           editIncomeId: state.pathParameters["editIncomeId"],
         ),
       ),
-      GoRoute(
-        name: "clients_consumers",
-        path: '/clients_consumers',
-        builder: (context, state) => const ClientConsumersTabView(),
-      ),
-      GoRoute(
-        name: "expenses_incomes",
-        path: '/expenses_incomes',
-        builder: (context, state) => const ExpensesIncomesTabView(),
-      ),
+      //main milk sales and consumption tab view
       GoRoute(
         name: "milk_sales_consumption",
         path: '/milk_sales_consumption',
         builder: (context, state) => const MilkSalesConsumptionTabView(),
       ),
+      //milk consumption routes
       GoRoute(
         name: "addMilkConsumptionDetails",
         path: MilkConsumptionInputScreen.addDetailsRouteName,
@@ -111,6 +124,7 @@ class AppRouter {
           editMilkConsumptionId: state.pathParameters["editMilkConsumptionId"],
         ),
       ),
+      //milk sales routes
       GoRoute(
         name: "addMilkSaleDetails",
         path: MilkSaleInputScreen.addDetailsRouteName,

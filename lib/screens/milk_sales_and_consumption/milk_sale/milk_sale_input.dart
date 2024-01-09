@@ -45,6 +45,8 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
   @override
   void initState() {
     super.initState();
+    //get the list of clients
+    Future.microtask(() => context.read<ClientController>().getClients());
   }
 
   @override
@@ -69,6 +71,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
           TextEditingValue(text: _milkSale.getMilkSaleDate);
       _milkSaleAmountController.value =
           TextEditingValue(text: _milkSale.getMilkSaleAmount.toString());
+      setState(() {
+        selectedClient = _milkSale.getClient;
+      });
     } else {
       _milkSale = MilkSale();
     } // Build a Form widget using the _formKey created above.
@@ -139,7 +144,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Client",
+                            child: Text("Select Client",
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
@@ -148,6 +153,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                             child: DropdownMenu<Client>(
                               controller: _clientController,
                               requestFocusOnTap: true,
+                              initialSelection: selectedClient,
                               expandedInsets: EdgeInsets.zero,
                               onSelected: (Client? client) {
                                 setState(() {

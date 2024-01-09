@@ -26,7 +26,9 @@ class MilkConsumptionInputScreen extends StatefulWidget {
 // Create a corresponding State class.
 // This class holds data related to the form.
 class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
-  late TextEditingController _milkConsumptionDateController;
+  final TextEditingController _milkConsumptionDateController =
+      TextEditingController(
+          text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
   final TextEditingController _milkConsumptionAmountController =
       TextEditingController(text: "0");
   final TextEditingController _milkConsumerController = TextEditingController();
@@ -44,8 +46,9 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
   @override
   void initState() {
     super.initState();
-    _milkConsumptionDateController = TextEditingController(
-        text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+    //get the list of milk consumers
+    Future.microtask(
+        () => context.read<MilkConsumerController>().getMilkConsumers());
   }
 
   @override
@@ -72,6 +75,9 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
           TextEditingValue(text: _milkConsumption.getMilkConsumptionDate);
       _milkConsumptionAmountController.value = TextEditingValue(
           text: _milkConsumption.getMilkConsumptionAmount.toString());
+      setState(() {
+        selectedMilkConsumer = _milkConsumption.getMilkConsumer;
+      });
     } else {
       _milkConsumption = MilkConsumption();
     } // Build a Form widget using the _formKey created above.
@@ -142,14 +148,14 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Consumer",
+                            child: Text("Select Consumer",
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<MilkConsumer>(
-                              initialSelection: _milkConsumersList.firstOrNull,
+                              initialSelection: selectedMilkConsumer,
                               controller: _milkConsumerController,
                               requestFocusOnTap: true,
                               label: const Text('Consumer'),

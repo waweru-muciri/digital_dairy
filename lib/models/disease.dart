@@ -1,17 +1,28 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Disease {
-  final String? id;
-  final String name;
-  final String details;
-  final DateTime dateDiscovered;
+  String? _id;
+  late String _name;
+  late String _details;
+  late String _dateDiscovered;
 
-  Disease({
-    this.id,
-    this.details = "",
-    required this.dateDiscovered,
-    required this.name,
-  });
+  String? get getId => _id;
+
+  set setId(String? value) => _id = value;
+
+  get getName => _name;
+
+  set setName(value) => _name = value;
+
+  get getDetails => _details;
+
+  set setDetails(value) => _details = value;
+
+  get getDateDiscovered => _dateDiscovered;
+
+  set setDateDiscovered(value) => _dateDiscovered = value;
+
+  Disease();
 
   factory Disease.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -19,20 +30,20 @@ class Disease {
   ) {
     final data = snapshot.data();
     final String id = snapshot.id;
-
-    return Disease(
-        name: data?["name"],
-        dateDiscovered: data?["dateDiscovered"],
-        details: data?["details"],
-        id: id);
+    final newDisease = Disease();
+    newDisease.setDateDiscovered = data?["dateDiscovered"];
+    newDisease.setName = data?["name"];
+    newDisease.setId = id;
+    newDisease.setDetails = data?["details"];
+    return newDisease;
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'details': details,
-      'name': name,
-      "dateDiscovered": dateDiscovered,
-      'id': id
+      'details': _details,
+      'name': _name,
+      "dateDiscovered": _dateDiscovered,
+      'id': _id
     };
   }
 }
