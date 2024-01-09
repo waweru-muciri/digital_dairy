@@ -170,6 +170,9 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _diseaseDetailsController,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                 ),

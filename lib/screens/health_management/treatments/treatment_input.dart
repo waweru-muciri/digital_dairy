@@ -161,7 +161,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Consumer",
+                            child: Text("Select Cow",
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
@@ -171,7 +171,6 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                               initialSelection: selectedCow,
                               controller: _cowController,
                               requestFocusOnTap: true,
-                              label: const Text('Consumer'),
                               expandedInsets: EdgeInsets.zero,
                               onSelected: (Cow? cow) {
                                 setState(() {
@@ -179,7 +178,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 });
                               },
                               errorText: selectedCow == null
-                                  ? 'Consumer cannot be empty!'
+                                  ? 'Cow cannot be empty!'
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
@@ -206,6 +205,9 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _treatmentDiagnosisController,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Diagnosis cannot be empty';
@@ -229,6 +231,9 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _treatmentDetailsController,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                 ),
