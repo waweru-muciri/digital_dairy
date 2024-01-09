@@ -52,7 +52,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(0);
-              context.goNamed("dashboard");
+              context.pushNamed("dashboard");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -63,7 +63,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(2);
-              context.goNamed("herd_management");
+              context.pushNamed("herd_management");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -74,7 +74,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(2);
-              context.goNamed("milk_production");
+              context.pushNamed("milk_production");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -85,7 +85,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(3);
-              context.goNamed("milk_sales_consumption");
+              context.pushNamed("milk_sales_consumption");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -96,7 +96,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(4);
-              context.goNamed("health_management");
+              context.pushNamed("health_management");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -107,7 +107,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(5);
-              context.goNamed("clients_consumers");
+              context.pushNamed("clients_consumers");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -118,7 +118,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(6);
-              context.goNamed("expenses_incomes");
+              context.pushNamed("expenses_incomes");
               // Then close the drawer
               Navigator.pop(context);
             },
