@@ -18,12 +18,20 @@ class MilkSalesScreen extends StatefulWidget {
 class MilkSalesScreenState extends State<MilkSalesScreen> {
   late List<MilkSale> _milkSalesList;
   final TextEditingController _clientNameController = TextEditingController();
+  final TextEditingController _milkSaleDateController = TextEditingController(
+      text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
 
   @override
   void initState() {
     super.initState();
     Future.microtask(
         () => context.read<MilkSaleController>().getTodaysMilkSales());
+    //start listening to changes on the date input field
+    _milkSaleDateController.addListener(() {
+      context
+          .read<MilkSaleController>()
+          .filterMilkSalesByDate(_milkSaleDateController.text);
+    });
   }
 
   @override
@@ -60,6 +68,30 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
             ],
           ),
         ),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: TextFormField(
+              controller: _milkSaleDateController,
+              readOnly: true,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: 'Date',
+                suffixIcon: IconButton(
+                    onPressed: () async {
+                      final DateTime pickedDateTime =
+                          await selectDate(context, DateTime.now());
+                      final filterDate =
+                          DateFormat("dd/MM/yyyy").format(pickedDateTime);
+                      _milkSaleDateController.text = filterDate;
+                    },
+                    icon: const Align(
+                        widthFactor: 1.0,
+                        heightFactor: 1.0,
+                        child: Icon(
+                          Icons.calendar_month,
+                        ))),
+              ),
+            )),
         PaginatedDataTable(
             header: const Text("Milk Sales List"),
             rowsPerPage: 20,

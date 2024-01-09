@@ -14,10 +14,9 @@ class MilkConsumptionService {
       );
 
   /// Loads the milkConsumptions list from firebase firestore.
-  Future<List<MilkConsumption>> getMilkConsumptionsList(
-      DateTime dateTime) async {
+  Future<List<MilkConsumption>> getMilkConsumptionsList(String dateTime) async {
     return await _milkConsumptionReference
-        .where("_milkConsumptionDate", isEqualTo: dateTime)
+        .where("milkConsumptionDate", isEqualTo: dateTime)
         .get()
         .then((querySnapshot) => querySnapshot.docs
             .map((documentSnapshot) => documentSnapshot.data())

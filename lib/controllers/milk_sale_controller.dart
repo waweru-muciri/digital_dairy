@@ -24,6 +24,7 @@ class MilkSaleController with ChangeNotifier {
         await _milkSaleService.getMilkSalesList(filterDate);
     _filteredMilkSaleList.clear();
     _filteredMilkSaleList.addAll(filteredList);
+    debugPrint("fetched items after filter => ${filteredList.length}");
     notifyListeners();
   }
 

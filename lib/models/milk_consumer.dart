@@ -14,6 +14,21 @@ class MilkConsumer {
       required this.firstName,
       required this.lastName});
 
+  factory MilkConsumer.fromAnotherFirestoreDoc(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data()?["consumer"];
+    final String id = snapshot.id;
+
+    return MilkConsumer(
+        firstName: data?["firstName"],
+        lastName: data?["lastName"],
+        location: data?["location"],
+        contacts: data?["contacts"],
+        id: id);
+  }
+
   factory MilkConsumer.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,

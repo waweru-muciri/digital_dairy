@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/services/milk_consumption_service.dart';
 import 'package:DigitalDairy/models/milk_consumption.dart';
+import 'package:intl/intl.dart';
 
 /// A class that many Widgets can interact with to read milkConsumption, update and delete
 /// milkConsumption details.
@@ -20,7 +21,7 @@ class MilkConsumptionController with ChangeNotifier {
   List<MilkConsumption> get milkConsumptionsList =>
       _filteredMilkConsumptionList;
 
-  void filterMilkConsumptionByDate(DateTime filterDate) async {
+  void filterMilkConsumptionByDate(String filterDate) async {
     List<MilkConsumption> filteredList =
         await _milkConsumptionService.getMilkConsumptionsList(filterDate);
     _filteredMilkConsumptionList.clear();
@@ -30,7 +31,8 @@ class MilkConsumptionController with ChangeNotifier {
 
   Future<void> getTodayMilkConsumptions() async {
     List<MilkConsumption> loadedList =
-        await _milkConsumptionService.getMilkConsumptionsList(DateTime.now());
+        await _milkConsumptionService.getMilkConsumptionsList(
+            DateFormat("dd/MM/yyyy").format(DateTime.now()));
     _milkConsumptionList.clear();
     _filteredMilkConsumptionList.clear();
     _milkConsumptionList.addAll(loadedList);

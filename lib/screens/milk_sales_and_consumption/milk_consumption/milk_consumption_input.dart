@@ -67,9 +67,8 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
       _milkConsumption = milkConsumersList.firstWhere(
           (milkConsumer) => milkConsumer.getId == editMilkConsumptionId,
           orElse: () => MilkConsumption());
-      _milkConsumptionDateController.value = TextEditingValue(
-          text: DateFormat("dd/MM/yyyy")
-              .format(_milkConsumption.getMilkConsumptionDate));
+      _milkConsumptionDateController.value =
+          TextEditingValue(text: _milkConsumption.getMilkConsumptionDate);
       _milkConsumptionAmountController.value = TextEditingValue(
           text: _milkConsumption.getMilkConsumptionAmount.toString());
     } else {
@@ -124,8 +123,9 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                             await selectDate(
                                                 context,
                                                 editMilkConsumptionId != null
-                                                    ? _milkConsumption
-                                                        .getMilkConsumptionDate
+                                                    ? DateFormat("dd/MM/yyyy")
+                                                        .parse(_milkConsumption
+                                                            .getMilkConsumptionDate)
                                                     : DateTime.now());
                                         _milkConsumptionDateController.text =
                                             DateFormat("dd/MM/yyyy")
@@ -170,9 +170,6 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                   value: milkConsumer,
                                   label: milkConsumer.milkConsumerName,
                                   enabled: true,
-                                  style: MenuItemButton.styleFrom(
-                                    foregroundColor: Colors.amber,
-                                  ),
                                 );
                               }).toList(),
                             ),
@@ -212,8 +209,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                           _milkConsumption.setMilkConsumptionAmount =
                               milkConsumptionAmount;
                           _milkConsumption.setMilkConsumptionDate =
-                              DateFormat("dd/MM/yyyy")
-                                  .parse(_milkConsumptionDateController.text);
+                              _milkConsumptionDateController.text;
                           _milkConsumption.setMilkConsumer =
                               selectedMilkConsumer!;
 

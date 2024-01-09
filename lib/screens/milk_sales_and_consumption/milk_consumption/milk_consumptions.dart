@@ -19,12 +19,21 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
   late List<MilkConsumption> _milkConsumptionList;
   final TextEditingController _milkConsumerNameController =
       TextEditingController();
+  final TextEditingController _milkConsumptionDateController =
+      TextEditingController(
+          text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() =>
         context.read<MilkConsumptionController>().getTodayMilkConsumptions());
+    //start listening to changes on the date input field
+    _milkConsumptionDateController.addListener(() {
+      context
+          .read<MilkConsumptionController>()
+          .filterMilkConsumptionByDate(_milkConsumptionDateController.text);
+    });
   }
 
   @override
@@ -63,6 +72,30 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
             ],
           ),
         ),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: TextFormField(
+              controller: _milkConsumptionDateController,
+              readOnly: true,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: 'Date',
+                suffixIcon: IconButton(
+                    onPressed: () async {
+                      final DateTime pickedDateTime =
+                          await selectDate(context, DateTime.now());
+                      final filterDate =
+                          DateFormat("dd/MM/yyyy").format(pickedDateTime);
+                      _milkConsumptionDateController.text = filterDate;
+                    },
+                    icon: const Align(
+                        widthFactor: 1.0,
+                        heightFactor: 1.0,
+                        child: Icon(
+                          Icons.calendar_month,
+                        ))),
+              ),
+            )),
         PaginatedDataTable(
             header: const Text("Milk Consumptions List"),
             rowsPerPage: 20,
