@@ -65,10 +65,10 @@ class MilkConsumerController with ChangeNotifier {
     final savedConsumer =
         await _milkConsumerService.editMilkConsumer(milkConsumer);
     //remove the old milkConsumer from the list
-    _milkConsumerList.removeWhere(
-        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
-    _filteredMilkConsumersList.removeWhere(
-        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
+    _milkConsumerList.removeWhere((milkConsumerToFilter) =>
+        milkConsumerToFilter.getId == milkConsumer.getId);
+    _filteredMilkConsumersList.removeWhere((milkConsumerToFilter) =>
+        milkConsumerToFilter.getId == milkConsumer.getId);
     //add the updated milkConsumer to the list
     _milkConsumerList.add(savedConsumer);
     _filteredMilkConsumersList.add(savedConsumer);
@@ -79,10 +79,10 @@ class MilkConsumerController with ChangeNotifier {
     //call to the service to delete the item in the database
     await _milkConsumerService.deleteMilkConsumer(milkConsumer);
     // remove the milkConsumer item to today's list of items
-    _milkConsumerList.removeWhere(
-        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
-    _filteredMilkConsumersList.removeWhere(
-        (milkConsumerToFilter) => milkConsumerToFilter.id == milkConsumer.id);
+    _milkConsumerList.removeWhere((milkConsumerToFilter) =>
+        milkConsumerToFilter.getId == milkConsumer.getId);
+    _filteredMilkConsumersList.removeWhere((milkConsumerToFilter) =>
+        milkConsumerToFilter.getId == milkConsumer.getId);
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();

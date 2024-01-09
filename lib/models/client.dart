@@ -10,29 +10,29 @@ class Client {
 
   Client();
 
-  get getId => _id;
+  String? get getId => _id;
 
   set setId(id) => _id = id;
 
-  get getFirstName => _firstName;
+  String get getFirstName => _firstName;
 
-  set setFirstName(firstName) => _firstName = firstName;
+  set setFirstName(String firstName) => _firstName = firstName;
 
-  get getLastName => _lastName;
+  String get getLastName => _lastName;
 
-  set setLastName(lastName) => _lastName = lastName;
+  set setLastName(String lastName) => _lastName = lastName;
 
-  get getContacts => _contacts;
+  String get getContacts => _contacts;
 
-  set setContacts(contacts) => _contacts = contacts;
+  set setContacts(String contacts) => _contacts = contacts;
 
-  get getLocation => _location;
+  String get getLocation => _location;
 
-  set setLocation(location) => _location = location;
+  set setLocation(String location) => _location = location;
 
-  get getUnitPrice => _unitPrice;
+  double get getUnitPrice => _unitPrice;
 
-  set setUnitPrice(unitPrice) => _unitPrice = unitPrice;
+  set setUnitPrice(double unitPrice) => _unitPrice = unitPrice;
 
   factory Client.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -42,12 +42,12 @@ class Client {
     final String id = snapshot.id;
 
     Client newClient = Client();
-    newClient._firstName = data?["firstName"];
-    newClient._lastName = data?["lastName"];
-    newClient._location = data?["location"];
-    newClient._unitPrice = data?["unitPrice"];
-    newClient._contacts = data?["contacts"];
-    newClient._id = id;
+    newClient.setFirstName = data?["firstName"];
+    newClient.setLastName = data?["lastName"];
+    newClient.setLocation = data?["location"];
+    newClient.setUnitPrice = data?["unitPrice"];
+    newClient.setContacts = data?["contacts"];
+    newClient.setId = id;
 
     return newClient;
   }
@@ -60,12 +60,12 @@ class Client {
     final String id = snapshot.id;
 
     Client newClient = Client();
-    newClient._firstName = data?["firstName"];
-    newClient._lastName = data?["lastName"];
-    newClient._location = data?["location"];
-    newClient._unitPrice = data?["unitPrice"];
-    newClient._contacts = data?["contacts"];
-    newClient._id = id;
+    newClient.setFirstName = data?["firstName"];
+    newClient.setLastName = data?["lastName"];
+    newClient.setLocation = data?["location"];
+    newClient.setUnitPrice = data?["unitPrice"];
+    newClient.setContacts = data?["contacts"];
+    newClient.setId = id;
 
     return newClient;
   }

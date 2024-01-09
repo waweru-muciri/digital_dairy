@@ -1,40 +1,43 @@
-import '../models/client.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/vaccination.dart';
+import "db_service.dart";
 
-/// A service that gets, updates and deletes client information.
+/// A service that gets, updates and deletes vaccination information.
 ///
-class ClientService {
+class VaccinationService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _clientReference =
-      FirebaseFirestore.instance.collection('clients').withConverter<Client>(
-            fromFirestore: Client.fromFirestore,
-            toFirestore: (Client client, _) => client.toFirestore(),
-          );
+  final _vaccinationReference = DbService.currentUserDbReference
+      .collection('vaccinations')
+      .withConverter<Vaccination>(
+        fromFirestore: Vaccination.fromFirestore,
+        toFirestore: (Vaccination vaccination, _) => vaccination.toFirestore(),
+      );
 
-  /// Loads the clients list from firebase firestore.
-  Future<List<Client>> getClientsList() async {
-    return await _clientReference.get().then((querySnapshot) => querySnapshot
-        .docs
-        .map((documentSnapshot) => documentSnapshot.data())
-        .toList());
+  /// Loads the vaccinations list from firebase firestore.
+  Future<List<Vaccination>> getVaccinationsList() async {
+    return await _vaccinationReference.get().then((querySnapshot) =>
+        querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
   }
 
-//add a client
-  Future<Client?> addClient(Client client) async {
-    return await _clientReference
-        .add(client)
+//add a vaccination
+  Future<Vaccination?> addVaccination(Vaccination vaccination) async {
+    return await _vaccinationReference
+        .add(vaccination)
         .then((docRef) => docRef.get())
         .then((docSnap) => docSnap.data());
   }
 
-//add a client
-  Future<void> deleteClient(Client client) async {
-    return await _clientReference.doc(client.id).delete();
+//add a vaccination
+  Future<void> deleteVaccination(Vaccination vaccination) async {
+    return await _vaccinationReference.doc(vaccination.getId).delete();
   }
 
-//update a client
-  Future<Client> editClient(Client client) async {
-    await _clientReference.doc(client.id).update(client.toFirestore());
-    return client;
+//update a vaccination
+  Future<Vaccination> editVaccination(Vaccination vaccination) async {
+    await _vaccinationReference
+        .doc(vaccination.getId)
+        .update(vaccination.toFirestore());
+    return vaccination;
   }
 }

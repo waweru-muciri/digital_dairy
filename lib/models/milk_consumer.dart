@@ -1,18 +1,32 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class MilkConsumer {
-  final String? id;
-  final String firstName;
-  final String lastName;
-  final String contacts;
-  final String location;
+  String? _id;
+  late String _firstName;
+  late String _lastName;
+  late String _contacts;
+  late String _location;
 
-  MilkConsumer(
-      {this.id,
-      this.location = "",
-      this.contacts = "",
-      required this.firstName,
-      required this.lastName});
+  String? get getId => _id;
+
+  set setId(String id) => _firstName = id;
+
+  String get getFirstName => _firstName;
+
+  set setFirstName(String firstName) => _firstName = firstName;
+
+  String get getLastName => _lastName;
+
+  set setLastName(String lastName) => _lastName = lastName;
+
+  String get getContacts => _contacts;
+
+  set setContacts(String contacts) => _contacts = contacts;
+
+  String get getLocation => _location;
+
+  set setLocation(String location) => _location = location;
+  MilkConsumer();
 
   factory MilkConsumer.fromAnotherFirestoreDoc(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -20,13 +34,14 @@ class MilkConsumer {
   ) {
     final data = snapshot.data()?["consumer"];
     final String id = snapshot.id;
+    final newMilkConsumer = MilkConsumer();
+    newMilkConsumer.setFirstName = data?["firstName"];
+    newMilkConsumer.setLastName = data?["lastName"];
+    newMilkConsumer.setLocation = data?["location"];
+    newMilkConsumer.setContacts = data?["contacts"];
+    newMilkConsumer.setId = id;
 
-    return MilkConsumer(
-        firstName: data?["firstName"],
-        lastName: data?["lastName"],
-        location: data?["location"],
-        contacts: data?["contacts"],
-        id: id);
+    return newMilkConsumer;
   }
 
   factory MilkConsumer.fromFirestore(
@@ -36,23 +51,25 @@ class MilkConsumer {
     final data = snapshot.data();
     final String id = snapshot.id;
 
-    return MilkConsumer(
-        firstName: data?["firstName"],
-        lastName: data?["lastName"],
-        contacts: data?["contacts"],
-        location: data?["location"],
-        id: id);
+    final newMilkConsumer = MilkConsumer();
+    newMilkConsumer.setFirstName = data?["firstName"];
+    newMilkConsumer.setLastName = data?["lastName"];
+    newMilkConsumer.setLocation = data?["location"];
+    newMilkConsumer.setContacts = data?["contacts"];
+    newMilkConsumer.setId = id;
+
+    return newMilkConsumer;
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'location': location,
-      'lastName': lastName,
-      'firstName': firstName,
-      'contacts': contacts,
-      "id": id,
+      'location': _location,
+      'lastName': _lastName,
+      'firstName': _firstName,
+      'contacts': _contacts,
+      "id": _id,
     };
   }
 
-  String get milkConsumerName => '$firstName  $lastName';
+  String get milkConsumerName => '$_firstName  $_lastName';
 }

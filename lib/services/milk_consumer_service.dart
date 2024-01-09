@@ -32,13 +32,13 @@ class MilkConsumerService {
 
 //add a milkConsumer
   Future<void> deleteMilkConsumer(MilkConsumer milkConsumer) async {
-    return await _milkConsumerReference.doc(milkConsumer.id).delete();
+    return await _milkConsumerReference.doc(milkConsumer.getId).delete();
   }
 
 //update a milkConsumer
   Future<MilkConsumer> editMilkConsumer(MilkConsumer milkConsumer) async {
     await _milkConsumerReference
-        .doc(milkConsumer.id)
+        .doc(milkConsumer.getId)
         .update(milkConsumer.toFirestore());
     return milkConsumer;
   }

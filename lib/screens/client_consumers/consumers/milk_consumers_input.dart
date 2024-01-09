@@ -23,7 +23,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _contactsController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
-  late MilkConsumer? milkConsumerDetails;
+  late MilkConsumer milkConsumerToSave;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -52,32 +52,30 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
     if (editMilkConsumerId != null) {
       final milkConsumersList =
           context.read<MilkConsumerController>().milkConsumersList;
-      final matchingMilkConsumersList =
-      milkConsumersList.where((client) => client.id == editMilkConsumerId);
-      if (matchingMilkConsumersList.isNotEmpty) {
-        milkConsumerDetails = matchingMilkConsumersList.first;
-        if (milkConsumerDetails != null) {
-          _firstNameController.value =
-              TextEditingValue(text: milkConsumerDetails!.firstName);
-          _lastNameController.value =
-              TextEditingValue(text: milkConsumerDetails!.lastName);
-          _contactsController.value =
-              TextEditingValue(text: milkConsumerDetails!.contacts);
-          _locationController.value =
-              TextEditingValue(text: milkConsumerDetails!.location);
-        }
-      }
+      milkConsumerToSave = milkConsumersList.firstWhere(
+          (client) => client.getId == editMilkConsumerId,
+          orElse: () => MilkConsumer());
+      _firstNameController.value =
+          TextEditingValue(text: milkConsumerToSave.getFirstName);
+      _lastNameController.value =
+          TextEditingValue(text: milkConsumerToSave.getLastName);
+      _contactsController.value =
+          TextEditingValue(text: milkConsumerToSave.getContacts);
+      _locationController.value =
+          TextEditingValue(text: milkConsumerToSave.getLocation);
+    } else {
+      milkConsumerToSave = MilkConsumer();
     }
     // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(
-        editMilkConsumerId != null
-        ? 'Edit Milk Consumer Details'
-            : 'Add Milk Consumer Details',
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+            editMilkConsumerId != null
+                ? 'Edit Milk Consumer Details'
+                : 'Add Milk Consumer Details',
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
         body: SingleChildScrollView(
             child: Form(
@@ -103,28 +101,37 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                           //   textAlign: TextAlign.left,
                           //   style: Theme.of(context).textTheme.titleLarge,
                           // ),),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "First Name",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: TextFormField(
-                            controller: _firstNameController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'First name cannot be empty';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "First Name",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                          ),),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "Last Name",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: TextFormField(
+                              controller: _firstNameController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'First name cannot be empty';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "Last Name",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
@@ -140,11 +147,14 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                   border: OutlineInputBorder(),
                                 ),
                               )),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "Contacts",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "Contacts",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
@@ -154,11 +164,14 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                   border: OutlineInputBorder(),
                                 ),
                               )),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "Location",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "Location",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
@@ -181,17 +194,16 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                           String contacts = _contactsController.text.trim();
                           String location = _locationController.text.trim();
 
-                          final MilkConsumer newMilkConsumer = MilkConsumer(
-                              firstName: firstName,
-                              lastName: lastName,
-                              contacts: contacts,
-                              location: location,
-                              id: editMilkConsumerId);
+                          milkConsumerToSave.setFirstName = firstName;
+                          milkConsumerToSave.setLastName = lastName;
+                          milkConsumerToSave.setContacts = contacts;
+                          milkConsumerToSave.setLocation = location;
+
                           if (editMilkConsumerId != null) {
                             //update the client in the db
                             await context
                                 .read<MilkConsumerController>()
-                                .editMilkConsumer(newMilkConsumer)
+                                .editMilkConsumer(milkConsumerToSave)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -208,7 +220,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                             //add the client in the db
                             await context
                                 .read<MilkConsumerController>()
-                                .addMilkConsumer(newMilkConsumer)
+                                .addMilkConsumer(milkConsumerToSave)
                                 .then((value) {
                               //reset the form
                               _firstNameController.clear();

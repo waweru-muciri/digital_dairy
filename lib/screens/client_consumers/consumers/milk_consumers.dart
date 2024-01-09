@@ -37,51 +37,51 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(mainAxisSize: MainAxisSize.max, children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        OutlinedButton.icon(
-                          icon: const Icon(Icons.add),
-                          onPressed: () =>
-                              context.pushNamed("addMilkConsumerDetails"),
-                          label: const Text("Add Consumer"),
-                        ),
-                      ],
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.add),
+                      onPressed: () =>
+                          context.pushNamed("addMilkConsumerDetails"),
+                      label: const Text("Add Consumer"),
                     ),
-                    const SizedBox(height: 15),
-                    FilterInputField(
-                        onQueryChanged: context
-                            .read<MilkConsumerController>()
-                            .filterMilkConsumers),
                   ],
                 ),
-              ),
-              PaginatedDataTable(
-                  header: const Text("Milk Consumers List"),
-                  rowsPerPage: 20,
-                  availableRowsPerPage: const [20, 30, 50],
-                  sortAscending: false,
-                  sortColumnIndex: 0,
-                  columns: const [
-                    DataColumn(label: Text("Name")),
-                    DataColumn(label: Text("Contacts")),
-                    DataColumn(label: Text("Location")),
-                    DataColumn(label: Text("Edit")),
-                    DataColumn(label: Text("Delete")),
-                  ],
-                  source: _DataSource(data: _clientsList, context: context))
-            ]),
+                const SizedBox(height: 15),
+                FilterInputField(
+                    onQueryChanged: context
+                        .read<MilkConsumerController>()
+                        .filterMilkConsumers),
+              ],
+            ),
           ),
-        ));
+          PaginatedDataTable(
+              header: const Text("Milk Consumers List"),
+              rowsPerPage: 20,
+              availableRowsPerPage: const [20, 30, 50],
+              sortAscending: false,
+              sortColumnIndex: 0,
+              columns: const [
+                DataColumn(label: Text("Name")),
+                DataColumn(label: Text("Contacts")),
+                DataColumn(label: Text("Location")),
+                DataColumn(label: Text("Edit")),
+                DataColumn(label: Text("Delete")),
+              ],
+              source: _DataSource(data: _clientsList, context: context))
+        ]),
+      ),
+    ));
   }
 }
 
@@ -100,11 +100,11 @@ class _DataSource extends DataTableSource {
 
     return DataRow(cells: [
       DataCell(Text(item.milkConsumerName)),
-      DataCell(Text(item.contacts)),
-      DataCell(Text(item.location)),
+      DataCell(Text(item.getContacts)),
+      DataCell(Text(item.getLocation)),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editMilkConsumerDetails",
-              pathParameters: {"editMilkConsumerId": '${item.id}'})),
+              pathParameters: {"editMilkConsumerId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
           return await context

@@ -1,10 +1,10 @@
+import 'package:DigitalDairy/screens/health_management/diseases/diseases.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumptions.dart';
-import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sales.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 
-class MilkSalesConsumptionTabView extends StatelessWidget {
-  const MilkSalesConsumptionTabView({super.key});
+class HealthManagementTabView extends StatelessWidget {
+  const HealthManagementTabView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +16,18 @@ class MilkSalesConsumptionTabView extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(
-                text: "Sales",
+                text: "Diseases",
               ),
               Tab(
                 text: "Consumption",
               ),
             ],
           ),
-          title: const Text('Milk Sales & Consumption'),
+          title: const Text('Health Management'),
         ),
         body: const TabBarView(
           children: [
-            MilkSalesScreen(),
+            DiseasesScreen(),
             MilkConsumptionsScreen(),
           ],
         ),

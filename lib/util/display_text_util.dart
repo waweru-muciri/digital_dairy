@@ -5,4 +5,6 @@ class DisplayTextUtil {
   static const incomeDetails = "Income Details";
   static const milkConsumptionDetails = "Milk Consumption Details";
   static const milkSaleDetails = "Milk Sale Details";
+  static const diseaseDetails = "Disease Details";
+  static const diseasesList = "Diseases List";
 }
