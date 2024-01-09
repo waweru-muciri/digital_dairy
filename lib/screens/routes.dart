@@ -107,12 +107,21 @@ class AppRouter {
       GoRoute(
         name: "editMilkConsumptionDetails",
         path: MilkConsumptionInputScreen.editDetailsRouteName,
-        builder: (context, state) => const MilkConsumptionInputScreen(),
+        builder: (context, state) => MilkConsumptionInputScreen(
+          editMilkConsumptionId: state.pathParameters["editMilkConsumptionId"],
+        ),
       ),
       GoRoute(
         name: "addMilkSaleDetails",
         path: MilkSaleInputScreen.addDetailsRouteName,
         builder: (context, state) => const MilkSaleInputScreen(),
+      ),
+      GoRoute(
+        name: "editMilkSaleDetails",
+        path: MilkSaleInputScreen.editDetailsRouteName,
+        builder: (context, state) => MilkSaleInputScreen(
+          editMilkSaleId: state.pathParameters["editMilkSaleId"],
+        ),
       ),
       //   GoRoute(
       //       name: "cows",
