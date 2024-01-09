@@ -25,7 +25,7 @@ class ClientFormState extends State<ClientInputScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _unitPriceController =
       TextEditingController(text: "0");
-  late Client? clientDetails;
+  late Client clientToSave;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -54,23 +54,21 @@ class ClientFormState extends State<ClientInputScreen> {
     String? editClientId = widget.editClientId;
     if (editClientId != null) {
       final clientsList = context.read<ClientController>().clientsList;
-      final matchingClientsList =
-          clientsList.where((client) => client.id == editClientId);
-      if (matchingClientsList.isNotEmpty) {
-        clientDetails = matchingClientsList.first;
-        if (clientDetails != null) {
-          _firstNameController.value =
-              TextEditingValue(text: clientDetails!.firstName);
-          _lastNameController.value =
-              TextEditingValue(text: clientDetails!.lastName);
-          _contactsController.value =
-              TextEditingValue(text: clientDetails!.contacts);
-          _locationController.value =
-              TextEditingValue(text: clientDetails!.location);
-          _unitPriceController.value =
-              TextEditingValue(text: clientDetails!.unitPrice.toString());
-        }
-      }
+      clientToSave = clientsList.firstWhere(
+          (client) => client.getId == editClientId,
+          orElse: () => Client());
+      _firstNameController.value =
+          TextEditingValue(text: clientToSave.getFirstName);
+      _lastNameController.value =
+          TextEditingValue(text: clientToSave.getLastName);
+      _contactsController.value =
+          TextEditingValue(text: clientToSave.getContacts);
+      _locationController.value =
+          TextEditingValue(text: clientToSave.getLocation);
+      _unitPriceController.value =
+          TextEditingValue(text: clientToSave.getUnitPrice.toString());
+    } else {
+      clientToSave = Client();
     }
     // Build a Form widget using the _formKey created above.
     return Scaffold(
@@ -96,32 +94,37 @@ class ClientFormState extends State<ClientInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "First Name",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 10, 0, 10),
-                            child:
-                          TextFormField(
-                            controller: _firstNameController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'First name cannot be empty';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "First Name",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                          )),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "Last Name",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          ),
+                          Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 10, 0, 10),
+                              child: TextFormField(
+                                controller: _firstNameController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'First name cannot be empty';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "Last Name",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
@@ -137,11 +140,14 @@ class ClientFormState extends State<ClientInputScreen> {
                                   border: OutlineInputBorder(),
                                 ),
                               )),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "Contacts",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "Contacts",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
@@ -151,11 +157,14 @@ class ClientFormState extends State<ClientInputScreen> {
                                   border: OutlineInputBorder(),
                                 ),
                               )),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "Location",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "Location",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
@@ -165,11 +174,14 @@ class ClientFormState extends State<ClientInputScreen> {
                                   border: OutlineInputBorder(),
                                 ),
                               )),
-                          Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: Text(
-                            "Unit Price",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "Unit Price",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
@@ -202,19 +214,18 @@ class ClientFormState extends State<ClientInputScreen> {
                           String location = _locationController.text.trim();
                           double unitPrice =
                               double.parse(_unitPriceController.text);
+                          //edit the properties as required
+                          clientToSave.setFirstName = firstName;
+                          clientToSave.setLastName = lastName;
+                          clientToSave.setContacts = contacts;
+                          clientToSave.setLocation = location;
+                          clientToSave.setUnitPrice = unitPrice;
 
-                          final Client newClient = Client(
-                              firstName: firstName,
-                              lastName: lastName,
-                              contacts: contacts,
-                              location: location,
-                              unitPrice: unitPrice,
-                              id: editClientId);
                           if (editClientId != null) {
                             //update the client in the db
                             await context
                                 .read<ClientController>()
-                                .editClient(newClient)
+                                .editClient(clientToSave)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -231,7 +242,7 @@ class ClientFormState extends State<ClientInputScreen> {
                             //add the client in the db
                             await context
                                 .read<ClientController>()
-                                .addClient(newClient)
+                                .addClient(clientToSave)
                                 .then((value) {
                               //reset the form
                               _firstNameController.clear();

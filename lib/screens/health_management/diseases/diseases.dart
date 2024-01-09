@@ -1,5 +1,5 @@
-import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
-import 'package:DigitalDairy/models/milk_sale.dart';
+import 'package:DigitalDairy/controllers/disease_controller.dart';
+import 'package:DigitalDairy/models/disease.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,42 +7,42 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class MilkSalesScreen extends StatefulWidget {
-  const MilkSalesScreen({super.key});
-  static const routeName = '/milk_sales';
+class DiseasesScreen extends StatefulWidget {
+  const DiseasesScreen({super.key});
+  static const routeName = '/diseases';
 
   @override
-  State<StatefulWidget> createState() => MilkSalesScreenState();
+  State<StatefulWidget> createState() => DiseasesScreenState();
 }
 
-class MilkSalesScreenState extends State<MilkSalesScreen> {
-  late List<MilkSale> _milkSalesList;
-  final TextEditingController _clientNameController = TextEditingController();
-  final TextEditingController _milkSaleDateController = TextEditingController(
+class DiseasesScreenState extends State<DiseasesScreen> {
+  late List<Disease> _diseaseList;
+  final TextEditingController _milkConsumerNameController =
+      TextEditingController();
+  final TextEditingController _diseaseDateController = TextEditingController(
       text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<MilkSaleController>().getTodaysMilkSales());
+    Future.microtask(() => context.read<DiseaseController>().getDiseases());
     //start listening to changes on the date input field
-    _milkSaleDateController.addListener(() {
+    _diseaseDateController.addListener(() {
       context
-          .read<MilkSaleController>()
-          .filterMilkSalesByDate(_milkSaleDateController.text);
+          .read<DiseaseController>()
+          .filterDiseases(_diseaseDateController.text);
     });
   }
 
   @override
   void dispose() {
-    _clientNameController.dispose();
+    _milkConsumerNameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
+    _diseaseList = context.watch<DiseaseController>().diseasesList;
 
     return SingleChildScrollView(
         child: Padding(
@@ -59,8 +59,8 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                 children: [
                   OutlinedButton.icon(
                     icon: const Icon(Icons.add),
-                    onPressed: () => context.pushNamed("addMilkSaleDetails"),
-                    label: const Text("Add Milk Sale"),
+                    onPressed: () => context.pushNamed("addDiseaseDetails"),
+                    label: const Text("Add Disease"),
                   ),
                 ],
               ),
@@ -71,7 +71,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
         Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
             child: TextFormField(
-              controller: _milkSaleDateController,
+              controller: _diseaseDateController,
               readOnly: true,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -82,7 +82,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                           await selectDate(context, DateTime.now());
                       final filterDate =
                           DateFormat("dd/MM/yyyy").format(pickedDateTime);
-                      _milkSaleDateController.text = filterDate;
+                      _diseaseDateController.text = filterDate;
                     },
                     icon: const Align(
                         widthFactor: 1.0,
@@ -93,26 +93,26 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
               ),
             )),
         PaginatedDataTable(
-            header: const Text("Milk Sales List"),
+            header: const Text("Diseases List"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,
             sortColumnIndex: 0,
             columns: const [
-              DataColumn(label: Text("Client Name")),
-              DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
-              DataColumn(label: Text("Amount (Ksh)"), numeric: true),
+              DataColumn(label: Text("Disease Name")),
+              DataColumn(label: Text("Date Discovered"), numeric: false),
+              DataColumn(label: Text("Details"), numeric: false),
               DataColumn(label: Text("Edit")),
               DataColumn(label: Text("Delete")),
             ],
-            source: _DataSource(data: _milkSalesList, context: context))
+            source: _DataSource(data: _diseaseList, context: context))
       ]),
     ));
   }
 }
 
 class _DataSource extends DataTableSource {
-  final List<MilkSale> data;
+  final List<Disease> data;
   final BuildContext context;
   _DataSource({required this.data, required this.context});
 
@@ -125,15 +125,15 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.getClient.clientName)),
-      DataCell(Text('${item.getMilkSaleAmount}')),
-      DataCell(Text('${item.getMilkSaleAmount * item.getClient.getUnitPrice}')),
+      DataCell(Text(item.getName)),
+      DataCell(Text(item.getDateDiscovered)),
+      DataCell(Text(item.getDetails)),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editMilkSaleDetails",
-              pathParameters: {"editMilkSaleId": '${item.getId}'})),
+          onTap: () => context.pushNamed("editDiseaseDetails",
+              pathParameters: {"editDiseaseId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
-          return await context.read<MilkSaleController>().deleteMilkSale(item);
+          return await context.read<DiseaseController>().deleteDisease(item);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

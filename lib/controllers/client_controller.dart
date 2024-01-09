@@ -61,8 +61,9 @@ class ClientController with ChangeNotifier {
     final savedClient = await _clientService.editClient(client);
     //remove the old client from the list
     _filteredClientList
-        .removeWhere((clientToFilter) => clientToFilter.id == client.id);
-    _clientList.removeWhere((clientToFilter) => clientToFilter.id == client.id);
+        .removeWhere((clientToFilter) => clientToFilter.getId == client.getId);
+    _clientList
+        .removeWhere((clientToFilter) => clientToFilter.getId == client.getId);
     //add the updated client to the list
     _clientList.add(savedClient);
     _filteredClientList.add(savedClient);
@@ -74,8 +75,9 @@ class ClientController with ChangeNotifier {
     await _clientService.deleteClient(client);
     // remove the client item to today's list of items
     _filteredClientList
-        .removeWhere((clientToFilter) => clientToFilter.id == client.id);
-    _clientList.removeWhere((clientToFilter) => clientToFilter.id == client.id);
+        .removeWhere((clientToFilter) => clientToFilter.getId == client.getId);
+    _clientList
+        .removeWhere((clientToFilter) => clientToFilter.getId == client.getId);
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();

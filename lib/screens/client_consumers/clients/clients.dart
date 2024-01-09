@@ -36,50 +36,49 @@ class ClientsScreenState extends State<ClientsScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(mainAxisSize: MainAxisSize.max, children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        OutlinedButton.icon(
-                          icon: const Icon(Icons.add),
-                          onPressed: () =>
-                              context.pushNamed("addClientDetails"),
-                          label: const Text("Add Client"),
-                        ),
-                      ],
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.add),
+                      onPressed: () => context.pushNamed("addClientDetails"),
+                      label: const Text("Add Client"),
                     ),
-                    const SizedBox(height: 15),
-                    FilterInputField(
-                        onQueryChanged:
-                            context.read<ClientController>().filterClients),
                   ],
                 ),
-              ),
-              PaginatedDataTable(
-                  header: const Text("Clients List"),
-                  rowsPerPage: 20,
-                  availableRowsPerPage: const [20, 30, 50],
-                  sortAscending: false,
-                  sortColumnIndex: 0,
-                  columns: const [
-                    DataColumn(label: Text("Name")),
-                    DataColumn(label: Text("Contacts")),
-                    DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
-                    DataColumn(label: Text("Edit")),
-                    DataColumn(label: Text("Delete")),
-                  ],
-                  source: _DataSource(data: _clientsList, context: context))
-            ]),
+                const SizedBox(height: 15),
+                FilterInputField(
+                    onQueryChanged:
+                        context.read<ClientController>().filterClients),
+              ],
+            ),
           ),
-        ));
+          PaginatedDataTable(
+              header: const Text("Clients List"),
+              rowsPerPage: 20,
+              availableRowsPerPage: const [20, 30, 50],
+              sortAscending: false,
+              sortColumnIndex: 0,
+              columns: const [
+                DataColumn(label: Text("Name")),
+                DataColumn(label: Text("Contacts")),
+                DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
+                DataColumn(label: Text("Edit")),
+                DataColumn(label: Text("Delete")),
+              ],
+              source: _DataSource(data: _clientsList, context: context))
+        ]),
+      ),
+    ));
   }
 }
 
@@ -98,11 +97,11 @@ class _DataSource extends DataTableSource {
 
     return DataRow(cells: [
       DataCell(Text(item.clientName)),
-      DataCell(Text(item.contacts)),
-      DataCell(Text('${item.unitPrice}')),
+      DataCell(Text(item.getContacts)),
+      DataCell(Text('${item.getUnitPrice}')),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editClientDetails",
-              pathParameters: {"editClientId": '${item.id}'})),
+              pathParameters: {"editClientId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
           return await context.read<ClientController>().deleteClient(item);

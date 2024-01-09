@@ -30,12 +30,12 @@ class ClientService {
 
 //add a client
   Future<void> deleteClient(Client client) async {
-    return await _clientReference.doc(client.id).delete();
+    return await _clientReference.doc(client.getId).delete();
   }
 
 //update a client
   Future<Client> editClient(Client client) async {
-    await _clientReference.doc(client.id).update(client.toFirestore());
+    await _clientReference.doc(client.getId).update(client.toFirestore());
     return client;
   }
 }
