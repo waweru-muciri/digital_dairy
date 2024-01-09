@@ -144,10 +144,6 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                             child: DropdownMenu<Client>(
                               initialSelection: _clientsList.first,
                               controller: _clientController,
-                              // requestFocusOnTap is enabled/disabled by platforms when it is null.
-                              // On mobile platforms, this is false by default. Setting this to true will
-                              // trigger focus request on the text field and virtual keyboard will appear
-                              // afterward. On desktop platforms however, this defaults to true.
                               requestFocusOnTap: true,
                               label: const Text('Client'),
                               onSelected: (Client? client) {
@@ -212,7 +208,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           _milkSale.setClient = selectedClient!;
 
                           if (editMilkSaleId != null) {
-                            //update the client in the db
+                            //update the milk sale details in the db
                             await context
                                 .read<MilkSaleController>()
                                 .editMilkSale(_milkSale)

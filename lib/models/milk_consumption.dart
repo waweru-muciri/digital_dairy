@@ -17,7 +17,7 @@ class MilkConsumption {
     _milkConsumptionDate = milkConsumptionDate;
   }
 
-  set setMilkConsumptionDetails(MilkConsumer milkConsumer) {
+  set setMilkConsumer(MilkConsumer milkConsumer) {
     _milkConsumer = milkConsumer;
   }
 
@@ -43,7 +43,7 @@ class MilkConsumption {
         (data?["milkConsumptionDate"] as Timestamp).toDate();
     newMilkConsumption.setMilkConsumptionAmount =
         data?["milkConsumptionAmount"];
-    newMilkConsumption.setMilkConsumptionDetails = data?["consumer"];
+    newMilkConsumption.setMilkConsumer = data?["consumer"];
 
     return newMilkConsumption;
   }
