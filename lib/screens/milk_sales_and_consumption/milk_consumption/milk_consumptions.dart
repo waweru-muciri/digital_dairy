@@ -38,48 +38,46 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
     _milkConsumptionList =
         context.watch<MilkConsumptionController>().milkConsumptionsList;
 
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(mainAxisSize: MainAxisSize.max, children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    OutlinedButton.icon(
-                      icon: const Icon(Icons.add),
-                      onPressed: () =>
-                          context.pushNamed("addMilkConsumptionDetails"),
-                      label: const Text("Add Milk Consumption"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-              ],
-            ),
+    return SingleChildScrollView(
+        child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(mainAxisSize: MainAxisSize.max, children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.add),
+                    onPressed: () =>
+                        context.pushNamed("addMilkConsumptionDetails"),
+                    label: const Text("Add Milk Consumption"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+            ],
           ),
-          PaginatedDataTable(
-              header: const Text("Milk Consumptions List"),
-              rowsPerPage: 20,
-              availableRowsPerPage: const [20, 30, 50],
-              sortAscending: false,
-              sortColumnIndex: 0,
-              columns: const [
-                DataColumn(label: Text("Consumer Name")),
-                DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
-                DataColumn(label: Text("Amount (Ksh)"), numeric: true),
-                DataColumn(label: Text("Edit")),
-                DataColumn(label: Text("Delete")),
-              ],
-              source: _DataSource(data: _milkConsumptionList, context: context))
-        ]),
-      ),
+        ),
+        PaginatedDataTable(
+            header: const Text("Milk Consumptions List"),
+            rowsPerPage: 20,
+            availableRowsPerPage: const [20, 30, 50],
+            sortAscending: false,
+            sortColumnIndex: 0,
+            columns: const [
+              DataColumn(label: Text("Consumer Name")),
+              DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
+              DataColumn(label: Text("Amount (Ksh)"), numeric: true),
+              DataColumn(label: Text("Edit")),
+              DataColumn(label: Text("Delete")),
+            ],
+            source: _DataSource(data: _milkConsumptionList, context: context))
+      ]),
     ));
   }
 }

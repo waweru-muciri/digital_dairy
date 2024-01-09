@@ -32,6 +32,22 @@ class Client {
         id: id);
   }
 
+  factory Client.fromAnotherFirestoreDoc(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data()?["client"];
+    final String id = snapshot.id;
+
+    return Client(
+        firstName: data?["firstName"],
+        lastName: data?["lastName"],
+        location: data?["location"],
+        unitPrice: data?["unitPrice"],
+        contacts: data?["contacts"],
+        id: id);
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'location': location,

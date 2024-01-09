@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/services/milk_sale_service.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
+import 'package:intl/intl.dart';
 
 /// A class that many Widgets can interact with to read milkSale, update and delete
 /// milkSale details.
@@ -18,7 +19,7 @@ class MilkSaleController with ChangeNotifier {
   // Allow Widgets to read the filtered milkSales list.
   List<MilkSale> get milkSalesList => _filteredMilkSaleList;
 
-  void filterMilkSalesByDate(DateTime filterDate) async {
+  void filterMilkSalesByDate(String filterDate) async {
     List<MilkSale> filteredList =
         await _milkSaleService.getMilkSalesList(filterDate);
     _filteredMilkSaleList.clear();
@@ -27,8 +28,8 @@ class MilkSaleController with ChangeNotifier {
   }
 
   Future<void> getTodaysMilkSales() async {
-    List<MilkSale> loadedList =
-        await _milkSaleService.getMilkSalesList(DateTime.now());
+    List<MilkSale> loadedList = await _milkSaleService
+        .getMilkSalesList(DateFormat("dd/MM/yyyy").format(DateTime.now()));
     _milkSaleList.clear();
     _filteredMilkSaleList.clear();
     _milkSaleList.addAll(loadedList);

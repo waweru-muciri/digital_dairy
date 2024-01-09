@@ -4,7 +4,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 class MilkSale {
   String? _id;
   late double _milkSaleAmount;
-  late DateTime _milkSaleDate;
+  late String _milkSaleDate;
   late Client _client;
 
   MilkSale();
@@ -13,7 +13,7 @@ class MilkSale {
     _id = id;
   }
 
-  set setMilkSaleDate(DateTime milkSaleDate) {
+  set setMilkSaleDate(String milkSaleDate) {
     _milkSaleDate = milkSaleDate;
   }
 
@@ -26,7 +26,7 @@ class MilkSale {
   }
 
   double get getMilkSaleAmount => _milkSaleAmount;
-  DateTime get getMilkSaleDate => _milkSaleDate;
+  String get getMilkSaleDate => _milkSaleDate;
   String? get getId => _id;
   Client get getClient => _client;
 
@@ -39,16 +39,16 @@ class MilkSale {
 
     MilkSale newMilkSale = MilkSale();
     newMilkSale.setId = id;
-    newMilkSale.setMilkSaleDate = (data?["milkSaleDate"] as Timestamp).toDate();
+    newMilkSale.setMilkSaleDate = (data?["milkSaleDate"]);
     newMilkSale.setMilkSaleAmount = data?["milkSaleAmount"];
-    newMilkSale.setClient = data?["client"] as Client;
+    newMilkSale.setClient = Client.fromAnotherFirestoreDoc(snapshot, options);
 
     return newMilkSale;
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'client': _client,
+      'client': _client.toFirestore(),
       'milkSaleDate': _milkSaleDate,
       'milkSaleAmount': _milkSaleAmount,
       'id': _id,

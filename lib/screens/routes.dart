@@ -8,6 +8,7 @@ import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumptions.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sales.dart';
+import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart';
@@ -94,27 +95,22 @@ class AppRouter {
         builder: (context, state) => const ExpensesIncomesTabView(),
       ),
       GoRoute(
-        name: "milk_consumptions",
-        path: MilkConsumptionsScreen.routeName,
-        builder: (context, state) => const MilkConsumptionsScreen(),
+        name: "milk_sales_consumption",
+        path: '/milk_sales_consumption',
+        builder: (context, state) => const MilkSalesConsumptionTabView(),
       ),
       GoRoute(
-        name: "addMilkConsumption",
+        name: "addMilkConsumptionDetails",
         path: MilkConsumptionInputScreen.addDetailsRouteName,
         builder: (context, state) => const MilkConsumptionInputScreen(),
       ),
       GoRoute(
-        name: "editMilkConsumption",
+        name: "editMilkConsumptionDetails",
         path: MilkConsumptionInputScreen.editDetailsRouteName,
         builder: (context, state) => const MilkConsumptionInputScreen(),
       ),
       GoRoute(
-        name: "milk_sales",
-        path: MilkSalesScreen.routeName,
-        builder: (context, state) => const MilkSalesScreen(),
-      ),
-      GoRoute(
-        name: "addMilkSale",
+        name: "addMilkSaleDetails",
         path: MilkSaleInputScreen.addDetailsRouteName,
         builder: (context, state) => const MilkSaleInputScreen(),
       ),

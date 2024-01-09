@@ -14,7 +14,7 @@ class MilkSaleInputScreen extends StatefulWidget {
   const MilkSaleInputScreen({super.key, this.editMilkSaleId});
   final String? editMilkSaleId;
   static const String addDetailsRouteName = "/add_milk_sale_details";
-  static const String editDetailsRouteName = "edit_milk_sale_details";
+  static const String editDetailsRouteName = "/edit_milk_sale_details";
 
   @override
   MilkSaleFormState createState() {
@@ -25,13 +25,14 @@ class MilkSaleInputScreen extends StatefulWidget {
 // Create a corresponding State class.
 // This class holds data related to the form.
 class MilkSaleFormState extends State<MilkSaleInputScreen> {
-  late TextEditingController _milkSaleDateController;
+  final TextEditingController _milkSaleDateController = TextEditingController(
+      text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
   final TextEditingController _milkSaleAmountController =
       TextEditingController(text: "0");
   final TextEditingController _clientController = TextEditingController();
   late List<Client> _clientsList;
   late MilkSale _milkSale;
-  late Client? selectedClient;
+  Client? selectedClient;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -43,8 +44,6 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
   @override
   void initState() {
     super.initState();
-    _milkSaleDateController = TextEditingController(
-        text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
   }
 
   @override
@@ -65,8 +64,8 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
       _milkSale = clientsList.firstWhere(
           (client) => client.getId == editMilkSaleId,
           orElse: () => MilkSale());
-      _milkSaleDateController.value = TextEditingValue(
-          text: DateFormat("dd/MM/yyyy").format(_milkSale.getMilkSaleDate));
+      _milkSaleDateController.value =
+          TextEditingValue(text: _milkSale.getMilkSaleDate);
       _milkSaleAmountController.value =
           TextEditingValue(text: _milkSale.getMilkSaleAmount.toString());
     } else {
@@ -121,7 +120,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                             await selectDate(
                                                 context,
                                                 editMilkSaleId != null
-                                                    ? _milkSale.getMilkSaleDate
+                                                    ? DateFormat("dd/MM/yyyy")
+                                                        .parse(_milkSale
+                                                            .getMilkSaleDate)
                                                     : DateTime.now());
                                         _milkSaleDateController.text =
                                             DateFormat("dd/MM/yyyy")
@@ -144,10 +145,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Client>(
-                              initialSelection: _clientsList.first,
                               controller: _clientController,
                               requestFocusOnTap: true,
-                              label: const Text('Client'),
+                              expandedInsets: EdgeInsets.zero,
                               onSelected: (Client? client) {
                                 setState(() {
                                   selectedClient = client;
@@ -165,9 +165,6 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                   value: client,
                                   label: client.clientName,
                                   enabled: true,
-                                  style: MenuItemButton.styleFrom(
-                                    foregroundColor: Colors.amber,
-                                  ),
                                 );
                               }).toList(),
                             ),
@@ -205,8 +202,8 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           double milkSaleAmount = double.parse(
                               _milkSaleAmountController.text.trim());
                           _milkSale.setMilkSaleAmount = milkSaleAmount;
-                          _milkSale.setMilkSaleDate = DateFormat("dd/MM/yyyy")
-                              .parse(_milkSaleDateController.text);
+                          _milkSale.setMilkSaleDate =
+                              _milkSaleDateController.text;
                           _milkSale.setClient = selectedClient!;
 
                           if (editMilkSaleId != null) {
@@ -243,8 +240,10 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "MilkSale added successfully."));
+                                      "Milk sale added successfully."));
                             }).catchError((error) {
+                              debugPrint("Error saving milk sale!");
+                              debugPrint(error);
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(

@@ -80,6 +80,17 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
+            title: const Text('Milk Sales & Consumption'),
+            selected: _selectedIndex == 4,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(4);
+              context.goNamed("milk_sales_consumption");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
             title: const Text('Clients & Consumers'),
             selected: _selectedIndex == 4,
             onTap: () {

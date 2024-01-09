@@ -14,7 +14,7 @@ class MilkConsumptionInputScreen extends StatefulWidget {
   const MilkConsumptionInputScreen({super.key, this.editMilkConsumptionId});
   final String? editMilkConsumptionId;
   static const String addDetailsRouteName = "/add_milk_consumption_details";
-  static const String editDetailsRouteName = "edit_milk_consumption_details";
+  static const String editDetailsRouteName = "/edit_milk_consumption_details";
 
   @override
   MilkConsumptionFormState createState() {
@@ -31,7 +31,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
   final TextEditingController _milkConsumerController = TextEditingController();
   late List<MilkConsumer> _milkConsumersList;
   late MilkConsumption _milkConsumption;
-  late MilkConsumer? selectedMilkConsumer;
+  MilkConsumer? selectedMilkConsumer;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -148,10 +148,11 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<MilkConsumer>(
-                              initialSelection: _milkConsumersList.first,
+                              initialSelection: _milkConsumersList.firstOrNull,
                               controller: _milkConsumerController,
                               requestFocusOnTap: true,
                               label: const Text('Consumer'),
+                              expandedInsets: EdgeInsets.zero,
                               onSelected: (MilkConsumer? milkConsumer) {
                                 setState(() {
                                   selectedMilkConsumer = milkConsumer;

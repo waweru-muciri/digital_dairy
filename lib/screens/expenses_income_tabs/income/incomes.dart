@@ -2,7 +2,6 @@ import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:DigitalDairy/models/income.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,50 +38,49 @@ class IncomeScreenState extends State<IncomesScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(mainAxisSize: MainAxisSize.max, children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        OutlinedButton.icon(
-                          icon: const Icon(Icons.add),
-                          onPressed: () =>
-                              context.pushNamed("addIncomeDetails"),
-                          label: const Text("Add Income"),
-                        ),
-                      ],
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.add),
+                      onPressed: () => context.pushNamed("addIncomeDetails"),
+                      label: const Text("Add Income"),
                     ),
-                    const SizedBox(height: 15),
-                    FilterInputField(
-                        onQueryChanged:
-                            context.read<IncomeController>().filterIncomes),
                   ],
                 ),
-              ),
-              PaginatedDataTable(
-                  header: const Text("Incomes List"),
-                  rowsPerPage: 20,
-                  availableRowsPerPage: const [20, 30, 50],
-                  sortAscending: false,
-                  sortColumnIndex: 0,
-                  columns: const [
-                    DataColumn(label: Text("Date")),
-                    DataColumn(label: Text("Amount (Ksh)"), numeric: true),
-                    DataColumn(label: Text("Details")),
-                    DataColumn(label: Text("Edit")),
-                    DataColumn(label: Text("Delete")),
-                  ],
-                  source: _DataSource(data: _expensesList, context: context))
-            ]),
+                const SizedBox(height: 15),
+                FilterInputField(
+                    onQueryChanged:
+                        context.read<IncomeController>().filterIncomes),
+              ],
+            ),
           ),
-        ));
+          PaginatedDataTable(
+              header: const Text("Incomes List"),
+              rowsPerPage: 20,
+              availableRowsPerPage: const [20, 30, 50],
+              sortAscending: false,
+              sortColumnIndex: 0,
+              columns: const [
+                DataColumn(label: Text("Date")),
+                DataColumn(label: Text("Amount (Ksh)"), numeric: true),
+                DataColumn(label: Text("Details")),
+                DataColumn(label: Text("Edit")),
+                DataColumn(label: Text("Delete")),
+              ],
+              source: _DataSource(data: _expensesList, context: context))
+        ]),
+      ),
+    ));
   }
 }
 
