@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/screens/health_management/diseases/diseases.dart';
-import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumptions.dart';
+import 'package:DigitalDairy/screens/health_management/treatments/treatments.dart';
+import 'package:DigitalDairy/screens/health_management/vaccinations/vaccinations.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,10 @@ class HealthManagementTabView extends StatelessWidget {
                 text: "Diseases",
               ),
               Tab(
-                text: "Consumption",
+                text: "Vaccinations",
+              ),
+              Tab(
+                text: "Treatments",
               ),
             ],
           ),
@@ -28,7 +32,8 @@ class HealthManagementTabView extends StatelessWidget {
         body: const TabBarView(
           children: [
             DiseasesScreen(),
-            MilkConsumptionsScreen(),
+            VaccinationsScreen(),
+            TreatmentsScreen(),
           ],
         ),
       ),

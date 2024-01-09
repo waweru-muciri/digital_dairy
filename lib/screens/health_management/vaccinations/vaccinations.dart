@@ -1,5 +1,5 @@
-import 'package:DigitalDairy/controllers/treatment_controller.dart';
-import 'package:DigitalDairy/models/treatment.dart';
+import 'package:DigitalDairy/controllers/vaccination_controller.dart';
+import 'package:DigitalDairy/models/vaccination.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
@@ -7,23 +7,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class TreatmentsScreen extends StatefulWidget {
-  const TreatmentsScreen({super.key});
-  static const routeName = '/treatments';
+class VaccinationsScreen extends StatefulWidget {
+  const VaccinationsScreen({super.key});
+  static const routeName = '/vaccinations';
 
   @override
-  State<StatefulWidget> createState() => TreatmentsScreenState();
+  State<StatefulWidget> createState() => VaccinationsScreenState();
 }
 
-class TreatmentsScreenState extends State<TreatmentsScreen> {
-  late List<Treatment> _treatmentList;
+class VaccinationsScreenState extends State<VaccinationsScreen> {
+  late List<Vaccination> _vaccinationList;
   final TextEditingController _milkConsumerNameController =
       TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<TreatmentController>().getTreatments());
+    Future.microtask(
+        () => context.read<VaccinationController>().getVaccinations());
     //start listening to changes on the date input field
   }
 
@@ -35,7 +36,7 @@ class TreatmentsScreenState extends State<TreatmentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _treatmentList = context.watch<TreatmentController>().treatmentsList;
+    _vaccinationList = context.watch<VaccinationController>().vaccinationsList;
 
     return SingleChildScrollView(
         child: Padding(
@@ -52,20 +53,20 @@ class TreatmentsScreenState extends State<TreatmentsScreen> {
                 children: [
                   OutlinedButton.icon(
                     icon: const Icon(Icons.add),
-                    onPressed: () => context.pushNamed("addTreatmentDetails"),
-                    label: const Text("Add Treatment"),
+                    onPressed: () => context.pushNamed("addVaccinationDetails"),
+                    label: const Text("Add Vaccination"),
                   ),
                 ],
               ),
               const SizedBox(height: 15),
               FilterInputField(
                   onQueryChanged:
-                      context.read<TreatmentController>().filterTreatments),
+                      context.read<VaccinationController>().filterVaccinations),
             ],
           ),
         ),
         PaginatedDataTable(
-            header: const Text(DisplayTextUtil.treatmentsList),
+            header: const Text(DisplayTextUtil.vaccinationsList),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,
@@ -73,20 +74,20 @@ class TreatmentsScreenState extends State<TreatmentsScreen> {
             columns: const [
               DataColumn(label: Text("Date"), numeric: false),
               DataColumn(label: Text("Cow"), numeric: false),
-              DataColumn(label: Text("Treatment"), numeric: false),
+              DataColumn(label: Text("Vaccination"), numeric: false),
               DataColumn(label: Text("Vet Name"), numeric: false),
               DataColumn(label: Text("Cost"), numeric: true),
               DataColumn(label: Text("Edit")),
               DataColumn(label: Text("Delete")),
             ],
-            source: _DataSource(data: _treatmentList, context: context))
+            source: _DataSource(data: _vaccinationList, context: context))
       ]),
     ));
   }
 }
 
 class _DataSource extends DataTableSource {
-  final List<Treatment> data;
+  final List<Vaccination> data;
   final BuildContext context;
   _DataSource({required this.data, required this.context});
 
@@ -99,19 +100,19 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.getTreatmentDate)),
+      DataCell(Text(item.getVaccinationDate)),
       DataCell(Text(item.getCow.cowName)),
-      DataCell(Text(item.getTreatment)),
+      DataCell(Text(item.getVaccination)),
       DataCell(Text(item.getVetName)),
-      DataCell(Text('${item.getTreatmentCost}')),
+      DataCell(Text('${item.getVaccinationCost}')),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editTreatmentDetails",
-              pathParameters: {"editTreatmentId": '${item.getId}'})),
+          onTap: () => context.pushNamed("editVaccinationDetails",
+              pathParameters: {"editVaccinationId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
           return await context
-              .read<TreatmentController>()
-              .deleteTreatment(item);
+              .read<VaccinationController>()
+              .deleteVaccination(item);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

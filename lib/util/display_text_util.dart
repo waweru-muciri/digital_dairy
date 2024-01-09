@@ -7,4 +7,8 @@ class DisplayTextUtil {
   static const milkSaleDetails = "Milk Sale Details";
   static const diseaseDetails = "Disease Details";
   static const diseasesList = "Diseases List";
+  static const treatmentsList = "Treatments List";
+  static const vaccinationsList = "Vaccinations List";
+  static const treatmentDetails = "Treatment Details";
+  static const vaccinationDetails = "Vaccinations List";
 }

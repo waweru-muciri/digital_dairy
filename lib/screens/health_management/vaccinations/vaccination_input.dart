@@ -1,49 +1,47 @@
 import 'package:DigitalDairy/controllers/cow_controller.dart';
 import 'package:DigitalDairy/models/cow.dart';
-import 'package:DigitalDairy/models/treatment.dart';
+import 'package:DigitalDairy/models/vaccination.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:DigitalDairy/controllers/treatment_controller.dart';
+import 'package:DigitalDairy/controllers/vaccination_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 // Create a Form widget.
-class TreatmentInputScreen extends StatefulWidget {
-  const TreatmentInputScreen({super.key, this.editTreatmentId});
-  final String? editTreatmentId;
+class VaccinationInputScreen extends StatefulWidget {
+  const VaccinationInputScreen({super.key, this.editVaccinationId});
+  final String? editVaccinationId;
 
   @override
-  TreatmentFormState createState() {
-    return TreatmentFormState();
+  VaccinationFormState createState() {
+    return VaccinationFormState();
   }
 }
 
 // Create a corresponding State class.
 // This class holds data related to the form.
-class TreatmentFormState extends State<TreatmentInputScreen> {
-  final TextEditingController _treatmentDiagnosisController =
+class VaccinationFormState extends State<VaccinationInputScreen> {
+  final TextEditingController _vaccinationDateController =
       TextEditingController();
-  final TextEditingController _treatmentDateController =
+  final TextEditingController _vaccinationDetailsController =
       TextEditingController();
-  final TextEditingController _treatmentDetailsController =
+  final TextEditingController _vaccinationVetNameController =
       TextEditingController();
-  final TextEditingController _treatmentVetNameController =
-      TextEditingController();
-  final TextEditingController _treatmentCostController =
+  final TextEditingController _vaccinationCostController =
       TextEditingController();
   final TextEditingController _cowController = TextEditingController();
   Cow? selectedCow;
   late List<Cow> _cowsList;
 
-  late Treatment treatmentToSave;
+  late Vaccination vaccinationToSave;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
   // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<TreatmentFormState>.
+  // not a GlobalKey<VaccinationFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -55,11 +53,10 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
 
   @override
   void dispose() {
-    _treatmentDiagnosisController.dispose();
-    _treatmentCostController.dispose();
-    _treatmentDateController.dispose();
-    _treatmentVetNameController.dispose();
-    _treatmentDetailsController.dispose();
+    _vaccinationCostController.dispose();
+    _vaccinationDateController.dispose();
+    _vaccinationVetNameController.dispose();
+    _vaccinationDetailsController.dispose();
     super.dispose();
   }
 
@@ -67,35 +64,34 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
   Widget build(BuildContext context) {
     _cowsList = context.watch<CowController>().cowsList;
 
-    String? editTreatmentId = widget.editTreatmentId;
-    if (editTreatmentId != null) {
-      final treatmentsList = context.read<TreatmentController>().treatmentsList;
-      treatmentToSave = treatmentsList.firstWhere(
-          (treatmentToSave) => treatmentToSave.getId == editTreatmentId,
-          orElse: () => Treatment());
-      _treatmentDiagnosisController.value =
-          TextEditingValue(text: treatmentToSave.getDiagnosis);
-      _treatmentDateController.value =
-          TextEditingValue(text: treatmentToSave.getTreatmentDate);
-      _treatmentDetailsController.value =
-          TextEditingValue(text: treatmentToSave.getTreatment);
-      _treatmentCostController.value =
-          TextEditingValue(text: '${treatmentToSave.getTreatmentCost}');
-      _treatmentVetNameController.value =
-          TextEditingValue(text: treatmentToSave.getVetName);
+    String? editVaccinationId = widget.editVaccinationId;
+    if (editVaccinationId != null) {
+      final vaccinationsList =
+          context.read<VaccinationController>().vaccinationsList;
+      vaccinationToSave = vaccinationsList.firstWhere(
+          (vaccinationToSave) => vaccinationToSave.getId == editVaccinationId,
+          orElse: () => Vaccination());
+      _vaccinationDateController.value =
+          TextEditingValue(text: vaccinationToSave.getVaccinationDate);
+      _vaccinationDetailsController.value =
+          TextEditingValue(text: vaccinationToSave.getVaccination);
+      _vaccinationCostController.value =
+          TextEditingValue(text: '${vaccinationToSave.getVaccinationCost}');
+      _vaccinationVetNameController.value =
+          TextEditingValue(text: vaccinationToSave.getVetName);
       setState(() {
-        selectedCow = treatmentToSave.getCow;
+        selectedCow = vaccinationToSave.getCow;
       });
     } else {
-      treatmentToSave = Treatment();
+      vaccinationToSave = Vaccination();
     }
     // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editTreatmentId != null
-                ? 'Edit ${DisplayTextUtil.treatmentDetails}'
-                : 'Add ${DisplayTextUtil.treatmentDetails}',
+            editVaccinationId != null
+                ? 'Edit ${DisplayTextUtil.vaccinationDetails}'
+                : 'Add ${DisplayTextUtil.vaccinationDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -117,13 +113,13 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Treatment Date",
+                            child: Text("Vaccination Date",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _treatmentDateController,
+                                controller: _vaccinationDateController,
                                 readOnly: true,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -139,12 +135,12 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                         final DateTime pickedDateTime =
                                             await selectDate(
                                                 context,
-                                                editTreatmentId != null
+                                                editVaccinationId != null
                                                     ? DateFormat("dd/MM/yyyy")
-                                                        .parse(treatmentToSave
-                                                            .getTreatmentDate)
+                                                        .parse(vaccinationToSave
+                                                            .getVaccinationDate)
                                                     : DateTime.now());
-                                        _treatmentDateController.text =
+                                        _vaccinationDateController.text =
                                             DateFormat("dd/MM/yyyy")
                                                 .format(pickedDateTime);
                                       },
@@ -158,7 +154,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Consumer",
+                            child: Text("Select Cow",
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
@@ -193,7 +189,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text(
-                              "Diagnosis",
+                              "Vaccination Details",
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
@@ -202,30 +198,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _treatmentDiagnosisController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Diagnosis cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Treatment Details",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _treatmentDetailsController,
+                                controller: _vaccinationDetailsController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                 ),
@@ -242,7 +215,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _treatmentVetNameController,
+                                controller: _vaccinationVetNameController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                 ),
@@ -258,7 +231,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _treatmentCostController,
+                                controller: _vaccinationCostController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Quantity cannot be empty';
@@ -280,36 +253,34 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          String diagnosis =
-                              _treatmentDiagnosisController.text.trim();
-                          String treatmentDate =
-                              _treatmentDateController.text.trim();
-                          String treatmentDetails =
-                              _treatmentDetailsController.text.trim();
+                          String vaccinationDate =
+                              _vaccinationDateController.text.trim();
+                          String vaccinationDetails =
+                              _vaccinationDetailsController.text.trim();
                           String vetName =
-                              _treatmentVetNameController.text.trim();
-                          String treatmentCost =
-                              _treatmentCostController.text.trim();
+                              _vaccinationVetNameController.text.trim();
+                          String vaccinationCost =
+                              _vaccinationCostController.text.trim();
                           //edit the properties that require editing
-                          treatmentToSave.setTreatment = treatmentDetails;
-                          treatmentToSave.setTreatmentDate = treatmentDate;
-                          treatmentToSave.setDiagnosis = diagnosis;
-                          treatmentToSave.setTreatmentCost =
-                              double.parse(treatmentCost);
-                          treatmentToSave.setVetName = vetName;
-                          treatmentToSave.setCow = selectedCow!;
+                          vaccinationToSave.setVaccination = vaccinationDetails;
+                          vaccinationToSave.setVaccinationDate =
+                              vaccinationDate;
+                          vaccinationToSave.setCow = selectedCow!;
+                          vaccinationToSave.setVaccinationCost =
+                              double.parse(vaccinationCost);
+                          vaccinationToSave.setVetName = vetName;
 
-                          if (editTreatmentId != null) {
-                            //update the treatment  in the db
+                          if (editVaccinationId != null) {
+                            //update the vaccination  in the db
                             await context
-                                .read<TreatmentController>()
-                                .editTreatment(treatmentToSave)
+                                .read<VaccinationController>()
+                                .editVaccination(vaccinationToSave)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Treatment edited successfully!"));
+                                      "Vaccination edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -317,23 +288,22 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the treatmentToSave in the db
+                            //add the vaccinationToSave in the db
                             await context
-                                .read<TreatmentController>()
-                                .addTreatment(treatmentToSave)
+                                .read<VaccinationController>()
+                                .addVaccination(vaccinationToSave)
                                 .then((value) {
                               //reset the form
-                              _treatmentDiagnosisController.clear();
-                              _treatmentDateController.clear();
-                              _treatmentDetailsController.clear();
-                              _treatmentVetNameController.clear();
-                              _treatmentCostController.clear();
+                              _vaccinationDateController.clear();
+                              _vaccinationDetailsController.clear();
+                              _vaccinationVetNameController.clear();
+                              _vaccinationCostController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Treatment added successfully."));
+                                      "Vaccination added successfully."));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();

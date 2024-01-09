@@ -14,7 +14,7 @@ class Treatment {
 
   set setVetName(String vetName) => _vetName = vetName;
 
-  get getCow => _cow;
+  Cow get getCow => _cow;
 
   set setCow(Cow cow) => _cow = cow;
 
