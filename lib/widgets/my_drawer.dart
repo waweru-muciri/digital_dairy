@@ -96,7 +96,7 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(4);
-              context.pushNamed("health_management");
+              context.pushNamed("healthManagement");
               // Then close the drawer
               Navigator.pop(context);
             },

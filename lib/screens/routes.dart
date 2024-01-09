@@ -4,6 +4,7 @@ import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers_i
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
+import 'package:DigitalDairy/screens/health_management/health_management_tabbed_view.dart';
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cows.dart';
@@ -44,6 +45,12 @@ class AppRouter {
         path: CowsScreen.routeName,
         builder: (context, state) => const CowsScreen(),
       ),
+      //main health management route
+      GoRoute(
+        name: "healthManagement",
+        path: "/health_management",
+        builder: (context, state) => const HealthManagementTabView(),
+      ),
       //add & edit diseases routes
       GoRoute(
         name: "addDiseaseDetails",
@@ -77,7 +84,7 @@ class AppRouter {
         builder: (context, state) => const TreatmentInputScreen(),
       ),
       GoRoute(
-        name: "editVaccinationDetails",
+        name: "editTreatmentDetails",
         path: TreatmentInputScreen.editDetailsRouteName,
         builder: (context, state) => TreatmentInputScreen(
           editTreatmentId: state.pathParameters["editTreatmentId"],
