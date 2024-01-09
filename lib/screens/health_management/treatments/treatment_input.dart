@@ -13,6 +13,9 @@ import 'package:provider/provider.dart';
 class TreatmentInputScreen extends StatefulWidget {
   const TreatmentInputScreen({super.key, this.editTreatmentId});
   final String? editTreatmentId;
+  static const String addDetailsRouteName = "/add_treatment_details";
+  static const String editDetailsRouteName =
+      "/edit_treatment_details/:editTreatmentId";
 
   @override
   TreatmentFormState createState() {

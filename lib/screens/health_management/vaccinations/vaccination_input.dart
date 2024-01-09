@@ -13,6 +13,9 @@ import 'package:provider/provider.dart';
 class VaccinationInputScreen extends StatefulWidget {
   const VaccinationInputScreen({super.key, this.editVaccinationId});
   final String? editVaccinationId;
+  static const String addDetailsRouteName = "/add_vaccination_details";
+  static const String editDetailsRouteName =
+      "/edit_vaccination_details/:editVaccinationId";
 
   @override
   VaccinationFormState createState() {

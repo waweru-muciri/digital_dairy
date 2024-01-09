@@ -3,6 +3,9 @@ import 'package:DigitalDairy/screens/client_consumers/clients/client_input.dart'
 import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
+import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
+import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
+import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cows.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
@@ -40,6 +43,45 @@ class AppRouter {
         name: "herd_management",
         path: CowsScreen.routeName,
         builder: (context, state) => const CowsScreen(),
+      ),
+      //add & edit diseases routes
+      GoRoute(
+        name: "addDiseaseDetails",
+        path: DiseaseInputScreen.addDetailsRouteName,
+        builder: (context, state) => const DiseaseInputScreen(),
+      ),
+      GoRoute(
+        name: "editDiseaseDetails",
+        path: DiseaseInputScreen.editDetailsRouteName,
+        builder: (context, state) => DiseaseInputScreen(
+          editDiseaseId: state.pathParameters["editDiseaseId"],
+        ),
+      ),
+      //add & edit vaccination routes
+      GoRoute(
+        name: "addVaccinationDetails",
+        path: VaccinationInputScreen.addDetailsRouteName,
+        builder: (context, state) => const VaccinationInputScreen(),
+      ),
+      GoRoute(
+        name: "editVaccinationDetails",
+        path: VaccinationInputScreen.editDetailsRouteName,
+        builder: (context, state) => VaccinationInputScreen(
+          editVaccinationId: state.pathParameters["editVaccinationId"],
+        ),
+      ),
+      //add & edit treatment routes
+      GoRoute(
+        name: "addTreatmentDetails",
+        path: TreatmentInputScreen.addDetailsRouteName,
+        builder: (context, state) => const TreatmentInputScreen(),
+      ),
+      GoRoute(
+        name: "editVaccinationDetails",
+        path: TreatmentInputScreen.editDetailsRouteName,
+        builder: (context, state) => TreatmentInputScreen(
+          editTreatmentId: state.pathParameters["editTreatmentId"],
+        ),
       ),
       //main clients & consumers tab view
       GoRoute(
