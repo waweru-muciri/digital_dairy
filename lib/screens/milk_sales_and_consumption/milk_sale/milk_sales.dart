@@ -17,7 +17,7 @@ class MilkSalesScreen extends StatefulWidget {
 
 class MilkSalesScreenState extends State<MilkSalesScreen> {
   late List<MilkSale> _milkSalesList;
-  final TextEditingController _cowNameController = TextEditingController();
+  final TextEditingController _clientNameController = TextEditingController();
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
 
   @override
   void dispose() {
-    _cowNameController.dispose();
+    _clientNameController.dispose();
     super.dispose();
   }
 
