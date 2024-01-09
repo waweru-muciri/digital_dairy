@@ -1,8 +1,13 @@
+import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/screens/client_consumers/client_consumers_tabs.dart';
 import 'package:DigitalDairy/screens/client_consumers/clients/client_input.dart';
 import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
+import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
+import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumptions.dart';
+import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
+import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sales.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart';
@@ -81,14 +86,37 @@ class AppRouter {
       GoRoute(
         name: "clients_consumers",
         path: '/clients_consumers',
-        builder: (context, state) => const ClientConsumersTabView(
-        ),
+        builder: (context, state) => const ClientConsumersTabView(),
       ),
       GoRoute(
         name: "expenses_incomes",
         path: '/expenses_incomes',
-        builder: (context, state) => const ExpensesIncomesTabView(
-        ),
+        builder: (context, state) => const ExpensesIncomesTabView(),
+      ),
+      GoRoute(
+        name: "milk_consumptions",
+        path: MilkConsumptionsScreen.routeName,
+        builder: (context, state) => const MilkConsumptionsScreen(),
+      ),
+      GoRoute(
+        name: "addMilkConsumption",
+        path: MilkConsumptionInputScreen.addDetailsRouteName,
+        builder: (context, state) => const MilkConsumptionInputScreen(),
+      ),
+      GoRoute(
+        name: "editMilkConsumption",
+        path: MilkConsumptionInputScreen.editDetailsRouteName,
+        builder: (context, state) => const MilkConsumptionInputScreen(),
+      ),
+      GoRoute(
+        name: "milk_sales",
+        path: MilkSalesScreen.routeName,
+        builder: (context, state) => const MilkSalesScreen(),
+      ),
+      GoRoute(
+        name: "addMilkSale",
+        path: MilkSaleInputScreen.addDetailsRouteName,
+        builder: (context, state) => const MilkSaleInputScreen(),
       ),
       //   GoRoute(
       //       name: "cows",
@@ -134,7 +162,7 @@ class FirebaseSignInScreen extends StatelessWidget {
             _ => null,
           };
           Navigator.pushReplacementNamed(context, '/home');
-          print('Firebase logged in user, $user.toString()');
+          debugPrint('Firebase logged in user, $user.toString()');
         }),
       ],
       subtitleBuilder: (context, action) {

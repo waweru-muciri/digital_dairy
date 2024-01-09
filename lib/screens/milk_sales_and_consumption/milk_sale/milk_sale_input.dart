@@ -13,6 +13,8 @@ import 'package:intl/intl.dart';
 class MilkSaleInputScreen extends StatefulWidget {
   const MilkSaleInputScreen({super.key, this.editMilkSaleId});
   final String? editMilkSaleId;
+  static const String addDetailsRouteName = "/add_milk_sale_details";
+  static const String editDetailsRouteName = "edit_milk_sale_details";
 
   @override
   MilkSaleFormState createState() {

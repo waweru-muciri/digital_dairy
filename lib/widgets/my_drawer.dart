@@ -32,7 +32,7 @@ class _MyDrawerState extends State<MyDrawer> {
               currentAccountPicture: CircleAvatar(
                 backgroundImage: AssetImage("assets/images/flutter_logo.png"),
               ),
-              currentAccountPictureSize: Size(100, 100),
+              currentAccountPictureSize: Size(100, 200),
               accountName: Text(
                 'Brian Muciri',
                 style: TextStyle(fontSize: 24.0),
