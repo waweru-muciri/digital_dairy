@@ -32,15 +32,15 @@ class _MyDrawerState extends State<MyDrawer> {
               currentAccountPicture: CircleAvatar(
                 backgroundImage: AssetImage("assets/images/flutter_logo.png"),
               ),
-              currentAccountPictureSize: Size(100, 200),
+              currentAccountPictureSize: Size.square(100),
               accountName: Text(
                 'Brian Muciri',
-                style: TextStyle(fontSize: 24.0),
+                style: TextStyle(fontSize: 18.0),
               ),
               accountEmail: Text('jane.doe@example.com'),
-              decoration: BoxDecoration(
-                color: Colors.black87,
-              ),
+              // decoration: BoxDecoration(
+              //   color: Color.fromARGB(221, 149, 140, 140),
+              // ),
             ),
           ),
           ListTile(

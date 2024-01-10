@@ -7,15 +7,15 @@ class Cow {
 
   Cow();
 
-  get getId => _id;
+  String? get getId => _id;
 
-  set setId(id) => _id = id;
+  set setId(String id) => _id = id;
 
-  get getName => _name;
+  String get getName => _name;
 
-  set setName(firstName) => _name = firstName;
+  set setName(String firstName) => _name = firstName;
 
-  get getCowId => _cowId;
+  String get getCowId => _cowId;
 
   set setCowId(String cowId) => _cowId = cowId;
 
@@ -57,5 +57,5 @@ class Cow {
     };
   }
 
-  String get cowName => '$_name $_cowId';
+  String get cowName => '$_cowId $_name ';
 }

@@ -17,7 +17,6 @@ class MilkSalesScreen extends StatefulWidget {
 
 class MilkSalesScreenState extends State<MilkSalesScreen> {
   late List<MilkSale> _milkSalesList;
-  final TextEditingController _clientNameController = TextEditingController();
   final TextEditingController _milkSaleDateController = TextEditingController(
       text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
 
@@ -36,7 +35,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
 
   @override
   void dispose() {
-    _clientNameController.dispose();
+    _milkSaleDateController.dispose();
     super.dispose();
   }
 
@@ -78,11 +77,13 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                 hintText: 'Date',
                 suffixIcon: IconButton(
                     onPressed: () async {
-                      final DateTime pickedDateTime =
-                          await selectDate(context, DateTime.now());
-                      final filterDate =
+                      final DateTime pickedDateTime = await selectDate(
+                          context,
+                          DateFormat("dd/MM/yyyy")
+                              .parse(_milkSaleDateController.text));
+                      final filterDateString =
                           DateFormat("dd/MM/yyyy").format(pickedDateTime);
-                      _milkSaleDateController.text = filterDate;
+                      _milkSaleDateController.text = filterDateString;
                     },
                     icon: const Align(
                         widthFactor: 1.0,

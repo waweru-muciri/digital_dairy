@@ -7,9 +7,11 @@ class MilkConsumer {
   late String _contacts;
   late String _location;
 
+  MilkConsumer();
+
   String? get getId => _id;
 
-  set setId(String id) => _firstName = id;
+  set setId(String id) => _id = id;
 
   String get getFirstName => _firstName;
 
@@ -26,7 +28,6 @@ class MilkConsumer {
   String get getLocation => _location;
 
   set setLocation(String location) => _location = location;
-  MilkConsumer();
 
   factory MilkConsumer.fromAnotherFirestoreDoc(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

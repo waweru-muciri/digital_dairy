@@ -1,18 +1,40 @@
+import "package:DigitalDairy/models/cow.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class DailyMilkProduction {
-  late String? id;
-  late final double amQuantity;
-  late final double noonQuantity;
-  late final double pmQuantity;
-  late final DateTime milkProductionDate;
+  String? _id;
+  late double _amQuantity = 0;
+  late double _noonQuantity = 0;
+  late double _pmQuantity = 0;
+  late String _milkProductionDate;
+  late Cow _cow;
 
-  DailyMilkProduction(
-      {this.amQuantity = 0,
-      this.noonQuantity = 0,
-      this.pmQuantity = 0,
-      this.id,
-      required this.milkProductionDate});
+  DailyMilkProduction();
+
+  Cow get getCow => _cow;
+
+  set setCow(Cow cow) => _cow = cow;
+
+  String? get getId => _id;
+
+  set setId(String id) => _id = id;
+
+  double get getAmQuantity => _amQuantity;
+
+  set setAmQuantity(double amQuantity) => _amQuantity = amQuantity;
+
+  double get getNoonQuantity => _noonQuantity;
+
+  set setNoonQuantity(double noonQuantity) => _noonQuantity = noonQuantity;
+
+  double get getPmQuantity => _pmQuantity;
+
+  set setPmQuantity(double pmQuantity) => _pmQuantity = pmQuantity;
+
+  String get getMilkProductionDate => _milkProductionDate;
+
+  set setMilkProductionDate(String milkProductionDate) =>
+      _milkProductionDate = milkProductionDate;
 
   factory DailyMilkProduction.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -21,24 +43,24 @@ class DailyMilkProduction {
     final data = snapshot.data();
     final String id = snapshot.id;
 
-    return DailyMilkProduction(
-        milkProductionDate: data?["milkProductionDate"],
-        amQuantity: data?["amQuantity"],
-        noonQuantity: data?["noonQuantity"],
-        pmQuantity: data?["pmQuantity"],
-        id: id);
+    final newMilkProduction = DailyMilkProduction();
+    newMilkProduction.setMilkProductionDate = data?["milk_production_date"];
+    newMilkProduction.setAmQuantity = data?["am_quantity"];
+    newMilkProduction.setNoonQuantity = data?["noon_quantity"];
+    newMilkProduction.setPmQuantity = data?["pm_quantity"];
+    newMilkProduction.setId = id;
+    return newMilkProduction;
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'milkProductionDate': milkProductionDate,
-      'amQuantity': amQuantity,
-      'noonQuantity': noonQuantity,
-      'pmQuantity': pmQuantity,
-      //only return the id if it is not null
-      if (id != null) "id": id,
+      'milk_production_date': _milkProductionDate,
+      'am_quantity': _amQuantity,
+      'noon_quantity': _noonQuantity,
+      'pm_quantity': _pmQuantity,
+      "id": _id,
     };
   }
 
-  double get totalMilkQuantity => (amQuantity + noonQuantity + pmQuantity);
+  double get totalMilkQuantity => (_amQuantity + _noonQuantity + _pmQuantity);
 }

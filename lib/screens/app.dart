@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (_) => MilkProductionController()),
+            ChangeNotifierProvider(
+                create: (_) => DailyMilkProductionController()),
             ChangeNotifierProvider(create: (_) => ExpenseController()),
             ChangeNotifierProvider(create: (_) => IncomeController()),
             ChangeNotifierProvider(create: (_) => ClientController()),
