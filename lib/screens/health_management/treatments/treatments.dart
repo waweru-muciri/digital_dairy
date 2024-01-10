@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class TreatmentsScreen extends StatefulWidget {
   const TreatmentsScreen({super.key});
-  static const routeName = '/treatments';
+  static const routePath = '/treatments';
 
   @override
   State<StatefulWidget> createState() => TreatmentsScreenState();

@@ -12,8 +12,8 @@ import 'package:intl/intl.dart';
 class MilkConsumptionInputScreen extends StatefulWidget {
   const MilkConsumptionInputScreen({super.key, this.editMilkConsumptionId});
   final String? editMilkConsumptionId;
-  static const String addDetailsRouteName = "/add_milk_consumption_details";
-  static const String editDetailsRouteName =
+  static const String addDetailsRoutePath = "/add_milk_consumption_details";
+  static const String editDetailsRoutePath =
       "/edit_milk_consumption_details/:editMilkConsumptionId";
 
   @override

@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class IncomesScreen extends StatefulWidget {
   const IncomesScreen({super.key});
-  static const routeName = '/incomes';
+  static const routePath = '/incomes';
 
   @override
   State<StatefulWidget> createState() => IncomeScreenState();

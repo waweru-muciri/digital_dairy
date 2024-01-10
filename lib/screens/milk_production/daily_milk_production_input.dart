@@ -13,9 +13,9 @@ class DailyMilkProductionInputScreen extends StatefulWidget {
   const DailyMilkProductionInputScreen(
       {super.key, this.editDailyMilkProductionId});
   final String? editDailyMilkProductionId;
-  static const String addDetailsRouteName =
+  static const String addDetailsRoutePath =
       "/add_daily_milk_production_details";
-  static const String editDetailsRouteName =
+  static const String editDetailsRoutePath =
       "/edit_daily_milk_production_details/:editDailyMilkProductionId";
 
   @override

@@ -5,7 +5,7 @@ class CowDetailsScreen extends StatefulWidget {
   const CowDetailsScreen({super.key, this.cowId});
 
   final String? cowId;
-  static const routeName = 'details/:cowId';
+  static const routePath = 'details/:cowId';
 
   @override
   State<StatefulWidget> createState() => CowDetailsScreenState();

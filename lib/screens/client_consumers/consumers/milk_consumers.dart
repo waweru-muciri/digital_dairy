@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class MilkConsumersScreen extends StatefulWidget {
   const MilkConsumersScreen({super.key});
-  static const routeName = '/milk_consumers';
+  static const routePath = '/milk_consumers';
 
   @override
   State<StatefulWidget> createState() => MilkConsumersScreenState();

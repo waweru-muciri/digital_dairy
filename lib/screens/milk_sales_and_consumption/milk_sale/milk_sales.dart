@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class MilkSalesScreen extends StatefulWidget {
   const MilkSalesScreen({super.key});
-  static const routeName = '/milk_sales';
+  static const routePath = '/milk_sales';
 
   @override
   State<StatefulWidget> createState() => MilkSalesScreenState();

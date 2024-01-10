@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class DiseasesScreen extends StatefulWidget {
   const DiseasesScreen({super.key});
-  static const routeName = '/diseases';
+  static const routePath = '/diseases';
 
   @override
   State<StatefulWidget> createState() => DiseasesScreenState();

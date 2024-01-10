@@ -10,8 +10,8 @@ import 'package:provider/provider.dart';
 class DiseaseInputScreen extends StatefulWidget {
   const DiseaseInputScreen({super.key, this.editDiseaseId});
   final String? editDiseaseId;
-  static const String addDetailsRouteName = "/add_disease_details";
-  static const String editDetailsRouteName =
+  static const String addDetailsRoutePath = "/add_disease_details";
+  static const String editDetailsRoutePath =
       "/edit_disease_details/:editDiseaseId";
 
   @override

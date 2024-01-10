@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class VaccinationsScreen extends StatefulWidget {
   const VaccinationsScreen({super.key});
-  static const routeName = '/vaccinations';
+  static const routePath = '/vaccinations';
 
   @override
   State<StatefulWidget> createState() => VaccinationsScreenState();

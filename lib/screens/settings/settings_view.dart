@@ -8,7 +8,7 @@ import 'package:DigitalDairy/controllers/settings_controller.dart';
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key, required this.controller});
 
-  static const routeName = '/settings';
+  static const routePath = '/settings';
 
   final SettingsController controller;
 

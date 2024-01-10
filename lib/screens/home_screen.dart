@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  static const routeName = '/daily_milk_production';
+  static const routePath = '/daily_milk_production';
 
   @override
   State<StatefulWidget> createState() => HomeScreenState();

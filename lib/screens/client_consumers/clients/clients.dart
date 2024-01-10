@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class ClientsScreen extends StatefulWidget {
   const ClientsScreen({super.key});
-  static const routeName = '/clients';
+  static const routePath = '/clients';
 
   @override
   State<StatefulWidget> createState() => ClientsScreenState();

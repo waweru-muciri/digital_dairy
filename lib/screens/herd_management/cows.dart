@@ -8,7 +8,7 @@ class CowsScreen extends StatefulWidget {
   final String? activeStatus;
   final String? cowType;
 
-  static const routeName = '/herd_management';
+  static const routePath = '/herd_management';
 
   @override
   State<StatefulWidget> createState() => CowsScreenState();

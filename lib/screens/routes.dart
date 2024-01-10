@@ -8,6 +8,8 @@ import 'package:DigitalDairy/screens/health_management/health_management_tabbed_
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cows.dart';
+import 'package:DigitalDairy/screens/milk_production/daily_milk_production_input.dart';
+import 'package:DigitalDairy/screens/milk_production/milk_production_tabbed_view.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
@@ -30,19 +32,34 @@ class AppRouter {
       //dashboard route
       GoRoute(
         name: "dashboard",
-        path: HomeScreen.routeName,
+        path: HomeScreen.routePath,
         builder: (context, state) => const HomeScreen(),
       ),
       //main milk production route
       GoRoute(
         name: "milk_production",
-        path: DailyMilkProductionScreen.routeName,
-        builder: (context, state) => const DailyMilkProductionScreen(),
+        path: MilkProductionTabView.routePath,
+        builder: (context, state) => const MilkProductionTabView(),
+      ),
+      //add & edit daily milk production routes
+      GoRoute(
+        name: "addDailyMilkProductionDetails",
+        path: DailyMilkProductionInputScreen.addDetailsRoutePath,
+        builder: (context, state) => const DailyMilkProductionInputScreen(),
+      ),
+      //add & edit diseases routes
+      GoRoute(
+        name: "editDailyMilkProductionDetails",
+        path: DailyMilkProductionInputScreen.editDetailsRoutePath,
+        builder: (context, state) => DailyMilkProductionInputScreen(
+          editDailyMilkProductionId:
+              state.pathParameters["editDailyMilkProductionId"],
+        ),
       ),
       //main herd management route
       GoRoute(
         name: "herd_management",
-        path: CowsScreen.routeName,
+        path: CowsScreen.routePath,
         builder: (context, state) => const CowsScreen(),
       ),
       //main health management route
@@ -54,12 +71,12 @@ class AppRouter {
       //add & edit diseases routes
       GoRoute(
         name: "addDiseaseDetails",
-        path: DiseaseInputScreen.addDetailsRouteName,
+        path: DiseaseInputScreen.addDetailsRoutePath,
         builder: (context, state) => const DiseaseInputScreen(),
       ),
       GoRoute(
         name: "editDiseaseDetails",
-        path: DiseaseInputScreen.editDetailsRouteName,
+        path: DiseaseInputScreen.editDetailsRoutePath,
         builder: (context, state) => DiseaseInputScreen(
           editDiseaseId: state.pathParameters["editDiseaseId"],
         ),
@@ -67,12 +84,12 @@ class AppRouter {
       //add & edit vaccination routes
       GoRoute(
         name: "addVaccinationDetails",
-        path: VaccinationInputScreen.addDetailsRouteName,
+        path: VaccinationInputScreen.addDetailsRoutePath,
         builder: (context, state) => const VaccinationInputScreen(),
       ),
       GoRoute(
         name: "editVaccinationDetails",
-        path: VaccinationInputScreen.editDetailsRouteName,
+        path: VaccinationInputScreen.editDetailsRoutePath,
         builder: (context, state) => VaccinationInputScreen(
           editVaccinationId: state.pathParameters["editVaccinationId"],
         ),
@@ -80,12 +97,12 @@ class AppRouter {
       //add & edit treatment routes
       GoRoute(
         name: "addTreatmentDetails",
-        path: TreatmentInputScreen.addDetailsRouteName,
+        path: TreatmentInputScreen.addDetailsRoutePath,
         builder: (context, state) => const TreatmentInputScreen(),
       ),
       GoRoute(
         name: "editTreatmentDetails",
-        path: TreatmentInputScreen.editDetailsRouteName,
+        path: TreatmentInputScreen.editDetailsRoutePath,
         builder: (context, state) => TreatmentInputScreen(
           editTreatmentId: state.pathParameters["editTreatmentId"],
         ),
@@ -163,12 +180,12 @@ class AppRouter {
       //milk consumption routes
       GoRoute(
         name: "addMilkConsumptionDetails",
-        path: MilkConsumptionInputScreen.addDetailsRouteName,
+        path: MilkConsumptionInputScreen.addDetailsRoutePath,
         builder: (context, state) => const MilkConsumptionInputScreen(),
       ),
       GoRoute(
         name: "editMilkConsumptionDetails",
-        path: MilkConsumptionInputScreen.editDetailsRouteName,
+        path: MilkConsumptionInputScreen.editDetailsRoutePath,
         builder: (context, state) => MilkConsumptionInputScreen(
           editMilkConsumptionId: state.pathParameters["editMilkConsumptionId"],
         ),
@@ -176,19 +193,19 @@ class AppRouter {
       //milk sales routes
       GoRoute(
         name: "addMilkSaleDetails",
-        path: MilkSaleInputScreen.addDetailsRouteName,
+        path: MilkSaleInputScreen.addDetailsRoutePath,
         builder: (context, state) => const MilkSaleInputScreen(),
       ),
       GoRoute(
         name: "editMilkSaleDetails",
-        path: MilkSaleInputScreen.editDetailsRouteName,
+        path: MilkSaleInputScreen.editDetailsRoutePath,
         builder: (context, state) => MilkSaleInputScreen(
           editMilkSaleId: state.pathParameters["editMilkSaleId"],
         ),
       ),
       //   GoRoute(
       //       name: "cows",
-      //       path: CowsScreen.routeName,
+      //       path: CowsScreen.routePath,
       //       builder: (context, state) => ChangeNotifierProvider(
       //             create: (_) => MilkProductionController(),
       //             child: CowsScreen(
@@ -199,7 +216,7 @@ class AppRouter {
       //       routes: [
       //         GoRoute(
       //           name: "cowDetailsScreen",
-      //           path: CowDetailsScreen.routeName,
+      //           path: CowDetailsScreen.routePath,
       //           builder: (context, state) => ChangeNotifierProvider(
       //             create: (_) => MilkProductionController(),
       //             child: CowDetailsScreen(cowId: state.pathParameters['cowId']),
