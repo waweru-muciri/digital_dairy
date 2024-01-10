@@ -7,7 +7,6 @@ import 'package:DigitalDairy/controllers/disease_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-// Create a Form widget.
 class DiseaseInputScreen extends StatefulWidget {
   const DiseaseInputScreen({super.key, this.editDiseaseId});
   final String? editDiseaseId;
@@ -21,8 +20,6 @@ class DiseaseInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class DiseaseFormState extends State<DiseaseInputScreen> {
   final TextEditingController _diseaseNameController = TextEditingController();
   final TextEditingController _dateDiscoveredController =
@@ -31,11 +28,6 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
       TextEditingController();
   late Disease disease;
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<DiseaseFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -67,7 +59,6 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
     } else {
       disease = Disease();
     }
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(

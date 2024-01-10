@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-// Create a Form widget.
 class DailyMilkProductionInputScreen extends StatefulWidget {
   const DailyMilkProductionInputScreen(
       {super.key, this.editDailyMilkProductionId});
@@ -25,8 +24,6 @@ class DailyMilkProductionInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class DailyMilkProductionFormState
     extends State<DailyMilkProductionInputScreen> {
   final TextEditingController _dateController = TextEditingController(
@@ -44,11 +41,6 @@ class DailyMilkProductionFormState
   late DailyMilkProduction _dailyMilkProduction;
   Cow? selectedCow;
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<DailyMilkProductionFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override

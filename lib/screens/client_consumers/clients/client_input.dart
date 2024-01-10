@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:provider/provider.dart';
 
-// Create a Form widget.
 class ClientInputScreen extends StatefulWidget {
   const ClientInputScreen({super.key, this.editClientId});
   final String? editClientId;
@@ -16,8 +15,6 @@ class ClientInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class ClientFormState extends State<ClientInputScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -70,7 +67,6 @@ class ClientFormState extends State<ClientInputScreen> {
     } else {
       clientToSave = Client();
     }
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:provider/provider.dart';
 
-// Create a Form widget.
 class MilkConsumerInputScreen extends StatefulWidget {
   const MilkConsumerInputScreen({super.key, this.editMilkConsumerId});
   final String? editMilkConsumerId;
@@ -16,8 +15,6 @@ class MilkConsumerInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -25,11 +22,6 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
   final TextEditingController _locationController = TextEditingController();
   late MilkConsumer milkConsumerToSave;
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MilkConsumerFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -66,7 +58,6 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
     } else {
       milkConsumerToSave = MilkConsumer();
     }
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -94,13 +85,6 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), child: Text(
-                          //   editMilkConsumerId != null
-                          //       ? 'Edit Milk Consumer Details'
-                          //       : 'Add Milk Consumer Details',
-                          //   textAlign: TextAlign.left,
-                          //   style: Theme.of(context).textTheme.titleLarge,
-                          // ),),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text(

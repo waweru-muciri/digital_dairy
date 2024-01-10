@@ -9,7 +9,6 @@ import 'package:DigitalDairy/controllers/treatment_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-// Create a Form widget.
 class TreatmentInputScreen extends StatefulWidget {
   const TreatmentInputScreen({super.key, this.editTreatmentId});
   final String? editTreatmentId;
@@ -23,8 +22,6 @@ class TreatmentInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class TreatmentFormState extends State<TreatmentInputScreen> {
   final TextEditingController _treatmentDiagnosisController =
       TextEditingController();
@@ -42,11 +39,6 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
 
   late Treatment treatmentToSave;
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<TreatmentFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -92,7 +84,6 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
     } else {
       treatmentToSave = Treatment();
     }
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(

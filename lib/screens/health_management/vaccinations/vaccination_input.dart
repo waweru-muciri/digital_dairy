@@ -9,7 +9,6 @@ import 'package:DigitalDairy/controllers/vaccination_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-// Create a Form widget.
 class VaccinationInputScreen extends StatefulWidget {
   const VaccinationInputScreen({super.key, this.editVaccinationId});
   final String? editVaccinationId;
@@ -23,8 +22,6 @@ class VaccinationInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class VaccinationFormState extends State<VaccinationInputScreen> {
   final TextEditingController _vaccinationDateController =
       TextEditingController();
@@ -40,11 +37,6 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
 
   late Vaccination vaccinationToSave;
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<VaccinationFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -88,7 +80,6 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
     } else {
       vaccinationToSave = Vaccination();
     }
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(

@@ -7,7 +7,6 @@ import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-// Create a Form widget.
 class IncomeInputScreen extends StatefulWidget {
   const IncomeInputScreen({super.key, this.editIncomeId});
   final String? editIncomeId;
@@ -18,8 +17,6 @@ class IncomeInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class IncomeFormState extends State<IncomeInputScreen> {
   final TextEditingController _expenseDetailsController =
       TextEditingController();
@@ -28,11 +25,6 @@ class IncomeFormState extends State<IncomeInputScreen> {
       TextEditingController(text: "0");
   late Income _expense;
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<IncomeFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -96,41 +88,40 @@ class IncomeFormState extends State<IncomeInputScreen> {
                             child: Text("Date",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child:
-                          TextFormField(
-                            controller: _expenseDateController,
-                            readOnly: true,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Date cannot be empty';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(),
-                              hintText: 'Date',
-                              suffixIcon: IconButton(
-                                  onPressed: () async {
-                                    final DateTime pickedDateTime =
-                                        await selectDate(
-                                            context,
-                                            editIncomeId != null
-                                                ? _expense.getIncomeDate
-                                                : DateTime.now());
-                                    _expenseDateController.text =
-                                        DateFormat("dd/MM/yyyy")
-                                            .format(pickedDateTime);
-                                  },
-                                  icon: const Align(
-                                      widthFactor: 1.0,
-                                      heightFactor: 1.0,
-                                      child: Icon(
-                                        Icons.calendar_month,
-                                      ))),
-                            ),
-                          )),
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: TextFormField(
+                                controller: _expenseDateController,
+                                readOnly: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Date cannot be empty';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
+                                  hintText: 'Date',
+                                  suffixIcon: IconButton(
+                                      onPressed: () async {
+                                        final DateTime pickedDateTime =
+                                            await selectDate(
+                                                context,
+                                                editIncomeId != null
+                                                    ? _expense.getIncomeDate
+                                                    : DateTime.now());
+                                        _expenseDateController.text =
+                                            DateFormat("dd/MM/yyyy")
+                                                .format(pickedDateTime);
+                                      },
+                                      icon: const Align(
+                                          widthFactor: 1.0,
+                                          heightFactor: 1.0,
+                                          child: Icon(
+                                            Icons.calendar_month,
+                                          ))),
+                                ),
+                              )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text(DisplayTextUtil.incomeDetails,

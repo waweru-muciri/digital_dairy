@@ -9,7 +9,6 @@ import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-// Create a Form widget.
 class MilkSaleInputScreen extends StatefulWidget {
   const MilkSaleInputScreen({super.key, this.editMilkSaleId});
   final String? editMilkSaleId;
@@ -23,8 +22,6 @@ class MilkSaleInputScreen extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class MilkSaleFormState extends State<MilkSaleInputScreen> {
   final TextEditingController _milkSaleDateController = TextEditingController(
       text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
@@ -35,11 +32,6 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
   late MilkSale _milkSale;
   Client? selectedClient;
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MilkSaleFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
