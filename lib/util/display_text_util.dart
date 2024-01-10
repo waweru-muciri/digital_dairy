@@ -11,4 +11,5 @@ class DisplayTextUtil {
   static const vaccinationsList = "Vaccinations List";
   static const treatmentDetails = "Treatment Details";
   static const vaccinationDetails = "Vaccinations List";
+  static const dailyMilkProductionDetails = "Milk Production Details";
 }

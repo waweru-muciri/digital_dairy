@@ -31,7 +31,8 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
           text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
   final TextEditingController _milkConsumptionAmountController =
       TextEditingController(text: "0");
-  final TextEditingController _milkConsumerController = TextEditingController();
+  final TextEditingController _milkConsumerFilterController =
+      TextEditingController();
   late List<MilkConsumer> _milkConsumersList;
   late MilkConsumption _milkConsumption;
   MilkConsumer? selectedMilkConsumer;
@@ -53,7 +54,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
 
   @override
   void dispose() {
-    _milkConsumerController.dispose();
+    _milkConsumerFilterController.dispose();
     _milkConsumptionDateController.dispose();
     _milkConsumptionAmountController.dispose();
     super.dispose();
@@ -156,7 +157,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<MilkConsumer>(
                               initialSelection: selectedMilkConsumer,
-                              controller: _milkConsumerController,
+                              controller: _milkConsumerFilterController,
                               requestFocusOnTap: true,
                               label: const Text('Consumer'),
                               expandedInsets: EdgeInsets.zero,
@@ -244,7 +245,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                 .addMilkConsumption(_milkConsumption)
                                 .then((value) {
                               //reset the form
-                              _milkConsumerController.clear();
+                              _milkConsumerFilterController.clear();
                               setState(() {
                                 selectedMilkConsumer = null;
                               });
