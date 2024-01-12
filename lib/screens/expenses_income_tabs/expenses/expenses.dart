@@ -2,7 +2,6 @@ import 'package:DigitalDairy/controllers/expense_controller.dart';
 import 'package:DigitalDairy/models/expense.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,31 +38,43 @@ class ExpensesScreenState extends State<ExpensesScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(mainAxisSize: MainAxisSize.max, children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    OutlinedButton.icon(
-                      icon: const Icon(Icons.add),
-                      onPressed: () => context.pushNamed("addExpenseDetails"),
-                      label: const Text("Add Expense"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                FilterInputField(
-                    onQueryChanged:
-                        context.read<ExpenseController>().filterExpenses),
-              ],
-            ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            child: Card(
+                child: Container(
+                    margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                    child: OutlinedButton.icon(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () => context
+                                          .pushNamed("addExpenseDetails"),
+                                      label: const Text("Add Expense"),
+                                    )),
+                              ],
+                            ),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: FilterInputField(
+                                    onQueryChanged: context
+                                        .read<ExpenseController>()
+                                        .filterExpenses)),
+                          ],
+                        )))),
           ),
           PaginatedDataTable(
               header: const Text("Expenses List"),

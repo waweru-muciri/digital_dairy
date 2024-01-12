@@ -36,30 +36,43 @@ class ClientsScreenState extends State<ClientsScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(mainAxisSize: MainAxisSize.max, children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    OutlinedButton.icon(
-                      icon: const Icon(Icons.add),
-                      onPressed: () => context.pushNamed("addClientDetails"),
-                      label: const Text("Add Client"),
-                    ),
-                  ],
+          Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            child: Card(
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              child: OutlinedButton.icon(
+                                icon: const Icon(Icons.add),
+                                onPressed: () =>
+                                    context.pushNamed("addClientDetails"),
+                                label: const Text("Add Client"),
+                              )),
+                        ],
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: FilterInputField(
+                              onQueryChanged: context
+                                  .read<ClientController>()
+                                  .filterClients)),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 15),
-                FilterInputField(
-                    onQueryChanged:
-                        context.read<ClientController>().filterClients),
-              ],
+              ),
             ),
           ),
           PaginatedDataTable(

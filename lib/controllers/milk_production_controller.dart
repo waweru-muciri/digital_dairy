@@ -21,6 +21,23 @@ class DailyMilkProductionController with ChangeNotifier {
   List<DailyMilkProduction> get dailyMilkProductionsList =>
       _filteredDailyMilkProductionList;
 
+  void filterDailyMilkProductionsByCowName(String? query) {
+    if (query != null && query.isNotEmpty) {
+      List<DailyMilkProduction> filteredList = _dailyMilkProductionList
+          .where((item) => item.getCow.getName
+              .trim()
+              .toLowerCase()
+              .contains(query.trim().toLowerCase()))
+          .toList();
+      _filteredDailyMilkProductionList.clear();
+      _filteredDailyMilkProductionList.addAll(filteredList);
+    } else {
+      _filteredDailyMilkProductionList.clear();
+      _filteredDailyMilkProductionList.addAll(_dailyMilkProductionList);
+    }
+    notifyListeners();
+  }
+
   void filterDailyMilkProductionsByDate(String filterDate) async {
     List<DailyMilkProduction> filteredList =
         await _dailyMilkProductionService.getMilkProductionByDate(filterDate);

@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/models/daily_milk_production.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_production_controller.dart';
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  static const routePath = '/daily_milk_production';
+  static const routePath = '/';
 
   @override
   State<StatefulWidget> createState() => HomeScreenState();
@@ -56,28 +57,22 @@ class HomeScreenState extends State<HomeScreen> {
             style: TextStyle(),
           ),
         ),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(mainAxisSize: MainAxisSize.max, children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        OutlinedButton.icon(
-                          icon: const Icon(Icons.add),
-                          onPressed: () =>
-                              context.pushNamed("addMilkProductionDetails"),
-                          label: const Text("Add Milk Production"),
-                        ),
-                      ],
+                      children: [],
                     ),
-                    const SizedBox(height: 15),
+                    SizedBox(height: 15),
                   ],
                 ),
               ),

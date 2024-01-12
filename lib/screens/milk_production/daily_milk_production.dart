@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/models/daily_milk_production.dart';
+import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_production_controller.dart';
@@ -50,87 +51,90 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
         context.watch<DailyMilkProductionController>().dailyMilkProductionsList;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Daily Milk Production',
-            style: TextStyle(),
-          ),
-        ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        OutlinedButton.icon(
-                          icon: const Icon(Icons.add),
-                          onPressed: () =>
-                              context.pushNamed("addMilkProductionDetails"),
-                          label: const Text("Add Milk Production"),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                  ],
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Column(mainAxisSize: MainAxisSize.max, children: [
+          Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: Card(
+                  child: Container(
+                      margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: TextFormField(
+                                  controller: _milkProductionDateController,
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    border: const OutlineInputBorder(),
+                                    labelText: 'Date',
+                                    suffixIcon: IconButton(
+                                        onPressed: () async {
+                                          final DateTime pickedDateTime =
+                                              await selectDate(
+                                                  context,
+                                                  DateFormat("dd/MM/yyyy").parse(
+                                                      _milkProductionDateController
+                                                          .text));
+                                          final filterDateString =
+                                              DateFormat("dd/MM/yyyy")
+                                                  .format(pickedDateTime);
+                                          _milkProductionDateController.text =
+                                              filterDateString;
+                                        },
+                                        icon: const Align(
+                                            widthFactor: 1.0,
+                                            heightFactor: 1.0,
+                                            child: Icon(
+                                              Icons.calendar_month,
+                                            ))),
+                                  ),
+                                )),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: FilterInputField(
+                                    onQueryChanged: context
+                                        .read<DailyMilkProductionController>()
+                                        .filterDailyMilkProductionsByCowName))
+                          ])))),
+          PaginatedDataTable(
+              header: const Text("Milk Production List"),
+              rowsPerPage: 20,
+              availableRowsPerPage: const [20, 30, 50],
+              actions: [
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.add),
+                  onPressed: () =>
+                      context.pushNamed("addDailyMilkProductionDetails"),
+                  label: const Text("Add"),
                 ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                  child: TextFormField(
-                    controller: _milkProductionDateController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'Date',
-                      suffixIcon: IconButton(
-                          onPressed: () async {
-                            final DateTime pickedDateTime = await selectDate(
-                                context,
-                                DateFormat("dd/MM/yyyy")
-                                    .parse(_milkProductionDateController.text));
-                            final filterDateString =
-                                DateFormat("dd/MM/yyyy").format(pickedDateTime);
-                            _milkProductionDateController.text =
-                                filterDateString;
-                          },
-                          icon: const Align(
-                              widthFactor: 1.0,
-                              heightFactor: 1.0,
-                              child: Icon(
-                                Icons.calendar_month,
-                              ))),
-                    ),
-                  )),
-              PaginatedDataTable(
-                  header: const Text("Milk Production List"),
-                  rowsPerPage: 20,
-                  availableRowsPerPage: const [20, 30, 50],
-                  columns: const [
-                    DataColumn(label: Text("Cow Name")),
-                    DataColumn(label: Text("Am")),
-                    DataColumn(label: Text("Noon")),
-                    DataColumn(label: Text("Pm")),
-                    DataColumn(label: Text("Total (Kgs)"))
-                  ],
-                  source: _DataSource(data: _milkProductionList))
-            ]),
-          ),
-        ));
+              ],
+              columns: const [
+                DataColumn(label: Text("Cow Name")),
+                DataColumn(label: Text("Am")),
+                DataColumn(label: Text("Noon")),
+                DataColumn(label: Text("Pm")),
+                DataColumn(label: Text("Total (Kgs)")),
+                DataColumn(label: Text("Edit")),
+                DataColumn(label: Text("Delete")),
+              ],
+              source: _DataSource(data: _milkProductionList, context: context))
+        ]),
+      ),
+    ));
   }
 }
 
 class _DataSource extends DataTableSource {
   final List<DailyMilkProduction> data;
+  final BuildContext context;
 
-  _DataSource({required this.data});
-
+  _DataSource({required this.data, required this.context});
   @override
   DataRow? getRow(int index) {
     if (index >= data.length) {
@@ -145,6 +149,18 @@ class _DataSource extends DataTableSource {
       DataCell(Text('${item.getNoonQuantity}')),
       DataCell(Text('${item.getPmQuantity}')),
       DataCell(Text('${item.totalMilkQuantity}')),
+      DataCell(const Icon(Icons.edit),
+          onTap: () => context.pushNamed("editMilkSaleDetails",
+              pathParameters: {"editMilkSaleId": '${item.getId}'})),
+      DataCell(const Icon(Icons.delete), onTap: () async {
+        deleteFunc() async {
+          return await context
+              .read<DailyMilkProductionController>()
+              .deleteDailyMilkProduction(item);
+        }
+
+        await showDeleteItemDialog(context, deleteFunc);
+      }),
     ]);
   }
 

@@ -5,17 +5,14 @@ class FilterInputField extends StatelessWidget {
   final void Function(String) onQueryChanged;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(right: 16),
-      child: TextFormField(
+    return TextFormField(
         onChanged: onQueryChanged,
         decoration: const InputDecoration(
           labelText: 'Search',
+          floatingLabelBehavior: FloatingLabelBehavior.always,
           contentPadding: EdgeInsets.all(16),
           border: OutlineInputBorder(),
           prefixIcon: Icon(Icons.search),
-        ),
-      ),
-    );
+        ));
   }
 }
