@@ -85,7 +85,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
           title: Text(
             editVaccinationId != null
                 ? 'Edit ${DisplayTextUtil.vaccinationDetails}'
-                : 'Add ${DisplayTextUtil.vaccinationDetails}',
+                : 'New ${DisplayTextUtil.vaccinationDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -126,7 +126,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
-                                        final DateTime pickedDateTime =
+                                        final DateTime? pickedDateTime =
                                             await selectDate(
                                                 context,
                                                 editVaccinationId != null
@@ -136,7 +136,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                                     : DateTime.now());
                                         _vaccinationDateController.text =
                                             DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime);
+                                                .format(pickedDateTime!);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

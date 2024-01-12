@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../models/income.dart';
 import "db_service.dart";
 
@@ -12,12 +14,30 @@ class IncomeService {
         toFirestore: (Income income, _) => income.toFirestore(),
       );
 
+  Future<List<Income>> getIncomesList(String startDate,
+      {String? endDate}) async {
+    if (endDate != null) {
+      return await _incomeReference
+          .where("incomeDate", isGreaterThanOrEqualTo: startDate)
+          .where("incomeDate", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _incomeReference
+          .where("incomeDate", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
+  }
+
   /// Loads the incomes list from firebase firestore.
-  Future<List<Income>> getIncomesList() async {
-    return await _incomeReference.get().then((querySnapshot) => querySnapshot
-        .docs
-        .map((documentSnapshot) => documentSnapshot.data())
-        .toList());
+  Future<List<Income>> getCurrentDayIncomesList() async {
+    return await getIncomesList(
+        DateFormat("dd/MM/YYYY").format(DateTime.now()));
   }
 
 //add a income

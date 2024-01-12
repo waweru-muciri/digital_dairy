@@ -52,15 +52,13 @@ Future<void> showLoadingDialog(BuildContext context) async {
   );
 }
 
-Future<DateTime> selectDate(BuildContext context, DateTime initialDate) async {
+Future<DateTime?> selectDate(
+    BuildContext context, DateTime? initialDate) async {
   final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101));
-  if (picked != null) {
-    return picked;
-  }
-  return initialDate;
+  return picked;
 }

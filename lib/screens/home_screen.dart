@@ -86,12 +86,12 @@ class HomeScreenState extends State<HomeScreen> {
                       hintText: 'Date',
                       suffixIcon: IconButton(
                           onPressed: () async {
-                            final DateTime pickedDateTime = await selectDate(
+                            final DateTime? pickedDateTime = await selectDate(
                                 context,
                                 DateFormat("dd/MM/yyyy")
                                     .parse(_milkProductionDateController.text));
-                            final filterDateString =
-                                DateFormat("dd/MM/yyyy").format(pickedDateTime);
+                            final filterDateString = DateFormat("dd/MM/yyyy")
+                                .format(pickedDateTime!);
                             _milkProductionDateController.text =
                                 filterDateString;
                           },

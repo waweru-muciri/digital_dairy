@@ -62,7 +62,7 @@ class TreatmentsScreenState extends State<TreatmentsScreen> {
                                     icon: const Icon(Icons.add),
                                     onPressed: () => context
                                         .pushNamed("addTreatmentDetails"),
-                                    label: const Text("Add Treatment"),
+                                    label: const Text("New Treatment"),
                                   )),
                             ],
                           ),

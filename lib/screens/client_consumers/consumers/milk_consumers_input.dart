@@ -63,7 +63,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
           title: Text(
             editMilkConsumerId != null
                 ? 'Edit Milk Consumer Details'
-                : 'Add Milk Consumer Details',
+                : 'New Milk Consumer Details',
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.titleLarge,
           ),

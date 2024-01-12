@@ -74,7 +74,7 @@ final ThemeData myTheme = ThemeData(
           decoration: TextDecoration.none,
           fontFamily: "Lato",
           fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
           letterSpacing: 1.25,
           textBaseline: TextBaseline.alphabetic),
       labelMedium: TextStyle(
@@ -98,7 +98,7 @@ final ThemeData myTheme = ThemeData(
           decoration: TextDecoration.none,
           fontFamily: "Lato",
           fontSize: 20,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
           letterSpacing: 0.15,
           textBaseline: TextBaseline.alphabetic),
       titleMedium: TextStyle(
@@ -114,7 +114,7 @@ final ThemeData myTheme = ThemeData(
           decoration: TextDecoration.none,
           fontFamily: "Lato",
           fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
           letterSpacing: 0.1,
           textBaseline: TextBaseline.alphabetic)),
 
@@ -151,7 +151,7 @@ final ThemeData myTheme = ThemeData(
         decoration: TextDecoration.none,
         fontFamily: "Lato",
         fontSize: 14,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.bold,
         letterSpacing: 1.25,
         textBaseline: TextBaseline.alphabetic),
     labelMedium: TextStyle(
@@ -176,7 +176,7 @@ final ThemeData myTheme = ThemeData(
         decoration: TextDecoration.none,
         fontFamily: "Lato",
         fontSize: 20,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.bold,
         letterSpacing: 0.15,
         textBaseline: TextBaseline.alphabetic),
     titleMedium: TextStyle(
@@ -192,7 +192,7 @@ final ThemeData myTheme = ThemeData(
         decoration: TextDecoration.none,
         fontFamily: "Lato",
         fontSize: 14,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.bold,
         letterSpacing: 0.1,
         textBaseline: TextBaseline.alphabetic),
   ),

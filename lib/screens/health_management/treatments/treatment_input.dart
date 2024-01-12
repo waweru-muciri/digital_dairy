@@ -89,7 +89,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
           title: Text(
             editTreatmentId != null
                 ? 'Edit ${DisplayTextUtil.treatmentDetails}'
-                : 'Add ${DisplayTextUtil.treatmentDetails}',
+                : 'New ${DisplayTextUtil.treatmentDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -130,7 +130,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
-                                        final DateTime pickedDateTime =
+                                        final DateTime? pickedDateTime =
                                             await selectDate(
                                                 context,
                                                 editTreatmentId != null
@@ -140,7 +140,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                                     : DateTime.now());
                                         _treatmentDateController.text =
                                             DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime);
+                                                .format(pickedDateTime!);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

@@ -74,7 +74,7 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                                     labelText: 'Date',
                                     suffixIcon: IconButton(
                                         onPressed: () async {
-                                          final DateTime pickedDateTime =
+                                          final DateTime? pickedDateTime =
                                               await selectDate(
                                                   context,
                                                   DateFormat("dd/MM/yyyy").parse(
@@ -82,7 +82,7 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                                                           .text));
                                           final filterDateString =
                                               DateFormat("dd/MM/yyyy")
-                                                  .format(pickedDateTime);
+                                                  .format(pickedDateTime!);
                                           _milkProductionDateController.text =
                                               filterDateString;
                                         },

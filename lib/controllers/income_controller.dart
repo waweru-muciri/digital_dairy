@@ -35,8 +35,20 @@ class IncomeController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getIncomes() async {
-    List<Income> loadedList = await _incomeService.getIncomesList();
+  double get getTotalIncome => _filteredIncomeList
+      .map((income) => (income.getIncomeAmount))
+      .fold(0, (previousValue, element) => previousValue + element);
+
+  void filterIncomeByDates(String startDate, {String? endDate}) async {
+    List<Income> filteredList =
+        await _incomeService.getIncomesList(startDate, endDate: endDate);
+    _filteredIncomeList.clear();
+    _filteredIncomeList.addAll(filteredList);
+    notifyListeners();
+  }
+
+  Future<void> getCurrentDayIncomeList() async {
+    List<Income> loadedList = await _incomeService.getCurrentDayIncomesList();
     _incomeList.clear();
     _filteredIncomeList.clear();
     _incomeList.addAll(loadedList);

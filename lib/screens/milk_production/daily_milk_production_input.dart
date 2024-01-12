@@ -91,7 +91,7 @@ class DailyMilkProductionFormState
           title: Text(
             editDailyMilkProductionId != null
                 ? 'Edit ${DisplayTextUtil.dailyMilkProductionDetails}'
-                : 'Add ${DisplayTextUtil.dailyMilkProductionDetails}',
+                : 'New ${DisplayTextUtil.dailyMilkProductionDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -131,7 +131,7 @@ class DailyMilkProductionFormState
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
-                                        final DateTime pickedDateTime =
+                                        final DateTime? pickedDateTime =
                                             await selectDate(
                                                 context,
                                                 editDailyMilkProductionId !=
@@ -142,7 +142,7 @@ class DailyMilkProductionFormState
                                                     : DateTime.now());
                                         _dateController.text =
                                             DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime);
+                                                .format(pickedDateTime!);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

@@ -61,7 +61,7 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                                       icon: const Icon(Icons.add),
                                       onPressed: () => context
                                           .pushNamed("addMilkConsumerDetails"),
-                                      label: const Text("Add Consumer"),
+                                      label: const Text("New"),
                                     )),
                               ],
                             ),
@@ -106,20 +106,24 @@ class _DataSource extends DataTableSource {
       return null;
     }
 
-    final item = data[index];
+    final milkConsumer = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.milkConsumerName)),
-      DataCell(Text(item.getContacts)),
-      DataCell(Text(item.getLocation)),
+      DataCell(Text(milkConsumer.milkConsumerName), onTap: () {
+        //show the past milk purchase history of the client by redirecting to new route
+        () => context.pushNamed("consumerMilkConsumptionHistory",
+            pathParameters: {"milkConsumerId": '${milkConsumer.getId}'});
+      }),
+      DataCell(Text(milkConsumer.getContacts)),
+      DataCell(Text(milkConsumer.getLocation)),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editMilkConsumerDetails",
-              pathParameters: {"editMilkConsumerId": '${item.getId}'})),
+              pathParameters: {"editMilkConsumerId": '${milkConsumer.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
           return await context
               .read<MilkConsumerController>()
-              .deleteMilkConsumer(item);
+              .deleteMilkConsumer(milkConsumer);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

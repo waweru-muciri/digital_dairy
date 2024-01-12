@@ -64,7 +64,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
           title: Text(
             editIncomeId != null
                 ? 'Edit ${DisplayTextUtil.incomeDetails}'
-                : 'Add ${DisplayTextUtil.incomeDetails}',
+                : 'New ${DisplayTextUtil.incomeDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -104,7 +104,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
-                                        final DateTime pickedDateTime =
+                                        final DateTime? pickedDateTime =
                                             await selectDate(
                                                 context,
                                                 editIncomeId != null
@@ -112,7 +112,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
                                                     : DateTime.now());
                                         _expenseDateController.text =
                                             DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime);
+                                                .format(pickedDateTime!);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

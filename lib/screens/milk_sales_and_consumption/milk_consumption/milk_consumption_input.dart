@@ -79,7 +79,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
           title: Text(
             editMilkConsumptionId != null
                 ? 'Edit ${DisplayTextUtil.milkConsumptionDetails}'
-                : 'Add ${DisplayTextUtil.milkConsumptionDetails}',
+                : 'New ${DisplayTextUtil.milkConsumptionDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -119,7 +119,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
-                                        final DateTime pickedDateTime =
+                                        final DateTime? pickedDateTime =
                                             await selectDate(
                                                 context,
                                                 editMilkConsumptionId != null
@@ -129,7 +129,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                                     : DateTime.now());
                                         _milkConsumptionDateController.text =
                                             DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime);
+                                                .format(pickedDateTime!);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

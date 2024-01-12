@@ -59,7 +59,7 @@ class ClientsScreenState extends State<ClientsScreen> {
                                 icon: const Icon(Icons.add),
                                 onPressed: () =>
                                     context.pushNamed("addClientDetails"),
-                                label: const Text("Add Client"),
+                                label: const Text("New"),
                               )),
                         ],
                       ),
@@ -106,18 +106,25 @@ class _DataSource extends DataTableSource {
       return null;
     }
 
-    final item = data[index];
+    final client = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.clientName)),
-      DataCell(Text(item.getContacts)),
-      DataCell(Text('${item.getUnitPrice}')),
+      DataCell(
+          Text(
+            client.clientName,
+          ), onTap: () {
+        //show the past milk purchase history of the client by redirecting to new route
+        () => context.pushNamed("clientMilkPurchaseHistory",
+            pathParameters: {"clientId": '${client.getId}'});
+      }),
+      DataCell(Text(client.getContacts)),
+      DataCell(Text('${client.getUnitPrice}')),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editClientDetails",
-              pathParameters: {"editClientId": '${item.getId}'})),
+              pathParameters: {"editClientId": '${client.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
-          return await context.read<ClientController>().deleteClient(item);
+          return await context.read<ClientController>().deleteClient(client);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

@@ -47,11 +47,14 @@ class DailyMilkProductionController with ChangeNotifier {
     notifyListeners();
   }
 
-  double get getTotalMilkProductionQuantity => _filteredDailyMilkProductionList
-      .map((dailyMilkProduction) => (dailyMilkProduction.getAmQuantity +
-          dailyMilkProduction.getNoonQuantity +
-          dailyMilkProduction.getPmQuantity))
-      .reduce((value, element) => value + element);
+  double get getTotalMilkProductionQuantity =>
+      _filteredDailyMilkProductionList.fold(
+          0,
+          (previousValue, dailyMilkProduction) =>
+              previousValue +
+              (dailyMilkProduction.getAmQuantity +
+                  dailyMilkProduction.getNoonQuantity +
+                  dailyMilkProduction.getPmQuantity));
 
   Future<void> getTodaysDailyMilkProductions() async {
     List<DailyMilkProduction> loadedList =

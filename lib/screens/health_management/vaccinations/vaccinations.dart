@@ -63,7 +63,7 @@ class VaccinationsScreenState extends State<VaccinationsScreen> {
                                     icon: const Icon(Icons.add),
                                     onPressed: () => context
                                         .pushNamed("addVaccinationDetails"),
-                                    label: const Text("Add Vaccination"),
+                                    label: const Text("New"),
                                   )),
                             ],
                           ),

@@ -64,7 +64,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
           title: Text(
             editExpenseId != null
                 ? 'Edit ${DisplayTextUtil.expenseDetails}'
-                : 'Add ${DisplayTextUtil.expenseDetails}',
+                : 'New ${DisplayTextUtil.expenseDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -104,7 +104,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
-                                        final DateTime pickedDateTime =
+                                        final DateTime? pickedDateTime =
                                             await selectDate(
                                                 context,
                                                 editExpenseId != null
@@ -112,7 +112,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                                     : DateTime.now());
                                         _expenseDateController.text =
                                             DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime);
+                                                .format(pickedDateTime!);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

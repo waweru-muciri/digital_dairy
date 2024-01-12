@@ -64,7 +64,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
           title: Text(
             editDiseaseId != null
                 ? 'Edit ${DisplayTextUtil.diseaseDetails}'
-                : 'Add ${DisplayTextUtil.diseaseDetails}',
+                : 'New ${DisplayTextUtil.diseaseDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -128,7 +128,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
-                                        final DateTime pickedDateTime =
+                                        final DateTime? pickedDateTime =
                                             await selectDate(
                                                 context,
                                                 editDiseaseId != null
@@ -138,7 +138,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                                     : DateTime.now());
                                         _dateDiscoveredController.text =
                                             DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime);
+                                                .format(pickedDateTime!);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

@@ -62,7 +62,7 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                     icon: const Icon(Icons.add),
                     onPressed: () =>
                         context.pushNamed("addMilkConsumptionDetails"),
-                    label: const Text("Add Milk Consumption"),
+                    label: const Text("New Milk Consumption"),
                   ),
                 ],
               ),
@@ -80,12 +80,12 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                 hintText: 'Date',
                 suffixIcon: IconButton(
                     onPressed: () async {
-                      final DateTime pickedDateTime = await selectDate(
+                      final DateTime? pickedDateTime = await selectDate(
                           context,
                           DateFormat("dd/MM/yyyy")
                               .parse(_milkConsumptionDateController.text));
                       final filterDateString =
-                          DateFormat("dd/MM/yyyy").format(pickedDateTime);
+                          DateFormat("dd/MM/yyyy").format(pickedDateTime!);
                       _milkConsumptionDateController.text = filterDateString;
                     },
                     icon: const Align(
