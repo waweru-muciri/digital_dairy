@@ -34,12 +34,6 @@ class IncomeService {
     }
   }
 
-  /// Loads the incomes list from firebase firestore.
-  Future<List<Income>> getCurrentDayIncomesList() async {
-    return await getIncomesList(
-        DateFormat("dd/MM/YYYY").format(DateTime.now()));
-  }
-
 //add a income
   Future<Income?> addIncome(Income income) async {
     return await _incomeReference

@@ -27,8 +27,10 @@ class IncomeScreenState extends State<IncomesScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<IncomeController>().getCurrentDayIncomeList());
+    //get current day's income list
+    Future.microtask(() => context
+        .read<IncomeController>()
+        .filterIncomeByDates(DateFormat("dd/MM/yyyy").format(DateTime.now())));
   }
 
   @override
