@@ -12,12 +12,24 @@ class ExpenseService {
         toFirestore: (Expense expense, _) => expense.toFirestore(),
       );
 
-  /// Loads the expenses list from firebase firestore.
-  Future<List<Expense>> getExpensesList() async {
-    return await _expenseReference.get().then((querySnapshot) => querySnapshot
-        .docs
-        .map((documentSnapshot) => documentSnapshot.data())
-        .toList());
+  Future<List<Expense>> getExpensesListBetweenDates(String startDate,
+      {String? endDate}) async {
+    if (endDate != null) {
+      return await _expenseReference
+          .where("expenseDate", isGreaterThanOrEqualTo: startDate)
+          .where("expenseDate", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _expenseReference
+          .where("expenseDate", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
   }
 
 //add a expense

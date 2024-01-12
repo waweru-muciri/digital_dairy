@@ -35,13 +35,17 @@ class ExpenseController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getExpenses() async {
-    List<Expense> loadedList = await _expenseService.getExpensesList();
+  double get getTotalExpenses => _filteredExpenseList
+      .map((expense) => (expense.getExpenseAmount))
+      .fold(0, (previousValue, element) => previousValue + element);
+
+  void filterExpenseByDates(String startDate, {String? endDate}) async {
+    List<Expense> filteredList = await _expenseService
+        .getExpensesListBetweenDates(startDate, endDate: endDate);
     _expenseList.clear();
     _filteredExpenseList.clear();
-    _expenseList.addAll(loadedList);
-    _filteredExpenseList.addAll(loadedList);
-    // Important! Inform listeners a change has occurred.
+    _filteredExpenseList.addAll(filteredList);
+    _expenseList.addAll(filteredList);
     notifyListeners();
   }
 

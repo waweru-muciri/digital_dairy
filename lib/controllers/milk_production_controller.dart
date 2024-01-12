@@ -57,9 +57,8 @@ class DailyMilkProductionController with ChangeNotifier {
                   dailyMilkProduction.getPmQuantity));
 
   Future<void> getTodaysDailyMilkProductions() async {
-    List<DailyMilkProduction> loadedList =
-        await _dailyMilkProductionService.getMilkProductionByDate(
-            DateFormat("dd/MM/yyyy").format(DateTime.now()));
+    List<DailyMilkProduction> loadedList = await _dailyMilkProductionService
+        .getMilkProductionByDate(getStringFromDate(DateTime.now()));
     _dailyMilkProductionList.clear();
     _filteredDailyMilkProductionList.clear();
     _dailyMilkProductionList.addAll(loadedList);

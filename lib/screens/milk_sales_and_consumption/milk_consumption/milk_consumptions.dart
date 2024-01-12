@@ -18,8 +18,7 @@ class MilkConsumptionsScreen extends StatefulWidget {
 class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
   late List<MilkConsumption> _milkConsumptionList;
   final TextEditingController _milkConsumptionDateController =
-      TextEditingController(
-          text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+      TextEditingController(text: getStringFromDate(DateTime.now()));
 
   @override
   void initState() {

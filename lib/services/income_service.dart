@@ -14,7 +14,7 @@ class IncomeService {
         toFirestore: (Income income, _) => income.toFirestore(),
       );
 
-  Future<List<Income>> getIncomesList(String startDate,
+  Future<List<Income>> getIncomeListBetweenDates(String startDate,
       {String? endDate}) async {
     if (endDate != null) {
       return await _incomeReference

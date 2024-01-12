@@ -17,8 +17,7 @@ class DailyMilkProductionService {
 
   /// Loads the current day's milk production from the database.
   Future<List<DailyMilkProduction>> getTodaysMilkProduction() async =>
-      await getMilkProductionByDate(
-          DateFormat("dd/MM/yyyy").format(DateTime.now()));
+      await getMilkProductionByDate(getStringFromDate(DateTime.now()));
 
   Future<List<DailyMilkProduction>> getMilkProductionByDate(String date) async {
     List<DailyMilkProduction> milkProductionListForDate =

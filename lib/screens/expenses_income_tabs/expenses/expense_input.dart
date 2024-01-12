@@ -30,8 +30,8 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
   @override
   void initState() {
     super.initState();
-    _expenseDateController = TextEditingController(
-        text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+    _expenseDateController =
+        TextEditingController(text: getStringFromDate(DateTime.now()));
   }
 
   @override

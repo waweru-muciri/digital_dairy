@@ -26,8 +26,8 @@ class DailyMilkProductionInputScreen extends StatefulWidget {
 
 class DailyMilkProductionFormState
     extends State<DailyMilkProductionInputScreen> {
-  final TextEditingController _dateController = TextEditingController(
-      text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+  final TextEditingController _dateController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
   final TextEditingController _amAmountController =
       TextEditingController(text: "0");
   final TextEditingController _noonAmountController =

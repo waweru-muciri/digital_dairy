@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:DigitalDairy/models/income.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,12 @@ class IncomesScreen extends StatefulWidget {
 }
 
 class IncomeScreenState extends State<IncomesScreen> {
-  late List<Income> _expensesList;
+  late List<Income> _incomesList;
   final TextEditingController _cowNameController = TextEditingController();
-  final TextEditingController _fromDateFilterController = TextEditingController(
-      text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
-  final TextEditingController _toDateFilterController = TextEditingController(
-      text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+  final TextEditingController _fromDateFilterController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
+  final TextEditingController _toDateFilterController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class IncomeScreenState extends State<IncomesScreen> {
     //get current day's income list
     Future.microtask(() => context
         .read<IncomeController>()
-        .filterIncomeByDates(DateFormat("dd/MM/yyyy").format(DateTime.now())));
+        .filterIncomeByDates(getStringFromDate(DateTime.now())));
   }
 
   @override
@@ -41,7 +42,7 @@ class IncomeScreenState extends State<IncomesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _expensesList = context.watch<IncomeController>().incomesList;
+    _incomesList = context.watch<IncomeController>().incomesList;
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -125,14 +126,11 @@ class IncomeScreenState extends State<IncomesScreen> {
                                                                         pickedDateTime =
                                                                         await selectDate(
                                                                             context,
-                                                                            DateFormat("dd/MM/yyyy").parse(_fromDateFilterController.text));
-                                                                    final filterDateString = DateFormat(
-                                                                            "dd/MM/yyyy")
-                                                                        .format(
-                                                                            pickedDateTime!);
+                                                                            getDateFromString(_fromDateFilterController.text));
                                                                     _fromDateFilterController
                                                                             .text =
-                                                                        filterDateString;
+                                                                        getStringFromDate(
+                                                                            pickedDateTime);
                                                                   },
                                                                   icon: const Align(
                                                                       widthFactor: 1.0,
@@ -171,14 +169,12 @@ class IncomeScreenState extends State<IncomesScreen> {
                                                                         pickedDateTime =
                                                                         await selectDate(
                                                                             context,
-                                                                            DateFormat("dd/MM/yyyy").parse(_toDateFilterController.text));
-                                                                    final filterDateString = DateFormat(
-                                                                            "dd/MM/yyyy")
-                                                                        .format(
-                                                                            pickedDateTime!);
+                                                                            getDateFromString(_toDateFilterController.text));
+
                                                                     _toDateFilterController
                                                                             .text =
-                                                                        filterDateString;
+                                                                        getStringFromDate(
+                                                                            pickedDateTime);
                                                                   },
                                                                   icon: const Align(
                                                                       widthFactor: 1.0,
@@ -247,7 +243,7 @@ class IncomeScreenState extends State<IncomesScreen> {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              "Total Expenses Amount",
+                              "Total Income Amount",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
@@ -280,7 +276,7 @@ class IncomeScreenState extends State<IncomesScreen> {
                 DataColumn(label: Text("Edit")),
                 DataColumn(label: Text("Delete")),
               ],
-              source: _DataSource(data: _expensesList, context: context))
+              source: _DataSource(data: _incomesList, context: context))
         ]),
       ),
     ));

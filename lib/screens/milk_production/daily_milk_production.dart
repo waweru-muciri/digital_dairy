@@ -18,8 +18,7 @@ class DailyMilkProductionScreen extends StatefulWidget {
 
 class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
   final TextEditingController _milkProductionDateController =
-      TextEditingController(
-          text: DateFormat("dd/MM/yyyy").format(DateTime.now()));
+      TextEditingController(text: getStringFromDate(DateTime.now()));
   late TextEditingController _cowNameController;
   late List<DailyMilkProduction> _milkProductionList;
 

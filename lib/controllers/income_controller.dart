@@ -40,9 +40,8 @@ class IncomeController with ChangeNotifier {
       .fold(0, (previousValue, element) => previousValue + element);
 
   void filterIncomeByDates(String startDate, {String? endDate}) async {
-    List<Income> filteredList =
-        await _incomeService.getIncomesList(startDate, endDate: endDate);
-    _incomeList.clear();
+    List<Income> filteredList = await _incomeService
+        .getIncomeListBetweenDates(startDate, endDate: endDate);
     _incomeList.clear();
     _filteredIncomeList.clear();
     _filteredIncomeList.addAll(filteredList);

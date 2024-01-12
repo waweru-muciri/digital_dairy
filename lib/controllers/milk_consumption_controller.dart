@@ -30,9 +30,8 @@ class MilkConsumptionController with ChangeNotifier {
   }
 
   Future<void> getTodayMilkConsumptions() async {
-    List<MilkConsumption> loadedList =
-        await _milkConsumptionService.getMilkConsumptionsList(
-            DateFormat("dd/MM/yyyy").format(DateTime.now()));
+    List<MilkConsumption> loadedList = await _milkConsumptionService
+        .getMilkConsumptionsList(getStringFromDate(DateTime.now()));
     _milkConsumptionList.clear();
     _filteredMilkConsumptionList.clear();
     _milkConsumptionList.addAll(loadedList);
