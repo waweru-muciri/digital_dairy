@@ -30,23 +30,25 @@ class _MyDrawerState extends State<MyDrawer> {
           const DrawerHeader(
             child: UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/flutter_logo.png"),
+                backgroundImage: AssetImage("assets/images/computerguy.jpg"),
               ),
-              currentAccountPictureSize: Size.square(100),
-              accountName: Text(
-                'Brian Muciri',
-                style: TextStyle(fontSize: 18.0),
+              accountName: Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    'Welcome Brian Muciri!',
+                    style:
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  )),
+              accountEmail: null,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(221, 0, 88, 71),
               ),
-              accountEmail: Text('jane.doe@example.com'),
-              // decoration: BoxDecoration(
-              //   color: Color.fromARGB(221, 149, 140, 140),
-              // ),
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.dashboard),
             title: const Text(
               'Dashboard',
-              style: TextStyle(fontSize: 24.0),
             ),
             selected: _selectedIndex == 0,
             onTap: () {
@@ -58,6 +60,7 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.pets_rounded),
             title: const Text('Herd Management'),
             selected: _selectedIndex == 2,
             onTap: () {
@@ -69,6 +72,7 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.water),
             title: const Text('Milk Production'),
             selected: _selectedIndex == 2,
             onTap: () {
@@ -80,6 +84,7 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.money),
             title: const Text('Milk Sales & Consumption'),
             selected: _selectedIndex == 4,
             onTap: () {
@@ -91,6 +96,7 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.health_and_safety),
             title: const Text('Health Management'),
             selected: _selectedIndex == 4,
             onTap: () {
@@ -102,6 +108,7 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.people),
             title: const Text('Clients & Consumers'),
             selected: _selectedIndex == 4,
             onTap: () {
@@ -113,6 +120,7 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.attach_money),
             title: const Text('Expenses & Income'),
             selected: _selectedIndex == 5,
             onTap: () {
