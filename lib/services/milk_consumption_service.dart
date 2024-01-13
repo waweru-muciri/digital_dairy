@@ -14,13 +14,25 @@ class MilkConsumptionService {
       );
 
   /// Loads the milkConsumptions list from firebase firestore.
-  Future<List<MilkConsumption>> getMilkConsumptionsList(String dateTime) async {
-    return await _milkConsumptionReference
-        .where("milkConsumptionDate", isEqualTo: dateTime)
-        .get()
-        .then((querySnapshot) => querySnapshot.docs
-            .map((documentSnapshot) => documentSnapshot.data())
-            .toList());
+  Future<List<MilkConsumption>> getMilkConsumptionsListBetweenDates(
+      String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _milkConsumptionReference
+          .where("milkConsumptionDate", isGreaterThanOrEqualTo: startDate)
+          .where("milkConsumptionDate", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _milkConsumptionReference
+          .where("milkConsumptionDate", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
   }
 
 //add a milkConsumption

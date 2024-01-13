@@ -14,7 +14,7 @@ class ExpenseService {
 
   Future<List<Expense>> getExpensesListBetweenDates(String startDate,
       {String? endDate}) async {
-    if (endDate != null) {
+    if (startDate.isNotEmpty && endDate != null) {
       return await _expenseReference
           .where("expenseDate", isGreaterThanOrEqualTo: startDate)
           .where("expenseDate", isLessThanOrEqualTo: endDate)

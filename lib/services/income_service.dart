@@ -16,7 +16,7 @@ class IncomeService {
 
   Future<List<Income>> getIncomeListBetweenDates(String startDate,
       {String? endDate}) async {
-    if (endDate != null) {
+    if (startDate.isNotEmpty && endDate != null) {
       return await _incomeReference
           .where("incomeDate", isGreaterThanOrEqualTo: startDate)
           .where("incomeDate", isLessThanOrEqualTo: endDate)

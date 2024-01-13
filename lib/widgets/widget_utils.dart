@@ -1,3 +1,4 @@
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showDeleteItemDialog(
@@ -61,4 +62,122 @@ Future<DateTime?> showCustomDatePicker(
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101));
   return picked;
+}
+
+Future<void> showDatesFilterBottomSheet(
+    BuildContext context,
+    TextEditingController fromDateFilterController,
+    TextEditingController toDateFilterController,
+    void Function(String startDate, {String endDate}) filterFunction) {
+  return showModalBottomSheet<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        height: 200,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Filter',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: TextFormField(
+                          controller: fromDateFilterController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: const OutlineInputBorder(),
+                            labelText: 'From Date',
+                            suffixIcon: IconButton(
+                                onPressed: () async {
+                                  final DateTime? pickedDateTime =
+                                      await showCustomDatePicker(
+                                          context,
+                                          getDateFromString(
+                                              fromDateFilterController.text));
+                                  fromDateFilterController.text =
+                                      getStringFromDate(pickedDateTime);
+                                },
+                                icon: const Align(
+                                    widthFactor: 1.0,
+                                    heightFactor: 1.0,
+                                    child: Icon(
+                                      Icons.calendar_month,
+                                    ))),
+                          ),
+                        )),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: TextFormField(
+                          controller: toDateFilterController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: const OutlineInputBorder(),
+                            labelText: 'To Date',
+                            suffixIcon: IconButton(
+                                onPressed: () async {
+                                  final DateTime? pickedDateTime =
+                                      await showCustomDatePicker(
+                                          context,
+                                          getDateFromString(
+                                              toDateFilterController.text));
+
+                                  toDateFilterController.text =
+                                      getStringFromDate(pickedDateTime);
+                                },
+                                icon: const Align(
+                                    widthFactor: 1.0,
+                                    heightFactor: 1.0,
+                                    child: Icon(
+                                      Icons.calendar_month,
+                                    ))),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FilledButton(
+                      child: const Text('Reset'),
+                      onPressed: () {
+                        fromDateFilterController.clear();
+                        toDateFilterController.clear();
+                      }),
+                  FilledButton(
+                      child: const Text('Apply Filters'),
+                      onPressed: () {
+                        filterFunction(fromDateFilterController.text,
+                            endDate: toDateFilterController.text);
+                        Navigator.pop(context);
+                      }),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

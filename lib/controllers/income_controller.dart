@@ -51,12 +51,7 @@ class IncomeController with ChangeNotifier {
 
   Future<void> addIncome(Income income) async {
     //call to the service to add the item to the database
-    final savedIncome = await _incomeService.addIncome(income);
-    // add the income item to today's list of items
-    if (savedIncome != null) {
-      _incomeList.add(savedIncome);
-      _filteredIncomeList.add(savedIncome);
-    }
+    await _incomeService.addIncome(income);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

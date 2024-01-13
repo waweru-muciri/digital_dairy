@@ -53,8 +53,8 @@ class IncomeFormState extends State<IncomeInputScreen> {
           orElse: () => Income());
       _expenseDetailsController.value =
           TextEditingValue(text: _expense.getDetails);
-      _expenseDateController.value = TextEditingValue(
-          text: DateFormat("dd/MM/yyyy").format(_expense.getIncomeDate));
+      _expenseDateController.value =
+          TextEditingValue(text: _expense.getIncomeDate);
       _expenseAmountController.value =
           TextEditingValue(text: _expense.getIncomeAmount.toString());
     } else {
@@ -109,7 +109,8 @@ class IncomeFormState extends State<IncomeInputScreen> {
                                             await showCustomDatePicker(
                                                 context,
                                                 editIncomeId != null
-                                                    ? _expense.getIncomeDate
+                                                    ? getDateFromString(
+                                                        _expense.getIncomeDate)
                                                     : DateTime.now());
                                         _expenseDateController.text =
                                             getStringFromDate(pickedDateTime);
@@ -180,8 +181,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
                               _expenseAmountController.text.trim());
 
                           _expense.setIncomeAmount = expenseAmount;
-                          _expense.setIncomeDate = DateFormat("dd/MM/yyyy")
-                              .parse(_expenseDateController.text);
+                          _expense.setIncomeDate = _expenseDateController.text;
                           _expense.setIncomeDetails = expenseDetails;
 
                           if (editIncomeId != null) {

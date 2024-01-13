@@ -3,7 +3,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 class Income {
   String? _id;
   late double _incomeAmount;
-  late DateTime _incomeDate;
+  late String _incomeDate;
   late String _details;
 
   Income();
@@ -12,7 +12,7 @@ class Income {
     _id = id;
   }
 
-  set setIncomeDate(DateTime incomeDate) {
+  set setIncomeDate(String incomeDate) {
     _incomeDate = incomeDate;
   }
 
@@ -25,7 +25,7 @@ class Income {
   }
 
   double get getIncomeAmount => _incomeAmount;
-  DateTime get getIncomeDate => _incomeDate;
+  String get getIncomeDate => _incomeDate;
   String? get getId => _id;
   String get getDetails => _details;
 
@@ -38,7 +38,7 @@ class Income {
 
     Income newIncome = Income();
     newIncome.setId = id;
-    newIncome.setIncomeDate = (data?["incomeDate"] as Timestamp).toDate();
+    newIncome.setIncomeDate = data?["incomeDate"];
     newIncome.setIncomeAmount = data?["incomeAmount"];
     newIncome.setIncomeDetails = data?["details"];
 

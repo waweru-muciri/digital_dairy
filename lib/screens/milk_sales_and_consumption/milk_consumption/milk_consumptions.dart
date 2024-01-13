@@ -1,11 +1,11 @@
 import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:DigitalDairy/models/milk_consumption.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class MilkConsumptionsScreen extends StatefulWidget {
@@ -18,25 +18,25 @@ class MilkConsumptionsScreen extends StatefulWidget {
 
 class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
   late List<MilkConsumption> _milkConsumptionList;
-  final TextEditingController _milkConsumptionDateController =
+  final TextEditingController _cowNameController = TextEditingController();
+  final TextEditingController _fromDateFilterController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
+  final TextEditingController _toDateFilterController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        context.read<MilkConsumptionController>().getTodayMilkConsumptions());
-    //start listening to changes on the date input field
-    _milkConsumptionDateController.addListener(() {
-      context
-          .read<MilkConsumptionController>()
-          .filterMilkConsumptionByDate(_milkConsumptionDateController.text);
-    });
+    Future.microtask(() => context
+        .read<MilkConsumptionController>()
+        .filterMilkConsumptionByDate(getStringFromDate(DateTime.now())));
   }
 
   @override
   void dispose() {
-    _milkConsumptionDateController.dispose();
+    _cowNameController.dispose();
+    _fromDateFilterController.dispose();
+    _toDateFilterController.dispose();
     super.dispose();
   }
 
@@ -49,61 +49,57 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
         child: Padding(
       padding: const EdgeInsets.all(16),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  OutlinedButton.icon(
-                    icon: const Icon(Icons.add),
-                    onPressed: () =>
-                        context.pushNamed("addMilkConsumptionDetails"),
-                    label: const Text("New Milk Consumption"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-            ],
-          ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: Card(
+              child: Container(
+                  margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: FilterInputField(
+                                    onQueryChanged: context
+                                        .read<MilkConsumptionController>()
+                                        .filterMilkConsumptionByConsumerName)),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                  icon: const Icon(Icons.filter_list),
+                                  onPressed: () {
+                                    showDatesFilterBottomSheet(
+                                        context,
+                                        _fromDateFilterController,
+                                        _toDateFilterController,
+                                        context
+                                            .read<MilkConsumptionController>()
+                                            .filterMilkConsumptionByDate);
+                                  })),
+                        ],
+                      )))),
         ),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-            child: TextFormField(
-              controller: _milkConsumptionDateController,
-              readOnly: true,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Date',
-                suffixIcon: IconButton(
-                    onPressed: () async {
-                      final DateTime? pickedDateTime =
-                          await showCustomDatePicker(
-                              context,
-                              DateFormat("dd/MM/yyyy")
-                                  .parse(_milkConsumptionDateController.text));
-                      final filterDateString =
-                          DateFormat("dd/MM/yyyy").format(pickedDateTime!);
-                      _milkConsumptionDateController.text = filterDateString;
-                    },
-                    icon: const Align(
-                        widthFactor: 1.0,
-                        heightFactor: 1.0,
-                        child: Icon(
-                          Icons.calendar_month,
-                        ))),
-              ),
-            )),
         PaginatedDataTable(
             header: const Text("Milk Consumptions List"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,
             sortColumnIndex: 0,
+            actions: <Widget>[
+              OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                onPressed: () => context.pushNamed("addMilkConsumptionDetails"),
+                label: const Text("New"),
+              ),
+            ],
             columns: const [
+              DataColumn(label: Text("Date")),
               DataColumn(label: Text("Consumer Name")),
               DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
               DataColumn(label: Text("Amount (Ksh)"), numeric: true),
@@ -130,6 +126,7 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
+      DataCell(Text(item.getMilkConsumptionDate)),
       DataCell(Text(item.getMilkConsumer.milkConsumerName)),
       DataCell(Text('${item.getMilkConsumptionAmount}')),
       const DataCell(Text('0')),

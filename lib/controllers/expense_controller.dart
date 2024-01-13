@@ -51,12 +51,7 @@ class ExpenseController with ChangeNotifier {
 
   Future<void> addExpense(Expense expense) async {
     //call to the service to add the item to the database
-    final savedExpense = await _expenseService.addExpense(expense);
-    // add the expense item to today's list of items
-    if (savedExpense != null) {
-      _expenseList.add(savedExpense);
-      _filteredExpenseList.add(savedExpense);
-    }
+    await _expenseService.addExpense(expense);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

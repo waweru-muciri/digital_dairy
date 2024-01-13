@@ -21,22 +21,31 @@ class MilkConsumptionController with ChangeNotifier {
   List<MilkConsumption> get milkConsumptionsList =>
       _filteredMilkConsumptionList;
 
-  void filterMilkConsumptionByDate(String filterDate) async {
-    List<MilkConsumption> filteredList =
-        await _milkConsumptionService.getMilkConsumptionsList(filterDate);
-    _filteredMilkConsumptionList.clear();
-    _filteredMilkConsumptionList.addAll(filteredList);
+  void filterMilkConsumptionByConsumerName(String? query) {
+    if (query != null && query.isNotEmpty) {
+      List<MilkConsumption> filteredList = _milkConsumptionList
+          .where((item) => item.getMilkConsumer.milkConsumerName
+              .trim()
+              .toLowerCase()
+              .contains(query.trim().toLowerCase()))
+          .toList();
+      _filteredMilkConsumptionList.clear();
+      _filteredMilkConsumptionList.addAll(filteredList);
+    } else {
+      _filteredMilkConsumptionList.clear();
+      _filteredMilkConsumptionList.addAll(_milkConsumptionList);
+    }
     notifyListeners();
   }
 
-  Future<void> getTodayMilkConsumptions() async {
-    List<MilkConsumption> loadedList = await _milkConsumptionService
-        .getMilkConsumptionsList(getStringFromDate(DateTime.now()));
+  void filterMilkConsumptionByDate(String startDate, {String? endDate}) async {
+    List<MilkConsumption> filteredList = await _milkConsumptionService
+        .getMilkConsumptionsListBetweenDates(startDate, endDate: endDate);
     _milkConsumptionList.clear();
     _filteredMilkConsumptionList.clear();
-    _milkConsumptionList.addAll(loadedList);
-    _filteredMilkConsumptionList.addAll(loadedList);
-    // Important! Inform listeners a change has occurred.
+    _milkConsumptionList.addAll(filteredList);
+    _filteredMilkConsumptionList.addAll(filteredList);
+
     notifyListeners();
   }
 

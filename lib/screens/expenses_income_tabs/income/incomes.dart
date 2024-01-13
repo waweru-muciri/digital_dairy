@@ -37,6 +37,8 @@ class IncomeScreenState extends State<IncomesScreen> {
   @override
   void dispose() {
     _cowNameController.dispose();
+    _fromDateFilterController.dispose();
+    _toDateFilterController.dispose();
     super.dispose();
   }
 
@@ -70,163 +72,18 @@ class IncomeScreenState extends State<IncomesScreen> {
                                           .filterIncomes)),
                             ),
                             Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                  icon: const Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showModalBottomSheet<void>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Container(
-                                          height: 200,
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 10),
-                                          child: Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    'Filter',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleLarge,
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .fromLTRB(
-                                                                  0, 10, 0, 10),
-                                                          child: TextFormField(
-                                                            controller:
-                                                                _fromDateFilterController,
-                                                            readOnly: true,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              isDense: true,
-                                                              border:
-                                                                  const OutlineInputBorder(),
-                                                              labelText:
-                                                                  'From Date',
-                                                              suffixIcon: IconButton(
-                                                                  onPressed: () async {
-                                                                    final DateTime?
-                                                                        pickedDateTime =
-                                                                        await showCustomDatePicker(
-                                                                            context,
-                                                                            getDateFromString(_fromDateFilterController.text));
-                                                                    _fromDateFilterController
-                                                                            .text =
-                                                                        getStringFromDate(
-                                                                            pickedDateTime);
-                                                                  },
-                                                                  icon: const Align(
-                                                                      widthFactor: 1.0,
-                                                                      heightFactor: 1.0,
-                                                                      child: Icon(
-                                                                        Icons
-                                                                            .calendar_month,
-                                                                      ))),
-                                                            ),
-                                                          )),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 12,
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .fromLTRB(
-                                                                  0, 10, 0, 10),
-                                                          child: TextFormField(
-                                                            controller:
-                                                                _toDateFilterController,
-                                                            readOnly: true,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              isDense: true,
-                                                              border:
-                                                                  const OutlineInputBorder(),
-                                                              labelText:
-                                                                  'To Date',
-                                                              suffixIcon: IconButton(
-                                                                  onPressed: () async {
-                                                                    final DateTime?
-                                                                        pickedDateTime =
-                                                                        await showCustomDatePicker(
-                                                                            context,
-                                                                            getDateFromString(_toDateFilterController.text));
-
-                                                                    _toDateFilterController
-                                                                            .text =
-                                                                        getStringFromDate(
-                                                                            pickedDateTime);
-                                                                  },
-                                                                  icon: const Align(
-                                                                      widthFactor: 1.0,
-                                                                      heightFactor: 1.0,
-                                                                      child: Icon(
-                                                                        Icons
-                                                                            .calendar_month,
-                                                                      ))),
-                                                            ),
-                                                          )),
-                                                    ),
-                                                  ],
-                                                ),
-                                                ButtonBar(
-                                                  alignment: MainAxisAlignment
-                                                      .spaceEvenly,
-                                                  children: [
-                                                    FilledButton(
-                                                        child:
-                                                            const Text('Reset'),
-                                                        onPressed: () {
-                                                          _fromDateFilterController
-                                                              .clear();
-                                                          _toDateFilterController
-                                                              .clear();
-                                                        }),
-                                                    FilledButton(
-                                                        child: const Text(
-                                                            'Apply Filters'),
-                                                        onPressed: () {
-                                                          context
-                                                              .read<
-                                                                  IncomeController>()
-                                                              .filterIncomeByDates(
-                                                                  _fromDateFilterController
-                                                                      .text,
-                                                                  endDate:
-                                                                      _toDateFilterController
-                                                                          .text);
-                                                          Navigator.pop(
-                                                              context);
-                                                        }),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }),
-                            )
+                                flex: 1,
+                                child: IconButton(
+                                    icon: const Icon(Icons.filter_list),
+                                    onPressed: () {
+                                      showDatesFilterBottomSheet(
+                                          context,
+                                          _fromDateFilterController,
+                                          _toDateFilterController,
+                                          context
+                                              .read<IncomeController>()
+                                              .filterIncomeByDates);
+                                    })),
                           ],
                         )))),
           ),
@@ -297,7 +154,7 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(DateFormat("dd/MM/yyyy").format(item.getIncomeDate))),
+      DataCell(Text(item.getIncomeDate)),
       DataCell(Text('${item.getIncomeAmount}')),
       DataCell(Text(item.getDetails)),
       DataCell(const Icon(Icons.edit),
