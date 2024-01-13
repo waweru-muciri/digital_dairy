@@ -1,7 +1,7 @@
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/services/milk_consumption_service.dart';
 import 'package:DigitalDairy/models/milk_consumption.dart';
-import 'package:intl/intl.dart';
 
 /// A class that many Widgets can interact with to read milkConsumption, update and delete
 /// milkConsumption details.
