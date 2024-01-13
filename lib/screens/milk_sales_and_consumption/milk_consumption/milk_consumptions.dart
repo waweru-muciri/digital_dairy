@@ -46,8 +46,8 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
         context.watch<MilkConsumptionController>().milkConsumptionsList;
 
     return SingleChildScrollView(
-        child: Padding(
-      padding: const EdgeInsets.all(16),
+        child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Container(
           margin: const EdgeInsets.only(bottom: 8),
@@ -85,8 +85,22 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                         ],
                       )))),
         ),
+        Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Card(
+              child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      summaryTextDisplayRow("Total Milk Consumption Amount",
+                          "Kgs: ${context.read<MilkConsumptionController>().getTotalMilkConsumptionKgsAmount}"),
+                    ],
+                  )),
+            )),
         PaginatedDataTable(
-            header: const Text("Milk Consumptions List"),
+            header: const Text("Milk Consumption List"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,

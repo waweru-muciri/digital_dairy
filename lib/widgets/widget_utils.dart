@@ -181,3 +181,23 @@ Future<void> showDatesFilterBottomSheet(
     },
   );
 }
+
+Widget summaryTextDisplayRow(String summaryText, String dataText) {
+  return Row(children: <Widget>[
+    Expanded(
+      flex: 2,
+      child: Text(
+        summaryText,
+        style: const TextStyle(
+            color: Color(0xdd000000),
+            decoration: TextDecoration.none,
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 0.15,
+            textBaseline: TextBaseline.alphabetic),
+      ),
+    ),
+    Expanded(flex: 1, child: Text(dataText))
+  ]);
+}

@@ -20,14 +20,14 @@ class DiseaseController with ChangeNotifier {
 
   void filterDiseases(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<Disease> filteredList = _diseaseList
+      List<Disease> fetchedList = _diseaseList
           .where((item) => item.getName
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredDiseaseList.clear();
-      _filteredDiseaseList.addAll(filteredList);
+      _filteredDiseaseList.addAll(fetchedList);
     } else {
       _filteredDiseaseList.clear();
       _filteredDiseaseList.addAll(_diseaseList);

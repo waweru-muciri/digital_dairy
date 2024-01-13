@@ -27,15 +27,6 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _cowNameController = TextEditingController();
-    context
-        .read<DailyMilkProductionController>()
-        .getTodaysDailyMilkProductions();
-    //start listening to changes on the date input field
-    _milkProductionDateController.addListener(() {
-      context
-          .read<DailyMilkProductionController>()
-          .filterDailyMilkProductionsByDate(_milkProductionDateController.text);
-    });
   }
 
   @override

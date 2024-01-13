@@ -20,14 +20,14 @@ class TreatmentController with ChangeNotifier {
 
   void filterTreatments(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<Treatment> filteredList = _treatmentList
+      List<Treatment> fetchedList = _treatmentList
           .where((item) => item.getTreatment
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredTreatmentList.clear();
-      _filteredTreatmentList.addAll(filteredList);
+      _filteredTreatmentList.addAll(fetchedList);
     } else {
       _filteredTreatmentList.clear();
       _filteredTreatmentList.addAll(_treatmentList);

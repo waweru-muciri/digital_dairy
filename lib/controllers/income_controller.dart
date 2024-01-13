@@ -20,14 +20,14 @@ class IncomeController with ChangeNotifier {
 
   void filterIncomes(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<Income> filteredList = _incomeList
+      List<Income> fetchedList = _incomeList
           .where((item) => item.getDetails
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredIncomeList.clear();
-      _filteredIncomeList.addAll(filteredList);
+      _filteredIncomeList.addAll(fetchedList);
     } else {
       _filteredIncomeList.clear();
       _filteredIncomeList.addAll(_incomeList);
@@ -40,12 +40,12 @@ class IncomeController with ChangeNotifier {
       .fold(0, (previousValue, element) => previousValue + element);
 
   void filterIncomeByDates(String startDate, {String? endDate}) async {
-    List<Income> filteredList = await _incomeService
+    List<Income> fetchedList = await _incomeService
         .getIncomeListBetweenDates(startDate, endDate: endDate);
     _incomeList.clear();
     _filteredIncomeList.clear();
-    _filteredIncomeList.addAll(filteredList);
-    _incomeList.addAll(filteredList);
+    _filteredIncomeList.addAll(fetchedList);
+    _incomeList.addAll(fetchedList);
     notifyListeners();
   }
 

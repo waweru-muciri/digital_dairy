@@ -20,14 +20,14 @@ class VaccinationController with ChangeNotifier {
 
   void filterVaccinations(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<Vaccination> filteredList = _vaccinationList
+      List<Vaccination> fetchedList = _vaccinationList
           .where((item) => item.getVaccination
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredVaccinationList.clear();
-      _filteredVaccinationList.addAll(filteredList);
+      _filteredVaccinationList.addAll(fetchedList);
     } else {
       _filteredVaccinationList.clear();
       _filteredVaccinationList.addAll(_vaccinationList);

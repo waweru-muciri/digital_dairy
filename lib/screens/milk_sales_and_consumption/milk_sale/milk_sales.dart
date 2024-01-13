@@ -1,11 +1,11 @@
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class MilkSalesScreen extends StatefulWidget {
@@ -18,25 +18,23 @@ class MilkSalesScreen extends StatefulWidget {
 
 class MilkSalesScreenState extends State<MilkSalesScreen> {
   late List<MilkSale> _milkSalesList;
-  final TextEditingController _milkSaleDateController =
+  final TextEditingController _fromDateFilterController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
+  final TextEditingController _toDateFilterController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<MilkSaleController>().getTodaysMilkSales());
-    //start listening to changes on the date input field
-    _milkSaleDateController.addListener(() {
-      context
-          .read<MilkSaleController>()
-          .filterMilkSalesByDate(_milkSaleDateController.text);
-    });
+    Future.microtask(() => context
+        .read<MilkSaleController>()
+        .filterMilkSalesByDates(getStringFromDate(DateTime.now())));
   }
 
   @override
   void dispose() {
-    _milkSaleDateController.dispose();
+    _fromDateFilterController.dispose();
+    _toDateFilterController.dispose();
     super.dispose();
   }
 
@@ -45,55 +43,60 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
     _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
 
     return SingleChildScrollView(
-        child: Padding(
-      padding: const EdgeInsets.all(16),
+        child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  OutlinedButton.icon(
-                    icon: const Icon(Icons.add),
-                    onPressed: () => context.pushNamed("addMilkSaleDetails"),
-                    label: const Text("New Milk Sale"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-            ],
-          ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: Card(
+              child: Container(
+                  margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: FilterInputField(
+                                    onQueryChanged: context
+                                        .read<MilkSaleController>()
+                                        .filterMilkSalesByClientName)),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                  icon: const Icon(Icons.filter_list),
+                                  onPressed: () {
+                                    showDatesFilterBottomSheet(
+                                        context,
+                                        _fromDateFilterController,
+                                        _toDateFilterController,
+                                        context
+                                            .read<MilkSaleController>()
+                                            .filterMilkSalesByDates);
+                                  })),
+                        ],
+                      )))),
         ),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-            child: TextFormField(
-              controller: _milkSaleDateController,
-              readOnly: true,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Date',
-                suffixIcon: IconButton(
-                    onPressed: () async {
-                      final DateTime? pickedDateTime =
-                          await showCustomDatePicker(
-                              context,
-                              DateFormat("dd/MM/yyyy")
-                                  .parse(_milkSaleDateController.text));
-                      final filterDateString =
-                          DateFormat("dd/MM/yyyy").format(pickedDateTime!);
-                      _milkSaleDateController.text = filterDateString;
-                    },
-                    icon: const Align(
-                        widthFactor: 1.0,
-                        heightFactor: 1.0,
-                        child: Icon(
-                          Icons.calendar_month,
-                        ))),
-              ),
+        Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Card(
+              child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      summaryTextDisplayRow("Total Milk Sales Amount",
+                          "Ksh: ${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount}"),
+                      summaryTextDisplayRow("Total Milk Sales Quantity",
+                          "Kgs: ${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount}")
+                    ],
+                  )),
             )),
         PaginatedDataTable(
             header: const Text("Milk Sales List"),
@@ -101,7 +104,15 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,
             sortColumnIndex: 0,
+            actions: <Widget>[
+              OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                onPressed: () => context.pushNamed("addMilkSaleDetails"),
+                label: const Text("New"),
+              ),
+            ],
             columns: const [
+              DataColumn(label: Text("Date")),
               DataColumn(label: Text("Client Name")),
               DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
               DataColumn(label: Text("Amount (Ksh)"), numeric: true),
@@ -128,6 +139,7 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
+      DataCell(Text(item.getMilkSaleDate)),
       DataCell(Text(item.getClient.clientName)),
       DataCell(Text('${item.getMilkSaleAmount}')),
       DataCell(Text('${item.getMilkSaleAmount * item.getClient.getUnitPrice}')),

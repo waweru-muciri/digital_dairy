@@ -33,14 +33,14 @@ class MilkConsumerController with ChangeNotifier {
 
   void filterMilkConsumers(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<MilkConsumer> filteredList = _milkConsumerList
+      List<MilkConsumer> fetchedList = _milkConsumerList
           .where((item) => item.milkConsumerName
               .trim()
               .toLowerCase()
               .contains(query.toLowerCase()))
           .toList();
       _filteredMilkConsumersList.clear();
-      _filteredMilkConsumersList.addAll(filteredList);
+      _filteredMilkConsumersList.addAll(fetchedList);
     } else {
       _filteredMilkConsumersList.clear();
       _filteredMilkConsumersList.addAll(_milkConsumerList);

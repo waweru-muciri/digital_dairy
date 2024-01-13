@@ -16,6 +16,7 @@ class ExpenseService {
       {String? endDate}) async {
     if (startDate.isNotEmpty && endDate != null) {
       return await _expenseReference
+          .orderBy("expenseDate")
           .where("expenseDate", isGreaterThanOrEqualTo: startDate)
           .where("expenseDate", isLessThanOrEqualTo: endDate)
           .get()
@@ -24,6 +25,7 @@ class ExpenseService {
               .toList());
     } else {
       return await _expenseReference
+          .orderBy("expenseDate")
           .where("expenseDate", isEqualTo: startDate)
           .get()
           .then((querySnapshot) => querySnapshot.docs

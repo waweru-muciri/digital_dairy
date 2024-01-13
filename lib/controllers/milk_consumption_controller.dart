@@ -21,16 +21,20 @@ class MilkConsumptionController with ChangeNotifier {
   List<MilkConsumption> get milkConsumptionsList =>
       _filteredMilkConsumptionList;
 
+  double get getTotalMilkConsumptionKgsAmount => _filteredMilkConsumptionList
+      .map((milkSale) => (milkSale.getMilkConsumptionAmount))
+      .fold(0, (previousValue, element) => previousValue + element);
+
   void filterMilkConsumptionByConsumerName(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<MilkConsumption> filteredList = _milkConsumptionList
+      List<MilkConsumption> fetchedList = _milkConsumptionList
           .where((item) => item.getMilkConsumer.milkConsumerName
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredMilkConsumptionList.clear();
-      _filteredMilkConsumptionList.addAll(filteredList);
+      _filteredMilkConsumptionList.addAll(fetchedList);
     } else {
       _filteredMilkConsumptionList.clear();
       _filteredMilkConsumptionList.addAll(_milkConsumptionList);
@@ -39,12 +43,12 @@ class MilkConsumptionController with ChangeNotifier {
   }
 
   void filterMilkConsumptionByDate(String startDate, {String? endDate}) async {
-    List<MilkConsumption> filteredList = await _milkConsumptionService
+    List<MilkConsumption> fetchedList = await _milkConsumptionService
         .getMilkConsumptionsListBetweenDates(startDate, endDate: endDate);
     _milkConsumptionList.clear();
     _filteredMilkConsumptionList.clear();
-    _milkConsumptionList.addAll(filteredList);
-    _filteredMilkConsumptionList.addAll(filteredList);
+    _milkConsumptionList.addAll(fetchedList);
+    _filteredMilkConsumptionList.addAll(fetchedList);
 
     notifyListeners();
   }

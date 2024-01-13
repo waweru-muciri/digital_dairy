@@ -13,22 +13,27 @@ class DailyMilkProductionService {
         toFirestore: (DailyMilkProduction dailyMilkProduction, _) =>
             dailyMilkProduction.toFirestore(),
       );
-
-  /// Loads the current day's milk production from the database.
-  Future<List<DailyMilkProduction>> getTodaysMilkProduction() async =>
-      await getMilkProductionByDate(getStringFromDate(DateTime.now()));
-
-  Future<List<DailyMilkProduction>> getMilkProductionByDate(String date) async {
-    List<DailyMilkProduction> milkProductionListForDate =
-        await _milkProductionReference
-            .orderBy("milk_production_date")
-            .where("milk_production_date", isEqualTo: date)
-            .get()
-            .then((querySnapshot) => querySnapshot.docs
-                .map((documentSnapshot) => documentSnapshot.data())
-                .toList());
-
-    return milkProductionListForDate;
+  Future<List<DailyMilkProduction>> getDailyMilkProductionsListBetweenDates(
+      String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _milkProductionReference
+          .orderBy("milk_production_date")
+          .where("milk_production_date", isGreaterThanOrEqualTo: startDate)
+          .where("milk_production_date", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _milkProductionReference
+          .orderBy("milk_production_date")
+          .where("milk_production_date", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
   }
 
 //add a milk production

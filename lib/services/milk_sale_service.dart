@@ -13,13 +13,24 @@ class MilkSaleService {
       );
 
   /// Loads the milkSales list from firebase firestore.
-  Future<List<MilkSale>> getMilkSalesList(String dateTime) async {
-    return await _milkSaleReference
-        .where("milkSaleDate", isEqualTo: dateTime)
-        .get()
-        .then((querySnapshot) => querySnapshot.docs
-            .map((documentSnapshot) => documentSnapshot.data())
-            .toList());
+  Future<List<MilkSale>> getMilkSalesListBetweenDates(String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _milkSaleReference
+          .where("milkSaleDate", isGreaterThanOrEqualTo: startDate)
+          .where("milkSaleDate", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _milkSaleReference
+          .where("milkSaleDate", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
   }
 
 //add a milkSale

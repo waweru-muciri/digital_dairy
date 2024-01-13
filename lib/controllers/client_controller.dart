@@ -20,14 +20,14 @@ class ClientController with ChangeNotifier {
 
   void filterClients(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<Client> filteredList = _clientList
+      List<Client> fetchedList = _clientList
           .where((item) => item.clientName
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredClientList.clear();
-      _filteredClientList.addAll(filteredList);
+      _filteredClientList.addAll(fetchedList);
     } else {
       _filteredClientList.clear();
       _filteredClientList.addAll(_clientList);

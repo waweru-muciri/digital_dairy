@@ -20,14 +20,14 @@ class CowController with ChangeNotifier {
 
   void filterCows(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<Cow> filteredList = _cowList
+      List<Cow> fetchedList = _cowList
           .where((item) => item.cowName
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredCowList.clear();
-      _filteredCowList.addAll(filteredList);
+      _filteredCowList.addAll(fetchedList);
     } else {
       _filteredCowList.clear();
       _filteredCowList.addAll(_cowList);

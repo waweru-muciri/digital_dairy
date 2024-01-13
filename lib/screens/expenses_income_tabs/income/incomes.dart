@@ -107,7 +107,7 @@ class IncomeScreenState extends State<IncomesScreen> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                                "Ksh: ${context.watch<IncomeController>().getTotalIncome}"),
+                                "Ksh: ${context.read<IncomeController>().getTotalIncome}"),
                           )
                         ]),
                       ],

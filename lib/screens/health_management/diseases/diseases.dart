@@ -62,7 +62,7 @@ class DiseasesScreenState extends State<DiseasesScreen> {
                                     icon: const Icon(Icons.add),
                                     onPressed: () =>
                                         context.pushNamed("addDiseaseDetails"),
-                                    label: const Text("New Disease"),
+                                    label: const Text("New"),
                                   )),
                             ],
                           ),

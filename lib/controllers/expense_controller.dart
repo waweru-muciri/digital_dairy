@@ -20,14 +20,14 @@ class ExpenseController with ChangeNotifier {
 
   void filterExpenses(String? query) {
     if (query != null && query.isNotEmpty) {
-      List<Expense> filteredList = _expenseList
+      List<Expense> fetchedList = _expenseList
           .where((item) => item.getDetails
               .trim()
               .toLowerCase()
               .contains(query.trim().toLowerCase()))
           .toList();
       _filteredExpenseList.clear();
-      _filteredExpenseList.addAll(filteredList);
+      _filteredExpenseList.addAll(fetchedList);
     } else {
       _filteredExpenseList.clear();
       _filteredExpenseList.addAll(_expenseList);
@@ -40,12 +40,12 @@ class ExpenseController with ChangeNotifier {
       .fold(0, (previousValue, element) => previousValue + element);
 
   void filterExpenseByDates(String startDate, {String? endDate}) async {
-    List<Expense> filteredList = await _expenseService
+    List<Expense> fetchedList = await _expenseService
         .getExpensesListBetweenDates(startDate, endDate: endDate);
     _expenseList.clear();
     _filteredExpenseList.clear();
-    _filteredExpenseList.addAll(filteredList);
-    _expenseList.addAll(filteredList);
+    _filteredExpenseList.addAll(fetchedList);
+    _expenseList.addAll(fetchedList);
     notifyListeners();
   }
 

@@ -19,23 +19,40 @@ class MilkSaleController with ChangeNotifier {
   // Allow Widgets to read the filtered milkSales list.
   List<MilkSale> get milkSalesList => _filteredMilkSaleList;
 
-  void filterMilkSalesByDate(String filterDate) async {
-    List<MilkSale> filteredList =
-        await _milkSaleService.getMilkSalesList(filterDate);
-    _filteredMilkSaleList.clear();
-    _filteredMilkSaleList.addAll(filteredList);
-    debugPrint("fetched items after filter => ${filteredList.length}");
+  double get getTotalMilkSalesKgsAmount => _filteredMilkSaleList
+      .map((milkSale) => (milkSale.getMilkSaleAmount))
+      .fold(0, (previousValue, element) => previousValue + element);
+
+  double get getTotalMilkSalesMoneyAmount => _filteredMilkSaleList
+      .map((milkSale) =>
+          (milkSale.getMilkSaleAmount) * (milkSale.getClient.getUnitPrice))
+      .fold(0, (previousValue, element) => previousValue + element);
+
+  void filterMilkSalesByClientName(String? query) {
+    if (query != null && query.isNotEmpty) {
+      List<MilkSale> fetchedList = _milkSaleList
+          .where((item) => item.getClient.clientName
+              .trim()
+              .toLowerCase()
+              .contains(query.trim().toLowerCase()))
+          .toList();
+      _filteredMilkSaleList.clear();
+      _filteredMilkSaleList.addAll(fetchedList);
+    } else {
+      _filteredMilkSaleList.clear();
+      _filteredMilkSaleList.addAll(_milkSaleList);
+    }
     notifyListeners();
   }
 
-  Future<void> getTodaysMilkSales() async {
-    List<MilkSale> loadedList = await _milkSaleService
-        .getMilkSalesList(getStringFromDate(DateTime.now()));
+  void filterMilkSalesByDates(String startDate, {String? endDate}) async {
+    List<MilkSale> fetchedList = await _milkSaleService
+        .getMilkSalesListBetweenDates(startDate, endDate: endDate);
     _milkSaleList.clear();
     _filteredMilkSaleList.clear();
-    _milkSaleList.addAll(loadedList);
-    _filteredMilkSaleList.addAll(loadedList);
-    // Important! Inform listeners a change has occurred.
+    _milkSaleList.addAll(fetchedList);
+    _filteredMilkSaleList.addAll(fetchedList);
+
     notifyListeners();
   }
 
