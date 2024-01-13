@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:DigitalDairy/util/utils.dart';
 
 class MilkSalesScreen extends StatefulWidget {
   const MilkSalesScreen({super.key});
@@ -77,10 +78,11 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                 hintText: 'Date',
                 suffixIcon: IconButton(
                     onPressed: () async {
-                      final DateTime? pickedDateTime = await selectDate(
-                          context,
-                          DateFormat("dd/MM/yyyy")
-                              .parse(_milkSaleDateController.text));
+                      final DateTime? pickedDateTime =
+                          await showCustomDatePicker(
+                              context,
+                              DateFormat("dd/MM/yyyy")
+                                  .parse(_milkSaleDateController.text));
                       final filterDateString =
                           DateFormat("dd/MM/yyyy").format(pickedDateTime!);
                       _milkSaleDateController.text = filterDateString;

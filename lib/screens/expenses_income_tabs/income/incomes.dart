@@ -124,7 +124,7 @@ class IncomeScreenState extends State<IncomesScreen> {
                                                                   onPressed: () async {
                                                                     final DateTime?
                                                                         pickedDateTime =
-                                                                        await selectDate(
+                                                                        await showCustomDatePicker(
                                                                             context,
                                                                             getDateFromString(_fromDateFilterController.text));
                                                                     _fromDateFilterController
@@ -167,7 +167,7 @@ class IncomeScreenState extends State<IncomesScreen> {
                                                                   onPressed: () async {
                                                                     final DateTime?
                                                                         pickedDateTime =
-                                                                        await selectDate(
+                                                                        await showCustomDatePicker(
                                                                             context,
                                                                             getDateFromString(_toDateFilterController.text));
 

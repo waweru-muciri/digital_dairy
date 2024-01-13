@@ -6,6 +6,7 @@ import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:DigitalDairy/util/utils.dart';
 
 class DailyMilkProductionScreen extends StatefulWidget {
   const DailyMilkProductionScreen({super.key});
@@ -74,7 +75,7 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                                     suffixIcon: IconButton(
                                         onPressed: () async {
                                           final DateTime? pickedDateTime =
-                                              await selectDate(
+                                              await showCustomDatePicker(
                                                   context,
                                                   DateFormat("dd/MM/yyyy").parse(
                                                       _milkProductionDateController

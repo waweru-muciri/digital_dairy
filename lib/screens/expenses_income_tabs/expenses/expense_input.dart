@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/models/expense.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +53,8 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
           orElse: () => Expense());
       _expenseDetailsController.value =
           TextEditingValue(text: _expense.getDetails);
-      _expenseDateController.value = TextEditingValue(
-          text: DateFormat("dd/MM/yyyy").format(_expense.getExpenseDate));
+      _expenseDateController.value =
+          TextEditingValue(text: _expense.getExpenseDate);
       _expenseAmountController.value =
           TextEditingValue(text: _expense.getExpenseAmount.toString());
     } else {
@@ -105,14 +106,14 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                   suffixIcon: IconButton(
                                       onPressed: () async {
                                         final DateTime? pickedDateTime =
-                                            await selectDate(
+                                            await showCustomDatePicker(
                                                 context,
                                                 editExpenseId != null
-                                                    ? _expense.getExpenseDate
+                                                    ? getDateFromString(
+                                                        _expense.getExpenseDate)
                                                     : DateTime.now());
                                         _expenseDateController.text =
-                                            DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime!);
+                                            getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,
@@ -180,8 +181,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                               _expenseAmountController.text.trim());
 
                           _expense.setExpenseAmount = expenseAmount;
-                          _expense.setExpenseDate = DateFormat("dd/MM/yyyy")
-                              .parse(_expenseDateController.text);
+                          _expense.setExpenseDate = _expenseDateController.text;
                           _expense.setExpenseDetails = expenseDetails;
 
                           if (editExpenseId != null) {

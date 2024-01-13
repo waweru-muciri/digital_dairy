@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/models/income.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -105,14 +106,13 @@ class IncomeFormState extends State<IncomeInputScreen> {
                                   suffixIcon: IconButton(
                                       onPressed: () async {
                                         final DateTime? pickedDateTime =
-                                            await selectDate(
+                                            await showCustomDatePicker(
                                                 context,
                                                 editIncomeId != null
                                                     ? _expense.getIncomeDate
                                                     : DateTime.now());
                                         _expenseDateController.text =
-                                            DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime!);
+                                            getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

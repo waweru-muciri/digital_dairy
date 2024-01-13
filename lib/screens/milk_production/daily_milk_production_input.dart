@@ -8,6 +8,7 @@ import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:DigitalDairy/util/utils.dart';
 
 class DailyMilkProductionInputScreen extends StatefulWidget {
   const DailyMilkProductionInputScreen(
@@ -132,7 +133,7 @@ class DailyMilkProductionFormState
                                   suffixIcon: IconButton(
                                       onPressed: () async {
                                         final DateTime? pickedDateTime =
-                                            await selectDate(
+                                            await showCustomDatePicker(
                                                 context,
                                                 editDailyMilkProductionId !=
                                                         null
@@ -141,8 +142,7 @@ class DailyMilkProductionFormState
                                                             .getMilkProductionDate)
                                                     : DateTime.now());
                                         _dateController.text =
-                                            DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime!);
+                                            getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

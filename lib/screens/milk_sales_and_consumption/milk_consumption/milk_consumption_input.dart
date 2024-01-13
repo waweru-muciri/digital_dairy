@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:DigitalDairy/util/utils.dart';
 
 class MilkConsumptionInputScreen extends StatefulWidget {
   const MilkConsumptionInputScreen({super.key, this.editMilkConsumptionId});
@@ -119,7 +120,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                   suffixIcon: IconButton(
                                       onPressed: () async {
                                         final DateTime? pickedDateTime =
-                                            await selectDate(
+                                            await showCustomDatePicker(
                                                 context,
                                                 editMilkConsumptionId != null
                                                     ? DateFormat("dd/MM/yyyy")
@@ -127,8 +128,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                                             .getMilkConsumptionDate)
                                                     : DateTime.now());
                                         _milkConsumptionDateController.text =
-                                            DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime!);
+                                            getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

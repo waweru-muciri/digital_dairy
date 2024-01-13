@@ -123,7 +123,7 @@ class ExpensesScreenState extends State<ExpensesScreen> {
                                                                   onPressed: () async {
                                                                     final DateTime?
                                                                         pickedDateTime =
-                                                                        await selectDate(
+                                                                        await showCustomDatePicker(
                                                                             context,
                                                                             getDateFromString(_fromDateFilterController.text));
                                                                     _fromDateFilterController
@@ -166,7 +166,7 @@ class ExpensesScreenState extends State<ExpensesScreen> {
                                                                   onPressed: () async {
                                                                     final DateTime?
                                                                         pickedDateTime =
-                                                                        await selectDate(
+                                                                        await showCustomDatePicker(
                                                                             context,
                                                                             getDateFromString(_toDateFilterController.text));
 
@@ -296,7 +296,7 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(DateFormat("dd/MM/yyyy").format(item.getExpenseDate))),
+      DataCell(Text(item.getExpenseDate)),
       DataCell(Text('${item.getExpenseAmount}')),
       DataCell(Text(item.getDetails)),
       DataCell(const Icon(Icons.edit),

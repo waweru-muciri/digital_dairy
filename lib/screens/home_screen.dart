@@ -6,6 +6,7 @@ import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:DigitalDairy/util/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -85,10 +86,11 @@ class HomeScreenState extends State<HomeScreen> {
                       hintText: 'Date',
                       suffixIcon: IconButton(
                           onPressed: () async {
-                            final DateTime? pickedDateTime = await selectDate(
-                                context,
-                                DateFormat("dd/MM/yyyy")
-                                    .parse(_milkProductionDateController.text));
+                            final DateTime? pickedDateTime =
+                                await showCustomDatePicker(
+                                    context,
+                                    DateFormat("dd/MM/yyyy").parse(
+                                        _milkProductionDateController.text));
                             final filterDateString = DateFormat("dd/MM/yyyy")
                                 .format(pickedDateTime!);
                             _milkProductionDateController.text =

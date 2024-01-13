@@ -9,7 +9,7 @@ Future<void> showDeleteItemDialog(
       return AlertDialog(
         title: const Center(child: Text("Are you sure?")),
         content: const Text(
-            'Permanently delete this item? This action cannot be undone.'),
+            'Permanently delete this item? This action cannot be undone!'),
         actions: <Widget>[
           OutlinedButton(
             child: const Text('Cancel'),
@@ -52,7 +52,7 @@ Future<void> showLoadingDialog(BuildContext context) async {
   );
 }
 
-Future<DateTime?> selectDate(
+Future<DateTime?> showCustomDatePicker(
     BuildContext context, DateTime? initialDate) async {
   final DateTime? picked = await showDatePicker(
       context: context,

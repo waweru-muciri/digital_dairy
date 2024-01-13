@@ -3,7 +3,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 class Expense {
   String? _id;
   late double _expenseAmount;
-  late DateTime _expenseDate;
+  late String _expenseDate;
   late String _details;
 
   Expense();
@@ -12,7 +12,7 @@ class Expense {
     _id = id;
   }
 
-  set setExpenseDate(DateTime expenseDate) {
+  set setExpenseDate(String expenseDate) {
     _expenseDate = expenseDate;
   }
 
@@ -25,7 +25,7 @@ class Expense {
   }
 
   double get getExpenseAmount => _expenseAmount;
-  DateTime get getExpenseDate => _expenseDate;
+  String get getExpenseDate => _expenseDate;
   String? get getId => _id;
   String get getDetails => _details;
 
@@ -38,7 +38,7 @@ class Expense {
 
     Expense newExpense = Expense();
     newExpense.setId = id;
-    newExpense.setExpenseDate = (data?["expenseDate"] as Timestamp).toDate();
+    newExpense.setExpenseDate = data?["expenseDate"];
     newExpense.setExpenseAmount = data?["expenseAmount"];
     newExpense.setExpenseDetails = data?["details"];
 

@@ -1,6 +1,5 @@
-import 'package:intl/intl.dart';
-
-import '../models/daily_milk_production.dart';
+import 'package:DigitalDairy/models/daily_milk_production.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// A service that gets, updates and deletes milk production information.

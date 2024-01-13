@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/models/disease.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +130,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                   suffixIcon: IconButton(
                                       onPressed: () async {
                                         final DateTime? pickedDateTime =
-                                            await selectDate(
+                                            await showCustomDatePicker(
                                                 context,
                                                 editDiseaseId != null
                                                     ? DateFormat("dd/MM/yyyy")
@@ -137,8 +138,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                                             .getDateDiscovered)
                                                     : DateTime.now());
                                         _dateDiscoveredController.text =
-                                            DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime!);
+                                            getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,

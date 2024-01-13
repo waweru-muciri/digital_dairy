@@ -2,6 +2,7 @@ import 'package:DigitalDairy/controllers/cow_controller.dart';
 import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/models/vaccination.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/error_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                   suffixIcon: IconButton(
                                       onPressed: () async {
                                         final DateTime? pickedDateTime =
-                                            await selectDate(
+                                            await showCustomDatePicker(
                                                 context,
                                                 editVaccinationId != null
                                                     ? DateFormat("dd/MM/yyyy")
@@ -135,8 +136,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                                             .getVaccinationDate)
                                                     : DateTime.now());
                                         _vaccinationDateController.text =
-                                            DateFormat("dd/MM/yyyy")
-                                                .format(pickedDateTime!);
+                                            getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
                                           widthFactor: 1.0,
