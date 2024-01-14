@@ -15,8 +15,9 @@ class MilkConsumersScreen extends StatefulWidget {
 }
 
 class MilkConsumersScreenState extends State<MilkConsumersScreen> {
-  late List<MilkConsumer> _clientsList;
-  final TextEditingController _cowNameController = TextEditingController();
+  late List<MilkConsumer> _consumersList;
+  final TextEditingController _consumerNameSearchController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -27,13 +28,13 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
 
   @override
   void dispose() {
-    _cowNameController.dispose();
+    _consumerNameSearchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _clientsList = context.watch<MilkConsumerController>().milkConsumersList;
+    _consumersList = context.watch<MilkConsumerController>().milkConsumersList;
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -88,7 +89,7 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                 DataColumn(label: Text("Edit")),
                 DataColumn(label: Text("Delete")),
               ],
-              source: _DataSource(data: _clientsList, context: context))
+              source: _DataSource(data: _consumersList, context: context))
         ]),
       ),
     ));
@@ -110,7 +111,7 @@ class _DataSource extends DataTableSource {
 
     return DataRow(cells: [
       DataCell(Text(milkConsumer.milkConsumerName), onTap: () {
-        //show the past milk purchase history of the client by redirecting to new route
+        //show the past milk purchase history of the consumer by redirecting to new route
         () => context.pushNamed("consumerMilkConsumptionHistory",
             pathParameters: {"milkConsumerId": '${milkConsumer.getId}'});
       }),

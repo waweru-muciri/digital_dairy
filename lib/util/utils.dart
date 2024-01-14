@@ -19,3 +19,23 @@ String getStringFromDate(DateTime? date) {
   }
   return dateString;
 }
+
+enum Foo {
+  one(1),
+  two(2);
+
+  const Foo(this.value);
+  final num value;
+}
+
+enum CowType {
+  calf("Calf"),
+  heifer("Heifer"),
+  yearling("Yearling"),
+  cow("Cow"),
+  dryCow("Dry Cow"),
+  weaner("Weaner");
+
+  const CowType(this.name);
+  final String name;
+}

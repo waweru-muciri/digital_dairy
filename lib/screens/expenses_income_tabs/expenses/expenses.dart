@@ -95,8 +95,8 @@ class ExpensesScreenState extends State<ExpensesScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        summaryTextDisplayRow("Total Expenses Amount",
-                            "Ksh: ${context.read<ExpenseController>().getTotalExpenses}"),
+                        summaryTextDisplayRow("Total Expenses Amount:",
+                            "${context.read<ExpenseController>().getTotalExpenses} Ksh"),
                       ],
                     )),
               )),

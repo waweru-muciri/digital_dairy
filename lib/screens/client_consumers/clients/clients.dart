@@ -16,7 +16,8 @@ class ClientsScreen extends StatefulWidget {
 
 class ClientsScreenState extends State<ClientsScreen> {
   late List<Client> _clientsList;
-  final TextEditingController _cowNameController = TextEditingController();
+  final TextEditingController _clientNameSearchController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -26,7 +27,7 @@ class ClientsScreenState extends State<ClientsScreen> {
 
   @override
   void dispose() {
-    _cowNameController.dispose();
+    _clientNameSearchController.dispose();
     super.dispose();
   }
 

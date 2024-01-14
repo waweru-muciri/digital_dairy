@@ -94,8 +94,8 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      summaryTextDisplayRow("Total Milk Consumption Amount",
-                          "Kgs: ${context.read<MilkConsumptionController>().getTotalMilkConsumptionKgsAmount}"),
+                      summaryTextDisplayRow("Total Milk Consumption Amount: ",
+                          "${context.read<MilkConsumptionController>().getTotalMilkConsumptionKgsAmount} Kgs"),
                     ],
                   )),
             )),

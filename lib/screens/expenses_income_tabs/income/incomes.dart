@@ -100,14 +100,14 @@ class IncomeScreenState extends State<IncomesScreen> {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              "Total Income Amount",
+                              "Total Income Amount:",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                           Expanded(
                             flex: 1,
                             child: Text(
-                                "Ksh: ${context.read<IncomeController>().getTotalIncome}"),
+                                "${context.read<IncomeController>().getTotalIncome} Ksh"),
                           )
                         ]),
                       ],

@@ -4,7 +4,6 @@ import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
@@ -99,8 +98,14 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        summaryTextDisplayRow("Total Milk Quantity",
-                            "Kgs: ${context.read<DailyMilkProductionController>().getTotalMilkProductionQuantity}"),
+                        summaryTextDisplayRow("Total Am Milk Quantity:",
+                            "${context.read<DailyMilkProductionController>().getTotalAmMilkProductionQuantity} Kgs"),
+                        summaryTextDisplayRow("Total Noon Milk Quantity:",
+                            "${context.read<DailyMilkProductionController>().getTotalNoonMilkProductionQuantity} Kgs"),
+                        summaryTextDisplayRow("Total Pm Milk Quantity:",
+                            "${context.read<DailyMilkProductionController>().getTotalPmMilkProductionQuantity} Kgs"),
+                        summaryTextDisplayRow("Total Milk Quantity:",
+                            "${context.read<DailyMilkProductionController>().getTotalMilkProductionQuantity} Kgs"),
                       ],
                     )),
               )),

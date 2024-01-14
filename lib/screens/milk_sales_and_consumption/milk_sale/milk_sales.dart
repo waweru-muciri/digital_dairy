@@ -91,10 +91,10 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      summaryTextDisplayRow("Total Milk Sales Amount",
-                          "Ksh: ${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount}"),
-                      summaryTextDisplayRow("Total Milk Sales Quantity",
-                          "Kgs: ${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount}")
+                      summaryTextDisplayRow("Total Milk Sales Amount:",
+                          "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
+                      summaryTextDisplayRow("Total Milk Sales Quantity:",
+                          "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs")
                     ],
                   )),
             )),

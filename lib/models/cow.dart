@@ -1,11 +1,17 @@
+import "package:DigitalDairy/util/utils.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Cow {
   String? _id;
   late String _name;
   late String _cowId;
+  late CowType _cowType;
 
   Cow();
+
+  CowType get getCowType => _cowType;
+
+  set setCowType(CowType cowType) => _cowType = cowType;
 
   String? get getId => _id;
 
