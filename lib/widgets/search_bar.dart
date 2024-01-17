@@ -8,13 +8,13 @@ class FilterInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         onChanged: onQueryChanged,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           isDense: true,
           labelText: 'Search',
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: const EdgeInsets.all(16),
-          border: const OutlineInputBorder(),
-          prefixIcon: const Icon(Icons.search),
+          contentPadding: EdgeInsets.all(16),
+          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.search),
           // suffixIcon: IconButton(
           //     onPressed: () {
           //       debugPrint("fuck");

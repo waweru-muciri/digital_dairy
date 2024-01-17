@@ -2,8 +2,9 @@ import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:DigitalDairy/models/milk_consumption.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:provider/provider.dart';
@@ -116,6 +117,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                 },
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
@@ -162,6 +164,8 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                  isDense: true, border: OutlineInputBorder()),
                               dropdownMenuEntries: _milkConsumersList
                                   .map<DropdownMenuEntry<MilkConsumer>>(
                                       (MilkConsumer milkConsumer) {
@@ -193,11 +197,12 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               ))
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

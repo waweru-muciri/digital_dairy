@@ -3,8 +3,9 @@ import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/models/vaccination.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/vaccination_controller.dart';
 import 'package:intl/intl.dart';
@@ -124,6 +125,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 },
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
@@ -169,6 +171,8 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                  isDense: true, border: OutlineInputBorder()),
                               dropdownMenuEntries: _cowsList
                                   .map<DropdownMenuEntry<Cow>>((Cow cow) {
                                 return DropdownMenuEntry<Cow>(
@@ -197,6 +201,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 maxLines: 3,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -214,6 +219,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 controller: _vaccinationVetNameController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -239,11 +245,12 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               ))
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

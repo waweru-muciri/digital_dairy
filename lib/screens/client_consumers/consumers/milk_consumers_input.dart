@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/models/milk_consumer.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:provider/provider.dart';
@@ -129,6 +130,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -146,6 +148,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 controller: _contactsController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -163,11 +166,12 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 controller: _locationController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

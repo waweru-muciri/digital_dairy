@@ -1,8 +1,9 @@
 import 'package:DigitalDairy/models/disease.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/disease_controller.dart';
 import 'package:intl/intl.dart';
@@ -106,6 +107,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -126,6 +128,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                 },
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
@@ -166,11 +169,12 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                 maxLines: 3,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

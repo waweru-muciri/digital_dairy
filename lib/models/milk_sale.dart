@@ -30,6 +30,9 @@ class MilkSale {
   String? get getId => _id;
   Client get getClient => _client;
 
+  double get getMilkSaleMoneyAmount =>
+      (_milkSaleAmount * getClient.getUnitPrice);
+
   factory MilkSale.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,

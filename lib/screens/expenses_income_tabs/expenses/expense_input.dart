@@ -1,8 +1,9 @@
 import 'package:DigitalDairy/models/expense.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/expense_controller.dart';
 import 'package:provider/provider.dart';
@@ -102,6 +103,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                 },
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
@@ -141,6 +143,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Details',
                                 ),
                               )),
@@ -164,12 +167,13 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Amount (Ksh)',
                                 ),
                               ))
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

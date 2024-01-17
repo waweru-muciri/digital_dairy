@@ -3,8 +3,9 @@ import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/models/daily_milk_production.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -129,6 +130,7 @@ class DailyMilkProductionFormState
                                 },
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
@@ -175,6 +177,8 @@ class DailyMilkProductionFormState
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                  isDense: true, border: OutlineInputBorder()),
                               dropdownMenuEntries: _cowsList
                                   .map<DropdownMenuEntry<Cow>>((Cow cow) {
                                 return DropdownMenuEntry<Cow>(
@@ -205,6 +209,7 @@ class DailyMilkProductionFormState
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -227,6 +232,7 @@ class DailyMilkProductionFormState
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -249,11 +255,12 @@ class DailyMilkProductionFormState
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               ))
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

@@ -3,8 +3,9 @@ import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/models/treatment.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/treatment_controller.dart';
 import 'package:intl/intl.dart';
@@ -128,6 +129,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 },
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
+                                  isDense: true,
                                   hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
@@ -173,6 +175,8 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                  isDense: true, border: OutlineInputBorder()),
                               dropdownMenuEntries: _cowsList
                                   .map<DropdownMenuEntry<Cow>>((Cow cow) {
                                 return DropdownMenuEntry<Cow>(
@@ -207,6 +211,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -227,6 +232,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 maxLines: 3,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -244,6 +250,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 controller: _treatmentVetNameController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -269,11 +276,12 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               ))
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

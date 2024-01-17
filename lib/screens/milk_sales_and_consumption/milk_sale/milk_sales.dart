@@ -22,6 +22,10 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
       TextEditingController(text: getStringFromDate(DateTime.now()));
   final TextEditingController _toDateFilterController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
+  int _columnIndex = 0;
+  bool _columnAscending = true;
+
+  late final _DataSource _dataTableSource;
 
   @override
   void initState() {
@@ -38,10 +42,18 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
     super.dispose();
   }
 
+  void _sort(int columnIndex, bool ascending) {
+    setState(() {
+      _columnIndex = columnIndex;
+      _columnAscending = ascending;
+      _dataTableSource.setData(_milkSalesList, _columnIndex, _columnAscending);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
-
+    _dataTableSource = _DataSource(context: context);
     return SingleChildScrollView(
         child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -102,7 +114,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
             header: const Text("Milk Sales List"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
-            sortAscending: false,
+            sortAscending: true,
             sortColumnIndex: 0,
             actions: <Widget>[
               OutlinedButton.icon(
@@ -111,38 +123,69 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                 label: const Text("New"),
               ),
             ],
-            columns: const [
-              DataColumn(label: Text("Date")),
-              DataColumn(label: Text("Client Name")),
-              DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
-              DataColumn(label: Text("Amount (Ksh)"), numeric: true),
-              DataColumn(label: Text("Edit")),
-              DataColumn(label: Text("Delete")),
+            columns: [
+              DataColumn(label: const Text("Date"), onSort: _sort),
+              const DataColumn(label: Text("Client Name")),
+              DataColumn(
+                  label: const Text("Quantity (Ltrs)"),
+                  numeric: true,
+                  onSort: _sort),
+              DataColumn(
+                  label: const Text("Amount (Ksh)"),
+                  numeric: true,
+                  onSort: _sort),
+              const DataColumn(label: Text("Edit")),
+              const DataColumn(label: Text("Delete")),
             ],
-            source: _DataSource(data: _milkSalesList, context: context))
+            source: _dataTableSource)
       ]),
     ));
   }
 }
 
 class _DataSource extends DataTableSource {
-  final List<MilkSale> data;
   final BuildContext context;
-  _DataSource({required this.data, required this.context});
+  _DataSource({required this.context});
+
+  late List<MilkSale> sortedData;
+
+  void setData(List<MilkSale> rawData, int sortColumn, bool sortAscending) {
+    sortedData = rawData.toList()
+      ..sort((MilkSale a, MilkSale b) {
+        late final Comparable<Object> cellA;
+        late final Comparable<Object> cellB;
+        switch (sortColumn) {
+          case 0:
+            cellA = a.getMilkSaleDate;
+            cellB = b.getMilkSaleDate;
+            break;
+          case 2:
+            cellA = a.getClient.getUnitPrice;
+            cellB = b.getClient.getUnitPrice;
+          case 3:
+            cellA = a.getMilkSaleMoneyAmount;
+            cellB = b.getMilkSaleMoneyAmount;
+            break;
+          default:
+        }
+        return cellA.compareTo(cellB) * (sortAscending ? 1 : -1);
+      });
+    notifyListeners();
+  }
 
   @override
   DataRow? getRow(int index) {
-    if (index >= data.length) {
+    if (index >= sortedData.length) {
       return null;
     }
 
-    final item = data[index];
+    final item = sortedData[index];
 
     return DataRow(cells: [
       DataCell(Text(item.getMilkSaleDate)),
       DataCell(Text(item.getClient.clientName)),
       DataCell(Text('${item.getMilkSaleAmount}')),
-      DataCell(Text('${item.getMilkSaleAmount * item.getClient.getUnitPrice}')),
+      DataCell(Text('${item.getMilkSaleMoneyAmount}')),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editMilkSaleDetails",
               pathParameters: {"editMilkSaleId": '${item.getId}'})),
@@ -160,7 +203,7 @@ class _DataSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => data.length;
+  int get rowCount => sortedData.length;
 
   @override
   int get selectedRowCount => 0;

@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
-import 'package:DigitalDairy/widgets/error_snackbar.dart';
+import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:provider/provider.dart';
@@ -111,6 +112,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -134,6 +136,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -151,6 +154,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                 controller: _contactsController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -168,6 +172,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                 controller: _locationController,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               )),
                           Padding(
@@ -194,11 +199,12 @@ class ClientFormState extends State<ClientInputScreen> {
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  isDense: true,
                                 ),
                               ))
                         ],
                       )),
-                  OutlinedButton(
+                  saveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
@@ -261,7 +267,7 @@ class ClientFormState extends State<ClientInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      child: const Text("Save Client"))
                 ],
               )),
         )));
