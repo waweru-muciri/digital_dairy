@@ -1,82 +1,86 @@
-import 'package:DigitalDairy/controllers/client_controller.dart';
-import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
+import 'package:DigitalDairy/controllers/milk_sale_payment_controller.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
+import 'package:DigitalDairy/models/milk_sale_payment.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
-import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
-class MilkSaleInputScreen extends StatefulWidget {
-  const MilkSaleInputScreen({super.key, this.editMilkSaleId});
-  final String? editMilkSaleId;
-  static const String addDetailsRoutePath = "/add_milk_sale_details";
+class MilkSalePaymentInputScreen extends StatefulWidget {
+  const MilkSalePaymentInputScreen(
+      {super.key, this.editMilkSalePaymentId, this.milkSaleId});
+  final String? milkSaleId;
+  final String? editMilkSalePaymentId;
+  static const String addDetailsRoutePath = "/add_milk_sale_payment_details";
   static const String editDetailsRoutePath =
-      "/edit_milk_sale_details/:editMilkSaleId";
+      "/edit_milk_sale_payment_details/:editMilkSalePaymentId";
 
   @override
-  MilkSaleFormState createState() {
-    return MilkSaleFormState();
+  MilkSalePaymentFormState createState() {
+    return MilkSalePaymentFormState();
   }
 }
 
-class MilkSaleFormState extends State<MilkSaleInputScreen> {
-  final TextEditingController _milkSaleDateController =
+class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
+  final TextEditingController _dateController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
-  final TextEditingController _milkSaleAmountController =
+  final TextEditingController _amountController =
       TextEditingController(text: "0");
-  final TextEditingController _clientController = TextEditingController();
-  late List<Client> _clientsList;
-  late MilkSale _milkSale;
-  Client? selectedClient;
+  final TextEditingController _detailsController = TextEditingController();
+  late MilkSalePayment _milkSalePayment;
+  late MilkSale selectedMilkSale;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    //get the list of clients
-    Future.microtask(() => context.read<ClientController>().getClients());
   }
 
   @override
   void dispose() {
-    _clientController.dispose();
-    _milkSaleDateController.dispose();
-    _milkSaleAmountController.dispose();
+    _detailsController.dispose();
+    _dateController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _clientsList = context.watch<ClientController>().clientsList;
-
-    String? editMilkSaleId = widget.editMilkSaleId;
-    if (editMilkSaleId != null) {
-      final clientsList = context.read<MilkSaleController>().milkSalesList;
-      _milkSale = clientsList.firstWhere(
-          (client) => client.getId == editMilkSaleId,
-          orElse: () => MilkSale());
-      _milkSaleDateController.value =
-          TextEditingValue(text: _milkSale.getMilkSaleDate);
-      _milkSaleAmountController.value =
-          TextEditingValue(text: _milkSale.getMilkSaleQuantity.toString());
-      setState(() {
-        selectedClient = _milkSale.getClient;
-      });
+    //if the editMilkSalePaymentId is not null then it means the payments list is already loaded
+    String? editMilkSalePaymentId = widget.editMilkSalePaymentId;
+    if (editMilkSalePaymentId != null) {
+      _milkSalePayment = context
+          .read<MilkSalePaymentController>()
+          .milkSalePaymentsList
+          .firstWhere((milkSalePayment) =>
+              milkSalePayment.getId == editMilkSalePaymentId);
+      _dateController.value =
+          TextEditingValue(text: _milkSalePayment.getMilkSalePaymentDate);
+      _amountController.value = TextEditingValue(
+          text: _milkSalePayment.getMilkSalePaymentAmount.toString());
+      _detailsController.value =
+          TextEditingValue(text: '${_milkSalePayment.getDetails}');
     } else {
-      _milkSale = MilkSale();
-    } // Build a Form widget using the _formKey created above.
+      _milkSalePayment = MilkSalePayment();
+    }
+
+    String? milkSaleId = widget.milkSaleId;
+    final milkSalesList = context.read<MilkSaleController>().milkSalesList;
+    selectedMilkSale = milkSalesList.firstWhere(
+        (milkPayment) => milkPayment.getId == milkSaleId,
+        orElse: () => MilkSale());
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editMilkSaleId != null
-                ? 'Edit ${DisplayTextUtil.milkSaleDetails}'
-                : 'New ${DisplayTextUtil.milkSaleDetails}',
+            editMilkSalePaymentId != null
+                ? 'Edit ${DisplayTextUtil.milkSalePaymentDetails}'
+                : 'New ${DisplayTextUtil.milkSalePaymentDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -97,13 +101,13 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Date",
+                            child: Text("Payment Date",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _milkSaleDateController,
+                                controller: _dateController,
                                 readOnly: true,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -120,12 +124,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                         final DateTime? pickedDateTime =
                                             await showCustomDatePicker(
                                                 context,
-                                                editMilkSaleId != null
-                                                    ? DateFormat("dd/MM/yyyy")
-                                                        .parse(_milkSale
-                                                            .getMilkSaleDate)
-                                                    : DateTime.now());
-                                        _milkSaleDateController.text =
+                                                getDateFromString(
+                                                    _dateController.text));
+                                        _dateController.text =
                                             getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
@@ -138,58 +139,37 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Client",
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: DropdownMenu<Client>(
-                              controller: _clientController,
-                              requestFocusOnTap: true,
-                              initialSelection: selectedClient,
-                              expandedInsets: EdgeInsets.zero,
-                              onSelected: (Client? client) {
-                                setState(() {
-                                  selectedClient = client;
-                                });
-                              },
-                              errorText: selectedClient == null
-                                  ? 'Client cannot be empty!'
-                                  : null,
-                              enableFilter: true,
-                              enableSearch: true,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                  isDense: true, border: OutlineInputBorder()),
-                              dropdownMenuEntries: _clientsList
-                                  .map<DropdownMenuEntry<Client>>(
-                                      (Client client) {
-                                return DropdownMenuEntry<Client>(
-                                  value: client,
-                                  label: client.clientName,
-                                  enabled: true,
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Milk Sale Quantity",
+                            child: Text("Payment Amount",
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _milkSaleAmountController,
+                                controller: _amountController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Quantity cannot be empty';
+                                    return 'Amount cannot be empty';
                                   } else if (double.tryParse(value) == null) {
-                                    return "Quantity must be a number";
+                                    return "Amount must be a number";
                                   }
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  isDense: true,
+                                ),
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text("Payment Details",
+                                style: Theme.of(context).textTheme.titleMedium),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: TextFormField(
+                                controller: _detailsController,
+                                keyboardType: TextInputType.text,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                   isDense: true,
@@ -203,24 +183,26 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          double milkSaleAmount = double.parse(
-                              _milkSaleAmountController.text.trim());
-                          _milkSale.setMilkSaleQuantity = milkSaleAmount;
-                          _milkSale.setMilkSaleDate =
-                              _milkSaleDateController.text;
-                          _milkSale.setClient = selectedClient!;
+                          double milkSalePaymentAmount =
+                              double.parse(_amountController.text.trim());
+                          _milkSalePayment.setMilkSalePaymentAmount =
+                              milkSalePaymentAmount;
+                          _milkSalePayment.setMilkSalePaymentDate =
+                              _dateController.text.trim();
+                          _milkSalePayment.setDetails =
+                              _detailsController.text.trim();
 
-                          if (editMilkSaleId != null) {
+                          if (editMilkSalePaymentId != null) {
                             //update the milk sale details in the db
                             await context
-                                .read<MilkSaleController>()
-                                .editMilkSale(_milkSale)
+                                .read<MilkSalePaymentController>()
+                                .editMilkSalePayment(_milkSalePayment)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "MilkSale edited successfully!"));
+                                      "Payment edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -228,25 +210,24 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
+                            //this is a new milk sale payment so add the milk sale to it
+                            _milkSalePayment.setMilkSale = selectedMilkSale;
                             //add the client in the db
                             await context
-                                .read<MilkSaleController>()
-                                .addMilkSale(_milkSale)
+                                .read<MilkSalePaymentController>()
+                                .addMilkSalePayment(_milkSalePayment)
                                 .then((value) {
                               //reset the form
-                              _clientController.clear();
-                              setState(() {
-                                selectedClient = null;
-                              });
-                              _milkSaleAmountController.clear();
+                              _amountController.clear();
+                              _detailsController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Milk sale added successfully."));
+                                      "Payment added successfully."));
                             }).catchError((error) {
-                              debugPrint("Error saving milk sale!");
+                              debugPrint("Error saving payment!");
                               debugPrint(error);
                               //remove the loading dialog
                               Navigator.of(context).pop();

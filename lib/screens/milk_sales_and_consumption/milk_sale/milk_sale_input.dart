@@ -28,7 +28,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
   final TextEditingController _milkSaleDateController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
   final TextEditingController _milkSaleAmountController =
-      TextEditingController(text: "0");
+      TextEditingController(text: "");
   final TextEditingController _clientController = TextEditingController();
   late List<Client> _clientsList;
   late MilkSale _milkSale;
@@ -120,11 +120,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                         final DateTime? pickedDateTime =
                                             await showCustomDatePicker(
                                                 context,
-                                                editMilkSaleId != null
-                                                    ? DateFormat("dd/MM/yyyy")
-                                                        .parse(_milkSale
-                                                            .getMilkSaleDate)
-                                                    : DateTime.now());
+                                                getDateFromString(
+                                                    _milkSaleDateController
+                                                        .text));
                                         _milkSaleDateController.text =
                                             getStringFromDate(pickedDateTime);
                                       },

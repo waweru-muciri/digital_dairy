@@ -183,7 +183,13 @@ class _DataSource extends DataTableSource {
 
     return DataRow(cells: [
       DataCell(Text(item.getMilkSaleDate)),
-      DataCell(Text(item.getClient.clientName)),
+      DataCell(
+          Text(
+            item.getClient.clientName,
+            style: const TextStyle(decoration: TextDecoration.underline),
+          ),
+          onTap: () => context.pushNamed("addMilkSalePaymentDetails",
+              pathParameters: {"milkSaleId": '${item.getId}'})),
       DataCell(Text('${item.getMilkSaleQuantity}')),
       DataCell(Text('${item.getMilkSaleMoneyAmount}')),
       DataCell(const Icon(Icons.edit),

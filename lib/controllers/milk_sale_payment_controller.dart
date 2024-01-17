@@ -24,6 +24,9 @@ class MilkSalePaymentController with ChangeNotifier {
       (previousValue, milkSalePayment) =>
           previousValue + milkSalePayment.getMilkSale.getMilkSaleMoneyAmount);
 
+  double get getOutstandingAmount =>
+      getTotalMilkSalesPayment - getTotalMilkSales;
+
   void filterMilkSalePaymentsByClientName(String? query) {
     if (query != null && query.isNotEmpty) {
       List<MilkSalePayment> fetchedList = _milkSalePaymentList

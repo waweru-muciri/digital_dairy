@@ -5,7 +5,12 @@ class MilkSalePayment {
   String? _id;
   late double _milkSalePaymentAmount;
   late String _milkSalePaymentDate;
+  late String? _details;
   late MilkSale _milkSale;
+
+  String? get getDetails => _details;
+
+  set setDetails(String? details) => _details = details;
 
   MilkSalePayment();
 
@@ -30,8 +35,11 @@ class MilkSalePayment {
   String? get getId => _id;
   MilkSale get getMilkSale => _milkSale;
 
-  double get getMilkSaleOutstandingPayment =>
-      (_milkSalePaymentAmount - getMilkSale.getMilkSaleMoneyAmount);
+  double getMilkSaleOutstandingPayment() {
+    double outstandingPayment =
+        _milkSalePaymentAmount - getMilkSale.getMilkSaleMoneyAmount;
+    return outstandingPayment < 0 ? 0 : outstandingPayment;
+  }
 
   factory MilkSalePayment.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

@@ -8,7 +8,6 @@ import 'package:DigitalDairy/screens/health_management/health_management_tabbed_
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cow-sales/cow_sale_input.dart';
-import 'package:DigitalDairy/screens/herd_management/cows.dart';
 import 'package:DigitalDairy/screens/herd_management/herd_management_tabbed_view.dart';
 import 'package:DigitalDairy/screens/herd_management/semen/semen_catalog_input.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production_input.dart';
@@ -16,6 +15,7 @@ import 'package:DigitalDairy/screens/milk_production/milk_production_tabbed_view
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
+import 'package:DigitalDairy/screens/milk_sales_payments/milk_sale_payment_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_payments/milk_sales_payments.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
@@ -49,6 +49,22 @@ class AppRouter {
         name: "milk_sales_payments",
         path: MilkSalePaymentsScreen.routePath,
         builder: (context, state) => const MilkSalePaymentsScreen(),
+      ),
+      //add milk sales payments route
+      GoRoute(
+        name: "addMilkSalePaymentDetails",
+        path: MilkSalePaymentInputScreen.addDetailsRoutePath,
+        builder: (context, state) => MilkSalePaymentInputScreen(
+          milkSaleId: state.pathParameters["milkSaleId"],
+        ),
+      ),
+      //edit milk sales payments route
+      GoRoute(
+        name: "editMilkSalePaymentDetails",
+        path: MilkSalePaymentInputScreen.editDetailsRoutePath,
+        builder: (context, state) => MilkSalePaymentInputScreen(
+          editMilkSalePaymentId: state.pathParameters["editMilkSalePaymentId"],
+        ),
       ),
       //add & edit daily milk production routes
       GoRoute(

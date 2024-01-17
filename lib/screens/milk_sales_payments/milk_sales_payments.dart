@@ -59,6 +59,11 @@ class MilkSalePaymentsScreenState extends State<MilkSalePaymentsScreen> {
         context.watch<MilkSalePaymentController>().milkSalePaymentsList;
     _dataTableSource.setData(
         _milkSalePaymentsList, _sortColumnIndex, _sortColumnAscending);
+    double totalMilkSalesPayments =
+        context.read<MilkSalePaymentController>().getTotalMilkSalesPayment;
+    double totalMilkSales =
+        context.read<MilkSalePaymentController>().getTotalMilkSales;
+    double outstandingPaymentsAmount = totalMilkSalesPayments - totalMilkSales;
 
     return Scaffold(
         appBar: AppBar(
@@ -118,10 +123,12 @@ class MilkSalePaymentsScreenState extends State<MilkSalePaymentsScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          summaryTextDisplayRow("Total Payments:",
-                              "${context.read<MilkSalePaymentController>().getTotalMilkSalesPayment} Ksh"),
-                          summaryTextDisplayRow("Total Sales:",
-                              "${context.read<MilkSalePaymentController>().getTotalMilkSales} Ksh"),
+                          summaryTextDisplayRow(
+                              "Total Payments:", "$totalMilkSalesPayments Ksh"),
+                          summaryTextDisplayRow(
+                              "Total Sales:", "$totalMilkSales Ksh"),
+                          summaryTextDisplayRow("Outstanding Amount:",
+                              "$outstandingPaymentsAmount Ksh"),
                         ],
                       )),
                 )),
@@ -134,7 +141,10 @@ class MilkSalePaymentsScreenState extends State<MilkSalePaymentsScreen> {
                 columns: [
                   DataColumn(label: const Text("Date"), onSort: _sort),
                   const DataColumn(label: Text("Client Name")),
-                  const DataColumn(label: Text("Milk Sale Amount (Ksh)")),
+                  DataColumn(
+                      label: const Text("Milk Sale Amount (Ksh)"),
+                      numeric: true,
+                      onSort: _sort),
                   DataColumn(
                       label: const Text("Payment Amount (Ksh)"),
                       numeric: true,
