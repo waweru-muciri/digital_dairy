@@ -98,13 +98,13 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        summaryTextDisplayRow("Total Am Milk Quantity:",
+                        summaryTextDisplayRow("Total Am Quantity:",
                             "${context.read<DailyMilkProductionController>().getTotalAmMilkProductionQuantity} Kgs"),
-                        summaryTextDisplayRow("Total Noon Milk Quantity:",
+                        summaryTextDisplayRow("Total Noon Quantity:",
                             "${context.read<DailyMilkProductionController>().getTotalNoonMilkProductionQuantity} Kgs"),
-                        summaryTextDisplayRow("Total Pm Milk Quantity:",
+                        summaryTextDisplayRow("Total Pm Quantity:",
                             "${context.read<DailyMilkProductionController>().getTotalPmMilkProductionQuantity} Kgs"),
-                        summaryTextDisplayRow("Total Milk Quantity:",
+                        summaryTextDisplayRow("Total Quantity:",
                             "${context.read<DailyMilkProductionController>().getTotalMilkProductionQuantity} Kgs"),
                       ],
                     )),

@@ -7,6 +7,7 @@ import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
+import 'package:DigitalDairy/controllers/semen_catalog_controller.dart';
 import 'package:DigitalDairy/controllers/treatment_controller.dart';
 import 'package:DigitalDairy/controllers/vaccination_controller.dart';
 import 'package:DigitalDairy/screens/routes.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => VaccinationController()),
             ChangeNotifierProvider(create: (_) => TreatmentController()),
             ChangeNotifierProvider(create: (_) => CowController()),
+            ChangeNotifierProvider(create: (_) => SemenCatalogController()),
           ],
           builder: (context, child) {
             return MaterialApp.router(

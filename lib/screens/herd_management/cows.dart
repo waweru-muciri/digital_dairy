@@ -8,7 +8,7 @@ class CowsScreen extends StatefulWidget {
   final String? activeStatus;
   final String? cowType;
 
-  static const routePath = '/herd_management';
+  static const routePath = '/cows';
 
   @override
   State<StatefulWidget> createState() => CowsScreenState();
@@ -33,19 +33,13 @@ class CowsScreenState extends State<CowsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Daily Milk Production',
-            style: TextStyle(),
-          ),
-        ),
         body: const SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(children: [
-              Text('Milk data for today'),
-            ]),
-          ),
-        ));
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(children: [
+          Text('Milk data for today'),
+        ]),
+      ),
+    ));
   }
 }

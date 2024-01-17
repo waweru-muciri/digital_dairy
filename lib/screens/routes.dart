@@ -8,6 +8,8 @@ import 'package:DigitalDairy/screens/health_management/health_management_tabbed_
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cows.dart';
+import 'package:DigitalDairy/screens/herd_management/herd_management_tabbed_view.dart';
+import 'package:DigitalDairy/screens/herd_management/semen/semen_catalog_input.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production_input.dart';
 import 'package:DigitalDairy/screens/milk_production/milk_production_tabbed_view.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
@@ -15,7 +17,6 @@ import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_s
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
-import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
@@ -59,8 +60,22 @@ class AppRouter {
       //main herd management route
       GoRoute(
         name: "herd_management",
-        path: CowsScreen.routePath,
-        builder: (context, state) => const CowsScreen(),
+        path: HerdManagementTabView.routePath,
+        builder: (context, state) => const HerdManagementTabView(),
+      ),
+      //add & edit semen catalog routes
+      GoRoute(
+        name: "addSemenCatalogDetails",
+        path: SemenCatalogInputScreen.addDetailsRoutePath,
+        builder: (context, state) => const SemenCatalogInputScreen(),
+      ),
+      //edit diseases routes
+      GoRoute(
+        name: "editSemenCatalogDetails",
+        path: SemenCatalogInputScreen.editDetailsRoutePath,
+        builder: (context, state) => SemenCatalogInputScreen(
+          editSemenCatalogId: state.pathParameters["editSemenCatalogId"],
+        ),
       ),
       //main health management route
       GoRoute(

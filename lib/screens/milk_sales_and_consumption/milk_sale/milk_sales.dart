@@ -22,14 +22,15 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
       TextEditingController(text: getStringFromDate(DateTime.now()));
   final TextEditingController _toDateFilterController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
-  int _columnIndex = 0;
-  bool _columnAscending = true;
+  int _sortColumnIndex = 0;
+  bool _sortColumnAscending = true;
 
-  late final _DataSource _dataTableSource;
+  late _DataSource _dataTableSource;
 
   @override
   void initState() {
     super.initState();
+    _dataTableSource = _DataSource(context: context);
     Future.microtask(() => context
         .read<MilkSaleController>()
         .filterMilkSalesByDates(getStringFromDate(DateTime.now())));
@@ -44,16 +45,19 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
 
   void _sort(int columnIndex, bool ascending) {
     setState(() {
-      _columnIndex = columnIndex;
-      _columnAscending = ascending;
-      _dataTableSource.setData(_milkSalesList, _columnIndex, _columnAscending);
+      _sortColumnIndex = columnIndex;
+      _sortColumnAscending = ascending;
+      _dataTableSource.setData(
+          _milkSalesList, _sortColumnIndex, _sortColumnAscending);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
-    _dataTableSource = _DataSource(context: context);
+    _dataTableSource.setData(
+        _milkSalesList, _sortColumnIndex, _sortColumnAscending);
+
     return SingleChildScrollView(
         child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -114,8 +118,8 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
             header: const Text("Milk Sales List"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
-            sortAscending: true,
-            sortColumnIndex: 0,
+            sortColumnIndex: _sortColumnIndex,
+            sortAscending: _sortColumnAscending,
             actions: <Widget>[
               OutlinedButton.icon(
                 icon: const Icon(Icons.add),
@@ -147,10 +151,10 @@ class _DataSource extends DataTableSource {
   final BuildContext context;
   _DataSource({required this.context});
 
-  late List<MilkSale> sortedData;
+  late List<MilkSale> sortedData = [];
 
   void setData(List<MilkSale> rawData, int sortColumn, bool sortAscending) {
-    sortedData = rawData.toList()
+    sortedData = rawData
       ..sort((MilkSale a, MilkSale b) {
         late final Comparable<Object> cellA;
         late final Comparable<Object> cellB;
@@ -175,10 +179,6 @@ class _DataSource extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    if (index >= sortedData.length) {
-      return null;
-    }
-
     final item = sortedData[index];
 
     return DataRow(cells: [

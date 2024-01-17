@@ -1,10 +1,12 @@
 import 'package:DigitalDairy/screens/herd_management/cows.dart';
-import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumptions.dart';
+import 'package:DigitalDairy/screens/herd_management/semen/semen_catalogs.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 
 class HerdManagementTabView extends StatelessWidget {
   const HerdManagementTabView({super.key});
+
+  static const routePath = '/herd_management';
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class HerdManagementTabView extends StatelessWidget {
                 text: "Cows",
               ),
               Tab(
-                text: "Yes",
+                text: "Semen Catalog",
               ),
             ],
           ),
@@ -28,7 +30,7 @@ class HerdManagementTabView extends StatelessWidget {
         body: const TabBarView(
           children: [
             CowsScreen(),
-            MilkConsumptionsScreen(),
+            SemenCatalogsScreen(),
           ],
         ),
       ),
