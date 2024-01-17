@@ -1,3 +1,4 @@
+import 'package:DigitalDairy/screens/herd_management/cow-sales/cow_sales.dart';
 import 'package:DigitalDairy/screens/herd_management/cows.dart';
 import 'package:DigitalDairy/screens/herd_management/semen/semen_catalogs.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
@@ -11,7 +12,7 @@ class HerdManagementTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
@@ -23,6 +24,9 @@ class HerdManagementTabView extends StatelessWidget {
               Tab(
                 text: "Semen Catalog",
               ),
+              Tab(
+                text: "Cow Sales",
+              ),
             ],
           ),
           title: const Text('Herd Management'),
@@ -31,6 +35,7 @@ class HerdManagementTabView extends StatelessWidget {
           children: [
             CowsScreen(),
             SemenCatalogsScreen(),
+            CowSalesScreen(),
           ],
         ),
       ),

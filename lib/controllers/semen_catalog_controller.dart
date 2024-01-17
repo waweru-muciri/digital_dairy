@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:DigitalDairy/services/semen_catalog_service.dart';
 import 'package:DigitalDairy/models/semen_catalog.dart';
 
-/// A class that many Widgets can interact with to read semenCatalog, update and delete
-/// semenCatalog details.
-///
 class SemenCatalogController with ChangeNotifier {
   SemenCatalogController();
 

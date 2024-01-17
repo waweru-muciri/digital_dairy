@@ -13,4 +13,6 @@ class DisplayTextUtil {
   static const vaccinationDetails = "Vaccinations List";
   static const dailyMilkProductionDetails = "Milk Production Details";
   static const semenCatalogDetails = "Semen Catalog Details";
+  static const semenCatalogsList = "Semen Catalog List";
+  static const cowSalesList = "Cow Sales List";
 }

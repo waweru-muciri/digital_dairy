@@ -3,7 +3,7 @@ import "db_service.dart";
 
 class SemenCatalogService {
   final _semenCatalogReference = DbService.currentUserDbReference
-      .collection('semenCatalogs')
+      .collection('semen-catalogs')
       .withConverter<SemenCatalog>(
         fromFirestore: SemenCatalog.fromFirestore,
         toFirestore: (SemenCatalog semenCatalog, _) =>
