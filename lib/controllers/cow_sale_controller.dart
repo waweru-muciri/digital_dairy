@@ -15,6 +15,9 @@ class CowSaleController with ChangeNotifier {
   // Allow Widgets to read the filtered cowSales list.
   List<CowSale> get cowSalesList => _filteredCowSaleList;
 
+  double get getTotalCowSales => _filteredCowSaleList.fold(
+      0, (previousValue, milkSale) => previousValue + milkSale.getCowSaleCost);
+
   void filterCowSales(String? query) {
     if (query != null && query.isNotEmpty) {
       List<CowSale> fetchedList = _cowSaleList
@@ -29,6 +32,17 @@ class CowSaleController with ChangeNotifier {
       _filteredCowSaleList.clear();
       _filteredCowSaleList.addAll(_cowSaleList);
     }
+    notifyListeners();
+  }
+
+  void filterCowSalesByDates(String startDate, {String? endDate}) async {
+    List<CowSale> fetchedList = await _cowSaleService
+        .getCowSalesListBetweenDates(startDate, endDate: endDate);
+    _cowSaleList.clear();
+    _filteredCowSaleList.clear();
+    _cowSaleList.addAll(fetchedList);
+    _filteredCowSaleList.addAll(fetchedList);
+
     notifyListeners();
   }
 

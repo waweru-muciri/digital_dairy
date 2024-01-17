@@ -29,6 +29,17 @@ enum Foo {
   final num value;
 }
 
+enum CowGrade {
+  pedigree("Pedigree"),
+  appendix("Appendix"),
+  pool("Pool"),
+  intermediate("Intermediate"),
+  foundation("Foundation");
+
+  const CowGrade(this.name);
+  final String name;
+}
+
 enum CowType {
   calf("Calf"),
   heifer("Heifer"),

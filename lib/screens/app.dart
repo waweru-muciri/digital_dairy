@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/controllers/cow_controller.dart';
+import 'package:DigitalDairy/controllers/cow_sale_controller.dart';
 import 'package:DigitalDairy/controllers/disease_controller.dart';
 import 'package:DigitalDairy/controllers/expense_controller.dart';
 import 'package:DigitalDairy/controllers/income_controller.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => TreatmentController()),
             ChangeNotifierProvider(create: (_) => CowController()),
             ChangeNotifierProvider(create: (_) => SemenCatalogController()),
+            ChangeNotifierProvider(create: (_) => CowSaleController()),
           ],
           builder: (context, child) {
             return MaterialApp.router(

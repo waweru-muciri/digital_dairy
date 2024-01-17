@@ -1,91 +1,82 @@
-import 'package:DigitalDairy/controllers/cow_controller.dart';
-import 'package:DigitalDairy/models/cow.dart';
-import 'package:DigitalDairy/models/cow_sale.dart';
+import 'package:DigitalDairy/controllers/client_controller.dart';
+import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
-import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
-import 'package:DigitalDairy/controllers/cow_sale_controller.dart';
-import 'package:intl/intl.dart';
+import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import 'package:DigitalDairy/util/utils.dart';
 
-class CowSaleInputScreen extends StatefulWidget {
-  const CowSaleInputScreen({super.key, this.editCowSaleId});
-  final String? editCowSaleId;
-  static const String addDetailsRoutePath = "/add_cowSale_details";
+class MilkSaleInputScreen extends StatefulWidget {
+  const MilkSaleInputScreen({super.key, this.editMilkSaleId});
+  final String? editMilkSaleId;
+  static const String addDetailsRoutePath = "/add_milk_sale_details";
   static const String editDetailsRoutePath =
-      "/edit_cow_sale_details/:editCowSaleId";
+      "/edit_milk_sale_details/:editMilkSaleId";
 
   @override
-  CowSaleFormState createState() {
-    return CowSaleFormState();
+  MilkSaleFormState createState() {
+    return MilkSaleFormState();
   }
 }
 
-class CowSaleFormState extends State<CowSaleInputScreen> {
-  final TextEditingController _clientNameController =
-      TextEditingController(text: "");
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _remarksController =
-      TextEditingController(text: "");
-  final TextEditingController _costController = TextEditingController();
-  final TextEditingController _cowController = TextEditingController();
-  Cow? selectedCow;
-  late List<Cow> _cowsList;
-
-  late CowSale cowSaleToSave;
+class MilkSaleFormState extends State<MilkSaleInputScreen> {
+  final TextEditingController _milkSaleDateController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
+  final TextEditingController _milkSaleAmountController =
+      TextEditingController(text: "0");
+  final TextEditingController _clientController = TextEditingController();
+  late List<Client> _clientsList;
+  late MilkSale _milkSale;
+  Client? selectedClient;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    //get the list of cows
-    Future.microtask(() => context.read<CowController>().getCows());
+    //get the list of clients
+    Future.microtask(() => context.read<ClientController>().getClients());
   }
 
   @override
   void dispose() {
-    _clientNameController.dispose();
-    _costController.dispose();
-    _dateController.dispose();
-    _remarksController.dispose();
+    _clientController.dispose();
+    _milkSaleDateController.dispose();
+    _milkSaleAmountController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _cowsList = context.watch<CowController>().cowsList;
+    _clientsList = context.watch<ClientController>().clientsList;
 
-    String? editCowSaleId = widget.editCowSaleId;
-    if (editCowSaleId != null) {
-      final cowSalesList = context.read<CowSaleController>().cowSalesList;
-      cowSaleToSave = cowSalesList.firstWhere(
-          (cowSaleToSave) => cowSaleToSave.getId == editCowSaleId,
-          orElse: () => CowSale());
-      _clientNameController.value =
-          TextEditingValue(text: '$cowSaleToSave.getClientName');
-      _dateController.value =
-          TextEditingValue(text: cowSaleToSave.getCowSaleDate);
-      _remarksController.value =
-          TextEditingValue(text: '${cowSaleToSave.getRemarks}');
-      _costController.value =
-          TextEditingValue(text: '${cowSaleToSave.getCowSaleCost}');
-
+    String? editMilkSaleId = widget.editMilkSaleId;
+    if (editMilkSaleId != null) {
+      final clientsList = context.read<MilkSaleController>().milkSalesList;
+      _milkSale = clientsList.firstWhere(
+          (client) => client.getId == editMilkSaleId,
+          orElse: () => MilkSale());
+      _milkSaleDateController.value =
+          TextEditingValue(text: _milkSale.getMilkSaleDate);
+      _milkSaleAmountController.value =
+          TextEditingValue(text: _milkSale.getMilkSaleAmount.toString());
       setState(() {
-        selectedCow = cowSaleToSave.getCow;
+        selectedClient = _milkSale.getClient;
       });
     } else {
-      cowSaleToSave = CowSale();
-    }
+      _milkSale = MilkSale();
+    } // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editCowSaleId != null
-                ? 'Edit ${DisplayTextUtil.cowSaleDetails}'
-                : 'New ${DisplayTextUtil.cowSaleDetails}',
+            editMilkSaleId != null
+                ? 'Edit ${DisplayTextUtil.milkSaleDetails}'
+                : 'New ${DisplayTextUtil.milkSaleDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -98,8 +89,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 36),
+                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 36),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +103,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _dateController,
+                                controller: _milkSaleDateController,
                                 readOnly: true,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -130,12 +120,12 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                         final DateTime? pickedDateTime =
                                             await showCustomDatePicker(
                                                 context,
-                                                editCowSaleId != null
+                                                editMilkSaleId != null
                                                     ? DateFormat("dd/MM/yyyy")
-                                                        .parse(cowSaleToSave
-                                                            .getCowSaleDate)
+                                                        .parse(_milkSale
+                                                            .getMilkSaleDate)
                                                     : DateTime.now());
-                                        _dateController.text =
+                                        _milkSaleDateController.text =
                                             getStringFromDate(pickedDateTime);
                                       },
                                       icon: const Align(
@@ -148,34 +138,35 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Cow",
+                            child: Text("Select Client",
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: DropdownMenu<Cow>(
-                              initialSelection: selectedCow,
-                              controller: _cowController,
+                            child: DropdownMenu<Client>(
+                              controller: _clientController,
                               requestFocusOnTap: true,
+                              initialSelection: selectedClient,
                               expandedInsets: EdgeInsets.zero,
-                              onSelected: (Cow? cow) {
+                              onSelected: (Client? client) {
                                 setState(() {
-                                  selectedCow = cow;
+                                  selectedClient = client;
                                 });
                               },
-                              errorText: selectedCow == null
-                                  ? 'Cow cannot be empty!'
+                              errorText: selectedClient == null
+                                  ? 'Client cannot be empty!'
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
                               inputDecorationTheme: const InputDecorationTheme(
                                   isDense: true, border: OutlineInputBorder()),
-                              dropdownMenuEntries: _cowsList
-                                  .map<DropdownMenuEntry<Cow>>((Cow cow) {
-                                return DropdownMenuEntry<Cow>(
-                                  value: cow,
-                                  label: cow.cowName,
+                              dropdownMenuEntries: _clientsList
+                                  .map<DropdownMenuEntry<Client>>(
+                                      (Client client) {
+                                return DropdownMenuEntry<Client>(
+                                  value: client,
+                                  label: client.clientName,
                                   enabled: true,
                                 );
                               }).toList(),
@@ -183,39 +174,18 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Client Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _clientNameController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cost",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                            child: Text("Milk Sale Quantity",
+                                style: Theme.of(context).textTheme.titleMedium),
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: TextFormField(
-                                controller: _costController,
+                                controller: _milkSaleAmountController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Cost cannot be empty';
+                                    return 'Quantity cannot be empty';
                                   } else if (double.tryParse(value) == null) {
-                                    return "Cost must be a number";
+                                    return "Quantity must be a number";
                                   }
                                   return null;
                                 },
@@ -224,26 +194,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                   border: OutlineInputBorder(),
                                   isDense: true,
                                 ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Remarks",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _remarksController,
-                                keyboardType: TextInputType.text,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              )),
+                              ))
                         ],
                       )),
                   saveButton(
@@ -252,28 +203,24 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          String date = _dateController.text.trim();
-                          String remarks = _remarksController.text.trim();
-                          String clientName = _clientNameController.text.trim();
-                          String cost = _costController.text.trim();
-                          //edit the properties that require editing
-                          cowSaleToSave.setRemarks = remarks;
-                          cowSaleToSave.setCowSaleDate = date;
-                          cowSaleToSave.setCowSaleCost = double.parse(cost);
-                          cowSaleToSave.setClientName = clientName;
-                          cowSaleToSave.setCow = selectedCow!;
+                          double milkSaleAmount = double.parse(
+                              _milkSaleAmountController.text.trim());
+                          _milkSale.setMilkSaleAmount = milkSaleAmount;
+                          _milkSale.setMilkSaleDate =
+                              _milkSaleDateController.text;
+                          _milkSale.setClient = selectedClient!;
 
-                          if (editCowSaleId != null) {
-                            //update the cowSale  in the db
+                          if (editMilkSaleId != null) {
+                            //update the milk sale details in the db
                             await context
-                                .read<CowSaleController>()
-                                .editCowSale(cowSaleToSave)
+                                .read<MilkSaleController>()
+                                .editMilkSale(_milkSale)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Cow Sale edited successfully!"));
+                                      "MilkSale edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -281,23 +228,26 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the cowSaleToSave in the db
+                            //add the client in the db
                             await context
-                                .read<CowSaleController>()
-                                .addCowSale(cowSaleToSave)
+                                .read<MilkSaleController>()
+                                .addMilkSale(_milkSale)
                                 .then((value) {
                               //reset the form
-                              _clientNameController.clear();
-                              _dateController.clear();
-                              _remarksController.clear();
-                              _costController.clear();
+                              _clientController.clear();
+                              setState(() {
+                                selectedClient = null;
+                              });
+                              _milkSaleAmountController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Cow Sale added successfully."));
+                                      "Milk sale added successfully."));
                             }).catchError((error) {
+                              debugPrint("Error saving milk sale!");
+                              debugPrint(error);
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(

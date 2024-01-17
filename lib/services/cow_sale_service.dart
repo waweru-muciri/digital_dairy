@@ -20,6 +20,26 @@ class CowSaleService {
         .toList());
   }
 
+  Future<List<CowSale>> getCowSalesListBetweenDates(String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _cowSaleReference
+          .where("date", isGreaterThanOrEqualTo: startDate)
+          .where("date", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _cowSaleReference
+          .where("date", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
+  }
+
 //add a cowSale
   Future<CowSale?> addCowSale(CowSale cowSale) async {
     return await _cowSaleReference

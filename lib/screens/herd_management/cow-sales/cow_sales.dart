@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/controllers/cow_sale_controller.dart';
 import 'package:DigitalDairy/models/cow_sale.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,10 @@ class CowSalesScreenState extends State<CowSalesScreen> {
   late List<CowSale> _cowSaleList;
   final TextEditingController _cowSalesFilterController =
       TextEditingController();
+  final TextEditingController _fromDateFilterController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
+  final TextEditingController _toDateFilterController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
 
   @override
   void initState() {
@@ -47,39 +52,64 @@ class CowSalesScreenState extends State<CowSalesScreen> {
                   margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Column(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                  child: OutlinedButton.icon(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () =>
-                                        context.pushNamed("addCowSaleDetails"),
-                                    label: const Text("New"),
-                                  )),
-                            ],
+                          Expanded(
+                            flex: 4,
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: FilterInputField(
+                                    onQueryChanged: context
+                                        .read<CowSaleController>()
+                                        .filterCowSales)),
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: FilterInputField(
-                                  onQueryChanged: context
-                                      .read<CowSaleController>()
-                                      .filterCowSales)),
+                          Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                  icon: const Icon(Icons.filter_list),
+                                  onPressed: () {
+                                    showDatesFilterBottomSheet(
+                                        context,
+                                        _fromDateFilterController,
+                                        _toDateFilterController,
+                                        context
+                                            .read<CowSaleController>()
+                                            .filterCowSalesByDates);
+                                  })),
                         ],
                       )))),
         ),
+        Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Card(
+              child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      summaryTextDisplayRow("Number Sold:",
+                          "${context.read<CowSaleController>().cowSalesList.length}"),
+                      summaryTextDisplayRow("Total Sales:",
+                          "${context.read<CowSaleController>().getTotalCowSales} Ksh")
+                    ],
+                  )),
+            )),
         PaginatedDataTable(
             header: const Text(DisplayTextUtil.cowSalesList),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,
             sortColumnIndex: 0,
+            actions: <Widget>[
+              OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                onPressed: () => context.pushNamed("addCowSaleDetails"),
+                label: const Text("New"),
+              )
+            ],
             columns: const [
               DataColumn(label: Text("Date")),
               DataColumn(label: Text("Cow")),
@@ -111,9 +141,9 @@ class _DataSource extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text(item.getCowSaleDate)),
       DataCell(Text(item.getCow.cowName)),
-      DataCell(Text(item.getClientName)),
+      DataCell(Text('${item.getClientName}')),
       DataCell(Text('${item.getCowSaleCost}')),
-      DataCell(Text(item.getRemarks)),
+      DataCell(Text('${item.getRemarks}')),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editCowSaleDetails",
               pathParameters: {"editCowSaleId": '${item.getId}'})),

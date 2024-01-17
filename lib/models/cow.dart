@@ -6,8 +6,53 @@ class Cow {
   late String _name;
   late String _cowId;
   late CowType _cowType;
+  late String? _dateOfBirth;
+  late CowGrade? _grade;
+  late String? _breed;
+  late String? _color;
+  late Cow? _sire;
+  late Cow? _dam;
+  late String _category;
+  late double? _birthWeight;
+  late String? _group;
 
   Cow();
+
+  String? get getDateOfBirth => _dateOfBirth;
+
+  set setDateOfBirth(String dateOfBirth) => _dateOfBirth = dateOfBirth;
+
+  CowGrade? get getGrade => _grade;
+
+  set setGrade(CowGrade grade) => _grade = grade;
+
+  String? get getBreed => _breed;
+
+  set setBreed(String? breed) => _breed = breed;
+
+  String? get getColor => _color;
+
+  set setColor(String? color) => _color = color;
+
+  Cow? get getSire => _sire;
+
+  set setSire(Cow? sire) => _sire = sire;
+
+  Cow? get getDam => _dam;
+
+  set setDam(Cow? dam) => _dam = dam;
+
+  get getCategory => _category;
+
+  set setCategory(category) => _category = category;
+
+  double? get getBirthWeight => _birthWeight;
+
+  set setBirthWeight(double? birthWeight) => _birthWeight = birthWeight;
+
+  get getGroup => _group;
+
+  set setGroup(group) => _group = group;
 
   CowType get getCowType => _cowType;
 

@@ -19,14 +19,14 @@ class MilkSaleController with ChangeNotifier {
   // Allow Widgets to read the filtered milkSales list.
   List<MilkSale> get milkSalesList => _filteredMilkSaleList;
 
-  double get getTotalMilkSalesKgsAmount => _filteredMilkSaleList
-      .map((milkSale) => (milkSale.getMilkSaleAmount))
-      .fold(0, (previousValue, element) => previousValue + element);
+  double get getTotalMilkSalesKgsAmount => _filteredMilkSaleList.fold(0,
+      (previousValue, milkSale) => previousValue + milkSale.getMilkSaleAmount);
 
-  double get getTotalMilkSalesMoneyAmount => _filteredMilkSaleList
-      .map((milkSale) =>
-          (milkSale.getMilkSaleAmount) * (milkSale.getClient.getUnitPrice))
-      .fold(0, (previousValue, element) => previousValue + element);
+  double get getTotalMilkSalesMoneyAmount => _filteredMilkSaleList.fold(
+      0,
+      (previousValue, milkSale) =>
+          previousValue +
+          (milkSale.getMilkSaleAmount) * (milkSale.getClient.getUnitPrice));
 
   void filterMilkSalesByClientName(String? query) {
     if (query != null && query.isNotEmpty) {

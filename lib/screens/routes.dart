@@ -7,6 +7,7 @@ import 'package:DigitalDairy/screens/health_management/diseases/disease_input.da
 import 'package:DigitalDairy/screens/health_management/health_management_tabbed_view.dart';
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_input.dart';
+import 'package:DigitalDairy/screens/herd_management/cow-sales/cow_sale_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cows.dart';
 import 'package:DigitalDairy/screens/herd_management/herd_management_tabbed_view.dart';
 import 'package:DigitalDairy/screens/herd_management/semen/semen_catalog_input.dart';
@@ -75,6 +76,20 @@ class AppRouter {
         path: SemenCatalogInputScreen.editDetailsRoutePath,
         builder: (context, state) => SemenCatalogInputScreen(
           editSemenCatalogId: state.pathParameters["editSemenCatalogId"],
+        ),
+      ),
+      //add & edit cow sales routes
+      GoRoute(
+        name: "addCowSaleDetails",
+        path: CowSaleInputScreen.addDetailsRoutePath,
+        builder: (context, state) => const CowSaleInputScreen(),
+      ),
+      //edit diseases routes
+      GoRoute(
+        name: "editCowSaleDetails",
+        path: CowSaleInputScreen.editDetailsRoutePath,
+        builder: (context, state) => CowSaleInputScreen(
+          editCowSaleId: state.pathParameters["editCowSaleId"],
         ),
       ),
       //main health management route

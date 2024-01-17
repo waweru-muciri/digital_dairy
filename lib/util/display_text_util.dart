@@ -15,4 +15,5 @@ class DisplayTextUtil {
   static const semenCatalogDetails = "Semen Catalog Details";
   static const semenCatalogsList = "Semen Catalog List";
   static const cowSalesList = "Cow Sales List";
+  static const cowSaleDetails = "Cow Sale Details";
 }
