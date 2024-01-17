@@ -96,12 +96,24 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.health_and_safety),
-            title: const Text('Health Management'),
+            leading: const Icon(Icons.money),
+            title: const Text('Milk Sales Payments'),
             selected: _selectedIndex == 4,
             onTap: () {
               // Update the state of the app
               _onItemTapped(4);
+              context.pushNamed("milk_sales_payments");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.health_and_safety),
+            title: const Text('Health Management'),
+            selected: _selectedIndex == 5,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(5);
               context.pushNamed("healthManagement");
               // Then close the drawer
               Navigator.pop(context);
@@ -110,10 +122,10 @@ class _MyDrawerState extends State<MyDrawer> {
           ListTile(
             leading: const Icon(Icons.people),
             title: const Text('Clients & Consumers'),
-            selected: _selectedIndex == 4,
+            selected: _selectedIndex == 6,
             onTap: () {
               // Update the state of the app
-              _onItemTapped(5);
+              _onItemTapped(6);
               context.pushNamed("clients_consumers");
               // Then close the drawer
               Navigator.pop(context);
@@ -122,10 +134,10 @@ class _MyDrawerState extends State<MyDrawer> {
           ListTile(
             leading: const Icon(Icons.attach_money),
             title: const Text('Expenses & Income'),
-            selected: _selectedIndex == 5,
+            selected: _selectedIndex == 7,
             onTap: () {
               // Update the state of the app
-              _onItemTapped(6);
+              _onItemTapped(7);
               context.pushNamed("expenses_incomes");
               // Then close the drawer
               Navigator.pop(context);

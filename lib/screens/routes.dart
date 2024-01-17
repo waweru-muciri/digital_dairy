@@ -16,6 +16,7 @@ import 'package:DigitalDairy/screens/milk_production/milk_production_tabbed_view
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
+import 'package:DigitalDairy/screens/milk_sales_payments/milk_sales_payments.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
@@ -42,6 +43,12 @@ class AppRouter {
         name: "milk_production",
         path: MilkProductionTabView.routePath,
         builder: (context, state) => const MilkProductionTabView(),
+      ),
+      //main milk sales payments route
+      GoRoute(
+        name: "milk_sales_payments",
+        path: MilkSalePaymentsScreen.routePath,
+        builder: (context, state) => const MilkSalePaymentsScreen(),
       ),
       //add & edit daily milk production routes
       GoRoute(

@@ -3,7 +3,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 class MilkSale {
   String? _id;
-  late double _milkSaleAmount;
+  late double _milkSaleQuantity;
   late double _milkSaleUnitPrice;
   late String _milkSaleDate;
   late Client _client;
@@ -23,16 +23,16 @@ class MilkSale {
     _milkSaleUnitPrice = client.getUnitPrice;
   }
 
-  set setMilkSaleAmount(double milkSaleAmount) {
-    _milkSaleAmount = milkSaleAmount;
+  set setMilkSaleQuantity(double milkSaleQuantity) {
+    _milkSaleQuantity = milkSaleQuantity;
   }
 
-  double get getMilkSaleAmount => _milkSaleAmount;
+  double get getMilkSaleQuantity => _milkSaleQuantity;
   String get getMilkSaleDate => _milkSaleDate;
   String? get getId => _id;
   Client get getClient => _client;
 
-  double get getMilkSaleMoneyAmount => (_milkSaleAmount * _milkSaleUnitPrice);
+  double get getMilkSaleMoneyAmount => (_milkSaleQuantity * _milkSaleUnitPrice);
 
   factory MilkSale.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -44,7 +44,7 @@ class MilkSale {
     MilkSale newMilkSale = MilkSale();
     newMilkSale.setId = id;
     newMilkSale.setMilkSaleDate = (data?["milkSaleDate"]);
-    newMilkSale.setMilkSaleAmount = data?["milkSaleAmount"];
+    newMilkSale.setMilkSaleQuantity = data?["milkSaleAmount"];
     newMilkSale.setClient = Client.fromAnotherFirestoreDoc(snapshot, options);
 
     return newMilkSale;
@@ -60,7 +60,7 @@ class MilkSale {
     MilkSale newMilkSale = MilkSale();
     newMilkSale.setId = id;
     newMilkSale.setMilkSaleDate = (data?["milkSaleDate"]);
-    newMilkSale.setMilkSaleAmount = data?["milkSaleAmount"];
+    newMilkSale.setMilkSaleQuantity = data?["milkSaleAmount"];
     newMilkSale.setClient = Client.fromAnotherFirestoreDoc(snapshot, options);
 
     return newMilkSale;
@@ -70,7 +70,7 @@ class MilkSale {
     return {
       'client': _client.toFirestore(),
       'milkSaleDate': _milkSaleDate,
-      'milkSaleAmount': _milkSaleAmount,
+      'milkSaleAmount': _milkSaleQuantity,
       'unit_price': _milkSaleUnitPrice,
       'id': _id,
     };

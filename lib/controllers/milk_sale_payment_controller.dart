@@ -14,11 +14,15 @@ class MilkSalePaymentController with ChangeNotifier {
   List<MilkSalePayment> get milkSalePaymentsList =>
       _filteredMilkSalePaymentList;
 
-  double get getTotalMilkSalesPaymentAmount =>
-      _filteredMilkSalePaymentList.fold(
-          0,
-          (previousValue, milkSalePayment) =>
-              previousValue + milkSalePayment.getMilkSalePaymentAmount);
+  double get getTotalMilkSalesPayment => _filteredMilkSalePaymentList.fold(
+      0,
+      (previousValue, milkSalePayment) =>
+          previousValue + milkSalePayment.getMilkSalePaymentAmount);
+
+  double get getTotalMilkSales => _filteredMilkSalePaymentList.fold(
+      0,
+      (previousValue, milkSalePayment) =>
+          previousValue + milkSalePayment.getMilkSale.getMilkSaleMoneyAmount);
 
   void filterMilkSalePaymentsByClientName(String? query) {
     if (query != null && query.isNotEmpty) {

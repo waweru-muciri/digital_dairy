@@ -1,8 +1,7 @@
-import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_payment_controller.dart';
-import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/models/milk_sale_payment.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -61,80 +60,91 @@ class MilkSalePaymentsScreenState extends State<MilkSalePaymentsScreen> {
     _dataTableSource.setData(
         _milkSalePaymentsList, _sortColumnIndex, _sortColumnAscending);
 
-    return SingleChildScrollView(
-        child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Column(mainAxisSize: MainAxisSize.max, children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: Card(
-              child: Container(
-                  margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                child: FilterInputField(
-                                    onQueryChanged: context
-                                        .read<MilkSalePaymentController>()
-                                        .filterMilkSalePaymentsByClientName)),
-                          ),
-                          Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                  icon: const Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showDatesFilterBottomSheet(
-                                        context,
-                                        _fromDateFilterController,
-                                        _toDateFilterController,
-                                        context
-                                            .read<MilkSalePaymentController>()
-                                            .filterMilkSalePaymentsByDates);
-                                  })),
-                        ],
-                      )))),
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Milk Sales Payments',
+            style: TextStyle(),
+          ),
         ),
-        Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: Card(
-              child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      summaryTextDisplayRow("Total Milk Sales Payments Amount:",
-                          "${context.read<MilkSalePaymentController>().getTotalMilkSalesPaymentAmount} Ksh"),
-                    ],
-                  )),
-            )),
-        PaginatedDataTable(
-            header: const Text("Milk Sales Payments List"),
-            rowsPerPage: 20,
-            availableRowsPerPage: const [20, 30, 50],
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortColumnAscending,
-            columns: [
-              DataColumn(label: const Text("Date"), onSort: _sort),
-              const DataColumn(label: Text("Client Name")),
-              const DataColumn(label: Text("Milk Sale Amount (Ksh)")),
-              DataColumn(
-                  label: const Text("Payment Amount (Ksh)"),
-                  numeric: true,
-                  onSort: _sort),
-              const DataColumn(label: Text("Edit")),
-              const DataColumn(label: Text("Delete")),
-            ],
-            source: _dataTableSource)
-      ]),
-    ));
+        drawer: const MyDrawer(),
+        body: SingleChildScrollView(
+            child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Column(mainAxisSize: MainAxisSize.max, children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: Card(
+                  child: Container(
+                      margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: FilterInputField(
+                                        onQueryChanged: context
+                                            .read<MilkSalePaymentController>()
+                                            .filterMilkSalePaymentsByClientName)),
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                      icon: const Icon(Icons.filter_list),
+                                      onPressed: () {
+                                        showDatesFilterBottomSheet(
+                                            context,
+                                            _fromDateFilterController,
+                                            _toDateFilterController,
+                                            context
+                                                .read<
+                                                    MilkSalePaymentController>()
+                                                .filterMilkSalePaymentsByDates);
+                                      })),
+                            ],
+                          )))),
+            ),
+            Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Card(
+                  child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          summaryTextDisplayRow("Total Payments:",
+                              "${context.read<MilkSalePaymentController>().getTotalMilkSalesPayment} Ksh"),
+                          summaryTextDisplayRow("Total Sales:",
+                              "${context.read<MilkSalePaymentController>().getTotalMilkSales} Ksh"),
+                        ],
+                      )),
+                )),
+            PaginatedDataTable(
+                header: const Text("Payments List"),
+                rowsPerPage: 20,
+                availableRowsPerPage: const [20, 30, 50],
+                sortColumnIndex: _sortColumnIndex,
+                sortAscending: _sortColumnAscending,
+                columns: [
+                  DataColumn(label: const Text("Date"), onSort: _sort),
+                  const DataColumn(label: Text("Client Name")),
+                  const DataColumn(label: Text("Milk Sale Amount (Ksh)")),
+                  DataColumn(
+                      label: const Text("Payment Amount (Ksh)"),
+                      numeric: true,
+                      onSort: _sort),
+                  const DataColumn(label: Text("Edit")),
+                  const DataColumn(label: Text("Delete")),
+                ],
+                source: _dataTableSource)
+          ]),
+        )));
   }
 }
 

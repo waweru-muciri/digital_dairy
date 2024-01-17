@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/services/milk_sale_service.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
-import 'package:DigitalDairy/util/utils.dart';
 
 /// A class that many Widgets can interact with to read milkSale, update and delete
 /// milkSale details.
@@ -19,14 +18,15 @@ class MilkSaleController with ChangeNotifier {
   // Allow Widgets to read the filtered milkSales list.
   List<MilkSale> get milkSalesList => _filteredMilkSaleList;
 
-  double get getTotalMilkSalesKgsAmount => _filteredMilkSaleList.fold(0,
-      (previousValue, milkSale) => previousValue + milkSale.getMilkSaleAmount);
+  double get getTotalMilkSalesKgsAmount => _filteredMilkSaleList.fold(
+      0,
+      (previousValue, milkSale) =>
+          previousValue + milkSale.getMilkSaleQuantity);
 
   double get getTotalMilkSalesMoneyAmount => _filteredMilkSaleList.fold(
       0,
       (previousValue, milkSale) =>
-          previousValue +
-          (milkSale.getMilkSaleAmount) * (milkSale.getClient.getUnitPrice));
+          previousValue + milkSale.getMilkSaleMoneyAmount);
 
   void filterMilkSalesByClientName(String? query) {
     if (query != null && query.isNotEmpty) {

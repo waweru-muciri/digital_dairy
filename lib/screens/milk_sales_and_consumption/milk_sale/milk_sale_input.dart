@@ -64,7 +64,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
       _milkSaleDateController.value =
           TextEditingValue(text: _milkSale.getMilkSaleDate);
       _milkSaleAmountController.value =
-          TextEditingValue(text: _milkSale.getMilkSaleAmount.toString());
+          TextEditingValue(text: _milkSale.getMilkSaleQuantity.toString());
       setState(() {
         selectedClient = _milkSale.getClient;
       });
@@ -203,9 +203,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          double milkSaleAmount = double.parse(
+                          double milkSaleQuantity = double.parse(
                               _milkSaleAmountController.text.trim());
-                          _milkSale.setMilkSaleAmount = milkSaleAmount;
+                          _milkSale.setMilkSaleQuantity = milkSaleQuantity;
                           _milkSale.setMilkSaleDate =
                               _milkSaleDateController.text;
                           _milkSale.setClient = selectedClient!;
