@@ -58,14 +58,14 @@ class AppRouter {
           milkSaleId: state.pathParameters["milkSaleId"],
         ),
       ),
-      //edit milk sales payments route
-      GoRoute(
-        name: "editMilkSalePaymentDetails",
-        path: MilkSalePaymentInputScreen.editDetailsRoutePath,
-        builder: (context, state) => MilkSalePaymentInputScreen(
-          editMilkSalePaymentId: state.pathParameters["editMilkSalePaymentId"],
-        ),
-      ),
+      // //edit milk sales payments route
+      // GoRoute(
+      //   name: "editMilkSalePaymentDetails",
+      //   path: MilkSalePaymentInputScreen.editDetailsRoutePath,
+      //   builder: (context, state) => MilkSalePaymentInputScreen(
+      //     editMilkSalePaymentId: state.pathParameters["editMilkSalePaymentId"],
+      //   ),
+      // ),
       //add & edit daily milk production routes
       GoRoute(
         name: "addDailyMilkProductionDetails",

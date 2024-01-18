@@ -11,11 +11,11 @@ import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class MilkSalePaymentInputScreen extends StatefulWidget {
-  const MilkSalePaymentInputScreen(
-      {super.key, this.editMilkSalePaymentId, this.milkSaleId});
+  const MilkSalePaymentInputScreen({super.key, this.milkSaleId});
   final String? milkSaleId;
-  final String? editMilkSalePaymentId;
-  static const String addDetailsRoutePath = "/add_milk_sale_payment_details";
+  final String? editMilkSalePaymentId = null;
+  static const String addDetailsRoutePath =
+      "/add_milk_sale_payment_details/:milkSaleId";
   static const String editDetailsRoutePath =
       "/edit_milk_sale_payment_details/:editMilkSalePaymentId";
 
@@ -30,7 +30,8 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
       TextEditingController(text: getStringFromDate(DateTime.now()));
   final TextEditingController _amountController =
       TextEditingController(text: "0");
-  final TextEditingController _detailsController = TextEditingController();
+  final TextEditingController _detailsController =
+      TextEditingController(text: "");
   late MilkSalePayment _milkSalePayment;
   late MilkSale selectedMilkSale;
 
@@ -65,6 +66,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
           text: _milkSalePayment.getMilkSalePaymentAmount.toString());
       _detailsController.value =
           TextEditingValue(text: '${_milkSalePayment.getDetails}');
+      selectedMilkSale = _milkSalePayment.getMilkSale;
     } else {
       _milkSalePayment = MilkSalePayment();
     }
@@ -84,162 +86,225 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
           ),
         ),
         body: SingleChildScrollView(
-            child: Form(
-          key: _formKey,
-          child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 36),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Payment Date",
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _dateController,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Date cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Date',
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                getDateFromString(
-                                                    _dateController.text));
-                                        _dateController.text =
-                                            getStringFromDate(pickedDateTime);
+            child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: Card(
+                    child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            summaryTextDisplayRow("Milk Sales Date:",
+                                selectedMilkSale.getMilkSaleDate),
+                            summaryTextDisplayRow("Client:",
+                                selectedMilkSale.getClient.clientName),
+                            summaryTextDisplayRow("Milk Sales Amount:",
+                                "${selectedMilkSale.getMilkSaleMoneyAmount} Ksh"),
+                            summaryTextDisplayRow("Outstanding Balances:",
+                                "${_milkSalePayment.getMilkSaleOutstandingPayment()} Kgs")
+                          ],
+                        )),
+                  )),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: Card(
+                    child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              "Previous Payments",
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyLarge,
+                            ),
+                          ],
+                        )),
+                  )),
+              Form(
+                key: _formKey,
+                child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 0, 24, 36),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                  child: Text("Payment Date",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium),
+                                ),
+                                Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: TextFormField(
+                                      controller: _dateController,
+                                      readOnly: true,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Date cannot be empty';
+                                        }
+                                        return null;
                                       },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        isDense: true,
+                                        hintText: 'Date',
+                                        suffixIcon: IconButton(
+                                            onPressed: () async {
+                                              final DateTime? pickedDateTime =
+                                                  await showCustomDatePicker(
+                                                      context,
+                                                      getDateFromString(
+                                                          _dateController
+                                                              .text));
+                                              _dateController.text =
+                                                  getStringFromDate(
+                                                      pickedDateTime);
+                                            },
+                                            icon: const Align(
+                                                widthFactor: 1.0,
+                                                heightFactor: 1.0,
+                                                child: Icon(
+                                                  Icons.calendar_month,
+                                                ))),
+                                      ),
+                                    )),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                  child: Text("Payment Amount",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium),
                                 ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Payment Amount",
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _amountController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Amount cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Amount must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
+                                Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: TextFormField(
+                                      controller: _amountController,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Amount cannot be empty';
+                                        } else if (double.tryParse(value) ==
+                                            null) {
+                                          return "Amount must be a number";
+                                        }
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        isDense: true,
+                                      ),
+                                    )),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                  child: Text("Payment Details",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium),
                                 ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Payment Details",
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _detailsController,
-                                keyboardType: TextInputType.text,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              ))
-                        ],
-                      )),
-                  saveButton(
-                      onPressed: () async {
-                        // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState!.validate()) {
-                          //show a loading dialog to the user while we save the info
-                          showLoadingDialog(context);
-                          double milkSalePaymentAmount =
-                              double.parse(_amountController.text.trim());
-                          _milkSalePayment.setMilkSalePaymentAmount =
-                              milkSalePaymentAmount;
-                          _milkSalePayment.setMilkSalePaymentDate =
-                              _dateController.text.trim();
-                          _milkSalePayment.setDetails =
-                              _detailsController.text.trim();
+                                Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: TextFormField(
+                                      controller: _detailsController,
+                                      keyboardType: TextInputType.text,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        isDense: true,
+                                      ),
+                                    ))
+                              ],
+                            )),
+                        saveButton(
+                            onPressed: () async {
+                              // Validate returns true if the form is valid, or false otherwise.
+                              if (_formKey.currentState!.validate()) {
+                                //show a loading dialog to the user while we save the info
+                                showLoadingDialog(context);
+                                double milkSalePaymentAmount =
+                                    double.parse(_amountController.text.trim());
+                                _milkSalePayment.setMilkSalePaymentAmount =
+                                    milkSalePaymentAmount;
+                                _milkSalePayment.setMilkSalePaymentDate =
+                                    _dateController.text.trim();
+                                // _milkSalePayment.setDetails =
+                                //     _detailsController.text.trim();
 
-                          if (editMilkSalePaymentId != null) {
-                            //update the milk sale details in the db
-                            await context
-                                .read<MilkSalePaymentController>()
-                                .editMilkSalePayment(_milkSalePayment)
-                                .then((value) {
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  successSnackBar(
-                                      "Payment edited successfully!"));
-                            }).catchError((error) {
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  errorSnackBar("Saving failed!"));
-                            });
-                          } else {
-                            //this is a new milk sale payment so add the milk sale to it
-                            _milkSalePayment.setMilkSale = selectedMilkSale;
-                            //add the client in the db
-                            await context
-                                .read<MilkSalePaymentController>()
-                                .addMilkSalePayment(_milkSalePayment)
-                                .then((value) {
-                              //reset the form
-                              _amountController.clear();
-                              _detailsController.clear();
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              //show a snackbar showing the user that saving has been successful
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  successSnackBar(
-                                      "Payment added successfully."));
-                            }).catchError((error) {
-                              debugPrint("Error saving payment!");
-                              debugPrint(error);
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  errorSnackBar("Saving failed!"));
-                            });
-                          }
-                        }
-                      },
-                      child: const Text("Save Details"))
-                ],
-              )),
+                                if (editMilkSalePaymentId != null) {
+                                  //update the milk sale details in the db
+                                  await context
+                                      .read<MilkSalePaymentController>()
+                                      .editMilkSalePayment(_milkSalePayment)
+                                      .then((value) {
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        successSnackBar(
+                                            "Payment edited successfully!"));
+                                  }).catchError((error) {
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        errorSnackBar("Saving failed!"));
+                                  });
+                                } else {
+                                  //this is a new milk sale payment so add the milk sale to it
+                                  _milkSalePayment.setMilkSale =
+                                      selectedMilkSale;
+                                  //add the client in the db
+                                  await context
+                                      .read<MilkSalePaymentController>()
+                                      .addMilkSalePayment(_milkSalePayment)
+                                      .then((value) {
+                                    //reset the form
+                                    _amountController.clear();
+                                    _detailsController.clear();
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    //show a snackbar showing the user that saving has been successful
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        successSnackBar(
+                                            "Payment added successfully."));
+                                  }).catchError((error) {
+                                    debugPrint("Error saving payment!");
+                                    debugPrint(error);
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        errorSnackBar("Saving failed!"));
+                                  });
+                                }
+                              }
+                            },
+                            child: const Text("Save Details"))
+                      ],
+                    )),
+              )
+            ],
+          ),
         )));
   }
 }

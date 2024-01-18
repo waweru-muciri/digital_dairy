@@ -3,7 +3,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 class MilkSalePayment {
   String? _id;
-  late double _milkSalePaymentAmount;
+  late double _milkSalePaymentAmount = 0;
   late String _milkSalePaymentDate;
   late String? _details;
   late MilkSale _milkSale;
@@ -37,7 +37,7 @@ class MilkSalePayment {
 
   double getMilkSaleOutstandingPayment() {
     double outstandingPayment =
-        _milkSalePaymentAmount - getMilkSale.getMilkSaleMoneyAmount;
+        getMilkSale.getMilkSaleMoneyAmount - _milkSalePaymentAmount;
     return outstandingPayment < 0 ? 0 : outstandingPayment;
   }
 
