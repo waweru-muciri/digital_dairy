@@ -207,6 +207,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           _milkSale.setMilkSaleDate =
                               _milkSaleDateController.text;
                           _milkSale.setClient = selectedClient!;
+                          _milkSale.setUnitPrice = selectedClient!.getUnitPrice;
 
                           if (editMilkSaleId != null) {
                             //update the milk sale details in the db

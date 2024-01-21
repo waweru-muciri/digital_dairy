@@ -9,6 +9,7 @@ import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:collection/src/iterable_extensions.dart';
 
 class MilkSalePaymentInputScreen extends StatefulWidget {
   const MilkSalePaymentInputScreen({super.key, this.milkSaleId});
@@ -33,7 +34,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
   final TextEditingController _detailsController =
       TextEditingController(text: "");
   late MilkSalePayment _milkSalePayment;
-  late MilkSale selectedMilkSale;
+  late MilkSale? _selectedMilkSale;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -58,24 +59,24 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
       _milkSalePayment = context
           .read<MilkSalePaymentController>()
           .milkSalePaymentsList
-          .firstWhere((milkSalePayment) =>
-              milkSalePayment.getId == editMilkSalePaymentId);
+          .firstWhere(
+              (milkSalePayment) =>
+                  milkSalePayment.getId == editMilkSalePaymentId,
+              orElse: () => MilkSalePayment());
       _dateController.value =
           TextEditingValue(text: _milkSalePayment.getMilkSalePaymentDate);
       _amountController.value = TextEditingValue(
           text: _milkSalePayment.getMilkSalePaymentAmount.toString());
       _detailsController.value =
           TextEditingValue(text: '${_milkSalePayment.getDetails}');
-      selectedMilkSale = _milkSalePayment.getMilkSale;
-    } else {
-      _milkSalePayment = MilkSalePayment();
+      _selectedMilkSale = _milkSalePayment.getMilkSale;
     }
 
     String? milkSaleId = widget.milkSaleId;
     final milkSalesList = context.read<MilkSaleController>().milkSalesList;
-    selectedMilkSale = milkSalesList.firstWhere(
-        (milkPayment) => milkPayment.getId == milkSaleId,
-        orElse: () => MilkSale());
+    _selectedMilkSale = milkSalesList.firstWhereOrNull(
+      (milkSale) => milkSale.getId == milkSaleId,
+    );
 
     return Scaffold(
         appBar: AppBar(
@@ -93,26 +94,29 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Card(
-                    child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 10),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            summaryTextDisplayRow("Milk Sales Date:",
-                                selectedMilkSale.getMilkSaleDate),
-                            summaryTextDisplayRow("Client:",
-                                selectedMilkSale.getClient.clientName),
-                            summaryTextDisplayRow("Milk Sales Amount:",
-                                "${selectedMilkSale.getMilkSaleMoneyAmount} Ksh"),
-                            summaryTextDisplayRow("Outstanding Balances:",
-                                "${_milkSalePayment.getMilkSaleOutstandingPayment()} Kgs")
-                          ],
-                        )),
-                  )),
+              if (_selectedMilkSale != null)
+                Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Card(
+                      child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              summaryTextDisplayRow("Milk Sales Date:",
+                                  "${_selectedMilkSale?.getMilkSaleDate}"),
+                              summaryTextDisplayRow("Client:",
+                                  '${_selectedMilkSale?.getClient.clientName}'),
+                              summaryTextDisplayRow("Milk Sales Amount:",
+                                  "${_selectedMilkSale?.getMilkSaleMoneyAmount} Ksh"),
+                              summaryTextDisplayRow("Outstanding Balances:",
+                                  "${_milkSalePayment.getMilkSaleOutstandingPayment()} Kgs"),
+                            ],
+                          )),
+                    ))
+              else
+                const Text('Milk sale not selected!'),
               Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: Card(
@@ -262,7 +266,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                   await context
                                       .read<MilkSalePaymentController>()
                                       .editMilkSalePayment(_milkSalePayment)
-                                      .then((value) {
+                                      .then((_) {
                                     //remove the loading dialog
                                     Navigator.of(context).pop();
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -276,8 +280,10 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                   });
                                 } else {
                                   //this is a new milk sale payment so add the milk sale to it
-                                  _milkSalePayment.setMilkSale =
-                                      selectedMilkSale;
+                                  if (_selectedMilkSale != null) {
+                                    _milkSalePayment.setMilkSale =
+                                        _selectedMilkSale!;
+                                  }
                                   //add the payment to the db
                                   await context
                                       .read<MilkSalePaymentController>()

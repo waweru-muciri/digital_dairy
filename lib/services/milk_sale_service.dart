@@ -33,6 +33,15 @@ class MilkSaleService {
     }
   }
 
+  Future<List<MilkSale>> getMilkSalesForClient(String clientId) async {
+    return await _milkSaleReference
+        .where("client_id", isEqualTo: clientId)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
+  }
+
 //add a milkSale
   Future<MilkSale?> addMilkSale(MilkSale milkSale) async {
     return await _milkSaleReference

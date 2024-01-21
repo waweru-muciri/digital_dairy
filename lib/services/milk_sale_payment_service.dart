@@ -35,6 +35,16 @@ class MilkSalePaymentService {
     }
   }
 
+  Future<List<MilkSalePayment>> getMilkSalesPaymentsForClient(
+      String clientId) async {
+    return await _milkSalePaymentReference
+        .where("client_id", isEqualTo: clientId)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
+  }
+
   Future<List<MilkSalePayment>> getPaymentsForMilkSale(String id) async {
     return await _milkSalePaymentReference
         .orderBy("payment_date")

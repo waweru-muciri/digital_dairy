@@ -21,13 +21,16 @@ class MilkSale {
 
   set setClient(Client client) {
     _client = client;
-    _milkSaleUnitPrice = client.getUnitPrice;
     _clientId = client.getId;
   }
 
   set setMilkSaleQuantity(double milkSaleQuantity) {
     _milkSaleQuantity = milkSaleQuantity;
   }
+
+  set setUnitPrice(double unitPrice) => _milkSaleUnitPrice = unitPrice;
+
+  double get getUnitPrice => _milkSaleUnitPrice;
 
   double get getMilkSaleQuantity => _milkSaleQuantity;
   String get getMilkSaleDate => _milkSaleDate;
@@ -66,6 +69,7 @@ class MilkSale {
     newMilkSale.setId = id;
     newMilkSale.setMilkSaleDate = (data?["milkSaleDate"]);
     newMilkSale.setMilkSaleQuantity = data?["milkSaleAmount"];
+    newMilkSale.setUnitPrice = (data?["unit_price"]);
     newMilkSale.setClient = Client.fromAnotherFirestoreDoc(snapshot, options);
 
     return newMilkSale;
