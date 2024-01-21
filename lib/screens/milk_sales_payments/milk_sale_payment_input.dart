@@ -168,7 +168,6 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                       decoration: InputDecoration(
                                         border: const OutlineInputBorder(),
                                         isDense: true,
-                                        hintText: 'Date',
                                         suffixIcon: IconButton(
                                             onPressed: () async {
                                               final DateTime? pickedDateTime =
@@ -203,13 +202,18 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                     child: TextFormField(
                                       controller: _amountController,
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Amount cannot be empty';
-                                        } else if (double.tryParse(value) ==
-                                            null) {
-                                          return "Amount must be a number";
+                                        if (value != null && value.isNotEmpty) {
+                                          var inputNumber =
+                                              double.tryParse(value);
+                                          if (inputNumber == null) {
+                                            return "Amount must be a number";
+                                          }
+                                          if (inputNumber <= 0) {
+                                            return "Amount must be greater than 0";
+                                          }
+                                          return null;
                                         }
-                                        return null;
+                                        return 'Amount cannot be empty';
                                       },
                                       keyboardType: TextInputType.number,
                                       decoration: const InputDecoration(
@@ -250,8 +254,8 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                     milkSalePaymentAmount;
                                 _milkSalePayment.setMilkSalePaymentDate =
                                     _dateController.text.trim();
-                                // _milkSalePayment.setDetails =
-                                //     _detailsController.text.trim();
+                                _milkSalePayment.setDetails =
+                                    _detailsController.text.trim();
 
                                 if (editMilkSalePaymentId != null) {
                                   //update the milk sale details in the db
@@ -274,7 +278,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                   //this is a new milk sale payment so add the milk sale to it
                                   _milkSalePayment.setMilkSale =
                                       selectedMilkSale;
-                                  //add the client in the db
+                                  //add the payment to the db
                                   await context
                                       .read<MilkSalePaymentController>()
                                       .addMilkSalePayment(_milkSalePayment)
@@ -299,7 +303,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                 }
                               }
                             },
-                            child: const Text("Save Details"))
+                            child: const Text("Save"))
                       ],
                     )),
               )

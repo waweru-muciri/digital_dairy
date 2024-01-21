@@ -7,6 +7,7 @@ class MilkSale {
   late double _milkSaleUnitPrice;
   late String _milkSaleDate;
   late Client _client;
+  late String? _clientId;
 
   MilkSale();
 
@@ -21,6 +22,7 @@ class MilkSale {
   set setClient(Client client) {
     _client = client;
     _milkSaleUnitPrice = client.getUnitPrice;
+    _clientId = client.getId;
   }
 
   set setMilkSaleQuantity(double milkSaleQuantity) {
@@ -30,6 +32,8 @@ class MilkSale {
   double get getMilkSaleQuantity => _milkSaleQuantity;
   String get getMilkSaleDate => _milkSaleDate;
   String? get getId => _id;
+  String? get getClientId => _clientId;
+
   Client get getClient => _client;
 
   double get getMilkSaleMoneyAmount => (_milkSaleQuantity * _milkSaleUnitPrice);
@@ -45,6 +49,7 @@ class MilkSale {
     newMilkSale.setId = id;
     newMilkSale.setMilkSaleDate = (data?["milkSaleDate"]);
     newMilkSale.setMilkSaleQuantity = data?["milkSaleAmount"];
+    newMilkSale._clientId = (data?["client_id"]);
     newMilkSale.setClient = Client.fromAnotherFirestoreDoc(snapshot, options);
 
     return newMilkSale;
@@ -69,6 +74,7 @@ class MilkSale {
   Map<String, dynamic> toFirestore() {
     return {
       'client': _client.toFirestore(),
+      'client_id': _clientId,
       'milkSaleDate': _milkSaleDate,
       'milkSaleAmount': _milkSaleQuantity,
       'unit_price': _milkSaleUnitPrice,

@@ -44,6 +44,10 @@ class MilkSalePaymentController with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<MilkSalePayment>> getPaymentsForMilkSale(String id) async {
+    return await _milkSalePaymentService.getPaymentsForMilkSale(id);
+  }
+
   void filterMilkSalePaymentsByDates(String startDate,
       {String? endDate}) async {
     List<MilkSalePayment> fetchedList = await _milkSalePaymentService
