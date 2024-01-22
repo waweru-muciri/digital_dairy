@@ -72,6 +72,22 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
             'Milk Consumers Statements',
             style: TextStyle(),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.filter_list,
+              ),
+              onPressed: () {
+                showDatesFilterBottomSheet(
+                    context,
+                    _fromDateFilterController,
+                    _toDateFilterController,
+                    context
+                        .read<MilkConsumptionController>()
+                        .filterMilkConsumptionByDate);
+              },
+            )
+          ],
         ),
         drawer: const MyDrawer(),
         body: SingleChildScrollView(
@@ -102,14 +118,6 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                                       setState(() {
                                         selectedMilkConsumer = milkConsumer;
                                       });
-                                      if (selectedMilkConsumer != null) {
-                                        String? milkConsumerId =
-                                            selectedMilkConsumer!.getId;
-                                        context
-                                            .read<MilkConsumptionController>()
-                                            .filterMilkConsumptionsByMilkConsumerId(
-                                                milkConsumerId!);
-                                      }
                                     },
                                     errorText: selectedMilkConsumer == null
                                         ? 'Consumer cannot be empty!'
@@ -134,17 +142,17 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                               ),
                               Expanded(
                                   flex: 1,
-                                  child: IconButton(
-                                      icon: const Icon(Icons.filter_list),
+                                  child: FilledButton(
+                                      child: const Text("Search"),
                                       onPressed: () {
-                                        showDatesFilterBottomSheet(
-                                            context,
-                                            _fromDateFilterController,
-                                            _toDateFilterController,
-                                            context
-                                                .read<
-                                                    MilkConsumptionController>()
-                                                .filterMilkConsumptionByDate);
+                                        if (selectedMilkConsumer != null) {
+                                          String milkConsumerId =
+                                              '${selectedMilkConsumer!.getId}';
+                                          context
+                                              .read<MilkConsumptionController>()
+                                              .filterMilkConsumptionsByMilkConsumerId(
+                                                  milkConsumerId);
+                                        }
                                       })),
                             ],
                           )))),

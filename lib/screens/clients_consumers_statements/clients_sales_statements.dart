@@ -69,6 +69,20 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
             'Client Milk Sales Statements',
             style: TextStyle(),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.filter_list,
+              ),
+              onPressed: () {
+                showDatesFilterBottomSheet(
+                    context,
+                    _fromDateFilterController,
+                    _toDateFilterController,
+                    context.read<MilkSaleController>().filterMilkSalesByDates);
+              },
+            )
+          ],
         ),
         drawer: const MyDrawer(),
         body: SingleChildScrollView(
@@ -99,14 +113,6 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                                       setState(() {
                                         selectedClient = client;
                                       });
-                                      if (selectedClient != null) {
-                                        String? clientId =
-                                            selectedClient!.getId;
-                                        context
-                                            .read<MilkSaleController>()
-                                            .filterMilkSalesByClientId(
-                                                clientId!);
-                                      }
                                     },
                                     errorText: selectedClient == null
                                         ? 'Client cannot be empty!'
@@ -131,16 +137,17 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                               ),
                               Expanded(
                                   flex: 1,
-                                  child: IconButton(
-                                      icon: const Icon(Icons.filter_list),
+                                  child: FilledButton(
+                                      child: const Text("Search"),
                                       onPressed: () {
-                                        showDatesFilterBottomSheet(
-                                            context,
-                                            _fromDateFilterController,
-                                            _toDateFilterController,
-                                            context
-                                                .read<MilkSaleController>()
-                                                .filterMilkSalesByDates);
+                                        if (selectedClient != null) {
+                                          String clientId =
+                                              '${selectedClient!.getId}';
+                                          context
+                                              .read<MilkSaleController>()
+                                              .filterMilkSalesByClientId(
+                                                  clientId);
+                                        }
                                       })),
                             ],
                           )))),
