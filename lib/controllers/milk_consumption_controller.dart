@@ -25,7 +25,7 @@ class MilkConsumptionController with ChangeNotifier {
       .map((milkConsumption) => (milkConsumption.getMilkConsumptionAmount))
       .fold(0, (previousValue, element) => previousValue + element);
 
-  void filterMilkConsumptionByConsumerName(String? query) {
+  void filterMilkConsumptionBySearchTerm(String? query) {
     if (query != null && query.isNotEmpty) {
       List<MilkConsumption> fetchedList = _milkConsumptionList
           .where((item) => item.getMilkConsumer.getMilkConsumerName

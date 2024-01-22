@@ -28,7 +28,7 @@ class MilkSaleController with ChangeNotifier {
       (previousValue, milkSale) =>
           previousValue + milkSale.getMilkSaleMoneyAmount);
 
-  void filterMilkSalesByClientName(String? query) {
+  void filterMilkSalesBySearchTerm(String? query) {
     if (query != null && query.isNotEmpty) {
       List<MilkSale> fetchedList = _milkSaleList
           .where((item) => item.getClient.clientName
@@ -42,6 +42,17 @@ class MilkSaleController with ChangeNotifier {
       _filteredMilkSaleList.clear();
       _filteredMilkSaleList.addAll(_milkSaleList);
     }
+    notifyListeners();
+  }
+
+  void filterMilkSalesByDatesAndClientId(
+      String startDate, String endDate, String clientId) async {
+    List<MilkSale> fetchedList = await _milkSaleService
+        .filterMilkSalesByDatesAndClientId(startDate, endDate, clientId);
+    _milkSaleList.clear();
+    _filteredMilkSaleList.clear();
+    _milkSaleList.addAll(fetchedList);
+    _filteredMilkSaleList.addAll(fetchedList);
     notifyListeners();
   }
 

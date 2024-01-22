@@ -80,7 +80,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                                 child: FilterInputField(
                                     onQueryChanged: context
                                         .read<MilkSaleController>()
-                                        .filterMilkSalesByClientName)),
+                                        .filterMilkSalesBySearchTerm)),
                           ),
                           Expanded(
                               flex: 1,

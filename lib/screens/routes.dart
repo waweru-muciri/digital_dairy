@@ -1,6 +1,8 @@
 import 'package:DigitalDairy/screens/client_consumers/client_consumers_tabs.dart';
 import 'package:DigitalDairy/screens/client_consumers/clients/client_input.dart';
 import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers_input.dart';
+import 'package:DigitalDairy/screens/clients_consumers_statements/clients_sales_statements.dart';
+import 'package:DigitalDairy/screens/clients_consumers_statements/consumers_statements.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
@@ -37,6 +39,19 @@ class AppRouter {
         name: "dashboard",
         path: HomeScreen.routePath,
         builder: (context, state) => const HomeScreen(),
+      ),
+      //clients sales statements route
+      GoRoute(
+        name: "clients_sales_statements",
+        path: ClientsMilkSalesStatementsScreen.routePath,
+        builder: (context, state) => const ClientsMilkSalesStatementsScreen(),
+      ),
+      //consumers consumption statements route
+      GoRoute(
+        name: "consumers_consumption_statements",
+        path: ConsumersMilkConsumptionsStatementsScreen.routePath,
+        builder: (context, state) =>
+            const ConsumersMilkConsumptionsStatementsScreen(),
       ),
       //main milk production route
       GoRoute(

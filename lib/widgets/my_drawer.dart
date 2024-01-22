@@ -46,7 +46,6 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.dashboard),
             title: const Text(
               'Dashboard',
             ),
@@ -60,7 +59,6 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.pets_rounded),
             title: const Text('Herd Management'),
             selected: _selectedIndex == 2,
             onTap: () {
@@ -72,7 +70,6 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.water),
             title: const Text('Milk Production'),
             selected: _selectedIndex == 2,
             onTap: () {
@@ -84,7 +81,6 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.money),
             title: const Text('Milk Sales & Consumption'),
             selected: _selectedIndex == 4,
             onTap: () {
@@ -96,7 +92,6 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.money),
             title: const Text('Milk Sales Payments'),
             selected: _selectedIndex == 4,
             onTap: () {
@@ -108,7 +103,28 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.health_and_safety),
+            title: const Text('Clients Sales Statements'),
+            selected: _selectedIndex == 4,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(4);
+              context.pushNamed("clients_sales_statements");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Consumers Statements'),
+            selected: _selectedIndex == 4,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(4);
+              context.pushNamed("consumers_consumption_statements");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
             title: const Text('Health Management'),
             selected: _selectedIndex == 5,
             onTap: () {
@@ -120,7 +136,6 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.people),
             title: const Text('Clients & Consumers'),
             selected: _selectedIndex == 6,
             onTap: () {
@@ -132,7 +147,6 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.attach_money),
             title: const Text('Expenses & Income'),
             selected: _selectedIndex == 7,
             onTap: () {

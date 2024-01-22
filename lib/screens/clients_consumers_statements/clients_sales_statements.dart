@@ -8,15 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
-class MilkSalesScreen extends StatefulWidget {
-  const MilkSalesScreen({super.key});
+class ClientsMilkSalesStatementsScreen extends StatefulWidget {
+  const ClientsMilkSalesStatementsScreen({super.key});
   static const routePath = '/client_milk_sales_statements';
 
   @override
-  State<StatefulWidget> createState() => MilkSalesScreenState();
+  State<StatefulWidget> createState() =>
+      ClientsMilkSalesStatementsScreenState();
 }
 
-class MilkSalesScreenState extends State<MilkSalesScreen> {
+class ClientsMilkSalesStatementsScreenState
+    extends State<ClientsMilkSalesStatementsScreen> {
   late List<MilkSale> _milkSalesList;
   final TextEditingController _fromDateFilterController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
@@ -66,7 +68,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Client Milk Sales Statements',
+            'Client Statements',
             style: TextStyle(),
           ),
           actions: <Widget>[
@@ -137,8 +139,10 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                               ),
                               Expanded(
                                   flex: 1,
-                                  child: FilledButton(
-                                      child: const Text("Search"),
+                                  child: IconButton(
+                                      icon: const Icon(
+                                        Icons.search,
+                                      ),
                                       onPressed: () {
                                         if (selectedClient != null) {
                                           String clientId =
@@ -211,6 +215,10 @@ class _DataSource extends DataTableSource {
             cellA = a.getMilkSaleDate;
             cellB = b.getMilkSaleDate;
             break;
+          case 1:
+            cellA = a.getMilkSaleQuantity;
+            cellB = b.getMilkSaleQuantity;
+            break;
           case 2:
             cellA = a.getClient.getUnitPrice;
             cellB = b.getClient.getUnitPrice;
@@ -233,7 +241,7 @@ class _DataSource extends DataTableSource {
       DataCell(Text(item.getMilkSaleDate)),
       DataCell(Text('${item.getMilkSaleQuantity}')),
       DataCell(Text('${item.getUnitPrice}')),
-      DataCell(Text('${item.getMilkSaleQuantity}')),
+      DataCell(Text('${item.getMilkSaleMoneyAmount}')),
     ]);
   }
 

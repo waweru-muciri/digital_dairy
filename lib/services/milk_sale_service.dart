@@ -42,6 +42,18 @@ class MilkSaleService {
             .toList());
   }
 
+  Future<List<MilkSale>> filterMilkSalesByDatesAndClientId(
+      String startDate, String endDate, String clientId) async {
+    return await _milkSaleReference
+        .where("milkSaleDate", isGreaterThanOrEqualTo: startDate)
+        .where("milkSaleDate", isLessThanOrEqualTo: endDate)
+        .where("client_id", isEqualTo: clientId)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
+  }
+
 //add a milkSale
   Future<MilkSale?> addMilkSale(MilkSale milkSale) async {
     return await _milkSaleReference

@@ -8,15 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
-class MilkConsumptionsScreen extends StatefulWidget {
-  const MilkConsumptionsScreen({super.key});
-  static const routePath = '/consumer_milk_consumption_statements';
+class ConsumersMilkConsumptionsStatementsScreen extends StatefulWidget {
+  const ConsumersMilkConsumptionsStatementsScreen({super.key});
+  static const routePath = '/consumers_milk_consumption_statements';
 
   @override
-  State<StatefulWidget> createState() => MilkConsumptionsScreenState();
+  State<StatefulWidget> createState() =>
+      ConsumersMilkConsumptionsStatementsScreenState();
 }
 
-class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
+class ConsumersMilkConsumptionsStatementsScreenState
+    extends State<ConsumersMilkConsumptionsStatementsScreen> {
   late List<MilkConsumption> _milkConsumptionsList;
   final TextEditingController _fromDateFilterController =
       TextEditingController(text: getStringFromDate(DateTime.now()));
@@ -178,6 +180,7 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                 sortColumnIndex: _sortColumnIndex,
                 sortAscending: _sortColumnAscending,
                 columns: [
+                  const DataColumn(label: Text("Name")),
                   DataColumn(label: const Text("Date"), onSort: _sort),
                   DataColumn(
                       label: const Text("Total Consumption (Kgs)"),
@@ -203,9 +206,13 @@ class _DataSource extends DataTableSource {
         late final Comparable<Object> cellA;
         late final Comparable<Object> cellB;
         switch (sortColumn) {
-          case 0:
+          case 1:
             cellA = a.getMilkConsumptionDate;
             cellB = b.getMilkConsumptionDate;
+            break;
+          case 2:
+            cellA = a.getMilkConsumptionAmount;
+            cellB = b.getMilkConsumptionAmount;
             break;
           default:
         }
