@@ -171,7 +171,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                       (MilkConsumer milkConsumer) {
                                 return DropdownMenuEntry<MilkConsumer>(
                                   value: milkConsumer,
-                                  label: milkConsumer.milkConsumerName,
+                                  label: milkConsumer.getMilkConsumerName,
                                   enabled: true,
                                 );
                               }).toList(),

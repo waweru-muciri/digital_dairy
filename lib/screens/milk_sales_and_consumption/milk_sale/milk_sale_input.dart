@@ -28,7 +28,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
       TextEditingController(text: getStringFromDate(DateTime.now()));
   final TextEditingController _milkSaleAmountController =
       TextEditingController(text: "");
-  final TextEditingController _clientController = TextEditingController();
+  final TextEditingController _clientFilterController = TextEditingController();
   late List<Client> _clientsList;
   late MilkSale _milkSale;
   Client? selectedClient;
@@ -44,7 +44,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
 
   @override
   void dispose() {
-    _clientController.dispose();
+    _clientFilterController.dispose();
     _milkSaleDateController.dispose();
     _milkSaleAmountController.dispose();
     super.dispose();
@@ -142,7 +142,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Client>(
-                              controller: _clientController,
+                              controller: _clientFilterController,
                               requestFocusOnTap: true,
                               initialSelection: selectedClient,
                               expandedInsets: EdgeInsets.zero,
@@ -232,7 +232,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                 .addMilkSale(_milkSale)
                                 .then((value) {
                               //reset the form
-                              _clientController.clear();
+                              _clientFilterController.clear();
                               setState(() {
                                 selectedClient = null;
                               });

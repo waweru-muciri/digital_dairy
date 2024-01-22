@@ -72,5 +72,5 @@ class MilkConsumer {
     };
   }
 
-  String get milkConsumerName => '$_firstName  $_lastName';
+  String get getMilkConsumerName => '$_firstName  $_lastName';
 }

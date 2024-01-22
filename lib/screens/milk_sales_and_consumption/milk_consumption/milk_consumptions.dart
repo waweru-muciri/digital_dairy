@@ -115,7 +115,7 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
             columns: const [
               DataColumn(label: Text("Date")),
               DataColumn(label: Text("Consumer Name")),
-              DataColumn(label: Text("Quantity (Ltrs)"), numeric: true),
+              DataColumn(label: Text("Quantity (Kgs)"), numeric: true),
               DataColumn(label: Text("Amount (Ksh)"), numeric: true),
               DataColumn(label: Text("Edit")),
               DataColumn(label: Text("Delete")),
@@ -141,7 +141,7 @@ class _DataSource extends DataTableSource {
 
     return DataRow(cells: [
       DataCell(Text(item.getMilkConsumptionDate)),
-      DataCell(Text(item.getMilkConsumer.milkConsumerName)),
+      DataCell(Text(item.getMilkConsumer.getMilkConsumerName)),
       DataCell(Text('${item.getMilkConsumptionAmount}')),
       const DataCell(Text('0')),
       DataCell(const Icon(Icons.edit),

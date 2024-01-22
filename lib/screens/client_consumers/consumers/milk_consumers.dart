@@ -110,7 +110,7 @@ class _DataSource extends DataTableSource {
     final milkConsumer = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(milkConsumer.milkConsumerName), onTap: () {
+      DataCell(Text(milkConsumer.getMilkConsumerName), onTap: () {
         //show the past milk purchase history of the consumer by redirecting to new route
         () => context.pushNamed("consumerMilkConsumptionHistory",
             pathParameters: {"milkConsumerId": '${milkConsumer.getId}'});

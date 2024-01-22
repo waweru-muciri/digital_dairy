@@ -131,7 +131,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
               DataColumn(label: const Text("Date"), onSort: _sort),
               const DataColumn(label: Text("Client Name")),
               DataColumn(
-                  label: const Text("Quantity (Ltrs)"),
+                  label: const Text("Quantity (Kgs)"),
                   numeric: true,
                   onSort: _sort),
               DataColumn(

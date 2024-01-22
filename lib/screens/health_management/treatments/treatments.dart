@@ -17,7 +17,7 @@ class TreatmentsScreen extends StatefulWidget {
 
 class TreatmentsScreenState extends State<TreatmentsScreen> {
   late List<Treatment> _treatmentList;
-  final TextEditingController _milkConsumerNameController =
+  final TextEditingController _getMilkConsumerNameController =
       TextEditingController();
 
   @override
@@ -29,7 +29,7 @@ class TreatmentsScreenState extends State<TreatmentsScreen> {
 
   @override
   void dispose() {
-    _milkConsumerNameController.dispose();
+    _getMilkConsumerNameController.dispose();
     super.dispose();
   }
 

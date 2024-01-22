@@ -6,9 +6,13 @@ class MilkConsumption {
   late double _milkConsumptionAmount;
   late String _milkConsumptionDate;
   late MilkConsumer _milkConsumer;
+  late String? _milkConsumerId;
 
   MilkConsumption();
 
+  String? get getMilkConsumerId => _milkConsumerId;
+
+  set milkConsumerId(String value) => _milkConsumerId = value;
   set setId(String? id) {
     _id = id;
   }
@@ -19,6 +23,7 @@ class MilkConsumption {
 
   set setMilkConsumer(MilkConsumer milkConsumer) {
     _milkConsumer = milkConsumer;
+    _milkConsumerId = milkConsumer.getId;
   }
 
   set setMilkConsumptionAmount(double milkConsumptionAmount) {
@@ -53,6 +58,7 @@ class MilkConsumption {
       'consumer': _milkConsumer.toFirestore(),
       'milkConsumptionDate': _milkConsumptionDate,
       'milkConsumptionAmount': _milkConsumptionAmount,
+      'milk_consumer_id': _milkConsumerId,
       'id': _id,
     };
   }

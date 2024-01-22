@@ -35,6 +35,16 @@ class MilkConsumptionService {
     }
   }
 
+  Future<List<MilkConsumption>> getMilkConsumptionsForClient(
+      String milkConsumerId) async {
+    return await _milkConsumptionReference
+        .where("milk_consumer_id", isEqualTo: milkConsumerId)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
+  }
+
 //add a milkConsumption
   Future<MilkConsumption?> addMilkConsumption(
       MilkConsumption milkConsumption) async {

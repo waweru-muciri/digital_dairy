@@ -45,6 +45,16 @@ class MilkSaleController with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> filterMilkSalesByClientId(String clientId) async {
+    List<MilkSale> fetchedList =
+        await _milkSaleService.getMilkSalesForClient(clientId);
+    _milkSaleList.clear();
+    _filteredMilkSaleList.clear();
+    _milkSaleList.addAll(fetchedList);
+    _filteredMilkSaleList.addAll(fetchedList);
+    notifyListeners();
+  }
+
   void filterMilkSalesByDates(String startDate, {String? endDate}) async {
     List<MilkSale> fetchedList = await _milkSaleService
         .getMilkSalesListBetweenDates(startDate, endDate: endDate);
@@ -52,7 +62,6 @@ class MilkSaleController with ChangeNotifier {
     _filteredMilkSaleList.clear();
     _milkSaleList.addAll(fetchedList);
     _filteredMilkSaleList.addAll(fetchedList);
-
     notifyListeners();
   }
 
