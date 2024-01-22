@@ -8,7 +8,6 @@ import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class MilkSaleInputScreen extends StatefulWidget {

@@ -1,3 +1,6 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_payment_controller.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
@@ -6,10 +9,7 @@ import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
-import 'package:collection/src/iterable_extensions.dart';
 
 class MilkSalePaymentInputScreen extends StatefulWidget {
   const MilkSalePaymentInputScreen({super.key, this.milkSaleId});
@@ -117,23 +117,6 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                     ))
               else
                 const Text('Milk sale not selected!'),
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Card(
-                    child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 10),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              "Previous Payments",
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyLarge,
-                            ),
-                          ],
-                        )),
-                  )),
               Form(
                 key: _formKey,
                 child: Padding(
