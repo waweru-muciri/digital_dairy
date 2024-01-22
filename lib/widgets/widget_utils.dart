@@ -60,7 +60,7 @@ Future<DateTime?> showCustomDatePicker(
       initialDate: initialDate,
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101));
+      lastDate: DateTime.now());
   return picked;
 }
 

@@ -7,6 +7,7 @@ import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class ClientsMilkSalesStatementsScreen extends StatefulWidget {
   const ClientsMilkSalesStatementsScreen({super.key});
@@ -57,6 +58,167 @@ class ClientsMilkSalesStatementsScreenState
     });
   }
 
+  Future<void> showDatesAndClientFilterBottomSheet() {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Filter',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: DropdownMenu<Client>(
+                  label: const Text("Select Client"),
+                  controller: _clientController,
+                  requestFocusOnTap: true,
+                  initialSelection: selectedClient,
+                  expandedInsets: EdgeInsets.zero,
+                  onSelected: (Client? client) {
+                    setState(() {
+                      selectedClient = client;
+                    });
+                  },
+                  enableFilter: true,
+                  enableSearch: true,
+                  inputDecorationTheme: const InputDecorationTheme(
+                      isDense: true, border: OutlineInputBorder()),
+                  dropdownMenuEntries: _clientsList
+                      .map<DropdownMenuEntry<Client>>((Client client) {
+                    return DropdownMenuEntry<Client>(
+                      value: client,
+                      label: client.clientName,
+                      enabled: true,
+                    );
+                  }).toList(),
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: TextFormField(
+                              controller: _fromDateFilterController,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                border: const OutlineInputBorder(),
+                                labelText: 'From Date',
+                                suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      final DateTime? pickedDateTime =
+                                          await showCustomDatePicker(
+                                              context,
+                                              getDateFromString(
+                                                  _fromDateFilterController
+                                                      .text));
+                                      _fromDateFilterController.text =
+                                          getStringFromDate(pickedDateTime);
+                                    },
+                                    icon: const Align(
+                                        widthFactor: 1.0,
+                                        heightFactor: 1.0,
+                                        child: Icon(
+                                          Icons.calendar_month,
+                                        ))),
+                              ),
+                            )),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: TextFormField(
+                              controller: _toDateFilterController,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                border: const OutlineInputBorder(),
+                                labelText: 'To Date',
+                                suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      final DateTime? pickedDateTime =
+                                          await showCustomDatePicker(
+                                              context,
+                                              getDateFromString(
+                                                  _toDateFilterController
+                                                      .text));
+
+                                      _toDateFilterController.text =
+                                          getStringFromDate(pickedDateTime);
+                                    },
+                                    icon: const Align(
+                                        widthFactor: 1.0,
+                                        heightFactor: 1.0,
+                                        child: Icon(
+                                          Icons.calendar_month,
+                                        ))),
+                              ),
+                            )),
+                      ),
+                    ],
+                  )),
+              ButtonBar(
+                alignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FilledButton(
+                      child: const Text('Reset'),
+                      onPressed: () {
+                        _fromDateFilterController.clear();
+                        _toDateFilterController.clear();
+                        setState(() {
+                          selectedClient = null;
+                        });
+                      }),
+                  FilledButton(
+                      child: const Text('Apply Filters'),
+                      onPressed: () {
+                        if (selectedClient != null) {
+                          context
+                              .read<MilkSaleController>()
+                              .filterMilkSalesByDatesAndClientId(
+                                  _fromDateFilterController.text,
+                                  _fromDateFilterController.text,
+                                  '${selectedClient!.getId}');
+                        } else {
+                          context
+                              .read<MilkSaleController>()
+                              .filterMilkSalesByDates(
+                                  _fromDateFilterController.text,
+                                  endDate: _fromDateFilterController.text);
+                        }
+                        Navigator.pop(context);
+                      }),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
@@ -77,11 +239,7 @@ class ClientsMilkSalesStatementsScreenState
                 Icons.filter_list,
               ),
               onPressed: () {
-                showDatesFilterBottomSheet(
-                    context,
-                    _fromDateFilterController,
-                    _toDateFilterController,
-                    context.read<MilkSaleController>().filterMilkSalesByDates);
+                showDatesAndClientFilterBottomSheet();
               },
             )
           ],
@@ -90,111 +248,66 @@ class ClientsMilkSalesStatementsScreenState
         body: SingleChildScrollView(
             child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Column(mainAxisSize: MainAxisSize.max, children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              child: Card(
-                  child: Container(
-                      margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                flex: 4,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                  child: DropdownMenu<Client>(
-                                    controller: _clientController,
-                                    requestFocusOnTap: true,
-                                    initialSelection: selectedClient,
-                                    expandedInsets: EdgeInsets.zero,
-                                    onSelected: (Client? client) {
-                                      setState(() {
-                                        selectedClient = client;
-                                      });
-                                    },
-                                    errorText: selectedClient == null
-                                        ? 'Client cannot be empty!'
-                                        : null,
-                                    enableFilter: true,
-                                    enableSearch: true,
-                                    inputDecorationTheme:
-                                        const InputDecorationTheme(
-                                            isDense: true,
-                                            border: OutlineInputBorder()),
-                                    dropdownMenuEntries: _clientsList
-                                        .map<DropdownMenuEntry<Client>>(
-                                            (Client client) {
-                                      return DropdownMenuEntry<Client>(
-                                        value: client,
-                                        label: client.clientName,
-                                        enabled: true,
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                  flex: 1,
-                                  child: IconButton(
-                                      icon: const Icon(
-                                        Icons.search,
-                                      ),
-                                      onPressed: () {
-                                        if (selectedClient != null) {
-                                          String clientId =
-                                              '${selectedClient!.getId}';
-                                          context
-                                              .read<MilkSaleController>()
-                                              .filterMilkSalesByClientId(
-                                                  clientId);
-                                        }
-                                      })),
+          child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: Text(
+                    '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Card(
+                      child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              summaryTextDisplayRow(
+                                  "Client Name:",
+                                  selectedClient != null
+                                      ? selectedClient!.clientName
+                                      : "All Clients"),
+                              summaryTextDisplayRow("Total Quantity Sold:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
+                              summaryTextDisplayRow("Total Quantity Sold:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
+                              summaryTextDisplayRow("Total Payments:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
+                              summaryTextDisplayRow("Outstanding Balances:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
                             ],
-                          )))),
-            ),
-            Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: Card(
-                  child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          summaryTextDisplayRow("Total Quantity Sold:",
-                              "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
-                          summaryTextDisplayRow("Total Milk Sales:",
-                              "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
-                        ],
-                      )),
-                )),
-            PaginatedDataTable(
-                header: const Text("Milk Sales List"),
-                rowsPerPage: 20,
-                availableRowsPerPage: const [20, 30, 50],
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortColumnAscending,
-                columns: [
-                  DataColumn(label: const Text("Date"), onSort: _sort),
-                  DataColumn(
-                      label: const Text("Milk Quantity (Kgs)"),
-                      numeric: true,
-                      onSort: _sort),
-                  DataColumn(
-                      label: const Text("Unit Price (Ksh)"),
-                      numeric: true,
-                      onSort: _sort),
-                  DataColumn(
-                      label: const Text("Sales Amount (Ksh)"),
-                      numeric: true,
-                      onSort: _sort),
-                ],
-                source: _dataTableSource)
-          ]),
+                          )),
+                    )),
+                PaginatedDataTable(
+                    rowsPerPage: 20,
+                    availableRowsPerPage: const [20, 30, 50],
+                    sortColumnIndex: _sortColumnIndex,
+                    sortAscending: _sortColumnAscending,
+                    columns: [
+                      DataColumn(
+                          label: const Text("Client Name"), onSort: _sort),
+                      DataColumn(label: const Text("Date"), onSort: _sort),
+                      DataColumn(
+                          label: const Text("Milk Quantity (Kgs)"),
+                          numeric: true,
+                          onSort: _sort),
+                      DataColumn(
+                          label: const Text("Unit Price (Ksh)"),
+                          numeric: true,
+                          onSort: _sort),
+                      DataColumn(
+                          label: const Text("Sales Amount (Ksh)"),
+                          numeric: true,
+                          onSort: _sort),
+                    ],
+                    source: _dataTableSource)
+              ]),
         )));
   }
 }
@@ -238,6 +351,7 @@ class _DataSource extends DataTableSource {
     final item = sortedData[index];
 
     return DataRow(cells: [
+      DataCell(Text(item.getClient.clientName)),
       DataCell(Text(item.getMilkSaleDate)),
       DataCell(Text('${item.getMilkSaleQuantity}')),
       DataCell(Text('${item.getUnitPrice}')),

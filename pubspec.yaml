@@ -23,6 +23,7 @@ dependencies:
   go_router: ^13.0.1
   intl: ^0.18.1
   collection: ^1.18.0
+  fl_chart: ^0.66.0
 
 dev_dependencies:
   flutter_test:
