@@ -71,7 +71,6 @@ class HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: TextFormField(
                     controller: _milkProductionDateController,
-                    readOnly: true,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: 'Date',

@@ -4,11 +4,12 @@ import 'package:DigitalDairy/models/treatment.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/treatment_controller.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class TreatmentInputScreen extends StatefulWidget {
@@ -115,42 +116,16 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                             context,
                             "Treatment Date",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _treatmentDateController,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Date cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Date',
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                editTreatmentId != null
-                                                    ? DateFormat("dd/MM/yyyy")
-                                                        .parse(treatmentToSave
-                                                            .getTreatmentDate)
-                                                    : DateTime.now());
-                                        _treatmentDateController.text =
-                                            getStringFromDate(pickedDateTime);
-                                      },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
-                                ),
-                              )),
+                          MyDefaultDateInputTextField(
+                              controller: _treatmentDateController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Date cannot be empty';
+                                }
+                                return null;
+                              },
+                              initialDate: getDateFromString(
+                                  treatmentToSave.getTreatmentDate)),
                           inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -185,66 +160,51 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                             context,
                             "Diagnosis",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _treatmentDiagnosisController,
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Diagnosis cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _treatmentDiagnosisController,
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 3,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Diagnosis cannot be empty';
+                              }
+                              return null;
+                            },
+                          ),
                           inputFieldLabel(
                             context,
                             "Treatment Details",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _treatmentDetailsController,
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _treatmentDetailsController,
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 3,
+                          ),
                           inputFieldLabel(
                             context,
                             "Vet Name",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _treatmentVetNameController,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _treatmentVetNameController,
+                          ),
                           inputFieldLabel(
                             context,
                             "Cost",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _treatmentCostController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Quantity cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Quantity must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: textFormFieldDecoration,
-                              ))
+                          MyDefaultTextField(
+                            controller: _treatmentCostController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Quantity cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Quantity must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          )
                         ],
                       )),
                   saveButton(

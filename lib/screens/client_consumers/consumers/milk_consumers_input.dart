@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
@@ -109,41 +110,29 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                             context,
                             "Last Name",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _lastNameController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Last name cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _lastNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Last name cannot be empty';
+                              }
+                              return null;
+                            },
+                          ),
                           inputFieldLabel(
                             context,
                             "Contacts",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _contactsController,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _contactsController,
+                          ),
                           inputFieldLabel(
                             context,
                             "Location",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _locationController,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _locationController,
+                          ),
                         ],
                       )),
                   saveButton(

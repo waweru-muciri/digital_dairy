@@ -145,7 +145,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                         const EdgeInsets.fromLTRB(0, 10, 0, 10),
                                     child: TextFormField(
                                       controller: _dateController,
-                                      readOnly: true,
+                                      
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Date cannot be empty';

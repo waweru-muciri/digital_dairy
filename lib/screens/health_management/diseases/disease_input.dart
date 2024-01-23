@@ -2,6 +2,8 @@ import 'package:DigitalDairy/models/disease.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
@@ -90,73 +92,39 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                             context,
                             "Disease Name",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _diseaseNameController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Disease name cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _diseaseNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Disease name cannot be empty';
+                              }
+                              return null;
+                            },
+                          ),
                           inputFieldLabel(
                             context,
                             "Date Discovered",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _dateDiscoveredController,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Date cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Date',
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                editDiseaseId != null
-                                                    ? DateFormat("dd/MM/yyyy")
-                                                        .parse(disease
-                                                            .getDateDiscovered)
-                                                    : DateTime.now());
-                                        _dateDiscoveredController.text =
-                                            getStringFromDate(pickedDateTime);
-                                      },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
-                                ),
-                              )),
+                          MyDefaultDateInputTextField(
+                              controller: _dateDiscoveredController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Date cannot be empty';
+                                }
+                                return null;
+                              },
+                              initialDate:
+                                  getDateFromString(disease.getDateDiscovered)),
                           inputFieldLabel(
                             context,
                             "Disease Details",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _diseaseDetailsController,
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _diseaseDetailsController,
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 3,
+                          ),
                         ],
                       )),
                   saveButton(

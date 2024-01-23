@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
@@ -95,78 +96,58 @@ class ClientFormState extends State<ClientInputScreen> {
                             context,
                             "First Name",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _firstNameController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'First name cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _firstNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'First name cannot be empty';
+                              }
+                              return null;
+                            },
+                          ),
                           inputFieldLabel(
                             context,
                             "Last Name",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _lastNameController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Last name cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _lastNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Last name cannot be empty';
+                              }
+                              return null;
+                            },
+                          ),
                           inputFieldLabel(
                             context,
                             "Contacts",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _contactsController,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _contactsController,
+                          ),
                           inputFieldLabel(
                             context,
                             "Location",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _locationController,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _locationController,
+                          ),
                           inputFieldLabel(
                             context,
                             "Unit Price",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _unitPriceController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Unit price cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Unit price must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: textFormFieldDecoration,
-                              ))
+                          MyDefaultTextField(
+                            controller: _unitPriceController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Unit price cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Unit price must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          )
                         ],
                       )),
                   saveButton(

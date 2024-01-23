@@ -246,13 +246,9 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "Color",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _cowColorController,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _cowColorController,
+                          ),
                           inputFieldLabel(
                             context,
                             "Date of Birth",

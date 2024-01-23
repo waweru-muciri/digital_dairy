@@ -2,12 +2,13 @@ import 'package:DigitalDairy/models/income.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class IncomeInputScreen extends StatefulWidget {
   const IncomeInputScreen({super.key, this.editIncomeId});
@@ -89,82 +90,43 @@ class IncomeFormState extends State<IncomeInputScreen> {
                             context,
                             "Date",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _expenseDateController,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Date cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Date',
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                editIncomeId != null
-                                                    ? getDateFromString(
-                                                        _expense.getIncomeDate)
-                                                    : DateTime.now());
-                                        _expenseDateController.text =
-                                            getStringFromDate(pickedDateTime);
-                                      },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
-                                ),
-                              )),
+                          MyDefaultDateInputTextField(
+                              controller: _expenseDateController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Date cannot be empty';
+                                }
+                                return null;
+                              },
+                              initialDate:
+                                  getDateFromString(_expense.getIncomeDate)),
                           inputFieldLabel(
                               context, DisplayTextUtil.incomeDetails),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _expenseDetailsController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Details cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Details',
-                                ),
-                              )),
+                          MyDefaultTextField(
+                            controller: _expenseDetailsController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Details cannot be empty';
+                              }
+                              return null;
+                            },
+                          ),
                           inputFieldLabel(
                             context,
                             "Income Amount",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _expenseAmountController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Income Amount cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Amount must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Amount (Ksh)',
-                                ),
-                              ))
+                          MyDefaultTextField(
+                            controller: _expenseAmountController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Income Amount cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Amount must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          )
                         ],
                       )),
                   saveButton(

@@ -118,7 +118,6 @@ class ClientsMilkSalesStatementsScreenState
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: TextFormField(
                               controller: _fromDateFilterController,
-                              readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: const OutlineInputBorder(),
@@ -152,7 +151,6 @@ class ClientsMilkSalesStatementsScreenState
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: TextFormField(
                               controller: _toDateFilterController,
-                              readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: const OutlineInputBorder(),

@@ -4,6 +4,8 @@ import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/models/daily_milk_production.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
@@ -116,43 +118,17 @@ class DailyMilkProductionFormState
                             context,
                             "Date",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _dateController,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Date cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Date',
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                editDailyMilkProductionId !=
-                                                        null
-                                                    ? DateFormat("dd/MM/yyyy")
-                                                        .parse(_dailyMilkProduction
-                                                            .getMilkProductionDate)
-                                                    : DateTime.now());
-                                        _dateController.text =
-                                            getStringFromDate(pickedDateTime);
-                                      },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
-                                ),
-                              )),
+                          MyDefaultDateInputTextField(
+                            controller: _dateController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Date cannot be empty';
+                              }
+                              return null;
+                            },
+                            initialDate: getDateFromString(
+                                _dailyMilkProduction.getMilkProductionDate),
+                          ),
                           inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -187,59 +163,50 @@ class DailyMilkProductionFormState
                             context,
                             "Am Quantity",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _amAmountController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Am Quantity cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Am Quantity must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _amAmountController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Am Quantity cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Am Quantity must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          ),
                           inputFieldLabel(
                             context,
                             "Noon Quantity",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _noonAmountController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Noon Quantity cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Noon Quantity must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _noonAmountController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Noon Quantity cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Noon Quantity must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          ),
                           inputFieldLabel(
                             context,
                             "Pm Quantity",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _amAmountController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Pm Quantity cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Pm Quantity must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: textFormFieldDecoration,
-                              ))
+                          MyDefaultTextField(
+                            controller: _amAmountController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Pm Quantity cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Pm Quantity must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          )
                         ],
                       )),
                   saveButton(
