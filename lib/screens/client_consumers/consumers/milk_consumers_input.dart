@@ -86,13 +86,9 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "First Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "First Name",
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -109,13 +105,9 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Last Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Last Name",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -130,13 +122,9 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 },
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Contacts",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Contacts",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -145,13 +133,9 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 controller: _contactsController,
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Location",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Location",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

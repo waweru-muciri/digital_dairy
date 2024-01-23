@@ -91,13 +91,9 @@ class ClientFormState extends State<ClientInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "First Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "First Name",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -112,13 +108,9 @@ class ClientFormState extends State<ClientInputScreen> {
                                 },
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Last Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Last Name",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -133,13 +125,9 @@ class ClientFormState extends State<ClientInputScreen> {
                                 },
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Contacts",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Contacts",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -148,13 +136,9 @@ class ClientFormState extends State<ClientInputScreen> {
                                 controller: _contactsController,
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Location",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Location",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -163,13 +147,9 @@ class ClientFormState extends State<ClientInputScreen> {
                                 controller: _locationController,
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Unit Price",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Unit Price",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

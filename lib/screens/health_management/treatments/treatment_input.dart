@@ -111,10 +111,9 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Treatment Date",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          inputFieldLabel(
+                            context,
+                            "Treatment Date",
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -152,12 +151,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                           ))),
                                 ),
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Cow",
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
+                          inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Cow>(
@@ -187,13 +181,9 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                               }).toList(),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Diagnosis",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Diagnosis",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -211,13 +201,9 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 },
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Treatment Details",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Treatment Details",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -229,13 +215,9 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 maxLines: 3,
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Vet Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Vet Name",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -244,13 +226,9 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 controller: _treatmentVetNameController,
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cost",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Cost",
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

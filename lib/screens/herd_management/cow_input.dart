@@ -4,7 +4,7 @@ import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/default_date_input_field.dart';
-import 'package:DigitalDairy/widgets/default_text_field.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +124,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "Cow Code",
                           ),
-                          DefaultTextField(
+                          MyDefaultTextField(
                             controller: _cowCodeController,
                             keyboardType: TextInputType.text,
                             validator: (String? value) {
@@ -139,7 +139,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "Cow Name",
                           ),
-                          DefaultTextField(
+                          MyDefaultTextField(
                             controller: _cowNameController,
                             validator: (String? value) {
                               if (value != null && value.isNotEmpty) {
@@ -153,7 +153,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "KSB Number",
                           ),
-                          DefaultTextField(
+                          MyDefaultTextField(
                             controller: _cowKSBNoController,
                           ),
                           inputFieldLabel(
@@ -303,7 +303,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "Birth Weight",
                           ),
-                          DefaultTextField(
+                          MyDefaultTextField(
                             controller: _cowBirthWeightController,
                             validator: (value) {
                               if (value != null && value.isNotEmpty) {
@@ -323,7 +323,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "Source",
                           ),
-                          DefaultTextField(
+                          MyDefaultTextField(
                             controller: _cowSourceController,
                           ),
                         ],

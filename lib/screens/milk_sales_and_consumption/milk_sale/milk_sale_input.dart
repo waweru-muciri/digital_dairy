@@ -94,10 +94,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Date",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          inputFieldLabel(
+                            context,
+                            "Date",
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -133,12 +132,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                           ))),
                                 ),
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Client",
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
+                          inputFieldLabel(context, "Select Client"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Client>(
@@ -169,10 +163,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                               }).toList(),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Milk Sale Quantity",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          inputFieldLabel(
+                            context,
+                            "Milk Sale Quantity",
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

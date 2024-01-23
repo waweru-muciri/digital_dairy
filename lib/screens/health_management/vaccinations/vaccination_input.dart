@@ -107,10 +107,9 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Vaccination Date",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          inputFieldLabel(
+                            context,
+                            "Vaccination Date",
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -148,12 +147,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                           ))),
                                 ),
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Cow",
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
+                          inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Cow>(
@@ -183,13 +177,9 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                               }).toList(),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Vaccination Details",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Vaccination Details",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -201,13 +191,9 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 maxLines: 3,
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Vet Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Vet Name",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -216,13 +202,9 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 controller: _vaccinationVetNameController,
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cost",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Cost",
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

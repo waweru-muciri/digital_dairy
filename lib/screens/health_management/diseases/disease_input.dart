@@ -86,13 +86,9 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Disease Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Disease Name",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -107,10 +103,9 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                 },
                                 decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Date Discovered",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          inputFieldLabel(
+                            context,
+                            "Date Discovered",
                           ),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -148,13 +143,9 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                           ))),
                                 ),
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Disease Details",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Disease Details",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

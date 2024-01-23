@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DefaultTextField extends StatelessWidget {
-  const DefaultTextField(
+class MyDefaultTextField extends StatelessWidget {
+  const MyDefaultTextField(
       {super.key, this.validator, this.keyboardType, required this.controller});
   final String? Function(String?)? validator;
   final TextEditingController controller;

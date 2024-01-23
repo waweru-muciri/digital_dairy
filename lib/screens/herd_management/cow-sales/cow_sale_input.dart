@@ -4,6 +4,8 @@ import 'package:DigitalDairy/models/cow_sale.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/default_date_input_field.dart';
+import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
@@ -105,53 +107,21 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Date",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          inputFieldLabel(
+                            context,
+                            "Date",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _dateController,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Date cannot be empty';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Date',
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                editCowSaleId != null
-                                                    ? DateFormat("dd/MM/yyyy")
-                                                        .parse(cowSaleToSave
-                                                            .getCowSaleDate)
-                                                    : DateTime.now());
-                                        _dateController.text =
-                                            getStringFromDate(pickedDateTime);
-                                      },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Cow",
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium),
-                          ),
+                          DefaultDateTextField(
+                              controller: _dateController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Date cannot be empty';
+                                }
+                                return null;
+                              },
+                              initialDate: getDateFromString(
+                                  cowSaleToSave.getCowSaleDate)),
+                          inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Cow>(
@@ -181,60 +151,37 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                               }).toList(),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Client Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Client Name",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _clientNameController,
-                                decoration: textFormFieldDecoration,
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cost",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          MyDefaultTextField(
+                            controller: _clientNameController,
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _costController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Cost cannot be empty';
-                                  } else if (double.tryParse(value) == null) {
-                                    return "Cost must be a number";
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: textFormFieldDecoration,
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Remarks",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Cost",
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _remarksController,
-                                keyboardType: TextInputType.text,
-                                decoration: textFormFieldDecoration,
-                              )),
+                          MyDefaultTextField(
+                            controller: _costController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Cost cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Cost must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          ),
+                          inputFieldLabel(
+                            context,
+                            "Remarks",
+                          ),
+                          MyDefaultTextField(
+                            controller: _remarksController,
+                            keyboardType: TextInputType.text,
+                          ),
                         ],
                       )),
                   saveButton(
