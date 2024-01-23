@@ -1,4 +1,5 @@
-import '../models/cow.dart';
+import "package:DigitalDairy/models/cow.dart";
+
 import "db_service.dart";
 
 /// A service that gets, updates and deletes cow information.
