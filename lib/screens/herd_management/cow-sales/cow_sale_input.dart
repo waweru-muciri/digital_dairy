@@ -194,10 +194,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _clientNameController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -220,10 +217,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -239,10 +233,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                               child: TextFormField(
                                 controller: _remarksController,
                                 keyboardType: TextInputType.text,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                         ],
                       )),

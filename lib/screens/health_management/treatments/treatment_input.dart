@@ -209,10 +209,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -230,10 +227,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
                                 maxLines: 3,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -248,10 +242,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _treatmentVetNameController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -274,10 +265,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               ))
                         ],
                       )),

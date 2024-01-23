@@ -195,10 +195,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               ))
                         ],
                       )),

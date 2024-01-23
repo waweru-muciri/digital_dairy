@@ -118,10 +118,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -139,10 +136,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -157,10 +151,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _breedController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -180,10 +171,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -203,10 +191,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -224,10 +209,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

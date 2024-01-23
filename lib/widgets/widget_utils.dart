@@ -1,6 +1,14 @@
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:flutter/material.dart';
 
+const InputDecoration textFormFieldDecoration = InputDecoration(
+  border: OutlineInputBorder(),
+  isDense: true,
+);
+
+const EdgeInsetsDirectional textFormFieldPadding =
+    EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10);
+
 Future<void> showDeleteItemDialog(
     BuildContext context, Future<void> Function() deleteItemFuture) async {
   return showDialog<void>(
@@ -202,4 +210,15 @@ Widget summaryTextDisplayRow(String summaryText, String dataText) {
         )),
     Expanded(flex: 1, child: Text(dataText))
   ]);
+}
+
+Widget inputFieldLabel(BuildContext context, String text) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+    child: Text(
+      text,
+      textAlign: TextAlign.left,
+      style: Theme.of(context).textTheme.titleMedium,
+    ),
+  );
 }

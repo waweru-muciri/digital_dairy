@@ -105,10 +105,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -167,10 +164,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
                                 maxLines: 3,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                         ],
                       )),

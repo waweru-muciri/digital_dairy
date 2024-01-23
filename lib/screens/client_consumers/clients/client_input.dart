@@ -110,10 +110,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -134,10 +131,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -152,10 +146,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _contactsController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -170,10 +161,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _locationController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -197,10 +185,7 @@ class ClientFormState extends State<ClientInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               ))
                         ],
                       )),

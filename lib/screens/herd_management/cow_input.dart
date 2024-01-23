@@ -3,6 +3,8 @@ import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
+import 'package:DigitalDairy/widgets/default_date_input_field.dart';
+import 'package:DigitalDairy/widgets/default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class CowInputFormState extends State<CowInputScreen> {
       TextEditingController();
   final TextEditingController _cowKSBNoController = TextEditingController();
   final TextEditingController _cowDamController = TextEditingController();
-  final TextEditingController __cowBirthWeightController =
+  final TextEditingController _cowBirthWeightController =
       TextEditingController();
 
   Cow? _cowDam;
@@ -61,7 +63,7 @@ class CowInputFormState extends State<CowInputScreen> {
     _cowNameController.dispose();
     _cowPurchaseDateController.dispose();
     _cowSourceController.dispose();
-    __cowBirthWeightController.dispose();
+    _cowBirthWeightController.dispose();
     super.dispose();
   }
 
@@ -118,92 +120,54 @@ class CowInputFormState extends State<CowInputScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cow Code",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Cow Code",
+                          ),
+                          DefaultTextField(
+                            controller: _cowCodeController,
+                            keyboardType: TextInputType.text,
+                            validator: (String? value) {
+                              if (value != null && value.isNotEmpty) {
+                                return null;
+                              } else {
+                                return "Cow code cannot be empty!";
+                              }
+                            },
+                          ),
+                          inputFieldLabel(
+                            context,
+                            "Cow Name",
+                          ),
+                          DefaultTextField(
+                            controller: _cowNameController,
+                            validator: (String? value) {
+                              if (value != null && value.isNotEmpty) {
+                                return null;
+                              } else {
+                                return "Cow name cannot be empty!";
+                              }
+                            },
+                          ),
+                          inputFieldLabel(
+                            context,
+                            "KSB Number",
+                          ),
+                          DefaultTextField(
+                            controller: _cowKSBNoController,
+                          ),
+                          inputFieldLabel(
+                            context,
+                            "Breed",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _cowCodeController,
-                                keyboardType: TextInputType.text,
-                                validator: (String? value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    return null;
-                                  } else {
-                                    return "Cow code cannot be empty!";
-                                  }
-                                },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cow Name",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _cowNameController,
-                                keyboardType: TextInputType.text,
-                                validator: (String? value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    return null;
-                                  } else {
-                                    return "Cow name cannot be empty!";
-                                  }
-                                },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "KSB Number",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _cowKSBNoController,
-                                keyboardType: TextInputType.text,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Breed",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: DropdownButton<CowBreed>(
+                              child: DropdownButtonFormField<CowBreed>(
                                 isExpanded: true,
                                 value: _selectedCowBreed,
                                 isDense: true,
+                                iconEnabledColor: Colors.green,
                                 items: CowBreed.values
                                     .map((cowBreed) =>
                                         DropdownMenuItem<CowBreed>(
@@ -214,22 +178,25 @@ class CowInputFormState extends State<CowInputScreen> {
                                     _selectedCowBreed = item;
                                   });
                                 },
+                                validator: (CowBreed? cowBreed) {
+                                  if (cowBreed == null) {
+                                    return "Breed not selected!";
+                                  }
+                                  return null;
+                                },
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cow Type",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Cow Type",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
-                              child: DropdownButton<CowType>(
+                              child: DropdownButtonFormField<CowType>(
                                 isExpanded: true,
                                 value: _selectedCowType,
                                 isDense: true,
+                                iconEnabledColor: Colors.green,
                                 items: CowType.values
                                     .map((cowType) => DropdownMenuItem<CowType>(
                                         child: Text(cowType.type)))
@@ -239,22 +206,25 @@ class CowInputFormState extends State<CowInputScreen> {
                                     _selectedCowType = cowType;
                                   });
                                 },
+                                validator: (CowType? cowType) {
+                                  if (cowType == null) {
+                                    return "Type not selected!";
+                                  }
+                                  return null;
+                                },
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Cow Grade",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Cow Grade",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
-                              child: DropdownButton<CowGrade>(
+                              child: DropdownButtonFormField<CowGrade>(
                                 isExpanded: true,
                                 value: _selectedCowGrade,
                                 isDense: true,
+                                iconEnabledColor: Colors.green,
                                 items: CowGrade.values
                                     .map((cowType) =>
                                         DropdownMenuItem<CowGrade>(
@@ -265,97 +235,43 @@ class CowInputFormState extends State<CowInputScreen> {
                                     _selectedCowGrade = cowGrade;
                                   });
                                 },
+                                validator: (CowGrade? cowGrade) {
+                                  if (cowGrade == null) {
+                                    return "Grade is not selected!";
+                                  }
+                                  return null;
+                                },
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Color",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Color",
                           ),
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _cowColorController,
-                                keyboardType: TextInputType.text,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Date of Birth",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          inputFieldLabel(
+                            context,
+                            "Date of Birth",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _cowDateofBirthController,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                editCowId != null
-                                                    ? getDateFromString(
-                                                        '${cowToSave.getDateOfBirth}')
-                                                    : DateTime.now());
-                                        _cowDateofBirthController.text =
-                                            getStringFromDate(pickedDateTime);
-                                      },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Purchase Date",
-                                style: Theme.of(context).textTheme.titleMedium),
+                          DefaultDateTextField(
+                              controller: _cowPurchaseDateController,
+                              initialDate: getDateFromString(
+                                  '${cowToSave.getDateOfBirth}')),
+                          inputFieldLabel(
+                            context,
+                            "Purchase Date",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _cowPurchaseDateController,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  isDense: true,
-                                  suffixIcon: IconButton(
-                                      onPressed: () async {
-                                        final DateTime? pickedDateTime =
-                                            await showCustomDatePicker(
-                                                context,
-                                                editCowId != null
-                                                    ? getDateFromString(
-                                                        '${cowToSave.getDatePurchased}')
-                                                    : DateTime.now());
-                                        _cowPurchaseDateController.text =
-                                            getStringFromDate(pickedDateTime);
-                                      },
-                                      icon: const Align(
-                                          widthFactor: 1.0,
-                                          heightFactor: 1.0,
-                                          child: Icon(
-                                            Icons.calendar_month,
-                                          ))),
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text("Select Dam",
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium),
+                          DefaultDateTextField(
+                              controller: _cowPurchaseDateController,
+                              initialDate: getDateFromString(
+                                  '${cowToSave.getDatePurchased}')),
+                          inputFieldLabel(
+                            context,
+                            "Select Dam",
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -383,55 +299,33 @@ class CowInputFormState extends State<CowInputScreen> {
                               }).toList(),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Birth Weight",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          inputFieldLabel(
+                            context,
+                            "Birth Weight",
                           ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: __cowBirthWeightController,
-                                validator: (value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    final inputValue = double.tryParse(value);
-                                    if (inputValue == null) {
-                                      return "Cost must be a number";
-                                    } else if (inputValue <= 0) {
-                                      return "Birth weight must be greater than 0";
-                                    }
-                                    return null;
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text(
-                              "Source",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                          DefaultTextField(
+                            controller: _cowBirthWeightController,
+                            validator: (value) {
+                              if (value != null && value.isNotEmpty) {
+                                final inputValue = double.tryParse(value);
+                                if (inputValue == null) {
+                                  return "Cost must be a number";
+                                } else if (inputValue <= 0) {
+                                  return "Birth weight must be greater than 0";
+                                }
+                                return null;
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
                           ),
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 10),
-                              child: TextFormField(
-                                controller: _cowSourceController,
-                                keyboardType: TextInputType.text,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
-                              )),
+                          inputFieldLabel(
+                            context,
+                            "Source",
+                          ),
+                          DefaultTextField(
+                            controller: _cowSourceController,
+                          ),
                         ],
                       )),
                   saveButton(
@@ -496,6 +390,7 @@ class CowInputFormState extends State<CowInputScreen> {
                               _cowKSBNoController.clear();
                               _cowColorController.clear();
                               _cowSourceController.clear();
+                              _cowBirthWeightController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful

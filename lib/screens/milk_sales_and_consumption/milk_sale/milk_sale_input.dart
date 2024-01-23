@@ -187,10 +187,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               ))
                         ],
                       )),

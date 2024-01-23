@@ -7,7 +7,6 @@ import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/expense_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class ExpenseInputScreen extends StatefulWidget {
   const ExpenseInputScreen({super.key, this.editExpenseId});
@@ -104,7 +103,6 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
                                   isDense: true,
-                                  hintText: 'Date',
                                   suffixIcon: IconButton(
                                       onPressed: () async {
                                         final DateTime? pickedDateTime =
@@ -141,11 +139,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Details',
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -165,11 +159,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                  hintText: 'Amount (Ksh)',
-                                ),
+                                decoration: textFormFieldDecoration,
                               ))
                         ],
                       )),

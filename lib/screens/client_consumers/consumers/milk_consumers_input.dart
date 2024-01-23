@@ -128,10 +128,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -146,10 +143,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _contactsController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -164,10 +158,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _locationController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                         ],
                       )),

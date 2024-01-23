@@ -199,10 +199,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
                                 maxLines: 3,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -217,10 +214,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                   0, 10, 0, 10),
                               child: TextFormField(
                                 controller: _vaccinationVetNameController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               )),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -243,10 +237,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  isDense: true,
-                                ),
+                                decoration: textFormFieldDecoration,
                               ))
                         ],
                       )),
