@@ -2,6 +2,7 @@ import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
+import 'package:DigitalDairy/screens/clients_consumers_statements/clients_sales_charts.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -284,6 +285,7 @@ class ClientsMilkSalesStatementsScreenState
                             ],
                           )),
                     )),
+                const LineChartSample2(),
                 PaginatedDataTable(
                     rowsPerPage: 20,
                     availableRowsPerPage: const [20, 30, 50],

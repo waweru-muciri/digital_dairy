@@ -1,15 +1,21 @@
+import "package:DigitalDairy/util/utils.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class SemenCatalog {
   String? _id;
   late String _bullName;
   late String _bullCode;
-  late String _breed;
+  late CowBreed? _breed;
   late String _supplierName;
   late double _costPerStraw;
   late int _numberOfStraws;
+  late String? _sire;
 
   SemenCatalog();
+
+  String? get getSire => _sire;
+
+  set setSire(String? sire) => _sire = sire;
 
   String get getSupplier => _supplierName;
 

@@ -40,13 +40,66 @@ enum CowGrade {
   final String name;
 }
 
+enum CowBreed {
+  ayrshire("Ayrshire"),
+  boran("Boran"),
+  swiss("Swiss"),
+  brown("Brown"),
+  fleckview("Fleckview"),
+  guernsey("Guernsey"),
+  holstein("Holstein"),
+  fresian("Fresian"),
+  jersey("Jersey"),
+  redFresian("Red Fresian"),
+  sahiwal("Sahiwal"),
+  other("Other");
+
+  const CowBreed(this.breed);
+  final String breed;
+}
+
+enum SexedOrConvenction {
+  sexed("Sexed"),
+  convection("Convection");
+
+  const SexedOrConvenction(this.type);
+  final String type;
+}
+
+enum AbortionOrMiscarriage {
+  abortion("Abortion"),
+  miscarriage("Miscarriage");
+
+  const AbortionOrMiscarriage(this.type);
+  final String type;
+}
+
+enum CalvingType {
+  single("Single"),
+  twin("Twin");
+
+  const CalvingType(this.type);
+  final String type;
+}
+
+enum CalfSexType {
+  bull("Bull"),
+  heifer("Heifer");
+
+  const CalfSexType(this.type);
+  final String type;
+}
+
 enum CowType {
-  calf("Calf"),
-  heifer("Heifer"),
+  calf("Calf 0-4 months"),
+  weaner("Weaner 4-10 months"),
+  heifer("Heifer 10-15 months"),
+  bulling("Bulling 15-18 Months"),
   yearling("Yearling"),
-  cow("Cow"),
+  inCalfHeifer("InCalf Heifer 18+ months"),
+  milker("Milker"),
   dryCow("Dry Cow"),
-  weaner("Weaner");
+  bull("Bull");
 
   const CowType(this.name);
   final String name;
