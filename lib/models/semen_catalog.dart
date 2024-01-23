@@ -10,8 +10,13 @@ class SemenCatalog {
   late double _costPerStraw;
   late int _numberOfStraws;
   late String? _sire;
+  late String? _purchaseDate;
 
   SemenCatalog();
+
+  String? get getPurchaseDate => _purchaseDate;
+
+  set setPurchaseDate(String? purchaseDate) => _purchaseDate = purchaseDate;
 
   String? get getSire => _sire;
 

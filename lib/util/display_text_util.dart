@@ -1,4 +1,8 @@
 class DisplayTextUtil {
+  static const cowDetails = "Cow Details";
+  static const aiRecordDetails = "AI Record Details";
+  static const pregnancyDiagnosisDetails = "Preganancy Diagnosis Details";
+  static const calvingDetails = "Calving Details";
   static const expenseDetails = "Expense Details";
   static const expenses = "Expenses";
   static const incomes = "Incomes";

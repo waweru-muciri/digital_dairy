@@ -6,7 +6,6 @@ import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class SemenCatalogInputScreen extends StatefulWidget {
@@ -30,6 +29,9 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
       TextEditingController();
   final TextEditingController _costPerStrawController = TextEditingController();
   final TextEditingController _supplierController = TextEditingController();
+  final TextEditingController _purchaseDateController =
+      TextEditingController(text: getStringFromDate(DateTime.now()));
+
   late SemenCatalog semenCatalog;
   final _formKey = GlobalKey<FormState>();
 
@@ -225,6 +227,40 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                   isDense: true,
+                                ),
+                              )),
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: TextFormField(
+                                controller: _purchaseDateController,
+                                readOnly: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Date cannot be empty';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
+                                  isDense: true,
+                                  hintText: 'Date',
+                                  suffixIcon: IconButton(
+                                      onPressed: () async {
+                                        final DateTime? pickedDateTime =
+                                            await showCustomDatePicker(
+                                                context,
+                                                getDateFromString(
+                                                    _purchaseDateController
+                                                        .text));
+                                        _purchaseDateController.text =
+                                            getStringFromDate(pickedDateTime);
+                                      },
+                                      icon: const Align(
+                                          widthFactor: 1.0,
+                                          heightFactor: 1.0,
+                                          child: Icon(
+                                            Icons.calendar_month,
+                                          ))),
                                 ),
                               )),
                         ],

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class SemenCatalogsScreen extends StatefulWidget {
   const SemenCatalogsScreen({super.key});
-  static const routePath = '/semenCatalogs';
+  static const routePath = '/semen_catalogs';
 
   @override
   State<StatefulWidget> createState() => SemenCatalogsScreenState();
@@ -84,6 +84,7 @@ class SemenCatalogsScreenState extends State<SemenCatalogsScreen> {
             sortAscending: false,
             sortColumnIndex: 0,
             columns: const [
+              DataColumn(label: Text("Purchase Date")),
               DataColumn(label: Text("Bull Code")),
               DataColumn(label: Text("Bull Name")),
               DataColumn(label: Text("Breed")),
@@ -113,6 +114,7 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
+      DataCell(Text('${item.getPurchaseDate}')),
       DataCell(Text(item.getBullCode)),
       DataCell(Text(item.getBullName)),
       DataCell(Text(item.getBreed)),

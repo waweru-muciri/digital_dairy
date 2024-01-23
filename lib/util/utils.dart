@@ -36,8 +36,8 @@ enum CowGrade {
   intermediate("Intermediate"),
   foundation("Foundation");
 
-  const CowGrade(this.name);
-  final String name;
+  const CowGrade(this.grade);
+  final String grade;
 }
 
 enum CowBreed {
@@ -101,8 +101,8 @@ enum CowType {
   dryCow("Dry Cow"),
   bull("Bull");
 
-  const CowType(this.name);
-  final String name;
+  const CowType(this.type);
+  final String type;
 }
 
 /// Flutter code sample for [PaginatedDataTable].

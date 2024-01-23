@@ -3,18 +3,16 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 class Cow {
   String? _id;
-  late String _name;
   late String _cowCode;
-  late CowType _cowType;
+  late String _name;
+  late CowType? _cowType;
   late String? _dateOfBirth;
   late CowGrade? _grade;
   late CowBreed? _breed;
   late String? _color;
   late Cow? _sire;
   late Cow? _dam;
-  late String _category;
   late double? _birthWeight;
-  late String? _group;
   late String? _KSBNumber;
   late String? _datePurchased;
   late String? _source;
@@ -38,7 +36,7 @@ class Cow {
 
   CowGrade? get getGrade => _grade;
 
-  set setGrade(CowGrade grade) => _grade = grade;
+  set setGrade(CowGrade? grade) => _grade = grade;
 
   CowBreed? get getBreed => _breed;
 
@@ -56,21 +54,13 @@ class Cow {
 
   set setDam(Cow? dam) => _dam = dam;
 
-  get getCategory => _category;
-
-  set setCategory(category) => _category = category;
-
   double? get getBirthWeight => _birthWeight;
 
   set setBirthWeight(double? birthWeight) => _birthWeight = birthWeight;
 
-  get getGroup => _group;
+  CowType? get getCowType => _cowType;
 
-  set setGroup(group) => _group = group;
-
-  CowType get getCowType => _cowType;
-
-  set setCowType(CowType cowType) => _cowType = cowType;
+  set setCowType(CowType? cowType) => _cowType = cowType;
 
   String? get getId => _id;
 
