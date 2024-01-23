@@ -88,15 +88,15 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
             child: Form(
                 key: _formKey,
                 child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 0, 24, 36),
-                              child: Column(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                24, 0, 24, 36),
+                            child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
@@ -178,6 +178,10 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                       return null;
                                     },
                                   ),
+                                  inputFieldLabel(
+                                    context,
+                                    "Purchase Date",
+                                  ),
                                   MyDefaultDateInputTextField(
                                       controller: _purchaseDateController,
                                       validator: (value) {
@@ -187,85 +191,77 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                         return null;
                                       },
                                       initialDate: getDateFromString(
-                                          _purchaseDateController.text)),
-                                  saveButton(
-                                      onPressed: () async {
-                                        // Validate returns true if the form is valid, or false otherwise.
-                                        if (_formKey.currentState!.validate()) {
-                                          //show a loading dialog to the user while we save the info
-                                          showLoadingDialog(context);
-                                          String bullCode =
-                                              _bullCodeController.text.trim();
-                                          String bullName =
-                                              _bullNameController.text.trim();
-                                          String bullBreed =
-                                              _breedController.text.trim();
-                                          String supplierName =
-                                              _supplierController.text.trim();
-                                          double costPerStraw = double.parse(
-                                              _costPerStrawController.text
-                                                  .trim());
-                                          int numberOfStraws = int.parse(
-                                              _numberOfStrawsController.text
-                                                  .trim());
-                                          //edit the properties that require editing
-                                          semenCatalog.setBullName = bullName;
-                                          semenCatalog.setBreed = bullBreed;
-                                          semenCatalog.setBullCode = bullCode;
-                                          semenCatalog.setCostPerStraw =
-                                              costPerStraw;
-                                          semenCatalog.setNumberOfStraws =
-                                              numberOfStraws;
-                                          semenCatalog.setSupplierName =
-                                              supplierName;
+                                          _purchaseDateController.text))
+                                ])),
+                        saveButton(
+                            onPressed: () async {
+                              // Validate returns true if the form is valid, or false otherwise.
+                              if (_formKey.currentState!.validate()) {
+                                //show a loading dialog to the user while we save the info
+                                showLoadingDialog(context);
+                                String bullCode =
+                                    _bullCodeController.text.trim();
+                                String bullName =
+                                    _bullNameController.text.trim();
+                                String bullBreed = _breedController.text.trim();
+                                String supplierName =
+                                    _supplierController.text.trim();
+                                double costPerStraw = double.parse(
+                                    _costPerStrawController.text.trim());
+                                int numberOfStraws = int.parse(
+                                    _numberOfStrawsController.text.trim());
+                                //edit the properties that require editing
+                                semenCatalog.setBullName = bullName;
+                                semenCatalog.setBreed = bullBreed;
+                                semenCatalog.setBullCode = bullCode;
+                                semenCatalog.setCostPerStraw = costPerStraw;
+                                semenCatalog.setNumberOfStraws = numberOfStraws;
+                                semenCatalog.setSupplierName = supplierName;
 
-                                          if (editSemenCatalogId != null) {
-                                            //update the semenCatalog in the db
-                                            await context
-                                                .read<SemenCatalogController>()
-                                                .editSemenCatalog(semenCatalog)
-                                                .then((value) {
-                                              //remove the loading dialog
-                                              Navigator.of(context).pop();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(successSnackBar(
-                                                      "Semen Catalog edited successfully!"));
-                                            }).catchError((error) {
-                                              //remove the loading dialog
-                                              Navigator.of(context).pop();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(errorSnackBar(
-                                                      "Saving failed!"));
-                                            });
-                                          } else {
-                                            //add the semenCatalog in the db
-                                            await context
-                                                .read<SemenCatalogController>()
-                                                .addSemenCatalog(semenCatalog)
-                                                .then((value) {
-                                              //reset the form
-                                              _bullCodeController.clear();
-                                              _bullNameController.clear();
-                                              _breedController.clear();
-                                              //remove the loading dialog
-                                              Navigator.of(context).pop();
-                                              //show a snackbar showing the user that saving has been successful
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(successSnackBar(
-                                                      "Semen Catalog added successfully."));
-                                            }).catchError((error) {
-                                              //remove the loading dialog
-                                              Navigator.of(context).pop();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(errorSnackBar(
-                                                      "Saving failed!"));
-                                            });
-                                          }
-                                        }
-                                      },
-                                      child: const Text("Save Details"))
-                                ],
-                              )),
-                        ])))));
+                                if (editSemenCatalogId != null) {
+                                  //update the semenCatalog in the db
+                                  await context
+                                      .read<SemenCatalogController>()
+                                      .editSemenCatalog(semenCatalog)
+                                      .then((value) {
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        successSnackBar(
+                                            "Semen Catalog edited successfully!"));
+                                  }).catchError((error) {
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        errorSnackBar("Saving failed!"));
+                                  });
+                                } else {
+                                  //add the semenCatalog in the db
+                                  await context
+                                      .read<SemenCatalogController>()
+                                      .addSemenCatalog(semenCatalog)
+                                      .then((value) {
+                                    //reset the form
+                                    _bullCodeController.clear();
+                                    _bullNameController.clear();
+                                    _breedController.clear();
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    //show a snackbar showing the user that saving has been successful
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        successSnackBar(
+                                            "Semen Catalog added successfully."));
+                                  }).catchError((error) {
+                                    //remove the loading dialog
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        errorSnackBar("Saving failed!"));
+                                  });
+                                }
+                              }
+                            },
+                            child: const Text("Save Details"))
+                      ]),
+                ))));
   }
 }
