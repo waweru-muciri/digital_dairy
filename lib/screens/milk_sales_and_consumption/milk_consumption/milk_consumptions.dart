@@ -20,16 +20,16 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
   late List<MilkConsumption> _milkConsumptionList;
   final TextEditingController _cowNameController = TextEditingController();
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() => context
         .read<MilkConsumptionController>()
-        .filterMilkConsumptionByDate(getStringFromDate(DateTime.now())));
+        .filterMilkConsumptionByDate(getTodaysDateAsString()));
   }
 
   @override

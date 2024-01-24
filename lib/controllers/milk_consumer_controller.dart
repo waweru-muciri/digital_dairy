@@ -19,14 +19,14 @@ class MilkConsumerController with ChangeNotifier {
   List<MilkConsumer> get milkConsumersList => _filteredMilkConsumersList;
 
   Future<void> getMilkConsumers() async {
-    List<MilkConsumer> loadedList =
+    List<MilkConsumer> fetchedList =
         await _milkConsumerService.getMilkConsumersList();
     //clear the items present in the list to avoid duplication
     _milkConsumerList.clear();
     _filteredMilkConsumersList.clear();
     //add loaded items to the lists
-    _milkConsumerList.addAll(loadedList);
-    _filteredMilkConsumersList.addAll(loadedList);
+    _milkConsumerList.addAll(fetchedList);
+    _filteredMilkConsumersList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

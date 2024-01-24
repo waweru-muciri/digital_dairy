@@ -25,7 +25,6 @@ class SemenCatalogsScreenState extends State<SemenCatalogsScreen> {
     super.initState();
     Future.microtask(
         () => context.read<SemenCatalogController>().getSemenCatalogs());
-    //start listening to changes on the date input field
   }
 
   @override

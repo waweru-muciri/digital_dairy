@@ -23,9 +23,9 @@ class ClientsMilkSalesStatementsScreenState
     extends State<ClientsMilkSalesStatementsScreen> {
   late List<MilkSale> _milkSalesList;
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _clientController = TextEditingController();
   late List<Client> _clientsList;
   Client? selectedClient;

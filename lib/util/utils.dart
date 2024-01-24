@@ -10,10 +10,15 @@ DateTime getDateFromString(String dateString) {
   return date;
 }
 
+String getTodaysDateAsString() {
+  return DateFormat("dd/MM/yyyy").format(DateTime.now());
+}
+
 String getStringFromDate(DateTime? date) {
+  final dateToFormat = date ?? DateTime.now();
   late final String dateString;
   try {
-    dateString = DateFormat("dd/MM/yyyy").format(date!);
+    dateString = DateFormat("dd/MM/yyyy").format(dateToFormat);
   } catch (e) {
     dateString = "";
   }

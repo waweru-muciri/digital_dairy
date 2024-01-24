@@ -10,6 +10,7 @@ import 'package:DigitalDairy/screens/health_management/health_management_tabbed_
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cow-sales/cow_sale_input.dart';
+import 'package:DigitalDairy/screens/herd_management/cows/cow_input.dart';
 import 'package:DigitalDairy/screens/herd_management/herd_management_tabbed_view.dart';
 import 'package:DigitalDairy/screens/herd_management/semen/semen_catalog_input.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production_input.dart';
@@ -101,6 +102,19 @@ class AppRouter {
         name: "herd_management",
         path: HerdManagementTabView.routePath,
         builder: (context, state) => const HerdManagementTabView(),
+      ),
+      GoRoute(
+        name: "addCowDetails",
+        path: CowInputScreen.addDetailsRoutePath,
+        builder: (context, state) => const CowInputScreen(),
+      ),
+      //edit diseases routes
+      GoRoute(
+        name: "editCowDetails",
+        path: CowInputScreen.editDetailsRoutePath,
+        builder: (context, state) => CowInputScreen(
+          editCowId: state.pathParameters["editCowId"],
+        ),
       ),
       //add & edit semen catalog routes
       GoRoute(

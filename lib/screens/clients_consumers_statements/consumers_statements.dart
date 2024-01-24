@@ -21,9 +21,9 @@ class ConsumersMilkConsumptionsStatementsScreenState
     extends State<ConsumersMilkConsumptionsStatementsScreen> {
   late List<MilkConsumption> _milkConsumptionsList;
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _milkConsumerController = TextEditingController();
   late List<MilkConsumer> _milkConsumersList;
   MilkConsumer? selectedMilkConsumer;

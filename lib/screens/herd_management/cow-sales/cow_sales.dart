@@ -21,9 +21,9 @@ class CowSalesScreenState extends State<CowSalesScreen> {
   final TextEditingController _cowSalesFilterController =
       TextEditingController();
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
 
   @override
   void initState() {

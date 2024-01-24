@@ -20,16 +20,16 @@ class ExpensesScreenState extends State<ExpensesScreen> {
   late List<Expense> _expensesList;
   final TextEditingController _cowNameController = TextEditingController();
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() => context
         .read<ExpenseController>()
-        .filterExpenseByDates(getStringFromDate(DateTime.now())));
+        .filterExpenseByDates(getTodaysDateAsString()));
   }
 
   @override

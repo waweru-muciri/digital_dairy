@@ -36,11 +36,11 @@ class DiseaseController with ChangeNotifier {
   }
 
   Future<void> getDiseases() async {
-    List<Disease> loadedList = await _diseaseService.getDiseasesList();
+    List<Disease> fetchedList = await _diseaseService.getDiseasesList();
     _diseaseList.clear();
     _filteredDiseaseList.clear();
-    _diseaseList.addAll(loadedList);
-    _filteredDiseaseList.addAll(loadedList);
+    _diseaseList.addAll(fetchedList);
+    _filteredDiseaseList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

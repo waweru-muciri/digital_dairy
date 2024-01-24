@@ -38,12 +38,12 @@ class AbortionMiscarriageController with ChangeNotifier {
   }
 
   Future<void> getAbortionMiscarriages() async {
-    List<AbortionMiscarriage> loadedList =
+    List<AbortionMiscarriage> fetchedList =
         await _abortionMiscarriageService.getAbortionMiscarriagesList();
     _abortionMiscarriageList.clear();
     _filteredAbortionMiscarriageList.clear();
-    _abortionMiscarriageList.addAll(loadedList);
-    _filteredAbortionMiscarriageList.addAll(loadedList);
+    _abortionMiscarriageList.addAll(fetchedList);
+    _filteredAbortionMiscarriageList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

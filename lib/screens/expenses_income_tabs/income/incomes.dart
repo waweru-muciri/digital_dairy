@@ -21,9 +21,9 @@ class IncomeScreenState extends State<IncomesScreen> {
   late List<Income> _incomesList;
   final TextEditingController _cowNameController = TextEditingController();
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class IncomeScreenState extends State<IncomesScreen> {
     //get current day's income list
     Future.microtask(() => context
         .read<IncomeController>()
-        .filterIncomeByDates(getStringFromDate(DateTime.now())));
+        .filterIncomeByDates(getTodaysDateAsString()));
   }
 
   @override

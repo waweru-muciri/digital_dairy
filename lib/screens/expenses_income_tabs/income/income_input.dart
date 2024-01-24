@@ -34,7 +34,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
   void initState() {
     super.initState();
     _expenseDateController =
-        TextEditingController(text: getStringFromDate(DateTime.now()));
+        TextEditingController(text: getTodaysDateAsString());
   }
 
   @override

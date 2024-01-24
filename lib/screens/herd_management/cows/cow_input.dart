@@ -7,6 +7,7 @@ import 'package:DigitalDairy/widgets/default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,12 +38,12 @@ class CowInputFormState extends State<CowInputScreen> {
       TextEditingController();
 
   Cow? _cowDam;
-  CowBreed? _selectedCowBreed;
-  CowType? _selectedCowType;
-  CowGrade? _selectedCowGrade;
+  String? _selectedCowBreed;
+  String? _selectedCowType;
+  String? _selectedCowGrade;
   late List<Cow> _cowsList;
 
-  late Cow cowToSave;
+  Cow? cowToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -74,26 +75,29 @@ class CowInputFormState extends State<CowInputScreen> {
     String? editCowId = widget.editCowId;
     if (editCowId != null) {
       final cowsList = context.read<CowController>().cowsList;
-      cowToSave = cowsList.firstWhere(
-          (cowToSave) => cowToSave.getId == editCowId,
-          orElse: () => Cow());
-      _cowCodeController.value = TextEditingValue(text: cowToSave.getCowCode);
-      _cowNameController.value = TextEditingValue(text: cowToSave.getName);
+      cowToEdit = cowsList.firstWhereOrNull(
+        (cow) => cow.getId == editCowId,
+      );
+      _cowCodeController.value =
+          TextEditingValue(text: '${cowToEdit?.getCowCode}');
+      _cowNameController.value =
+          TextEditingValue(text: "${cowToEdit?.getName}");
       _cowColorController.value =
-          TextEditingValue(text: '${cowToSave.getColor}');
+          TextEditingValue(text: '${cowToEdit?.getColor}');
       _cowDateofBirthController.value =
-          TextEditingValue(text: '${cowToSave.getDateOfBirth}');
+          TextEditingValue(text: '${cowToEdit?.getDateOfBirth}');
       _cowPurchaseDateController.value =
-          TextEditingValue(text: '${cowToSave.getDatePurchased}');
+          TextEditingValue(text: '${cowToEdit?.getDatePurchased}');
       _cowKSBNoController.value =
-          TextEditingValue(text: '${cowToSave.getKSBNumber}');
+          TextEditingValue(text: '${cowToEdit?.getKSBNumber}');
       _cowSourceController.value =
-          TextEditingValue(text: '${cowToSave.getSource}');
+          TextEditingValue(text: '${cowToEdit?.getSource}');
       setState(() {
-        _cowDam = cowToSave.getDam;
+        _cowDam = cowToEdit?.getDam;
+        _selectedCowGrade = cowToEdit?.getGrade;
+        _selectedCowBreed = cowToEdit?.getBreed;
+        _selectedCowType = cowToEdit?.getCowType;
       });
-    } else {
-      cowToSave = Cow();
     }
     return Scaffold(
         appBar: AppBar(
@@ -163,22 +167,25 @@ class CowInputFormState extends State<CowInputScreen> {
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
-                              child: DropdownButtonFormField<CowBreed>(
+                              child: DropdownButtonFormField<String>(
                                 isExpanded: true,
                                 value: _selectedCowBreed,
                                 isDense: true,
                                 iconEnabledColor: Colors.green,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder()),
                                 items: CowBreed.values
-                                    .map((cowBreed) =>
-                                        DropdownMenuItem<CowBreed>(
+                                    .map<DropdownMenuItem<String>>((cowBreed) =>
+                                        DropdownMenuItem<String>(
+                                            value: cowBreed.breed,
                                             child: Text(cowBreed.breed)))
                                     .toList(),
-                                onChanged: (CowBreed? item) {
+                                onChanged: (String? item) {
                                   setState(() {
                                     _selectedCowBreed = item;
                                   });
                                 },
-                                validator: (CowBreed? cowBreed) {
+                                validator: (String? cowBreed) {
                                   if (cowBreed == null) {
                                     return "Breed not selected!";
                                   }
@@ -192,21 +199,25 @@ class CowInputFormState extends State<CowInputScreen> {
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
-                              child: DropdownButtonFormField<CowType>(
+                              child: DropdownButtonFormField<String>(
                                 isExpanded: true,
                                 value: _selectedCowType,
                                 isDense: true,
                                 iconEnabledColor: Colors.green,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder()),
                                 items: CowType.values
-                                    .map((cowType) => DropdownMenuItem<CowType>(
-                                        child: Text(cowType.type)))
+                                    .map<DropdownMenuItem<String>>((cowType) =>
+                                        DropdownMenuItem<String>(
+                                            value: cowType.type,
+                                            child: Text(cowType.type)))
                                     .toList(),
-                                onChanged: (CowType? cowType) {
+                                onChanged: (String? cowType) {
                                   setState(() {
                                     _selectedCowType = cowType;
                                   });
                                 },
-                                validator: (CowType? cowType) {
+                                validator: (String? cowType) {
                                   if (cowType == null) {
                                     return "Type not selected!";
                                   }
@@ -220,22 +231,25 @@ class CowInputFormState extends State<CowInputScreen> {
                           Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 10, 0, 10),
-                              child: DropdownButtonFormField<CowGrade>(
+                              child: DropdownButtonFormField<String>(
                                 isExpanded: true,
                                 value: _selectedCowGrade,
                                 isDense: true,
                                 iconEnabledColor: Colors.green,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder()),
                                 items: CowGrade.values
-                                    .map((cowType) =>
-                                        DropdownMenuItem<CowGrade>(
-                                            child: Text(cowType.grade)))
+                                    .map<DropdownMenuItem<String>>((cowGrade) =>
+                                        DropdownMenuItem<String>(
+                                            value: cowGrade.grade,
+                                            child: Text(cowGrade.grade)))
                                     .toList(),
-                                onChanged: (CowGrade? cowGrade) {
+                                onChanged: (String? cowGrade) {
                                   setState(() {
                                     _selectedCowGrade = cowGrade;
                                   });
                                 },
-                                validator: (CowGrade? cowGrade) {
+                                validator: (String? cowGrade) {
                                   if (cowGrade == null) {
                                     return "Grade is not selected!";
                                   }
@@ -254,9 +268,9 @@ class CowInputFormState extends State<CowInputScreen> {
                             "Date of Birth",
                           ),
                           DefaultDateTextField(
-                              controller: _cowPurchaseDateController,
+                              controller: _cowDateofBirthController,
                               initialDate: getDateFromString(
-                                  '${cowToSave.getDateOfBirth}')),
+                                  _cowDateofBirthController.text)),
                           inputFieldLabel(
                             context,
                             "Purchase Date",
@@ -264,7 +278,7 @@ class CowInputFormState extends State<CowInputScreen> {
                           DefaultDateTextField(
                               controller: _cowPurchaseDateController,
                               initialDate: getDateFromString(
-                                  '${cowToSave.getDatePurchased}')),
+                                  _cowPurchaseDateController.text)),
                           inputFieldLabel(
                             context,
                             "Select Dam",
@@ -339,27 +353,30 @@ class CowInputFormState extends State<CowInputScreen> {
                               _cowDateofBirthController.text.trim();
                           String ksbNumber = _cowKSBNoController.text.trim();
                           String source = _cowSourceController.text.trim();
-                          double? birthWeight =
-                              double.tryParse(_cowSourceController.text.trim());
+                          double? birthWeight = double.tryParse(
+                              _cowBirthWeightController.text.trim());
                           //edit the properties that require editing
-                          cowToSave.setCowCode = cowCode;
-                          cowToSave.setName = cowName;
-                          cowToSave.setColor = color;
-                          cowToSave.setKSBNumber = ksbNumber;
-                          cowToSave.setDatePurchased = dateOfPurchase;
-                          cowToSave.setDateOfBirth = dateOfBirth;
-                          cowToSave.setDam = _cowDam;
-                          cowToSave.setBirthWeight = birthWeight;
-                          cowToSave.setSource = source;
-                          cowToSave.setBreed = _selectedCowBreed;
-                          cowToSave.setCowType = _selectedCowType;
-                          cowToSave.setGrade = _selectedCowGrade;
+                          final newCow = Cow();
+                          newCow.setCowCode = cowCode;
+                          newCow.setName = cowName;
+                          newCow.setColor = color;
+                          newCow.setKSBNumber = ksbNumber;
+                          newCow.setDatePurchased = dateOfPurchase;
+                          newCow.setDateOfBirth = dateOfBirth;
+                          newCow.setBirthWeight = birthWeight;
+                          newCow.setSource = source;
+                          newCow.setDam = _cowDam;
+                          newCow.setBreed = _selectedCowBreed;
+                          newCow.setCowType = _selectedCowType;
+                          newCow.setGrade = _selectedCowGrade;
 
                           if (editCowId != null) {
+                            //set the cow id
+                            newCow.setId = editCowId;
                             //update the cow  in the db
                             await context
                                 .read<CowController>()
-                                .editCow(cowToSave)
+                                .editCow(newCow)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -372,10 +389,10 @@ class CowInputFormState extends State<CowInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the cowToSave in the db
+                            //add the newCow in the db
                             await context
                                 .read<CowController>()
-                                .addCow(cowToSave)
+                                .addCow(newCow)
                                 .then((value) {
                               //reset the form
                               _cowCodeController.clear();
@@ -395,6 +412,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
+                              debugPrint(error);
                               ScaffoldMessenger.of(context).showSnackBar(
                                   errorSnackBar("Saving failed!"));
                             });

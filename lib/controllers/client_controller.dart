@@ -36,11 +36,11 @@ class ClientController with ChangeNotifier {
   }
 
   Future<void> getClients() async {
-    List<Client> loadedList = await _clientService.getClientsList();
+    List<Client> fetchedList = await _clientService.getClientsList();
     _clientList.clear();
     _filteredClientList.clear();
-    _clientList.addAll(loadedList);
-    _filteredClientList.addAll(loadedList);
+    _clientList.addAll(fetchedList);
+    _filteredClientList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

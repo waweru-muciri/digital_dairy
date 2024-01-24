@@ -25,7 +25,6 @@ class VaccinationsScreenState extends State<VaccinationsScreen> {
     super.initState();
     Future.microtask(
         () => context.read<VaccinationController>().getVaccinations());
-    //start listening to changes on the date input field
   }
 
   @override

@@ -38,12 +38,12 @@ class PregnancyDiagnosisController with ChangeNotifier {
   }
 
   Future<void> getPregnancyDiagnosiss() async {
-    List<PregnancyDiagnosis> loadedList =
+    List<PregnancyDiagnosis> fetchedList =
         await _pregnancyDiagnosisService.getPregnancyDiagnosissList();
     _pregnancyDiagnosisList.clear();
     _filteredPregnancyDiagnosisList.clear();
-    _pregnancyDiagnosisList.addAll(loadedList);
-    _filteredPregnancyDiagnosisList.addAll(loadedList);
+    _pregnancyDiagnosisList.addAll(fetchedList);
+    _filteredPregnancyDiagnosisList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

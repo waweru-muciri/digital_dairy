@@ -32,7 +32,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
   final TextEditingController _costPerStrawController = TextEditingController();
   final TextEditingController _supplierController = TextEditingController();
   final TextEditingController _purchaseDateController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
 
   late SemenCatalog semenCatalog;
   final _formKey = GlobalKey<FormState>();

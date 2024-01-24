@@ -3,7 +3,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 class CowSale {
   String? _id;
-  late String? _saleRemarks;
+  String? _saleRemarks;
   late String _soldDate;
   late String? _clientName;
   late double _cowSaleCost;

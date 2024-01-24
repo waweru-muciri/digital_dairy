@@ -27,7 +27,7 @@ class MilkSaleInputScreen extends StatefulWidget {
 
 class MilkSaleFormState extends State<MilkSaleInputScreen> {
   final TextEditingController _milkSaleDateController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _milkSaleAmountController =
       TextEditingController(text: "");
   final TextEditingController _clientFilterController = TextEditingController();

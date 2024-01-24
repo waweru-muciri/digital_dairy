@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   final TextEditingController _milkProductionDateController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   late TextEditingController _cowNameController;
   late List<DailyMilkProduction> _milkProductionList;
 

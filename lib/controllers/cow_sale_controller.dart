@@ -47,11 +47,11 @@ class CowSaleController with ChangeNotifier {
   }
 
   Future<void> getCowSales() async {
-    List<CowSale> loadedList = await _cowSaleService.getCowSalesList();
+    List<CowSale> fetchedList = await _cowSaleService.getCowSalesList();
     _cowSaleList.clear();
     _filteredCowSaleList.clear();
-    _cowSaleList.addAll(loadedList);
-    _filteredCowSaleList.addAll(loadedList);
+    _cowSaleList.addAll(fetchedList);
+    _filteredCowSaleList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

@@ -1,21 +1,22 @@
-import "package:DigitalDairy/util/utils.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Cow {
   String? _id;
   late String _cowCode;
   late String _name;
-  late CowType? _cowType;
-  late String? _dateOfBirth;
-  late CowGrade? _grade;
-  late CowBreed? _breed;
-  late String? _color;
-  late Cow? _sire;
-  late Cow? _dam;
-  late double? _birthWeight;
-  late String? _KSBNumber;
-  late String? _datePurchased;
-  late String? _source;
+  String? _cowType;
+  String? _dateOfBirth = "";
+  String? _grade;
+  String? _breed;
+  String? _color;
+  Cow? _sire;
+  Cow? _dam;
+  double? _birthWeight;
+  String? _KSBNumber;
+  String? _datePurchased;
+  String? _source;
+
+  Cow();
 
   String? get getKSBNumber => _KSBNumber;
 
@@ -28,19 +29,18 @@ class Cow {
   String? get getSource => _source;
 
   set setSource(String? source) => _source = source;
-  Cow();
 
   String? get getDateOfBirth => _dateOfBirth;
 
   set setDateOfBirth(String dateOfBirth) => _dateOfBirth = dateOfBirth;
 
-  CowGrade? get getGrade => _grade;
+  String? get getGrade => _grade;
 
-  set setGrade(CowGrade? grade) => _grade = grade;
+  set setGrade(String? grade) => _grade = grade;
 
-  CowBreed? get getBreed => _breed;
+  String? get getBreed => _breed;
 
-  set setBreed(CowBreed? breed) => _breed = breed;
+  set setBreed(String? breed) => _breed = breed;
 
   String? get getColor => _color;
 
@@ -58,9 +58,9 @@ class Cow {
 
   set setBirthWeight(double? birthWeight) => _birthWeight = birthWeight;
 
-  CowType? get getCowType => _cowType;
+  String? get getCowType => _cowType;
 
-  set setCowType(CowType? cowType) => _cowType = cowType;
+  set setCowType(String? cowType) => _cowType = cowType;
 
   String? get getId => _id;
 
@@ -82,9 +82,18 @@ class Cow {
     final String id = snapshot.id;
 
     Cow newCow = Cow();
-    newCow.setName = data?["name"];
-    newCow.setCowCode = data?["cow_id"];
     newCow.setId = id;
+    newCow.setName = data?["name"];
+    newCow.setCowCode = data?["cow_code"];
+    newCow.setName = data?["name"];
+    newCow.setColor = data?["color"];
+    newCow.setBreed = data?["breed"];
+    newCow.setGrade = data?["grade"];
+    newCow.setCowType = data?["type"];
+    newCow.setKSBNumber = data?["ksb_number"];
+    newCow.setDateOfBirth = data?["date_of_birth"];
+    newCow.setDatePurchased = data?["purchase_date"];
+    newCow.setSource = data?["source"];
 
     return newCow;
   }
@@ -97,9 +106,18 @@ class Cow {
     final String id = snapshot.id;
 
     Cow newCow = Cow();
+    newCow.setId = id;
     newCow.setName = data?["name"];
     newCow.setCowCode = data?["cow_code"];
-    newCow.setId = id;
+    newCow.setName = data?["name"];
+    newCow.setColor = data?["color"];
+    newCow.setBreed = data?["breed"];
+    newCow.setGrade = data?["grade"];
+    newCow.setCowType = data?["type"];
+    newCow.setKSBNumber = data?["ksb_number"];
+    newCow.setDateOfBirth = data?["date_of_birth"];
+    newCow.setDatePurchased = data?["purchase_date"];
+    newCow.setSource = data?["source"];
 
     return newCow;
   }
@@ -109,6 +127,16 @@ class Cow {
       'cow_code': _cowCode,
       'name': _name,
       'id': _id,
+      'ksb_number': _KSBNumber,
+      'breed': _breed,
+      'type': _cowType,
+      'grade': _grade,
+      'color': _color,
+      'date_of_birth': _dateOfBirth,
+      'purchase_date': _datePurchased,
+      'birth_weight': _birthWeight,
+      'source': _source,
+      'dam': null
     };
   }
 

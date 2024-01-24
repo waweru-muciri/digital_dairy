@@ -33,12 +33,12 @@ class SemenCatalogController with ChangeNotifier {
   }
 
   Future<void> getSemenCatalogs() async {
-    List<SemenCatalog> loadedList =
+    List<SemenCatalog> fetchedList =
         await _semenCatalogService.getSemenCatalogsList();
     _semenCatalogList.clear();
     _filteredSemenCatalogList.clear();
-    _semenCatalogList.addAll(loadedList);
-    _filteredSemenCatalogList.addAll(loadedList);
+    _semenCatalogList.addAll(fetchedList);
+    _filteredSemenCatalogList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

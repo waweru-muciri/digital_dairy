@@ -24,7 +24,6 @@ class DiseasesScreenState extends State<DiseasesScreen> {
   void initState() {
     super.initState();
     Future.microtask(() => context.read<DiseaseController>().getDiseases());
-    //start listening to changes on the date input field
   }
 
   @override

@@ -19,9 +19,9 @@ class MilkSalesScreen extends StatefulWidget {
 class MilkSalesScreenState extends State<MilkSalesScreen> {
   late List<MilkSale> _milkSalesList;
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   int _sortColumnIndex = 0;
   bool _sortColumnAscending = true;
 
@@ -33,7 +33,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
     _dataTableSource = _DataSource(context: context);
     Future.microtask(() => context
         .read<MilkSaleController>()
-        .filterMilkSalesByDates(getStringFromDate(DateTime.now())));
+        .filterMilkSalesByDates(getTodaysDateAsString()));
   }
 
   @override

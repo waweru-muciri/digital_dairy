@@ -36,12 +36,12 @@ class VaccinationController with ChangeNotifier {
   }
 
   Future<void> getVaccinations() async {
-    List<Vaccination> loadedList =
+    List<Vaccination> fetchedList =
         await _vaccinationService.getVaccinationsList();
     _vaccinationList.clear();
     _filteredVaccinationList.clear();
-    _vaccinationList.addAll(loadedList);
-    _filteredVaccinationList.addAll(loadedList);
+    _vaccinationList.addAll(fetchedList);
+    _filteredVaccinationList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

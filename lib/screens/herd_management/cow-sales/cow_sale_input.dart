@@ -8,9 +8,9 @@ import 'package:DigitalDairy/widgets/default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/cow_sale_controller.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CowSaleInputScreen extends StatefulWidget {
@@ -29,15 +29,16 @@ class CowSaleInputScreen extends StatefulWidget {
 class CowSaleFormState extends State<CowSaleInputScreen> {
   final TextEditingController _clientNameController =
       TextEditingController(text: "");
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateController =
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _remarksController =
       TextEditingController(text: "");
   final TextEditingController _costController = TextEditingController();
-  final TextEditingController _cowController = TextEditingController();
+  final TextEditingController _cowFilterController = TextEditingController();
   Cow? selectedCow;
   late List<Cow> _cowsList;
 
-  late CowSale cowSaleToSave;
+  CowSale? cowSaleToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -54,6 +55,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
     _costController.dispose();
     _dateController.dispose();
     _remarksController.dispose();
+    _cowFilterController.dispose();
     super.dispose();
   }
 
@@ -64,23 +66,21 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
     String? editCowSaleId = widget.editCowSaleId;
     if (editCowSaleId != null) {
       final cowSalesList = context.read<CowSaleController>().cowSalesList;
-      cowSaleToSave = cowSalesList.firstWhere(
-          (cowSaleToSave) => cowSaleToSave.getId == editCowSaleId,
-          orElse: () => CowSale());
+      cowSaleToEdit = cowSalesList.firstWhereOrNull(
+        (cowSaleToEdit) => cowSaleToEdit.getId == editCowSaleId,
+      );
       _clientNameController.value =
-          TextEditingValue(text: '$cowSaleToSave.getClientName');
+          TextEditingValue(text: '${cowSaleToEdit?.getClientName}');
       _dateController.value =
-          TextEditingValue(text: cowSaleToSave.getCowSaleDate);
+          TextEditingValue(text: "${cowSaleToEdit?.getCowSaleDate}");
       _remarksController.value =
-          TextEditingValue(text: '${cowSaleToSave.getRemarks}');
+          TextEditingValue(text: '${cowSaleToEdit?.getRemarks}');
       _costController.value =
-          TextEditingValue(text: '${cowSaleToSave.getCowSaleCost}');
+          TextEditingValue(text: '${cowSaleToEdit?.getCowSaleCost}');
 
       setState(() {
-        selectedCow = cowSaleToSave.getCow;
+        selectedCow = cowSaleToEdit!.getCow;
       });
-    } else {
-      cowSaleToSave = CowSale();
     }
     return Scaffold(
         appBar: AppBar(
@@ -119,14 +119,14 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                 }
                                 return null;
                               },
-                              initialDate: getDateFromString(
-                                  cowSaleToSave.getCowSaleDate)),
+                              initialDate:
+                                  getDateFromString(_dateController.text)),
                           inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Cow>(
                               initialSelection: selectedCow,
-                              controller: _cowController,
+                              controller: _cowFilterController,
                               requestFocusOnTap: true,
                               expandedInsets: EdgeInsets.zero,
                               onSelected: (Cow? cow) {
@@ -195,17 +195,20 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                           String clientName = _clientNameController.text.trim();
                           String cost = _costController.text.trim();
                           //edit the properties that require editing
-                          cowSaleToSave.setRemarks = remarks;
-                          cowSaleToSave.setCowSaleDate = date;
-                          cowSaleToSave.setCowSaleCost = double.parse(cost);
-                          cowSaleToSave.setClientName = clientName;
-                          cowSaleToSave.setCow = selectedCow!;
+                          final newCowSale = CowSale();
+                          newCowSale.setRemarks = remarks;
+                          newCowSale.setCowSaleDate = date;
+                          newCowSale.setCowSaleCost = double.parse(cost);
+                          newCowSale.setClientName = clientName;
+                          newCowSale.setCow = selectedCow!;
 
                           if (editCowSaleId != null) {
-                            //update the cowSale  in the db
+                            //set the id of the object instance
+                            newCowSale.setId = editCowSaleId;
+                            //update the cow sale  in the db
                             await context
                                 .read<CowSaleController>()
-                                .editCowSale(cowSaleToSave)
+                                .editCowSale(newCowSale)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -219,10 +222,10 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the cowSaleToSave in the db
+                            //add the newCowSale in the db
                             await context
                                 .read<CowSaleController>()
-                                .addCowSale(cowSaleToSave)
+                                .addCowSale(newCowSale)
                                 .then((value) {
                               //reset the form
                               _clientNameController.clear();

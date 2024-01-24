@@ -18,19 +18,19 @@ class DailyMilkProductionScreen extends StatefulWidget {
 
 class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
   final TextEditingController _cowNameSearchFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   late List<DailyMilkProduction> _milkProductionList;
   final TextEditingController _fromDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
 
   @override
   void initState() {
     super.initState();
     context
         .read<DailyMilkProductionController>()
-        .filterDailyMilkProductionsByDates(getStringFromDate(DateTime.now()));
+        .filterDailyMilkProductionsByDates(getTodaysDateAsString());
   }
 
   @override

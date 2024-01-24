@@ -36,11 +36,11 @@ class CalvingController with ChangeNotifier {
   }
 
   Future<void> getCalvings() async {
-    List<Calving> loadedList = await _calvingService.getCalvingsList();
+    List<Calving> fetchedList = await _calvingService.getCalvingsList();
     _calvingList.clear();
     _filteredCalvingList.clear();
-    _calvingList.addAll(loadedList);
-    _filteredCalvingList.addAll(loadedList);
+    _calvingList.addAll(fetchedList);
+    _filteredCalvingList.addAll(fetchedList);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }

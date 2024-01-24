@@ -28,7 +28,7 @@ class MilkSalePaymentInputScreen extends StatefulWidget {
 
 class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
   final TextEditingController _dateController =
-      TextEditingController(text: getStringFromDate(DateTime.now()));
+      TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _amountController =
       TextEditingController(text: "0");
   final TextEditingController _detailsController =
@@ -145,7 +145,6 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                         const EdgeInsets.fromLTRB(0, 10, 0, 10),
                                     child: TextFormField(
                                       controller: _dateController,
-                                      
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Date cannot be empty';
