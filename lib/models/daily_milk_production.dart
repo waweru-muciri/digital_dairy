@@ -56,7 +56,7 @@ class DailyMilkProduction {
     newMilkProduction.setAmQuantity = data?["am_quantity"];
     newMilkProduction.setNoonQuantity = data?["noon_quantity"];
     newMilkProduction.setPmQuantity = data?["pm_quantity"];
-    newMilkProduction.setCow = Cow.fromAnotherFirestoreDoc(snapshot, options);
+    newMilkProduction.setCow = Cow.getCowPropertiesFromMap(data?['cow']);
     newMilkProduction.setId = id;
     return newMilkProduction;
   }
@@ -68,6 +68,7 @@ class DailyMilkProduction {
       'noon_quantity': _noonQuantity,
       'pm_quantity': _pmQuantity,
       "cow_id": _cowId,
+      "cow": _cow,
       "id": _id,
     };
   }

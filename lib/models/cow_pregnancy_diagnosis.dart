@@ -5,10 +5,10 @@ class PregnancyDiagnosis {
   String? _id;
   late bool _diagnosisResult;
   late String _diagnosisDate;
-  late String? _vetName;
+  String? _vetName;
   late double _diagnosisCost;
   late Cow _cow;
-  late String? _cowId;
+  String? _cowId;
 
   PregnancyDiagnosis();
 
@@ -57,8 +57,7 @@ class PregnancyDiagnosis {
     newPregnancyDiagnosis.setPregnancyDiagnosisCost = data?["cost"];
     newPregnancyDiagnosis.setVetName = data?["vet_name"];
     newPregnancyDiagnosis.setId = id;
-    newPregnancyDiagnosis.setCow =
-        Cow.fromAnotherFirestoreDoc(snapshot, options);
+    newPregnancyDiagnosis.setCow = Cow.getCowPropertiesFromMap(data?['cow']);
     return newPregnancyDiagnosis;
   }
 

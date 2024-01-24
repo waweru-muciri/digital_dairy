@@ -7,6 +7,7 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -59,9 +60,8 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
     if (editSemenCatalogId != null) {
       final semenCatalogsList =
           context.read<SemenCatalogController>().semenCatalogsList;
-      _semenCatalogToEdit = semenCatalogsList.firstWhere(
-          (semenCatalog) => semenCatalog.getId == editSemenCatalogId,
-          orElse: () => SemenCatalog());
+      _semenCatalogToEdit = semenCatalogsList.firstWhereOrNull(
+          (semenCatalog) => semenCatalog.getId == editSemenCatalogId);
       _bullCodeController.value =
           TextEditingValue(text: _semenCatalogToEdit?.getBullCode);
       _bullNameController.value =
@@ -74,8 +74,6 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
           TextEditingValue(text: '${_semenCatalogToEdit?.getCostPerStraw}');
       _supplierController.value =
           TextEditingValue(text: _semenCatalogToEdit?.getSupplier ?? '');
-    } else {
-      _semenCatalogToEdit = SemenCatalog();
     }
     return Scaffold(
         appBar: AppBar(

@@ -53,7 +53,7 @@ class Treatment {
     newTreatment._treatmentCost = data?["cost"];
     newTreatment._vetName = data?["vet_name"];
     newTreatment._id = id;
-    newTreatment._cow = Cow.fromAnotherFirestoreDoc(snapshot, options);
+    newTreatment._cow = Cow.getCowPropertiesFromMap(data?['cow']);
     return newTreatment;
   }
 

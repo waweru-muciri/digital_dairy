@@ -1,10 +1,7 @@
 import 'package:DigitalDairy/controllers/cow_controller.dart';
 import 'package:DigitalDairy/models/cow.dart';
-import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
-import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class CowsScreen extends StatefulWidget {
@@ -35,8 +32,7 @@ class CowsScreenState extends State<CowsScreen> {
   Widget build(BuildContext context) {
     _cowList = context.watch<CowController>().cowsList;
 
-    return SingleChildScrollView(
-        child: Container(
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Container(
@@ -59,90 +55,73 @@ class CowsScreenState extends State<CowsScreen> {
                         ],
                       )))),
         ),
-        PaginatedDataTable(
-            header: const Text(DisplayTextUtil.cowsList),
-            rowsPerPage: 20,
-            availableRowsPerPage: const [20, 30, 50],
-            sortAscending: false,
-            sortColumnIndex: 0,
-            actions: <Widget>[
-              OutlinedButton.icon(
-                icon: const Icon(Icons.add),
-                onPressed: () => context.pushNamed("addCowDetails"),
-                label: const Text("New"),
-              )
-            ],
-            columns: const [
-              DataColumn(
-                label: Text("Cow Code"),
+        Expanded(
+            child: ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          itemCount: _cowList.length * 10,
+          itemBuilder: (context, index) {
+            final cow = _cowList[0];
+            bool cowActiveStatus = cow.getActiveStatus;
+            final cowInitials = cow.getName.split(" ").fold(
+                '', (previousValue, newValue) => previousValue + newValue[0]);
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                isThreeLine: true,
+                titleAlignment: ListTileTitleAlignment.center,
+                dense: false,
+                trailing: null,
+                leading: CircleAvatar(
+                  child: Text(cowInitials),
+                ),
+                title: Row(
+                  children: [
+                    Expanded(
+                        child: Text('Name: ${cow.getName}',
+                            style: Theme.of(context).textTheme.bodyLarge)),
+                    Text(cow.getAge())
+                  ],
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text(
+                      "Dam: ${cow.getDam?.getName ?? ''} ",
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                            flex: 2,
+                            child: Text('Sire: ${cow.getSire?.getName ?? ''}')),
+                        Chip(
+                            backgroundColor: Colors.white10,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 0),
+                            side: ChipTheme.of(context)
+                                .copyWith(
+                                    side: BorderSide(
+                                        color: cowActiveStatus
+                                            ? Colors.tealAccent.withOpacity(0.3)
+                                            : Colors.redAccent
+                                                .withOpacity(0.3)))
+                                .side,
+                            labelPadding: const EdgeInsets.all(0),
+                            label: Text(
+                              cowActiveStatus ? "Active" : "Inactive",
+                            )),
+                      ],
+                    )
+                  ],
+                ),
+                onTap: () {},
               ),
-              DataColumn(
-                label: Text("Cow Name"),
-              ),
-              DataColumn(label: Text("Sire")),
-              DataColumn(label: Text("Dam")),
-              DataColumn(
-                label: Text("Grade"),
-              ),
-              DataColumn(label: Text("Breed")),
-              DataColumn(label: Text("Color")),
-              DataColumn(label: Text("D.O.B")),
-              // DataColumn(label: Text("Category")),
-              // DataColumn(label: Text("Status")),
-              // DataColumn(label: Text("Birth Weight (Kgs)")),
-              // DataColumn(label: Text("Group")),
-              // DataColumn(label: Text("Source")),
-              DataColumn(label: Text("Edit")),
-              DataColumn(label: Text("Delete")),
-            ],
-            source: _DataSource(data: _cowList, context: context))
+            );
+          },
+        )),
       ]),
-    ));
+    );
   }
-}
-
-class _DataSource extends DataTableSource {
-  final List<Cow> data;
-  final BuildContext context;
-  _DataSource({required this.data, required this.context});
-
-  @override
-  DataRow? getRow(int index) {
-    if (index >= data.length) {
-      return null;
-    }
-
-    final cow = data[index];
-    final cowSire = cow.getSire;
-    final cowDam = cow.getDam;
-    return DataRow(cells: [
-      DataCell(Text(cow.getCowCode)),
-      DataCell(Text(cow.getName)),
-      DataCell(Text(cowSire != null ? cowSire.getName : "")),
-      DataCell(Text(cowDam != null ? cowDam.getName : "")),
-      DataCell(Text(cow.getGrade ?? '')),
-      DataCell(Text(cow.getBreed ?? '')),
-      DataCell(Text(cow.getColor ?? '')),
-      DataCell(Text(cow.getDateOfBirth ?? '')),
-      DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editCowDetails",
-              pathParameters: {"editCowId": '${cow.getId}'})),
-      DataCell(const Icon(Icons.delete), onTap: () async {
-        deleteFunc() async {
-          return await context.read<CowController>().deleteCow(cow);
-        }
-
-        await showDeleteItemDialog(context, deleteFunc);
-      }),
-    ]);
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => data.length;
-
-  @override
-  int get selectedRowCount => 0;
 }

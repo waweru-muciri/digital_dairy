@@ -6,6 +6,7 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/disease_controller.dart';
 import 'package:intl/intl.dart';
@@ -52,7 +53,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
     String? editDiseaseId = widget.editDiseaseId;
     if (editDiseaseId != null) {
       final diseasesList = context.read<DiseaseController>().diseasesList;
-      _diseaseToEdit = diseasesList.firstWhere(
+      _diseaseToEdit = diseasesList.firstWhereOrNull(
         (disease) => disease.getId == editDiseaseId,
       );
       _diseaseNameController.value =
@@ -61,8 +62,6 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
           TextEditingValue(text: _diseaseToEdit?.getDateDiscovered);
       _diseaseDetailsController.value =
           TextEditingValue(text: _diseaseToEdit?.getDetails);
-    } else {
-      _diseaseToEdit = Disease();
     }
     return Scaffold(
         appBar: AppBar(

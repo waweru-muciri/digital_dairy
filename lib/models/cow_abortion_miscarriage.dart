@@ -4,11 +4,11 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 class AbortionMiscarriage {
   String? _id;
-  late String? _cause;
-  late String? _vetName;
+  String? _cause;
+  String? _vetName;
   late double _diagnosisCost;
   late Cow _cow;
-  late String? _cowId;
+  String? _cowId;
   late AbortionOrMiscarriage _abortionOrMiscarriage;
 
   AbortionMiscarriage();
@@ -64,8 +64,7 @@ class AbortionMiscarriage {
     newAbortionMiscarriage.setAbortionMiscarriageCost = data?["cost"];
     newAbortionMiscarriage.setVetName = data?["vet_name"];
     newAbortionMiscarriage.setId = id;
-    newAbortionMiscarriage.setCow =
-        Cow.fromAnotherFirestoreDoc(snapshot, options);
+    newAbortionMiscarriage.setCow = Cow.getCowPropertiesFromMap(data?['cow']);
     return newAbortionMiscarriage;
   }
 

@@ -1,3 +1,4 @@
+import "package:DigitalDairy/util/utils.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Cow {
@@ -5,22 +6,37 @@ class Cow {
   late String _cowCode;
   late String _name;
   String? _cowType;
-  String? _dateOfBirth = "";
+  String? _dateOfBirth = "12/01/2020";
   String? _grade;
   String? _breed;
   String? _color;
   Cow? _sire;
   Cow? _dam;
   double? _birthWeight;
-  String? _KSBNumber;
+  String? _kSBNumber;
   String? _datePurchased;
   String? _source;
+  bool _activeStatus = true;
+  String? _damId;
+  String? _sireId;
 
   Cow();
 
-  String? get getKSBNumber => _KSBNumber;
+  String? get getDamId => _damId;
 
-  set setKSBNumber(String? KSBNumber) => _KSBNumber = KSBNumber;
+  set setDamId(String? damId) => _damId = damId;
+
+  get getSireId => _sireId;
+
+  set setSireId(String? sireId) => _sireId = sireId;
+
+  bool get getActiveStatus => _activeStatus;
+
+  set setActiveStatus(bool activeStatus) => _activeStatus = activeStatus;
+
+  String? get getKSBNumber => _kSBNumber;
+
+  set setKSBNumber(String? kSBNumber) => _kSBNumber = kSBNumber;
 
   String? get getDatePurchased => _datePurchased;
 
@@ -48,11 +64,17 @@ class Cow {
 
   Cow? get getSire => _sire;
 
-  set setSire(Cow? sire) => _sire = sire;
+  set setSire(Cow? sire) {
+    _sire = sire;
+    _sireId = sire?.getId;
+  }
 
   Cow? get getDam => _dam;
 
-  set setDam(Cow? dam) => _dam = dam;
+  set setDam(Cow? dam) {
+    _dam = dam;
+    _damId = dam?.getId;
+  }
 
   double? get getBirthWeight => _birthWeight;
 
@@ -74,52 +96,34 @@ class Cow {
 
   set setCowCode(String cowCode) => _cowCode = cowCode;
 
+  factory Cow.getCowPropertiesFromMap(Map<String, dynamic>? data) {
+    Cow newCow = Cow();
+    newCow.setId = data?['id'];
+    newCow.setName = data?["name"];
+    newCow.setCowCode = data?["cow_code"];
+    newCow.setName = data?["name"];
+    newCow.setColor = data?["color"];
+    newCow.setBreed = data?["breed"];
+    newCow.setGrade = data?["grade"];
+    newCow.setCowType = data?["type"];
+    newCow.setKSBNumber = data?["ksb_number"];
+    newCow.setDateOfBirth = data?["date_of_birth"];
+    newCow.setDatePurchased = data?["purchase_date"];
+    newCow.setSource = data?["source"];
+    newCow.setDam = Cow.getCowPropertiesFromMap(data?['dam']);
+    newCow.setSire = Cow.getCowPropertiesFromMap(data?['sire']);
+    return newCow;
+  }
+
   factory Cow.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
-    final data = snapshot.data();
+    Map<String, dynamic>? data = snapshot.data();
     final String id = snapshot.id;
-
-    Cow newCow = Cow();
-    newCow.setId = id;
-    newCow.setName = data?["name"];
-    newCow.setCowCode = data?["cow_code"];
-    newCow.setName = data?["name"];
-    newCow.setColor = data?["color"];
-    newCow.setBreed = data?["breed"];
-    newCow.setGrade = data?["grade"];
-    newCow.setCowType = data?["type"];
-    newCow.setKSBNumber = data?["ksb_number"];
-    newCow.setDateOfBirth = data?["date_of_birth"];
-    newCow.setDatePurchased = data?["purchase_date"];
-    newCow.setSource = data?["source"];
-
-    return newCow;
-  }
-
-  factory Cow.fromAnotherFirestoreDoc(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data()?["cow"];
-    final String id = snapshot.id;
-
-    Cow newCow = Cow();
-    newCow.setId = id;
-    newCow.setName = data?["name"];
-    newCow.setCowCode = data?["cow_code"];
-    newCow.setName = data?["name"];
-    newCow.setColor = data?["color"];
-    newCow.setBreed = data?["breed"];
-    newCow.setGrade = data?["grade"];
-    newCow.setCowType = data?["type"];
-    newCow.setKSBNumber = data?["ksb_number"];
-    newCow.setDateOfBirth = data?["date_of_birth"];
-    newCow.setDatePurchased = data?["purchase_date"];
-    newCow.setSource = data?["source"];
-
-    return newCow;
+    data?.addAll({id: snapshot.id});
+    Cow cowDetails = Cow.getCowPropertiesFromMap(data);
+    return cowDetails;
   }
 
   Map<String, dynamic> toFirestore() {
@@ -127,7 +131,7 @@ class Cow {
       'cow_code': _cowCode,
       'name': _name,
       'id': _id,
-      'ksb_number': _KSBNumber,
+      'ksb_number': _kSBNumber,
       'breed': _breed,
       'type': _cowType,
       'grade': _grade,
@@ -136,8 +140,19 @@ class Cow {
       'purchase_date': _datePurchased,
       'birth_weight': _birthWeight,
       'source': _source,
-      'dam': null
+      'dam': _dam?.toFirestore(),
+      'sire': _sire?.toFirestore(),
     };
+  }
+
+  String getAge() {
+    DateTime date1 = DateTime.now();
+    DateTime date2 = getDateFromString(_dateOfBirth ?? "");
+    Duration diff = date1.difference(date2);
+    int diffYears = diff.inDays ~/ 365;
+    int diffMonths = diff.inDays ~/ 30;
+
+    return diffYears > 0 ? '$diffYears Yr(s)' : "$diffMonths Mon(s)";
   }
 
   String get cowName => '$_cowCode $_name ';

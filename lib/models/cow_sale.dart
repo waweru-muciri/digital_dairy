@@ -47,7 +47,7 @@ class CowSale {
     newCowSale._cowSaleCost = data?["cost"];
     newCowSale._clientName = data?["client"];
     newCowSale._id = id;
-    newCowSale._cow = Cow.fromAnotherFirestoreDoc(snapshot, options);
+    newCowSale._cow = Cow.getCowPropertiesFromMap(data?['cow']);
     return newCowSale;
   }
 

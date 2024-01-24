@@ -6,6 +6,7 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:provider/provider.dart';
@@ -50,8 +51,8 @@ class IncomeFormState extends State<IncomeInputScreen> {
     String? editIncomeId = widget.editIncomeId;
     if (editIncomeId != null) {
       final clientsList = context.read<IncomeController>().incomesList;
-      _incomeToEdit =
-          clientsList.firstWhere((income) => income.getId == editIncomeId);
+      _incomeToEdit = clientsList
+          .firstWhereOrNull((income) => income.getId == editIncomeId);
       _incomeDetailsController.value =
           TextEditingValue(text: _incomeToEdit?.getDetails ?? '');
       _incomeDateController.value =

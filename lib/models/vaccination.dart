@@ -48,7 +48,7 @@ class Vaccination {
     newVaccination._vaccinationCost = data?["cost"];
     newVaccination._vetName = data?["vet_name"];
     newVaccination._id = id;
-    newVaccination._cow = Cow.fromAnotherFirestoreDoc(snapshot, options);
+    newVaccination._cow = Cow.getCowPropertiesFromMap(data?['cow']);
     return newVaccination;
   }
 

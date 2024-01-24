@@ -194,7 +194,7 @@ class DailyMilkProductionFormState
                             "Pm Quantity",
                           ),
                           MyDefaultTextField(
-                            controller: _amAmountController,
+                            controller: _pmAmountController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Pm Quantity cannot be empty';

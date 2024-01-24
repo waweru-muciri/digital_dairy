@@ -126,7 +126,7 @@ final ThemeData myTheme = ThemeData(
         decoration: TextDecoration.none,
         fontFamily: "Lato",
         fontSize: 16,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
         letterSpacing: 0.5,
         textBaseline: TextBaseline.alphabetic),
     // the middle text uses "bodyMedium".

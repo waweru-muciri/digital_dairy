@@ -81,8 +81,6 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
       setState(() {
         selectedCow = _vaccinationToEdit?.getCow;
       });
-    } else {
-      _vaccinationToEdit = Vaccination();
     }
     return Scaffold(
         appBar: AppBar(
