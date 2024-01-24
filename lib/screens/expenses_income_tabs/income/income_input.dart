@@ -21,27 +21,27 @@ class IncomeInputScreen extends StatefulWidget {
 }
 
 class IncomeFormState extends State<IncomeInputScreen> {
-  final TextEditingController _expenseDetailsController =
+  final TextEditingController _incomeDetailsController =
       TextEditingController();
-  late TextEditingController _expenseDateController;
-  final TextEditingController _expenseAmountController =
+  late TextEditingController _incomeDateController;
+  final TextEditingController _incomeAmountController =
       TextEditingController(text: "0");
-  late Income _expense;
+  Income? _incomeToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _expenseDateController =
+    _incomeDateController =
         TextEditingController(text: getTodaysDateAsString());
   }
 
   @override
   void dispose() {
-    _expenseDetailsController.dispose();
-    _expenseDateController.dispose();
-    _expenseAmountController.dispose();
+    _incomeDetailsController.dispose();
+    _incomeDateController.dispose();
+    _incomeAmountController.dispose();
     super.dispose();
   }
 
@@ -50,18 +50,16 @@ class IncomeFormState extends State<IncomeInputScreen> {
     String? editIncomeId = widget.editIncomeId;
     if (editIncomeId != null) {
       final clientsList = context.read<IncomeController>().incomesList;
-      _expense = clientsList.firstWhere(
-          (client) => client.getId == editIncomeId,
-          orElse: () => Income());
-      _expenseDetailsController.value =
-          TextEditingValue(text: _expense.getDetails);
-      _expenseDateController.value =
-          TextEditingValue(text: _expense.getIncomeDate);
-      _expenseAmountController.value =
-          TextEditingValue(text: _expense.getIncomeAmount.toString());
-    } else {
-      _expense = Income();
-    } // Build a Form widget using the _formKey created above.
+      _incomeToEdit =
+          clientsList.firstWhere((income) => income.getId == editIncomeId);
+      _incomeDetailsController.value =
+          TextEditingValue(text: _incomeToEdit?.getDetails ?? '');
+      _incomeDateController.value =
+          TextEditingValue(text: _incomeToEdit?.getIncomeDate ?? '');
+      _incomeAmountController.value = TextEditingValue(
+          text: _incomeToEdit?.getIncomeAmount.toString() ?? '');
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -91,19 +89,19 @@ class IncomeFormState extends State<IncomeInputScreen> {
                             "Date",
                           ),
                           MyDefaultDateInputTextField(
-                              controller: _expenseDateController,
+                              controller: _incomeDateController,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Date cannot be empty';
                                 }
                                 return null;
                               },
-                              initialDate:
-                                  getDateFromString(_expense.getIncomeDate)),
+                              initialDate: getDateFromString(
+                                  _incomeDateController.text)),
                           inputFieldLabel(
                               context, DisplayTextUtil.incomeDetails),
                           MyDefaultTextField(
-                            controller: _expenseDetailsController,
+                            controller: _incomeDetailsController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Details cannot be empty';
@@ -116,7 +114,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
                             "Income Amount",
                           ),
                           MyDefaultTextField(
-                            controller: _expenseAmountController,
+                            controller: _incomeAmountController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Income Amount cannot be empty';
@@ -135,20 +133,21 @@ class IncomeFormState extends State<IncomeInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          String expenseDetails =
-                              _expenseDetailsController.text.trim();
-                          double expenseAmount = double.parse(
-                              _expenseAmountController.text.trim());
-
-                          _expense.setIncomeAmount = expenseAmount;
-                          _expense.setIncomeDate = _expenseDateController.text;
-                          _expense.setIncomeDetails = expenseDetails;
+                          String incomeDetails =
+                              _incomeDetailsController.text.trim();
+                          double incomeAmount =
+                              double.parse(_incomeAmountController.text.trim());
+                          final newIncome = Income();
+                          newIncome.setIncomeAmount = incomeAmount;
+                          newIncome.setIncomeDate = _incomeDateController.text;
+                          newIncome.setIncomeDetails = incomeDetails;
 
                           if (editIncomeId != null) {
+                            newIncome.setId = editIncomeId;
                             //update the client in the db
                             await context
                                 .read<IncomeController>()
-                                .editIncome(_expense)
+                                .editIncome(newIncome)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -165,11 +164,11 @@ class IncomeFormState extends State<IncomeInputScreen> {
                             //add the client in the db
                             await context
                                 .read<IncomeController>()
-                                .addIncome(_expense)
+                                .addIncome(newIncome)
                                 .then((value) {
                               //reset the form
-                              _expenseDetailsController.clear();
-                              _expenseAmountController.clear();
+                              _incomeDetailsController.clear();
+                              _incomeAmountController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful

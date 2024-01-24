@@ -34,7 +34,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
   final TextEditingController _purchaseDateController =
       TextEditingController(text: getTodaysDateAsString());
 
-  late SemenCatalog semenCatalog;
+  SemenCatalog? _semenCatalogToEdit;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -59,22 +59,23 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
     if (editSemenCatalogId != null) {
       final semenCatalogsList =
           context.read<SemenCatalogController>().semenCatalogsList;
-      semenCatalog = semenCatalogsList.firstWhere(
+      _semenCatalogToEdit = semenCatalogsList.firstWhere(
           (semenCatalog) => semenCatalog.getId == editSemenCatalogId,
           orElse: () => SemenCatalog());
       _bullCodeController.value =
-          TextEditingValue(text: semenCatalog.getBullCode);
+          TextEditingValue(text: _semenCatalogToEdit?.getBullCode);
       _bullNameController.value =
-          TextEditingValue(text: semenCatalog.getBullName);
-      _breedController.value = TextEditingValue(text: semenCatalog.getBreed);
+          TextEditingValue(text: _semenCatalogToEdit?.getBullName);
+      _breedController.value =
+          TextEditingValue(text: _semenCatalogToEdit?.getBreed);
       _numberOfStrawsController.value =
-          TextEditingValue(text: '${semenCatalog.getNumberOfStraws}');
+          TextEditingValue(text: '${_semenCatalogToEdit?.getNumberOfStraws}');
       _costPerStrawController.value =
-          TextEditingValue(text: '${semenCatalog.getCostPerStraw}');
+          TextEditingValue(text: '${_semenCatalogToEdit?.getCostPerStraw}');
       _supplierController.value =
-          TextEditingValue(text: semenCatalog.getSupplier);
+          TextEditingValue(text: _semenCatalogToEdit?.getSupplier ?? '');
     } else {
-      semenCatalog = SemenCatalog();
+      _semenCatalogToEdit = SemenCatalog();
     }
     return Scaffold(
         appBar: AppBar(
@@ -211,18 +212,21 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                 int numberOfStraws = int.parse(
                                     _numberOfStrawsController.text.trim());
                                 //edit the properties that require editing
-                                semenCatalog.setBullName = bullName;
-                                semenCatalog.setBreed = bullBreed;
-                                semenCatalog.setBullCode = bullCode;
-                                semenCatalog.setCostPerStraw = costPerStraw;
-                                semenCatalog.setNumberOfStraws = numberOfStraws;
-                                semenCatalog.setSupplierName = supplierName;
+                                final newSemenCatalog = SemenCatalog();
+                                newSemenCatalog.setBullName = bullName;
+                                newSemenCatalog.setBreed = bullBreed;
+                                newSemenCatalog.setBullCode = bullCode;
+                                newSemenCatalog.setCostPerStraw = costPerStraw;
+                                newSemenCatalog.setNumberOfStraws =
+                                    numberOfStraws;
+                                newSemenCatalog.setSupplierName = supplierName;
 
                                 if (editSemenCatalogId != null) {
-                                  //update the semenCatalog in the db
+                                  newSemenCatalog.setId = editSemenCatalogId;
+                                  //update the newSemenCatalog in the db
                                   await context
                                       .read<SemenCatalogController>()
-                                      .editSemenCatalog(semenCatalog)
+                                      .editSemenCatalog(newSemenCatalog)
                                       .then((value) {
                                     //remove the loading dialog
                                     Navigator.of(context).pop();
@@ -236,10 +240,10 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                         errorSnackBar("Saving failed!"));
                                   });
                                 } else {
-                                  //add the semenCatalog in the db
+                                  //add the newSemenCatalog in the db
                                   await context
                                       .read<SemenCatalogController>()
-                                      .addSemenCatalog(semenCatalog)
+                                      .addSemenCatalog(newSemenCatalog)
                                       .then((value) {
                                     //reset the form
                                     _bullCodeController.clear();

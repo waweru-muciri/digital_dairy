@@ -79,19 +79,19 @@ class CowInputFormState extends State<CowInputScreen> {
         (cow) => cow.getId == editCowId,
       );
       _cowCodeController.value =
-          TextEditingValue(text: '${cowToEdit?.getCowCode}');
+          TextEditingValue(text: cowToEdit?.getCowCode ?? '');
       _cowNameController.value =
-          TextEditingValue(text: "${cowToEdit?.getName}");
+          TextEditingValue(text: cowToEdit?.getName ?? '');
       _cowColorController.value =
-          TextEditingValue(text: '${cowToEdit?.getColor}');
+          TextEditingValue(text: cowToEdit?.getColor ?? '');
       _cowDateofBirthController.value =
-          TextEditingValue(text: '${cowToEdit?.getDateOfBirth}');
+          TextEditingValue(text: cowToEdit?.getDateOfBirth ?? '');
       _cowPurchaseDateController.value =
-          TextEditingValue(text: '${cowToEdit?.getDatePurchased}');
+          TextEditingValue(text: cowToEdit?.getDatePurchased ?? '');
       _cowKSBNoController.value =
-          TextEditingValue(text: '${cowToEdit?.getKSBNumber}');
+          TextEditingValue(text: cowToEdit?.getKSBNumber ?? '');
       _cowSourceController.value =
-          TextEditingValue(text: '${cowToEdit?.getSource}');
+          TextEditingValue(text: cowToEdit?.getSource ?? '');
       setState(() {
         _cowDam = cowToEdit?.getDam;
         _selectedCowGrade = cowToEdit?.getGrade;

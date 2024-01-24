@@ -3,13 +3,15 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 class CowSale {
   String? _id;
-  String? _saleRemarks;
+  late String _saleRemarks;
   late String _soldDate;
-  late String? _clientName;
+  late String _clientName;
   late double _cowSaleCost;
   late Cow _cow;
 
-  String? get getClientName => _clientName;
+  CowSale();
+
+  String get getClientName => _clientName;
 
   set setClientName(String clientName) => _clientName = clientName;
 
@@ -25,15 +27,13 @@ class CowSale {
 
   set setId(String? id) => _id = id;
 
-  String? get getRemarks => _saleRemarks;
+  String get getRemarks => _saleRemarks;
 
   set setRemarks(String value) => _saleRemarks = value;
 
   String get getCowSaleDate => _soldDate;
 
   set setCowSaleDate(String value) => _soldDate = value;
-
-  CowSale();
 
   factory CowSale.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

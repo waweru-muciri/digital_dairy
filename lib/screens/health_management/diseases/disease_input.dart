@@ -30,7 +30,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
       TextEditingController();
   final TextEditingController _diseaseDetailsController =
       TextEditingController();
-  late Disease disease;
+  Disease? _diseaseToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -52,16 +52,17 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
     String? editDiseaseId = widget.editDiseaseId;
     if (editDiseaseId != null) {
       final diseasesList = context.read<DiseaseController>().diseasesList;
-      disease = diseasesList.firstWhere(
-          (disease) => disease.getId == editDiseaseId,
-          orElse: () => Disease());
-      _diseaseNameController.value = TextEditingValue(text: disease.getName);
+      _diseaseToEdit = diseasesList.firstWhere(
+        (disease) => disease.getId == editDiseaseId,
+      );
+      _diseaseNameController.value =
+          TextEditingValue(text: _diseaseToEdit?.getName);
       _dateDiscoveredController.value =
-          TextEditingValue(text: disease.getDateDiscovered);
+          TextEditingValue(text: _diseaseToEdit?.getDateDiscovered);
       _diseaseDetailsController.value =
-          TextEditingValue(text: disease.getDetails);
+          TextEditingValue(text: _diseaseToEdit?.getDetails);
     } else {
-      disease = Disease();
+      _diseaseToEdit = Disease();
     }
     return Scaffold(
         appBar: AppBar(
@@ -113,8 +114,8 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                                 }
                                 return null;
                               },
-                              initialDate:
-                                  getDateFromString(disease.getDateDiscovered)),
+                              initialDate: getDateFromString(
+                                  _dateDiscoveredController.text)),
                           inputFieldLabel(
                             context,
                             "Disease Details",
@@ -140,15 +141,17 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                           String details =
                               _diseaseDetailsController.text.trim();
                           //edit the properties that require editing
-                          disease.setName = diseaseName;
-                          disease.setDateDiscovered = dateDiscovered;
-                          disease.setDetails = details;
+                          final newDisease = Disease();
+                          newDisease.setName = diseaseName;
+                          newDisease.setDateDiscovered = dateDiscovered;
+                          newDisease.setDetails = details;
 
                           if (editDiseaseId != null) {
+                            newDisease.setId = editDiseaseId;
                             //update the disease in the db
                             await context
                                 .read<DiseaseController>()
-                                .editDisease(disease)
+                                .editDisease(newDisease)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -165,7 +168,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                             //add the disease in the db
                             await context
                                 .read<DiseaseController>()
-                                .addDisease(disease)
+                                .addDisease(newDisease)
                                 .then((value) {
                               //reset the form
                               _diseaseNameController.clear();

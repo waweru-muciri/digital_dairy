@@ -199,7 +199,7 @@ class ClientsMilkSalesStatementsScreenState
                               .filterMilkSalesByDatesAndClientId(
                                   _fromDateFilterController.text,
                                   _fromDateFilterController.text,
-                                  '${selectedClient!.getId}');
+                                  selectedClient?.getId ?? '');
                         } else {
                           context
                               .read<MilkSaleController>()
@@ -267,11 +267,8 @@ class ClientsMilkSalesStatementsScreenState
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              summaryTextDisplayRow(
-                                  "Client Name:",
-                                  selectedClient != null
-                                      ? selectedClient!.clientName
-                                      : "All Clients"),
+                              summaryTextDisplayRow("Client Name:",
+                                  selectedClient?.clientName ?? "All Clients"),
                               summaryTextDisplayRow("Total Quantity Sold:",
                                   "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
                               summaryTextDisplayRow("Total Quantity Sold:",

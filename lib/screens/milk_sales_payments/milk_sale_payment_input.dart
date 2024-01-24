@@ -33,7 +33,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
       TextEditingController(text: "0");
   final TextEditingController _detailsController =
       TextEditingController(text: "");
-  late MilkSalePayment _milkSalePayment;
+  MilkSalePayment? _milkSalePaymentToEdit;
   late MilkSale? _selectedMilkSale;
 
   final _formKey = GlobalKey<FormState>();
@@ -56,20 +56,20 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
     //if the editMilkSalePaymentId is not null then it means the payments list is already loaded
     String? editMilkSalePaymentId = widget.editMilkSalePaymentId;
     if (editMilkSalePaymentId != null) {
-      _milkSalePayment = context
+      _milkSalePaymentToEdit = context
           .read<MilkSalePaymentController>()
           .milkSalePaymentsList
-          .firstWhere(
-              (milkSalePayment) =>
-                  milkSalePayment.getId == editMilkSalePaymentId,
-              orElse: () => MilkSalePayment());
-      _dateController.value =
-          TextEditingValue(text: _milkSalePayment.getMilkSalePaymentDate);
+          .firstWhereOrNull(
+            (milkSalePayment) => milkSalePayment.getId == editMilkSalePaymentId,
+          );
+      _dateController.value = TextEditingValue(
+          text: _milkSalePaymentToEdit?.getMilkSalePaymentDate ?? '');
       _amountController.value = TextEditingValue(
-          text: _milkSalePayment.getMilkSalePaymentAmount.toString());
+          text: _milkSalePaymentToEdit?.getMilkSalePaymentAmount.toString() ??
+              '');
       _detailsController.value =
-          TextEditingValue(text: '${_milkSalePayment.getDetails}');
-      _selectedMilkSale = _milkSalePayment.getMilkSale;
+          TextEditingValue(text: _milkSalePaymentToEdit?.getDetails ?? '');
+      _selectedMilkSale = _milkSalePaymentToEdit?.getMilkSale;
     }
 
     String? milkSaleId = widget.milkSaleId;
@@ -106,12 +106,14 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                             children: <Widget>[
                               summaryTextDisplayRow("Milk Sales Date:",
                                   "${_selectedMilkSale?.getMilkSaleDate}"),
-                              summaryTextDisplayRow("Client:",
-                                  '${_selectedMilkSale?.getClient.clientName}'),
+                              summaryTextDisplayRow(
+                                  "Client:",
+                                  _selectedMilkSale?.getClient.clientName ??
+                                      ''),
                               summaryTextDisplayRow("Milk Sales Amount:",
                                   "${_selectedMilkSale?.getMilkSaleMoneyAmount} Ksh"),
-                              summaryTextDisplayRow("Outstanding Balances:",
-                                  "${_milkSalePayment.getMilkSaleOutstandingPayment()} Kgs"),
+                              summaryTextDisplayRow(
+                                  "Outstanding Balances:", "Change this Kgs"),
                             ],
                           )),
                     ))
@@ -236,18 +238,21 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                 showLoadingDialog(context);
                                 double milkSalePaymentAmount =
                                     double.parse(_amountController.text.trim());
-                                _milkSalePayment.setMilkSalePaymentAmount =
+                                final newMilkSalePayment = MilkSalePayment();
+                                newMilkSalePayment.setMilkSalePaymentAmount =
                                     milkSalePaymentAmount;
-                                _milkSalePayment.setMilkSalePaymentDate =
+                                newMilkSalePayment.setMilkSalePaymentDate =
                                     _dateController.text.trim();
-                                _milkSalePayment.setDetails =
+                                newMilkSalePayment.setDetails =
                                     _detailsController.text.trim();
 
                                 if (editMilkSalePaymentId != null) {
+                                  newMilkSalePayment.setId =
+                                      editMilkSalePaymentId;
                                   //update the milk sale details in the db
                                   await context
                                       .read<MilkSalePaymentController>()
-                                      .editMilkSalePayment(_milkSalePayment)
+                                      .editMilkSalePayment(newMilkSalePayment)
                                       .then((_) {
                                     //remove the loading dialog
                                     Navigator.of(context).pop();
@@ -263,13 +268,13 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                 } else {
                                   //this is a new milk sale payment so add the milk sale to it
                                   if (_selectedMilkSale != null) {
-                                    _milkSalePayment.setMilkSale =
+                                    newMilkSalePayment.setMilkSale =
                                         _selectedMilkSale!;
                                   }
                                   //add the payment to the db
                                   await context
                                       .read<MilkSalePaymentController>()
-                                      .addMilkSalePayment(_milkSalePayment)
+                                      .addMilkSalePayment(newMilkSalePayment)
                                       .then((value) {
                                     //reset the form
                                     _amountController.clear();

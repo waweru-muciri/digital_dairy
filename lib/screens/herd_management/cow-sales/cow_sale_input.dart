@@ -70,13 +70,13 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
         (cowSaleToEdit) => cowSaleToEdit.getId == editCowSaleId,
       );
       _clientNameController.value =
-          TextEditingValue(text: '${cowSaleToEdit?.getClientName}');
+          TextEditingValue(text: cowSaleToEdit?.getClientName ?? '');
       _dateController.value =
-          TextEditingValue(text: "${cowSaleToEdit?.getCowSaleDate}");
+          TextEditingValue(text: cowSaleToEdit?.getCowSaleDate ?? '');
       _remarksController.value =
-          TextEditingValue(text: '${cowSaleToEdit?.getRemarks}');
-      _costController.value =
-          TextEditingValue(text: '${cowSaleToEdit?.getCowSaleCost}');
+          TextEditingValue(text: cowSaleToEdit?.getRemarks ?? '');
+      _costController.value = TextEditingValue(
+          text: cowSaleToEdit?.getCowSaleCost.toString() ?? '');
 
       setState(() {
         selectedCow = cowSaleToEdit!.getCow;

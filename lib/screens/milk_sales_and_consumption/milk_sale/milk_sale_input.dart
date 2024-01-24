@@ -7,6 +7,7 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
       TextEditingController(text: "");
   final TextEditingController _clientFilterController = TextEditingController();
   late List<Client> _clientsList;
-  late MilkSale _milkSale;
+  MilkSale? _milkSaleToEdit;
   Client? selectedClient;
 
   final _formKey = GlobalKey<FormState>();
@@ -59,19 +60,17 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
     String? editMilkSaleId = widget.editMilkSaleId;
     if (editMilkSaleId != null) {
       final clientsList = context.read<MilkSaleController>().milkSalesList;
-      _milkSale = clientsList.firstWhere(
-          (client) => client.getId == editMilkSaleId,
-          orElse: () => MilkSale());
+      _milkSaleToEdit = clientsList
+          .firstWhereOrNull((client) => client.getId == editMilkSaleId);
       _milkSaleDateController.value =
-          TextEditingValue(text: _milkSale.getMilkSaleDate);
-      _milkSaleAmountController.value =
-          TextEditingValue(text: _milkSale.getMilkSaleQuantity.toString());
+          TextEditingValue(text: _milkSaleToEdit?.getMilkSaleDate ?? '');
+      _milkSaleAmountController.value = TextEditingValue(
+          text: _milkSaleToEdit?.getMilkSaleQuantity.toString() ?? '');
       setState(() {
-        selectedClient = _milkSale.getClient;
+        selectedClient = _milkSaleToEdit?.getClient;
       });
-    } else {
-      _milkSale = MilkSale();
-    } // Build a Form widget using the _formKey created above.
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -167,23 +166,26 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           showLoadingDialog(context);
                           double milkSaleQuantity = double.parse(
                               _milkSaleAmountController.text.trim());
-                          _milkSale.setMilkSaleQuantity = milkSaleQuantity;
-                          _milkSale.setMilkSaleDate =
+                          final newMilkSale = MilkSale();
+                          newMilkSale.setMilkSaleQuantity = milkSaleQuantity;
+                          newMilkSale.setMilkSaleDate =
                               _milkSaleDateController.text;
-                          _milkSale.setClient = selectedClient!;
-                          _milkSale.setUnitPrice = selectedClient!.getUnitPrice;
+                          newMilkSale.setClient = selectedClient!;
+                          newMilkSale.setUnitPrice =
+                              selectedClient!.getUnitPrice;
 
                           if (editMilkSaleId != null) {
+                            newMilkSale.setId = editMilkSaleId;
                             //update the milk sale details in the db
                             await context
                                 .read<MilkSaleController>()
-                                .editMilkSale(_milkSale)
+                                .editMilkSale(newMilkSale)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "MilkSale edited successfully!"));
+                                      "Milk sale edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -194,7 +196,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                             //add the client in the db
                             await context
                                 .read<MilkSaleController>()
-                                .addMilkSale(_milkSale)
+                                .addMilkSale(newMilkSale)
                                 .then((value) {
                               //reset the form
                               _clientFilterController.clear();

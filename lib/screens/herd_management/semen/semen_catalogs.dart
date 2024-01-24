@@ -113,7 +113,7 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text('${item.getPurchaseDate}')),
+      DataCell(Text(item.getPurchaseDate ?? '')),
       DataCell(Text(item.getBullCode)),
       DataCell(Text(item.getBullName)),
       DataCell(Text(item.getBreed)),

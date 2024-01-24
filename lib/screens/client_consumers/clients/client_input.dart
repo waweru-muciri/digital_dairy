@@ -3,6 +3,7 @@ import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ class ClientFormState extends State<ClientInputScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _unitPriceController =
       TextEditingController(text: "0");
-  late Client clientToSave;
+  Client? _clientToEdit;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -53,22 +54,21 @@ class ClientFormState extends State<ClientInputScreen> {
     String? editClientId = widget.editClientId;
     if (editClientId != null) {
       final clientsList = context.read<ClientController>().clientsList;
-      clientToSave = clientsList.firstWhere(
-          (client) => client.getId == editClientId,
-          orElse: () => Client());
+      _clientToEdit = clientsList.firstWhereOrNull(
+        (client) => client.getId == editClientId,
+      );
       _firstNameController.value =
-          TextEditingValue(text: clientToSave.getFirstName);
+          TextEditingValue(text: _clientToEdit?.getFirstName ?? '');
       _lastNameController.value =
-          TextEditingValue(text: clientToSave.getLastName);
+          TextEditingValue(text: _clientToEdit?.getLastName ?? '');
       _contactsController.value =
-          TextEditingValue(text: clientToSave.getContacts);
+          TextEditingValue(text: _clientToEdit?.getContacts ?? '');
       _locationController.value =
-          TextEditingValue(text: clientToSave.getLocation);
+          TextEditingValue(text: _clientToEdit?.getLocation ?? '');
       _unitPriceController.value =
-          TextEditingValue(text: clientToSave.getUnitPrice.toString());
-    } else {
-      clientToSave = Client();
+          TextEditingValue(text: _clientToEdit?.getUnitPrice.toString() ?? '');
     }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -163,17 +163,19 @@ class ClientFormState extends State<ClientInputScreen> {
                           double unitPrice =
                               double.parse(_unitPriceController.text);
                           //edit the properties as required
-                          clientToSave.setFirstName = firstName;
-                          clientToSave.setLastName = lastName;
-                          clientToSave.setContacts = contacts;
-                          clientToSave.setLocation = location;
-                          clientToSave.setUnitPrice = unitPrice;
+                          final newClient = Client();
+                          newClient.setFirstName = firstName;
+                          newClient.setLastName = lastName;
+                          newClient.setContacts = contacts;
+                          newClient.setLocation = location;
+                          newClient.setUnitPrice = unitPrice;
 
                           if (editClientId != null) {
+                            newClient.setId = editClientId;
                             //update the client in the db
                             await context
                                 .read<ClientController>()
-                                .editClient(clientToSave)
+                                .editClient(newClient)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -190,7 +192,7 @@ class ClientFormState extends State<ClientInputScreen> {
                             //add the client in the db
                             await context
                                 .read<ClientController>()
-                                .addClient(clientToSave)
+                                .addClient(newClient)
                                 .then((value) {
                               //reset the form
                               _firstNameController.clear();

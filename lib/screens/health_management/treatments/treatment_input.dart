@@ -8,6 +8,7 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/treatment_controller.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
   Cow? selectedCow;
   late List<Cow> _cowsList;
 
-  late Treatment treatmentToSave;
+  Treatment? _treatmentToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -68,24 +69,22 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
     String? editTreatmentId = widget.editTreatmentId;
     if (editTreatmentId != null) {
       final treatmentsList = context.read<TreatmentController>().treatmentsList;
-      treatmentToSave = treatmentsList.firstWhere(
-          (treatmentToSave) => treatmentToSave.getId == editTreatmentId,
-          orElse: () => Treatment());
+      _treatmentToEdit = treatmentsList.firstWhereOrNull(
+        (treatment) => treatment.getId == editTreatmentId,
+      );
       _treatmentDiagnosisController.value =
-          TextEditingValue(text: treatmentToSave.getDiagnosis);
+          TextEditingValue(text: _treatmentToEdit?.getDiagnosis ?? '');
       _treatmentDateController.value =
-          TextEditingValue(text: treatmentToSave.getTreatmentDate);
+          TextEditingValue(text: _treatmentToEdit?.getTreatmentDate ?? '');
       _treatmentDetailsController.value =
-          TextEditingValue(text: treatmentToSave.getTreatment);
+          TextEditingValue(text: _treatmentToEdit?.getTreatment ?? '');
       _treatmentCostController.value =
-          TextEditingValue(text: '${treatmentToSave.getTreatmentCost}');
+          TextEditingValue(text: '${_treatmentToEdit?.getTreatmentCost}');
       _treatmentVetNameController.value =
-          TextEditingValue(text: treatmentToSave.getVetName);
+          TextEditingValue(text: _treatmentToEdit?.getVetName ?? '');
       setState(() {
-        selectedCow = treatmentToSave.getCow;
+        selectedCow = _treatmentToEdit?.getCow;
       });
-    } else {
-      treatmentToSave = Treatment();
     }
     return Scaffold(
         appBar: AppBar(
@@ -125,7 +124,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                 return null;
                               },
                               initialDate: getDateFromString(
-                                  treatmentToSave.getTreatmentDate)),
+                                  _treatmentDateController.text)),
                           inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -224,19 +223,21 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                           String treatmentCost =
                               _treatmentCostController.text.trim();
                           //edit the properties that require editing
-                          treatmentToSave.setTreatment = treatmentDetails;
-                          treatmentToSave.setTreatmentDate = treatmentDate;
-                          treatmentToSave.setDiagnosis = diagnosis;
-                          treatmentToSave.setTreatmentCost =
+                          final newTreatment = Treatment();
+                          newTreatment.setTreatment = treatmentDetails;
+                          newTreatment.setTreatmentDate = treatmentDate;
+                          newTreatment.setDiagnosis = diagnosis;
+                          newTreatment.setTreatmentCost =
                               double.parse(treatmentCost);
-                          treatmentToSave.setVetName = vetName;
-                          treatmentToSave.setCow = selectedCow!;
+                          newTreatment.setVetName = vetName;
+                          newTreatment.setCow = selectedCow!;
 
                           if (editTreatmentId != null) {
+                            newTreatment.setId = editTreatmentId;
                             //update the treatment  in the db
                             await context
                                 .read<TreatmentController>()
-                                .editTreatment(treatmentToSave)
+                                .editTreatment(newTreatment)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -250,10 +251,10 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the treatmentToSave in the db
+                            //add the _treatmentToEdit in the db
                             await context
                                 .read<TreatmentController>()
-                                .addTreatment(treatmentToSave)
+                                .addTreatment(newTreatment)
                                 .then((value) {
                               //reset the form
                               _treatmentDiagnosisController.clear();
@@ -276,7 +277,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      child: const Text("Save Treament"))
                 ],
               )),
         )));

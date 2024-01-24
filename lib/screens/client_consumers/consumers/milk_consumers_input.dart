@@ -3,6 +3,7 @@ import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _contactsController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
-  late MilkConsumer milkConsumerToSave;
+  MilkConsumer? _milkConsumerToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -46,19 +47,16 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
     if (editMilkConsumerId != null) {
       final milkConsumersList =
           context.read<MilkConsumerController>().milkConsumersList;
-      milkConsumerToSave = milkConsumersList.firstWhere(
-          (client) => client.getId == editMilkConsumerId,
-          orElse: () => MilkConsumer());
+      _milkConsumerToEdit = milkConsumersList
+          .firstWhereOrNull((client) => client.getId == editMilkConsumerId);
       _firstNameController.value =
-          TextEditingValue(text: milkConsumerToSave.getFirstName);
+          TextEditingValue(text: _milkConsumerToEdit?.getFirstName ?? '');
       _lastNameController.value =
-          TextEditingValue(text: milkConsumerToSave.getLastName);
+          TextEditingValue(text: _milkConsumerToEdit?.getLastName ?? '');
       _contactsController.value =
-          TextEditingValue(text: milkConsumerToSave.getContacts);
+          TextEditingValue(text: _milkConsumerToEdit?.getContacts ?? '');
       _locationController.value =
-          TextEditingValue(text: milkConsumerToSave.getLocation);
-    } else {
-      milkConsumerToSave = MilkConsumer();
+          TextEditingValue(text: _milkConsumerToEdit?.getLocation ?? '');
     }
     return Scaffold(
         appBar: AppBar(
@@ -146,16 +144,18 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                           String contacts = _contactsController.text.trim();
                           String location = _locationController.text.trim();
 
-                          milkConsumerToSave.setFirstName = firstName;
-                          milkConsumerToSave.setLastName = lastName;
-                          milkConsumerToSave.setContacts = contacts;
-                          milkConsumerToSave.setLocation = location;
+                          final newMilkConsumer = MilkConsumer();
+                          newMilkConsumer.setFirstName = firstName;
+                          newMilkConsumer.setLastName = lastName;
+                          newMilkConsumer.setContacts = contacts;
+                          newMilkConsumer.setLocation = location;
 
                           if (editMilkConsumerId != null) {
+                            newMilkConsumer.setId = editMilkConsumerId;
                             //update the client in the db
                             await context
                                 .read<MilkConsumerController>()
-                                .editMilkConsumer(milkConsumerToSave)
+                                .editMilkConsumer(newMilkConsumer)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -172,7 +172,7 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                             //add the client in the db
                             await context
                                 .read<MilkConsumerController>()
-                                .addMilkConsumer(milkConsumerToSave)
+                                .addMilkConsumer(newMilkConsumer)
                                 .then((value) {
                               //reset the form
                               _firstNameController.clear();

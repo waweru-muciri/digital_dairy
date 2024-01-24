@@ -6,6 +6,7 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/expense_controller.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
   late TextEditingController _expenseDateController;
   final TextEditingController _expenseAmountController =
       TextEditingController(text: "0");
-  late Expense _expense;
+  Expense? _expense;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -49,16 +50,15 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
   Widget build(BuildContext context) {
     String? editExpenseId = widget.editExpenseId;
     if (editExpenseId != null) {
-      final clientsList = context.read<ExpenseController>().expensesList;
-      _expense = clientsList.firstWhere(
-          (client) => client.getId == editExpenseId,
-          orElse: () => Expense());
+      final expensesList = context.read<ExpenseController>().expensesList;
+      _expense = expensesList
+          .firstWhereOrNull((expense) => expense.getId == editExpenseId);
       _expenseDetailsController.value =
-          TextEditingValue(text: _expense.getDetails);
+          TextEditingValue(text: _expense?.getDetails ?? '');
       _expenseDateController.value =
-          TextEditingValue(text: _expense.getExpenseDate);
+          TextEditingValue(text: _expense?.getExpenseDate ?? '');
       _expenseAmountController.value =
-          TextEditingValue(text: _expense.getExpenseAmount.toString());
+          TextEditingValue(text: _expense?.getExpenseAmount.toString() ?? '');
     } else {
       _expense = Expense();
     } // Build a Form widget using the _formKey created above.
@@ -98,8 +98,8 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                                 }
                                 return null;
                               },
-                              initialDate:
-                                  getDateFromString(_expense.getExpenseDate)),
+                              initialDate: getDateFromString(
+                                  _expenseDateController.text)),
                           inputFieldLabel(
                               context, DisplayTextUtil.expenseDetails),
                           MyDefaultTextField(
@@ -139,16 +139,18 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                               _expenseDetailsController.text.trim();
                           double expenseAmount = double.parse(
                               _expenseAmountController.text.trim());
-
-                          _expense.setExpenseAmount = expenseAmount;
-                          _expense.setExpenseDate = _expenseDateController.text;
-                          _expense.setExpenseDetails = expenseDetails;
+                          final newExpense = Expense();
+                          newExpense.setExpenseAmount = expenseAmount;
+                          newExpense.setExpenseDate =
+                              _expenseDateController.text;
+                          newExpense.setExpenseDetails = expenseDetails;
 
                           if (editExpenseId != null) {
+                            newExpense.setId = editExpenseId;
                             //update the client in the db
                             await context
                                 .read<ExpenseController>()
-                                .editExpense(_expense)
+                                .editExpense(newExpense)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -165,7 +167,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                             //add the client in the db
                             await context
                                 .read<ExpenseController>()
-                                .addExpense(_expense)
+                                .addExpense(newExpense)
                                 .then((value) {
                               //reset the form
                               _expenseDetailsController.clear();

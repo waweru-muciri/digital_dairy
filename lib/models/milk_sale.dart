@@ -4,10 +4,11 @@ import "package:cloud_firestore/cloud_firestore.dart";
 class MilkSale {
   String? _id;
   late double _milkSaleQuantity;
+  //remove this initializatio during production
   late double _milkSaleUnitPrice = 0;
   late String _milkSaleDate;
   late Client _client;
-  late String? _clientId;
+  String? _clientId;
 
   MilkSale();
 

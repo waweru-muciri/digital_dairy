@@ -141,9 +141,9 @@ class _DataSource extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text(item.getCowSaleDate)),
       DataCell(Text(item.getCow.cowName)),
-      DataCell(Text('${item.getClientName}')),
+      DataCell(Text(item.getClientName)),
       DataCell(Text('${item.getCowSaleCost}')),
-      DataCell(Text('${item.getRemarks}')),
+      DataCell(Text(item.getRemarks)),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editCowSaleDetails",
               pathParameters: {"editCowSaleId": '${item.getId}'})),

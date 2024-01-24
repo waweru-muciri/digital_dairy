@@ -7,6 +7,7 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
   final TextEditingController _milkConsumerFilterController =
       TextEditingController();
   late List<MilkConsumer> _milkConsumersList;
-  late MilkConsumption _milkConsumption;
+  MilkConsumption? _milkConsumptionToEdit;
   MilkConsumer? selectedMilkConsumer;
 
   final _formKey = GlobalKey<FormState>();
@@ -63,19 +64,19 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
     if (editMilkConsumptionId != null) {
       final milkConsumersList =
           context.read<MilkConsumptionController>().milkConsumptionsList;
-      _milkConsumption = milkConsumersList.firstWhere(
-          (milkConsumer) => milkConsumer.getId == editMilkConsumptionId,
-          orElse: () => MilkConsumption());
-      _milkConsumptionDateController.value =
-          TextEditingValue(text: _milkConsumption.getMilkConsumptionDate);
+      _milkConsumptionToEdit = milkConsumersList.firstWhereOrNull(
+        (milkConsumer) => milkConsumer.getId == editMilkConsumptionId,
+      );
+      _milkConsumptionDateController.value = TextEditingValue(
+          text: _milkConsumptionToEdit?.getMilkConsumptionDate ?? '');
       _milkConsumptionAmountController.value = TextEditingValue(
-          text: _milkConsumption.getMilkConsumptionAmount.toString());
+          text: _milkConsumptionToEdit?.getMilkConsumptionAmount.toString() ??
+              '');
       setState(() {
-        selectedMilkConsumer = _milkConsumption.getMilkConsumer;
+        selectedMilkConsumer = _milkConsumptionToEdit?.getMilkConsumer;
       });
-    } else {
-      _milkConsumption = MilkConsumption();
-    } // Build a Form widget using the _formKey created above.
+    }
+    // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -113,7 +114,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                 return null;
                               },
                               initialDate: getDateFromString(
-                                  _milkConsumption.getMilkConsumptionDate)),
+                                  _milkConsumptionDateController.text)),
                           inputFieldLabel(context, "Select Consumer"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -172,18 +173,21 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                           showLoadingDialog(context);
                           double milkConsumptionAmount = double.parse(
                               _milkConsumptionAmountController.text.trim());
-                          _milkConsumption.setMilkConsumptionAmount =
+
+                          final newMilkConsumption = MilkConsumption();
+                          newMilkConsumption.setMilkConsumptionAmount =
                               milkConsumptionAmount;
-                          _milkConsumption.setMilkConsumptionDate =
+                          newMilkConsumption.setMilkConsumptionDate =
                               _milkConsumptionDateController.text;
-                          _milkConsumption.setMilkConsumer =
+                          newMilkConsumption.setMilkConsumer =
                               selectedMilkConsumer!;
 
                           if (editMilkConsumptionId != null) {
+                            newMilkConsumption.setId = editMilkConsumptionId;
                             //update the milk consumption details in the db
                             await context
                                 .read<MilkConsumptionController>()
-                                .editMilkConsumption(_milkConsumption)
+                                .editMilkConsumption(newMilkConsumption)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -200,7 +204,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                             //add the milkConsumer in the db
                             await context
                                 .read<MilkConsumptionController>()
-                                .addMilkConsumption(_milkConsumption)
+                                .addMilkConsumption(newMilkConsumption)
                                 .then((value) {
                               //reset the form
                               _milkConsumerFilterController.clear();

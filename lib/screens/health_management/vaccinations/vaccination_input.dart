@@ -8,9 +8,9 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/controllers/vaccination_controller.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class VaccinationInputScreen extends StatefulWidget {
@@ -39,7 +39,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
   Cow? selectedCow;
   late List<Cow> _cowsList;
 
-  late Vaccination vaccinationToSave;
+  Vaccination? _vaccinationToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -67,22 +67,22 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
     if (editVaccinationId != null) {
       final vaccinationsList =
           context.read<VaccinationController>().vaccinationsList;
-      vaccinationToSave = vaccinationsList.firstWhere(
-          (vaccinationToSave) => vaccinationToSave.getId == editVaccinationId,
-          orElse: () => Vaccination());
+      _vaccinationToEdit = vaccinationsList.firstWhereOrNull(
+        (vaccination) => vaccination.getId == editVaccinationId,
+      );
       _vaccinationDateController.value =
-          TextEditingValue(text: vaccinationToSave.getVaccinationDate);
+          TextEditingValue(text: _vaccinationToEdit?.getVaccinationDate ?? '');
       _vaccinationDetailsController.value =
-          TextEditingValue(text: vaccinationToSave.getVaccination);
+          TextEditingValue(text: _vaccinationToEdit?.getVaccinationDate ?? '');
       _vaccinationCostController.value =
-          TextEditingValue(text: '${vaccinationToSave.getVaccinationCost}');
+          TextEditingValue(text: '${_vaccinationToEdit?.getVaccinationCost}');
       _vaccinationVetNameController.value =
-          TextEditingValue(text: vaccinationToSave.getVetName);
+          TextEditingValue(text: _vaccinationToEdit?.getVaccinationDate ?? '');
       setState(() {
-        selectedCow = vaccinationToSave.getCow;
+        selectedCow = _vaccinationToEdit?.getCow;
       });
     } else {
-      vaccinationToSave = Vaccination();
+      _vaccinationToEdit = Vaccination();
     }
     return Scaffold(
         appBar: AppBar(
@@ -122,7 +122,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                 return null;
                               },
                               initialDate: getDateFromString(
-                                  vaccinationToSave.getVaccinationDate)),
+                                  _vaccinationDateController.text)),
                           inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -203,19 +203,20 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                           String vaccinationCost =
                               _vaccinationCostController.text.trim();
                           //edit the properties that require editing
-                          vaccinationToSave.setVaccination = vaccinationDetails;
-                          vaccinationToSave.setVaccinationDate =
-                              vaccinationDate;
-                          vaccinationToSave.setCow = selectedCow!;
-                          vaccinationToSave.setVaccinationCost =
+                          final newVaccination = Vaccination();
+                          newVaccination.setVaccination = vaccinationDetails;
+                          newVaccination.setVaccinationDate = vaccinationDate;
+                          newVaccination.setCow = selectedCow!;
+                          newVaccination.setVaccinationCost =
                               double.parse(vaccinationCost);
-                          vaccinationToSave.setVetName = vetName;
+                          newVaccination.setVetName = vetName;
 
                           if (editVaccinationId != null) {
+                            newVaccination.setId = editVaccinationId;
                             //update the vaccination  in the db
                             await context
                                 .read<VaccinationController>()
-                                .editVaccination(vaccinationToSave)
+                                .editVaccination(newVaccination)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -229,10 +230,10 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the vaccinationToSave in the db
+                            //add the _vaccinationToEdit in the db
                             await context
                                 .read<VaccinationController>()
-                                .addVaccination(vaccinationToSave)
+                                .addVaccination(newVaccination)
                                 .then((value) {
                               //reset the form
                               _vaccinationDateController.clear();

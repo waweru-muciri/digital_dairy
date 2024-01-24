@@ -8,9 +8,9 @@ import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class DailyMilkProductionInputScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class DailyMilkProductionFormState
 
   final TextEditingController _cowFilterController = TextEditingController();
   late List<Cow> _cowsList;
-  late DailyMilkProduction _dailyMilkProduction;
+  DailyMilkProduction? _dailyMilkProductionToEdit;
   Cow? selectedCow;
 
   final _formKey = GlobalKey<FormState>();
@@ -73,23 +73,21 @@ class DailyMilkProductionFormState
       final cowsList = context
           .read<DailyMilkProductionController>()
           .dailyMilkProductionsList;
-      _dailyMilkProduction = cowsList.firstWhere(
-          (cow) => cow.getId == editDailyMilkProductionId,
-          orElse: () => DailyMilkProduction());
-      _dateController.value =
-          TextEditingValue(text: _dailyMilkProduction.getMilkProductionDate);
-      _amAmountController.value =
-          TextEditingValue(text: '${_dailyMilkProduction.getAmQuantity}');
-      _noonAmountController.value =
-          TextEditingValue(text: '${_dailyMilkProduction.getNoonQuantity}');
-      _pmAmountController.value =
-          TextEditingValue(text: '${_dailyMilkProduction.getPmQuantity}');
+      _dailyMilkProductionToEdit = cowsList.firstWhereOrNull(
+        (cow) => cow.getId == editDailyMilkProductionId,
+      );
+      _dateController.value = TextEditingValue(
+          text: _dailyMilkProductionToEdit?.getMilkProductionDate ?? '');
+      _amAmountController.value = TextEditingValue(
+          text: '${_dailyMilkProductionToEdit?.getAmQuantity}');
+      _noonAmountController.value = TextEditingValue(
+          text: '${_dailyMilkProductionToEdit?.getNoonQuantity}');
+      _pmAmountController.value = TextEditingValue(
+          text: '${_dailyMilkProductionToEdit?.getPmQuantity}');
       setState(() {
-        selectedCow = _dailyMilkProduction.getCow;
+        selectedCow = _dailyMilkProductionToEdit?.getCow;
       });
-    } else {
-      _dailyMilkProduction = DailyMilkProduction();
-    } // Build a Form widget using the _formKey created above.
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -126,8 +124,8 @@ class DailyMilkProductionFormState
                               }
                               return null;
                             },
-                            initialDate: getDateFromString(
-                                _dailyMilkProduction.getMilkProductionDate),
+                            initialDate:
+                                getDateFromString(_dateController.text),
                           ),
                           inputFieldLabel(context, "Select Cow"),
                           Padding(
@@ -222,24 +220,27 @@ class DailyMilkProductionFormState
                           double pmQuantity =
                               double.parse(_pmAmountController.text.trim());
                           //modify the fields as appropriate
-                          _dailyMilkProduction.setMilkProductionDate =
+                          final newDailyMilkProduction = DailyMilkProduction();
+                          newDailyMilkProduction.setMilkProductionDate =
                               _dateController.text;
-                          _dailyMilkProduction.setAmQuantity = amQuantity;
-                          _dailyMilkProduction.setNoonQuantity = noonQuantity;
-                          _dailyMilkProduction.setPmQuantity = pmQuantity;
-                          _dailyMilkProduction.setCow = selectedCow!;
+                          newDailyMilkProduction.setAmQuantity = amQuantity;
+                          newDailyMilkProduction.setNoonQuantity = noonQuantity;
+                          newDailyMilkProduction.setPmQuantity = pmQuantity;
+                          newDailyMilkProduction.setCow = selectedCow!;
                           //save the data in the database
                           if (editDailyMilkProductionId != null) {
+                            newDailyMilkProduction.setId =
+                                editDailyMilkProductionId;
                             //update the milk consumption details in the db
                             await context
                                 .read<DailyMilkProductionController>()
-                                .editDailyMilkProduction(_dailyMilkProduction)
+                                .editDailyMilkProduction(newDailyMilkProduction)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Milk Production edited successfully!"));
+                                      "Milk production edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -250,7 +251,7 @@ class DailyMilkProductionFormState
                             //add the cow in the db
                             await context
                                 .read<DailyMilkProductionController>()
-                                .addDailyMilkProduction(_dailyMilkProduction)
+                                .addDailyMilkProduction(newDailyMilkProduction)
                                 .then((value) {
                               //reset the form
                               _cowFilterController.clear();
@@ -263,7 +264,7 @@ class DailyMilkProductionFormState
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Milk Production added successfully."));
+                                      "Milk production added successfully."));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
