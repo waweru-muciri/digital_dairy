@@ -6,7 +6,7 @@ class Cow {
   late String _cowCode;
   late String _name;
   String? _cowType;
-  String? _dateOfBirth = "12/01/2020";
+  String? _dateOfBirth;
   String? _grade;
   String? _breed;
   String? _color;
@@ -101,7 +101,6 @@ class Cow {
     newCow.setId = data?['id'];
     newCow.setName = data?["name"];
     newCow.setCowCode = data?["cow_code"];
-    newCow.setName = data?["name"];
     newCow.setColor = data?["color"];
     newCow.setBreed = data?["breed"];
     newCow.setGrade = data?["grade"];
@@ -110,8 +109,6 @@ class Cow {
     newCow.setDateOfBirth = data?["date_of_birth"];
     newCow.setDatePurchased = data?["purchase_date"];
     newCow.setSource = data?["source"];
-    newCow.setDam = Cow.getCowPropertiesFromMap(data?['dam']);
-    newCow.setSire = Cow.getCowPropertiesFromMap(data?['sire']);
     return newCow;
   }
 
@@ -120,9 +117,16 @@ class Cow {
     SnapshotOptions? options,
   ) {
     Map<String, dynamic>? data = snapshot.data();
+    Map<String, dynamic>? damMap = data?['dam'];
+    Map<String, dynamic>? sireMap = data?['sire'];
     final String id = snapshot.id;
-    data?.addAll({id: snapshot.id});
+    data?.addAll({"id": id});
     Cow cowDetails = Cow.getCowPropertiesFromMap(data);
+    cowDetails.setDam =
+        damMap != null ? Cow.getCowPropertiesFromMap(damMap) : null;
+    cowDetails.setSire =
+        sireMap != null ? Cow.getCowPropertiesFromMap(damMap) : null;
+
     return cowDetails;
   }
 
