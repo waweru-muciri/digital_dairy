@@ -1,3 +1,6 @@
+import 'package:DigitalDairy/screens/breeding_management/abortions_miscarriages/abortion_miscarriage_input.dart';
+import 'package:DigitalDairy/screens/breeding_management/breeding_management_tab_view.dart';
+import 'package:DigitalDairy/screens/breeding_management/pregnancy_diagnosis/pregnancy_diagnosis_input.dart';
 import 'package:DigitalDairy/screens/clients/clients_tab_view.dart';
 import 'package:DigitalDairy/screens/clients/client_input.dart';
 import 'package:DigitalDairy/screens/consumers/consumers_tab_view.dart';
@@ -11,14 +14,13 @@ import 'package:DigitalDairy/screens/health_management/vaccinations/vaccination_
 import 'package:DigitalDairy/screens/herd_management/cow-sales/cow_sale_input.dart';
 import 'package:DigitalDairy/screens/herd_management/cows/cow_input.dart';
 import 'package:DigitalDairy/screens/herd_management/herd_management_tabbed_view.dart';
-import 'package:DigitalDairy/screens/herd_management/semen/semen_catalog_input.dart';
+import 'package:DigitalDairy/screens/breeding_management/semen/semen_catalog_input.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production_input.dart';
 import 'package:DigitalDairy/screens/milk_production/milk_production_tabbed_view.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumption_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sale_input.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
 import 'package:DigitalDairy/screens/milk_sales_payments/milk_sale_payment_input.dart';
-import 'package:DigitalDairy/screens/milk_sales_payments/milk_sales_payments.dart';
 import 'package:go_router/go_router.dart';
 import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
@@ -87,6 +89,42 @@ class AppRouter {
         builder: (context, state) => DailyMilkProductionInputScreen(
           editDailyMilkProductionId:
               state.pathParameters["editDailyMilkProductionId"],
+        ),
+      ),
+      //breeding management routes
+      GoRoute(
+        name: "breeding_management",
+        path: BreedingManagementTabView.routePath,
+        builder: (context, state) => const BreedingManagementTabView(),
+      ),
+      //add pregnancy diagnosis route
+      GoRoute(
+        name: "addPregnancyDiagnosisDetails",
+        path: PregnancyDiagnosisInputScreen.addDetailsRoutePath,
+        builder: (context, state) => const PregnancyDiagnosisInputScreen(),
+      ),
+      //edit diseases routes
+      GoRoute(
+        name: "editPregnancyDiagnosisDetails",
+        path: PregnancyDiagnosisInputScreen.editDetailsRoutePath,
+        builder: (context, state) => PregnancyDiagnosisInputScreen(
+          editPregnancyDiagnosisId:
+              state.pathParameters["editPregnancyDiagnosisId"],
+        ),
+      ),
+      //add abortion or miscarriage route
+      GoRoute(
+        name: "addAbortionMiscarriageDetails",
+        path: AbortionMiscarriageInputScreen.addDetailsRoutePath,
+        builder: (context, state) => const AbortionMiscarriageInputScreen(),
+      ),
+      //edit diseases routes
+      GoRoute(
+        name: "editAbortionMiscarriageDetails",
+        path: AbortionMiscarriageInputScreen.editDetailsRoutePath,
+        builder: (context, state) => AbortionMiscarriageInputScreen(
+          editAbortionMiscarriageId:
+              state.pathParameters["editAbortionMiscarriageId"],
         ),
       ),
       //main herd management route

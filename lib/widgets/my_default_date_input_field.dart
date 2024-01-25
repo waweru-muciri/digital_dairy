@@ -15,6 +15,7 @@ class MyDefaultDateInputTextField extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: TextFormField(
           controller: controller,
+          validator: validator,
           readOnly: true,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),

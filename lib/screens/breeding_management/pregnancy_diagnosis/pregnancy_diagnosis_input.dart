@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/controllers/cow_controller.dart';
+import 'package:DigitalDairy/controllers/pregnancy_diagnosis_controller.dart';
 import 'package:DigitalDairy/models/cow.dart';
-import 'package:DigitalDairy/models/cow_sale.dart';
+import 'package:DigitalDairy/models/cow_pregnancy_diagnosis.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
@@ -10,35 +11,37 @@ import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:DigitalDairy/controllers/cow_sale_controller.dart';
 import 'package:provider/provider.dart';
 
-class CowSaleInputScreen extends StatefulWidget {
-  const CowSaleInputScreen({super.key, this.editCowSaleId});
-  final String? editCowSaleId;
-  static const String addDetailsRoutePath = "/add_cowSale_details";
+class PregnancyDiagnosisInputScreen extends StatefulWidget {
+  const PregnancyDiagnosisInputScreen(
+      {super.key, this.editPregnancyDiagnosisId});
+  final String? editPregnancyDiagnosisId;
+  static const String addDetailsRoutePath = "/add_pregnancy_diagnosis_details";
   static const String editDetailsRoutePath =
-      "/edit_cow_sale_details/:editCowSaleId";
+      "/edit_pregnancy_diagnosis_details/:editPregnancyDiagnosisId";
 
   @override
-  CowSaleFormState createState() {
-    return CowSaleFormState();
+  PregnancyDiagnosisFormState createState() {
+    return PregnancyDiagnosisFormState();
   }
 }
 
-class CowSaleFormState extends State<CowSaleInputScreen> {
-  final TextEditingController _clientNameController =
-      TextEditingController(text: "");
-  final TextEditingController _dateController =
-      TextEditingController(text: getTodaysDateAsString());
-  final TextEditingController _remarksController =
-      TextEditingController(text: "");
-  final TextEditingController _costController = TextEditingController();
-  final TextEditingController _cowFilterController = TextEditingController();
+class PregnancyDiagnosisFormState extends State<PregnancyDiagnosisInputScreen> {
+  final TextEditingController _pregnancyDiagnosisDiagnosisController =
+      TextEditingController();
+  final TextEditingController _pregnancyDiagnosisDateController =
+      TextEditingController();
+  final TextEditingController _pregnancyDiagnosisVetNameController =
+      TextEditingController();
+  final TextEditingController _pregnancyDiagnosisCostController =
+      TextEditingController();
+  final TextEditingController _cowController = TextEditingController();
   Cow? selectedCow;
   late List<Cow> _cowsList;
+  bool pregnancyResultPositive = true;
 
-  CowSale? cowSaleToEdit;
+  PregnancyDiagnosis? _pregnancyDiagnosisToEdit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -51,11 +54,10 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
 
   @override
   void dispose() {
-    _clientNameController.dispose();
-    _costController.dispose();
-    _dateController.dispose();
-    _remarksController.dispose();
-    _cowFilterController.dispose();
+    _pregnancyDiagnosisDiagnosisController.dispose();
+    _pregnancyDiagnosisCostController.dispose();
+    _pregnancyDiagnosisDateController.dispose();
+    _pregnancyDiagnosisVetNameController.dispose();
     super.dispose();
   }
 
@@ -63,31 +65,32 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
   Widget build(BuildContext context) {
     _cowsList = context.watch<CowController>().cowsList;
 
-    String? editCowSaleId = widget.editCowSaleId;
-    if (editCowSaleId != null) {
-      final cowSalesList = context.read<CowSaleController>().cowSalesList;
-      cowSaleToEdit = cowSalesList.firstWhereOrNull(
-        (cowSaleToEdit) => cowSaleToEdit.getId == editCowSaleId,
+    String? editPregnancyDiagnosisId = widget.editPregnancyDiagnosisId;
+    if (editPregnancyDiagnosisId != null) {
+      final pregnancyDiagnosissList =
+          context.read<PregnancyDiagnosisController>().pregnancyDiagnosissList;
+      _pregnancyDiagnosisToEdit = pregnancyDiagnosissList.firstWhereOrNull(
+        (pregnancyDiagnosis) =>
+            pregnancyDiagnosis.getId == editPregnancyDiagnosisId,
       );
-      _clientNameController.value =
-          TextEditingValue(text: cowSaleToEdit?.getClientName ?? '');
-      _dateController.value =
-          TextEditingValue(text: cowSaleToEdit?.getCowSaleDate ?? '');
-      _remarksController.value =
-          TextEditingValue(text: cowSaleToEdit?.getRemarks ?? '');
-      _costController.value = TextEditingValue(
-          text: cowSaleToEdit?.getCowSaleCost.toString() ?? '');
-
+      _pregnancyDiagnosisDateController.value = TextEditingValue(
+          text: _pregnancyDiagnosisToEdit?.getPregnancyDiagnosisDate ?? '');
+      _pregnancyDiagnosisCostController.value = TextEditingValue(
+          text: '${_pregnancyDiagnosisToEdit?.getPregnancyDiagnosisCost}');
+      _pregnancyDiagnosisVetNameController.value =
+          TextEditingValue(text: _pregnancyDiagnosisToEdit?.getVetName ?? '');
       setState(() {
-        selectedCow = cowSaleToEdit!.getCow;
+        selectedCow = _pregnancyDiagnosisToEdit?.getCow;
+        pregnancyResultPositive =
+            _pregnancyDiagnosisToEdit?.getPregnancyDiagnosisResult ?? false;
       });
     }
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editCowSaleId != null
-                ? 'Edit ${DisplayTextUtil.cowSaleDetails}'
-                : 'New ${DisplayTextUtil.cowSaleDetails}',
+            editPregnancyDiagnosisId != null
+                ? 'Edit ${DisplayTextUtil.pregnancyDiagnosisDetails}'
+                : 'New ${DisplayTextUtil.pregnancyDiagnosisDetails}',
           ),
         ),
         body: SingleChildScrollView(
@@ -109,24 +112,24 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                         children: [
                           inputFieldLabel(
                             context,
-                            "Date",
+                            "Diagnosis Date",
                           ),
                           MyDefaultDateInputTextField(
-                              controller: _dateController,
+                              controller: _pregnancyDiagnosisDateController,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Date cannot be empty';
                                 }
                                 return null;
                               },
-                              initialDate:
-                                  getDateFromString(_dateController.text)),
+                              initialDate: getDateFromString(
+                                  _pregnancyDiagnosisDateController.text)),
                           inputFieldLabel(context, "Select Cow"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: DropdownMenu<Cow>(
                               initialSelection: selectedCow,
-                              controller: _cowFilterController,
+                              controller: _cowController,
                               requestFocusOnTap: true,
                               expandedInsets: EdgeInsets.zero,
                               onSelected: (Cow? cow) {
@@ -153,17 +156,53 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                           ),
                           inputFieldLabel(
                             context,
-                            "Client Name",
+                            "Diagnosis",
                           ),
                           MyDefaultTextField(
-                            controller: _clientNameController,
+                            controller: _pregnancyDiagnosisDiagnosisController,
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 3,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Diagnosis cannot be empty';
+                              }
+                              return null;
+                            },
+                          ),
+                          inputFieldLabel(
+                            context,
+                            "Pregnancy Diagnosis Result",
+                          ),
+                          Row(
+                            children: <Widget>[
+                              const Expanded(child: Text("Positive")),
+                              Expanded(
+                                child: Switch(
+                                    // This bool value toggles the switch.
+                                    value: pregnancyResultPositive,
+                                    onChanged: (bool value) {
+                                      // This is called when the user toggles the switch.
+                                      setState(() {
+                                        pregnancyResultPositive = value;
+                                      });
+                                    }),
+                              ),
+                            ],
+                          ),
+                          inputFieldLabel(
+                            context,
+                            "Vet Name",
+                          ),
+                          MyDefaultTextField(
+                            controller: _pregnancyDiagnosisVetNameController,
                           ),
                           inputFieldLabel(
                             context,
                             "Cost",
                           ),
                           MyDefaultTextField(
-                            controller: _costController,
+                            controller: _pregnancyDiagnosisCostController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Cost cannot be empty';
@@ -173,15 +212,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                               return null;
                             },
                             keyboardType: TextInputType.number,
-                          ),
-                          inputFieldLabel(
-                            context,
-                            "Remarks",
-                          ),
-                          MyDefaultTextField(
-                            controller: _remarksController,
-                            keyboardType: TextInputType.text,
-                          ),
+                          )
                         ],
                       )),
                   saveButton(
@@ -190,31 +221,36 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          String date = _dateController.text.trim();
-                          String remarks = _remarksController.text.trim();
-                          String clientName = _clientNameController.text.trim();
-                          String cost = _costController.text.trim();
+                          String pregnancyDiagnosisDate =
+                              _pregnancyDiagnosisDateController.text.trim();
+                          String vetName =
+                              _pregnancyDiagnosisVetNameController.text.trim();
+                          String pregnancyDiagnosisCost =
+                              _pregnancyDiagnosisCostController.text.trim();
                           //edit the properties that require editing
-                          final newCowSale = CowSale();
-                          newCowSale.setRemarks = remarks;
-                          newCowSale.setCowSaleDate = date;
-                          newCowSale.setCowSaleCost = double.parse(cost);
-                          newCowSale.setClientName = clientName;
-                          newCowSale.setCow = selectedCow!;
+                          final newPregnancyDiagnosis = PregnancyDiagnosis();
+                          newPregnancyDiagnosis.setPregnancyDiagnosisDate =
+                              pregnancyDiagnosisDate;
+                          newPregnancyDiagnosis.setPregnancyDiagnosisResult =
+                              pregnancyResultPositive;
+                          newPregnancyDiagnosis.setPregnancyDiagnosisCost =
+                              double.parse(pregnancyDiagnosisCost);
+                          newPregnancyDiagnosis.setVetName = vetName;
+                          newPregnancyDiagnosis.setCow = selectedCow!;
 
-                          if (editCowSaleId != null) {
-                            //set the id of the object instance
-                            newCowSale.setId = editCowSaleId;
-                            //update the cow sale  in the db
+                          if (editPregnancyDiagnosisId != null) {
+                            newPregnancyDiagnosis.setId =
+                                editPregnancyDiagnosisId;
+                            //update the pregnancyDiagnosis  in the db
                             await context
-                                .read<CowSaleController>()
-                                .editCowSale(newCowSale)
+                                .read<PregnancyDiagnosisController>()
+                                .editPregnancyDiagnosis(newPregnancyDiagnosis)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Cow Sale edited successfully!"));
+                                      "Pregnancy diagnosis edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -222,22 +258,22 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the newCowSale in the db
+                            //add the _pregnancyDiagnosisToEdit in the db
                             await context
-                                .read<CowSaleController>()
-                                .addCowSale(newCowSale)
+                                .read<PregnancyDiagnosisController>()
+                                .addPregnancyDiagnosis(newPregnancyDiagnosis)
                                 .then((value) {
                               //reset the form
-                              _clientNameController.clear();
-                              _dateController.clear();
-                              _remarksController.clear();
-                              _costController.clear();
+                              _pregnancyDiagnosisDiagnosisController.clear();
+                              _pregnancyDiagnosisDateController.clear();
+                              _pregnancyDiagnosisVetNameController.clear();
+                              _pregnancyDiagnosisCostController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Cow Sale added successfully."));
+                                      "Pregnancy diagnosis added successfully."));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -247,7 +283,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                           }
                         }
                       },
-                      text: "Save Details")
+                      text: "Save Diagnosis")
                 ],
               )),
         )));

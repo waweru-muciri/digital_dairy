@@ -1,5 +1,4 @@
 import "package:DigitalDairy/models/cow.dart";
-import "package:DigitalDairy/util/utils.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class AbortionMiscarriage {
@@ -9,13 +8,13 @@ class AbortionMiscarriage {
   late double _diagnosisCost;
   late Cow _cow;
   String? _cowId;
-  late AbortionOrMiscarriage _abortionOrMiscarriage;
+  late String _abortionOrMiscarriage;
 
   AbortionMiscarriage();
 
-  AbortionOrMiscarriage get getAbortionOrMiscarriage => _abortionOrMiscarriage;
+  String get getAbortionOrMiscarriage => _abortionOrMiscarriage;
 
-  set setAbortionOrMiscarriage(AbortionOrMiscarriage abortionOrMiscarriage) =>
+  set setAbortionOrMiscarriage(String abortionOrMiscarriage) =>
       _abortionOrMiscarriage = abortionOrMiscarriage;
 
   late String _diagnosisDate;
@@ -43,9 +42,9 @@ class AbortionMiscarriage {
 
   set setId(String? id) => _id = id;
 
-  String? get getAbortionMiscarriageResult => _cause;
+  String? get getAbortionMiscarriageCause => _cause;
 
-  set setAbortionMiscarriageResult(String? value) => _cause = value;
+  set setAbortionMiscarriageCause(String? value) => _cause = value;
 
   String get getAbortionMiscarriageDate => _diagnosisDate;
 
@@ -59,7 +58,7 @@ class AbortionMiscarriage {
     final String id = snapshot.id;
     final newAbortionMiscarriage = AbortionMiscarriage();
     newAbortionMiscarriage.setAbortionMiscarriageDate = data?["diagnosis_date"];
-    newAbortionMiscarriage.setAbortionMiscarriageResult =
+    newAbortionMiscarriage.setAbortionMiscarriageCause =
         data?["diagnosis_result"];
     newAbortionMiscarriage.setAbortionMiscarriageCost = data?["cost"];
     newAbortionMiscarriage.setVetName = data?["vet_name"];

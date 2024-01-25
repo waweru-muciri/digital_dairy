@@ -3,7 +3,7 @@ import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
-import 'package:DigitalDairy/widgets/default_date_input_field.dart';
+import 'package:DigitalDairy/widgets/my_default_date_input_field.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
@@ -267,7 +267,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "Date of Birth",
                           ),
-                          DefaultDateTextField(
+                          MyDefaultDateInputTextField(
                               controller: _cowDateofBirthController,
                               initialDate: getDateFromString(
                                   _cowDateofBirthController.text)),
@@ -275,7 +275,7 @@ class CowInputFormState extends State<CowInputScreen> {
                             context,
                             "Purchase Date",
                           ),
-                          DefaultDateTextField(
+                          MyDefaultDateInputTextField(
                               controller: _cowPurchaseDateController,
                               initialDate: getDateFromString(
                                   _cowPurchaseDateController.text)),

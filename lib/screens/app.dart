@@ -1,4 +1,6 @@
 import 'package:DigitalDairy/controllers/client_controller.dart';
+import 'package:DigitalDairy/controllers/cow_abortion_miscarriage_controller.dart';
+import 'package:DigitalDairy/controllers/cow_calving_controller.dart';
 import 'package:DigitalDairy/controllers/cow_controller.dart';
 import 'package:DigitalDairy/controllers/cow_sale_controller.dart';
 import 'package:DigitalDairy/controllers/disease_controller.dart';
@@ -9,6 +11,7 @@ import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_payment_controller.dart';
+import 'package:DigitalDairy/controllers/pregnancy_diagnosis_controller.dart';
 import 'package:DigitalDairy/controllers/semen_catalog_controller.dart';
 import 'package:DigitalDairy/controllers/treatment_controller.dart';
 import 'package:DigitalDairy/controllers/vaccination_controller.dart';
@@ -54,6 +57,11 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => CowSaleController()),
             ChangeNotifierProvider(create: (_) => MilkSalePaymentController()),
             ChangeNotifierProvider(create: (_) => SettingsController()),
+            ChangeNotifierProvider(
+                create: (_) => AbortionMiscarriageController()),
+            ChangeNotifierProvider(create: (_) => CalvingController()),
+            ChangeNotifierProvider(
+                create: (_) => PregnancyDiagnosisController()),
           ],
           builder: (context, child) {
             return MaterialApp.router(

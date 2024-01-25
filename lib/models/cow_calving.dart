@@ -7,7 +7,7 @@ class Calving {
   late String _calfName;
   late String _calfCode;
   late CalvingType _calvingType;
-  late String? _calvingDate;
+  late String _calvingDate;
   late CalfSexType? _calfSex;
   late CowBreed? _breed;
   late String? _color;
@@ -17,7 +17,7 @@ class Calving {
 
   Calving();
 
-  String? get getCalvingDate => _calvingDate;
+  String get getCalvingDate => _calvingDate;
 
   set setCalvingDate(String dateOfBirth) => _calvingDate = dateOfBirth;
 
