@@ -101,7 +101,9 @@ class CowsScreenState extends State<CowsScreen> {
                                   child: Text(
                                       'Sire: ${cow.getSire?.getName ?? ''}')),
                               Chip(
-                                  backgroundColor: Colors.white10,
+                                  backgroundColor: cowActiveStatus
+                                      ? Colors.tealAccent.withOpacity(0.1)
+                                      : Colors.redAccent.withOpacity(0.1),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 0),
                                   side: ChipTheme.of(context)

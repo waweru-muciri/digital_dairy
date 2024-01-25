@@ -1,8 +1,7 @@
-import 'package:DigitalDairy/screens/client_consumers/client_consumers_tabs.dart';
-import 'package:DigitalDairy/screens/client_consumers/clients/client_input.dart';
-import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers_input.dart';
-import 'package:DigitalDairy/screens/clients_consumers_statements/clients_sales_statements.dart';
-import 'package:DigitalDairy/screens/clients_consumers_statements/consumers_statements.dart';
+import 'package:DigitalDairy/screens/clients/clients_tab_view.dart';
+import 'package:DigitalDairy/screens/clients/client_input.dart';
+import 'package:DigitalDairy/screens/consumers/consumers_tab_view.dart';
+import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
@@ -41,30 +40,23 @@ class AppRouter {
         path: HomeScreen.routePath,
         builder: (context, state) => const HomeScreen(),
       ),
-      //clients sales statements route
+      //clients route
       GoRoute(
-        name: "clients_sales_statements",
-        path: ClientsMilkSalesStatementsScreen.routePath,
-        builder: (context, state) => const ClientsMilkSalesStatementsScreen(),
+        name: "clients",
+        path: "/clients",
+        builder: (context, state) => const ClientsTabView(),
       ),
-      //consumers consumption statements route
+      //consumers route
       GoRoute(
-        name: "consumers_consumption_statements",
-        path: ConsumersMilkConsumptionsStatementsScreen.routePath,
-        builder: (context, state) =>
-            const ConsumersMilkConsumptionsStatementsScreen(),
+        name: "consumers",
+        path: "/consumers",
+        builder: (context, state) => const MilkConsumersTabView(),
       ),
       //main milk production route
       GoRoute(
         name: "milk_production",
         path: MilkProductionTabView.routePath,
         builder: (context, state) => const MilkProductionTabView(),
-      ),
-      //main milk sales payments route
-      GoRoute(
-        name: "milk_sales_payments",
-        path: MilkSalePaymentsScreen.routePath,
-        builder: (context, state) => const MilkSalePaymentsScreen(),
       ),
       //add milk sales payments route
       GoRoute(
@@ -188,12 +180,6 @@ class AppRouter {
         builder: (context, state) => TreatmentInputScreen(
           editTreatmentId: state.pathParameters["editTreatmentId"],
         ),
-      ),
-      //main clients & consumers tab view
-      GoRoute(
-        name: "clients_consumers",
-        path: '/clients_consumers',
-        builder: (context, state) => const ClientConsumersTabView(),
       ),
       //add & edit clients routes
       GoRoute(

@@ -59,17 +59,6 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            title: const Text('Herd Management'),
-            selected: _selectedIndex == 2,
-            onTap: () {
-              // Update the state of the app
-              _onItemTapped(2);
-              context.pushNamed("herd_management");
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
             title: const Text('Milk Production'),
             selected: _selectedIndex == 2,
             onTap: () {
@@ -103,23 +92,34 @@ class _MyDrawerState extends State<MyDrawer> {
             },
           ),
           ListTile(
-            title: const Text('Clients Sales Statements'),
-            selected: _selectedIndex == 4,
+            title: const Text('Herd Management'),
+            selected: _selectedIndex == 2,
             onTap: () {
               // Update the state of the app
-              _onItemTapped(4);
-              context.pushNamed("clients_sales_statements");
+              _onItemTapped(2);
+              context.pushNamed("herd_management");
               // Then close the drawer
               Navigator.pop(context);
             },
           ),
           ListTile(
-            title: const Text('Consumers Statements'),
-            selected: _selectedIndex == 4,
+            title: const Text('Clients'),
+            selected: _selectedIndex == 6,
             onTap: () {
               // Update the state of the app
-              _onItemTapped(4);
-              context.pushNamed("consumers_consumption_statements");
+              _onItemTapped(6);
+              context.pushNamed("clients");
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Consumers'),
+            selected: _selectedIndex == 6,
+            onTap: () {
+              // Update the state of the app
+              _onItemTapped(6);
+              context.pushNamed("consumers");
               // Then close the drawer
               Navigator.pop(context);
             },
@@ -131,17 +131,6 @@ class _MyDrawerState extends State<MyDrawer> {
               // Update the state of the app
               _onItemTapped(5);
               context.pushNamed("healthManagement");
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Clients & Consumers'),
-            selected: _selectedIndex == 6,
-            onTap: () {
-              // Update the state of the app
-              _onItemTapped(6);
-              context.pushNamed("clients_consumers");
               // Then close the drawer
               Navigator.pop(context);
             },

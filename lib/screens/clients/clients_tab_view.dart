@@ -1,10 +1,10 @@
-import 'package:DigitalDairy/screens/client_consumers/clients/clients.dart';
-import 'package:DigitalDairy/screens/client_consumers/consumers/milk_consumers.dart';
+import 'package:DigitalDairy/screens/clients/clients.dart';
+import 'package:DigitalDairy/screens/clients/clients_sales_statements.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 
-class ClientConsumersTabView extends StatelessWidget {
-  const ClientConsumersTabView({super.key});
+class ClientsTabView extends StatelessWidget {
+  const ClientsTabView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +19,16 @@ class ClientConsumersTabView extends StatelessWidget {
                 text: "Clients",
               ),
               Tab(
-                text: "Consumers",
+                text: "Client Statements",
               ),
             ],
           ),
-          title: const Text('Clients & Consumers'),
+          title: const Text('Clients'),
         ),
         body: const TabBarView(
           children: [
             ClientsScreen(),
-            MilkConsumersScreen(),
+            ClientsMilkSalesStatementsScreen(),
           ],
         ),
       ),

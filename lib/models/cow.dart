@@ -16,7 +16,7 @@ class Cow {
   String? _kSBNumber;
   String? _datePurchased;
   String? _source;
-  bool _activeStatus = true;
+  bool _activeStatus = false;
   String? _damId;
   String? _sireId;
 
@@ -109,6 +109,7 @@ class Cow {
     newCow.setDateOfBirth = data?["date_of_birth"];
     newCow.setDatePurchased = data?["purchase_date"];
     newCow.setSource = data?["source"];
+    newCow.setActiveStatus = data?["active"] ?? false;
     return newCow;
   }
 
@@ -144,6 +145,7 @@ class Cow {
       'purchase_date': _datePurchased,
       'birth_weight': _birthWeight,
       'source': _source,
+      'active': _activeStatus,
       'dam': _dam?.toFirestore(),
       'sire': _sire?.toFirestore(),
     };

@@ -2,17 +2,15 @@ import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
-import 'package:DigitalDairy/screens/clients_consumers_statements/clients_sales_charts.dart';
-import 'package:DigitalDairy/widgets/my_drawer.dart';
+import 'package:DigitalDairy/screens/clients/clients_sales_charts.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class ClientsMilkSalesStatementsScreen extends StatefulWidget {
   const ClientsMilkSalesStatementsScreen({super.key});
-  static const routePath = '/client_milk_sales_statements';
+  static const routePath = '/client_statements';
 
   @override
   State<StatefulWidget> createState() =>
@@ -226,13 +224,20 @@ class ClientsMilkSalesStatementsScreenState
     _dataTableSource.setData(
         _milkSalesList, _sortColumnIndex, _sortColumnAscending);
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Client Statements',
-            style: TextStyle(),
-          ),
-          actions: <Widget>[
+    return SingleChildScrollView(
+        child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+              child: Text(
+                '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
+                textAlign: TextAlign.right,
+              ),
+            ),
             IconButton(
               icon: const Icon(
                 Icons.filter_list,
@@ -240,72 +245,54 @@ class ClientsMilkSalesStatementsScreenState
               onPressed: () {
                 showDatesAndClientFilterBottomSheet();
               },
-            )
-          ],
-        ),
-        drawer: const MyDrawer(),
-        body: SingleChildScrollView(
-            child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  child: Text(
-                    '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-                Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Card(
-                      child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              summaryTextDisplayRow("Client Name:",
-                                  selectedClient?.clientName ?? "All Clients"),
-                              summaryTextDisplayRow("Total Quantity Sold:",
-                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
-                              summaryTextDisplayRow("Total Quantity Sold:",
-                                  "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
-                              summaryTextDisplayRow("Total Payments:",
-                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
-                              summaryTextDisplayRow("Outstanding Balances:",
-                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
-                            ],
-                          )),
-                    )),
-                const LineChartSample2(),
-                PaginatedDataTable(
-                    rowsPerPage: 20,
-                    availableRowsPerPage: const [20, 30, 50],
-                    sortColumnIndex: _sortColumnIndex,
-                    sortAscending: _sortColumnAscending,
-                    columns: [
-                      DataColumn(
-                          label: const Text("Client Name"), onSort: _sort),
-                      DataColumn(label: const Text("Date"), onSort: _sort),
-                      DataColumn(
-                          label: const Text("Milk Quantity (Kgs)"),
-                          numeric: true,
-                          onSort: _sort),
-                      DataColumn(
-                          label: const Text("Unit Price (Ksh)"),
-                          numeric: true,
-                          onSort: _sort),
-                      DataColumn(
-                          label: const Text("Sales Amount (Ksh)"),
-                          numeric: true,
-                          onSort: _sort),
-                    ],
-                    source: _dataTableSource)
-              ]),
-        )));
+            ),
+            Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: Card(
+                  child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          summaryTextDisplayRow("Client Name:",
+                              selectedClient?.clientName ?? "All Clients"),
+                          summaryTextDisplayRow("Total Quantity Sold:",
+                              "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
+                          summaryTextDisplayRow("Total Quantity Sold:",
+                              "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
+                          summaryTextDisplayRow("Total Payments:",
+                              "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
+                          summaryTextDisplayRow("Outstanding Balances:",
+                              "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
+                        ],
+                      )),
+                )),
+            const LineChartSample2(),
+            PaginatedDataTable(
+                rowsPerPage: 20,
+                availableRowsPerPage: const [20, 30, 50],
+                sortColumnIndex: _sortColumnIndex,
+                sortAscending: _sortColumnAscending,
+                columns: [
+                  DataColumn(label: const Text("Client Name"), onSort: _sort),
+                  DataColumn(label: const Text("Date"), onSort: _sort),
+                  DataColumn(
+                      label: const Text("Milk Quantity (Kgs)"),
+                      numeric: true,
+                      onSort: _sort),
+                  DataColumn(
+                      label: const Text("Unit Price (Ksh)"),
+                      numeric: true,
+                      onSort: _sort),
+                  DataColumn(
+                      label: const Text("Sales Amount (Ksh)"),
+                      numeric: true,
+                      onSort: _sort),
+                ],
+                source: _dataTableSource)
+          ]),
+    ));
   }
 }
 
