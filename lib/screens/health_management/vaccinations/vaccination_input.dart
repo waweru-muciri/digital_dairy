@@ -253,7 +253,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save Details")
                 ],
               )),
         )));

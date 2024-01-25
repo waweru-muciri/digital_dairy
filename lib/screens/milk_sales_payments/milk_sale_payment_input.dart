@@ -296,7 +296,7 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                 }
                               }
                             },
-                            child: const Text("Save"))
+                            text: "Save Payment")
                       ],
                     )),
               )

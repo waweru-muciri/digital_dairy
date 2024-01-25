@@ -33,12 +33,12 @@ class DailyMilkProductionFormState
   final TextEditingController _dateController =
       TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _amAmountController =
-      TextEditingController(text: "0");
+      TextEditingController(text: "");
   final TextEditingController _noonAmountController =
-      TextEditingController(text: "0");
+      TextEditingController(text: "");
 
   final TextEditingController _pmAmountController =
-      TextEditingController(text: "0");
+      TextEditingController(text: "");
 
   final TextEditingController _cowFilterController = TextEditingController();
   late List<Cow> _cowsList;
@@ -76,14 +76,12 @@ class DailyMilkProductionFormState
       _dailyMilkProductionToEdit = cowsList.firstWhereOrNull(
         (cow) => cow.getId == editDailyMilkProductionId,
       );
-      _dateController.value = TextEditingValue(
-          text: _dailyMilkProductionToEdit?.getMilkProductionDate ?? '');
-      _amAmountController.value = TextEditingValue(
-          text: '${_dailyMilkProductionToEdit?.getAmQuantity}');
-      _noonAmountController.value = TextEditingValue(
-          text: '${_dailyMilkProductionToEdit?.getNoonQuantity}');
-      _pmAmountController.value = TextEditingValue(
-          text: '${_dailyMilkProductionToEdit?.getPmQuantity}');
+      _dateController.text =
+          _dailyMilkProductionToEdit?.getMilkProductionDate ?? '';
+      _amAmountController.text = '${_dailyMilkProductionToEdit?.getAmQuantity}';
+      _noonAmountController.text =
+          '${_dailyMilkProductionToEdit?.getNoonQuantity}';
+      _pmAmountController.text = '${_dailyMilkProductionToEdit?.getPmQuantity}';
       setState(() {
         selectedCow = _dailyMilkProductionToEdit?.getCow;
       });
@@ -220,7 +218,8 @@ class DailyMilkProductionFormState
                           double pmQuantity =
                               double.parse(_pmAmountController.text.trim());
                           //modify the fields as appropriate
-                          final newDailyMilkProduction = DailyMilkProduction();
+                          DailyMilkProduction newDailyMilkProduction =
+                              DailyMilkProduction();
                           newDailyMilkProduction.setMilkProductionDate =
                               _dateController.text;
                           newDailyMilkProduction.setAmQuantity = amQuantity;
@@ -254,11 +253,12 @@ class DailyMilkProductionFormState
                                 .addDailyMilkProduction(newDailyMilkProduction)
                                 .then((value) {
                               //reset the form
-                              _cowFilterController.clear();
+                              _amAmountController.clear();
+                              _noonAmountController.clear();
+                              _pmAmountController.clear();
                               setState(() {
                                 selectedCow = null;
                               });
-                              _amAmountController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful
@@ -274,7 +274,7 @@ class DailyMilkProductionFormState
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save")
                 ],
               )),
         )));

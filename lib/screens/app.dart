@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => SemenCatalogController()),
             ChangeNotifierProvider(create: (_) => CowSaleController()),
             ChangeNotifierProvider(create: (_) => MilkSalePaymentController()),
+            ChangeNotifierProvider(create: (_) => SettingsController()),
           ],
           builder: (context, child) {
             return MaterialApp.router(

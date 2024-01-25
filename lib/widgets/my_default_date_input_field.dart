@@ -23,9 +23,10 @@ class MyDefaultDateInputTextField extends StatelessWidget {
                 onPressed: () async {
                   final DateTime? pickedDateTime = await showCustomDatePicker(
                     context,
-                    initialDate,
+                    getDateFromString(controller.text),
                   );
-                  controller.text = getStringFromDate(pickedDateTime);
+                  controller.value =
+                      TextEditingValue(text: getStringFromDate(pickedDateTime));
                 },
                 icon: const Align(
                     widthFactor: 1.0,

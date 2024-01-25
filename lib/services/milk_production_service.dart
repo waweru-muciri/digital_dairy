@@ -1,13 +1,12 @@
 import 'package:DigitalDairy/models/daily_milk_production.dart';
-import 'package:DigitalDairy/util/utils.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:DigitalDairy/services/db_service.dart';
 
 /// A service that gets, updates and deletes milk production information.
 ///
 class DailyMilkProductionService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _milkProductionReference = FirebaseFirestore.instance
-      .collection('milk_production')
+  final _milkProductionReference = DbService.currentUserDbReference
+      .collection('daily_milk_production')
       .withConverter<DailyMilkProduction>(
         fromFirestore: DailyMilkProduction.fromFirestore,
         toFirestore: (DailyMilkProduction dailyMilkProduction, _) =>

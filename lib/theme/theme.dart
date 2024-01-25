@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 final ThemeData myTheme = ThemeData(
   useMaterial3: true,
   applyElevationOverlayColor: false,
+  colorScheme:
+      ColorScheme.fromSeed(seedColor: const Color.fromRGBO(0, 121, 107, 1)),
   brightness: Brightness.light,
   scaffoldBackgroundColor: const Color(0xfffafdfb),
   secondaryHeaderColor: const Color(0xffe3f2fd),
@@ -29,8 +31,7 @@ final ThemeData myTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     height: 36,
     layoutBehavior: ButtonBarLayoutBehavior.padded,
-    minWidth: 88,
-    padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+    padding: EdgeInsets.fromLTRB(24, 4, 24, 4),
     colorScheme: ColorScheme(
         brightness: Brightness.light,
         primary: Color(0xff006a60),

@@ -419,7 +419,7 @@ class CowInputFormState extends State<CowInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save Details")
                 ],
               )),
         )));

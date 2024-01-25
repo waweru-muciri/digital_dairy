@@ -159,8 +159,8 @@ class _DataSource extends DataTableSource {
       DataCell(Text('${item.getPmQuantity}')),
       DataCell(Text('${item.totalMilkQuantity}')),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editMilkSaleDetails",
-              pathParameters: {"editMilkSaleId": '${item.getId}'})),
+          onTap: () => context.pushNamed("editDailyMilkProductionDetails",
+              pathParameters: {"editDailyMilkProductionId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
           return await context

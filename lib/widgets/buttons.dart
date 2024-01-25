@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-FilledButton saveButton({Widget? child, required void Function()? onPressed}) {
+FilledButton saveButton({String? text, required void Function()? onPressed}) {
   return FilledButton(
     onPressed: onPressed,
     style: ButtonStyle(
@@ -13,6 +13,6 @@ FilledButton saveButton({Widget? child, required void Function()? onPressed}) {
             MaterialStateProperty.all<TextStyle>(const TextStyle().copyWith(
           fontSize: 16,
         ))),
-    child: child ?? const Text("Save Details"),
+    child: Text(text ?? "Save Details"),
   );
 }

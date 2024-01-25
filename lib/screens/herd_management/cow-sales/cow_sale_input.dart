@@ -247,7 +247,7 @@ class CowSaleFormState extends State<CowSaleInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save Details")
                 ],
               )),
         )));

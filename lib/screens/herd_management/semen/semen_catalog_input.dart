@@ -262,7 +262,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                 }
                               }
                             },
-                            child: const Text("Save Details"))
+                            text: "Save Details")
                       ]),
                 ))));
   }

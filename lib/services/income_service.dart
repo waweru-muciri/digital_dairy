@@ -1,7 +1,5 @@
-import 'package:intl/intl.dart';
-
-import '../models/income.dart';
 import "db_service.dart";
+import "package:DigitalDairy/models/income.dart";
 
 /// A service that gets, updates and deletes income information.
 ///

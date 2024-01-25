@@ -188,7 +188,7 @@ class DiseaseFormState extends State<DiseaseInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save Details")
                 ],
               )),
         )));

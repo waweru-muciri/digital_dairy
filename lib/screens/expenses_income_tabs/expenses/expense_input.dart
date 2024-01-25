@@ -187,7 +187,7 @@ class ExpenseFormState extends State<ExpenseInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save Details")
                 ],
               )),
         )));

@@ -185,7 +185,7 @@ class IncomeFormState extends State<IncomeInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save Details")
                 ],
               )),
         )));

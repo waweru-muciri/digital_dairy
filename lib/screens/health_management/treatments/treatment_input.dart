@@ -277,7 +277,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Treament"))
+                      text: "Save Treament")
                 ],
               )),
         )));

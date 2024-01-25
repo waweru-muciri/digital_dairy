@@ -221,7 +221,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Details"))
+                      text: "Save Details")
                 ],
               )),
         )));

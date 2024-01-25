@@ -8,7 +8,7 @@ class DailyMilkProduction {
   late double _pmQuantity = 0;
   late String _milkProductionDate;
   late Cow _cow;
-  late String? _cowId;
+  String? _cowId;
 
   DailyMilkProduction();
 
@@ -56,6 +56,7 @@ class DailyMilkProduction {
     newMilkProduction.setAmQuantity = data?["am_quantity"];
     newMilkProduction.setNoonQuantity = data?["noon_quantity"];
     newMilkProduction.setPmQuantity = data?["pm_quantity"];
+    newMilkProduction.setCowId = data?["cow_id"];
     newMilkProduction.setCow = Cow.getCowPropertiesFromMap(data?['cow']);
     newMilkProduction.setId = id;
     return newMilkProduction;
@@ -68,9 +69,14 @@ class DailyMilkProduction {
       'noon_quantity': _noonQuantity,
       'pm_quantity': _pmQuantity,
       "cow_id": _cowId,
-      "cow": _cow,
+      "cow": _cow.toFirestore(),
       "id": _id,
     };
+  }
+
+  @override
+  String toString() {
+    return '$_amQuantity $_noonQuantity $_pmQuantity $_cowId $_milkProductionDate';
   }
 
   double get totalMilkQuantity => (_amQuantity + _noonQuantity + _pmQuantity);

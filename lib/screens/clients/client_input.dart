@@ -215,7 +215,7 @@ class ClientFormState extends State<ClientInputScreen> {
                           }
                         }
                       },
-                      child: const Text("Save Client"))
+                      text: "Save Client")
                 ],
               )),
         )));
