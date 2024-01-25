@@ -16,7 +16,7 @@ class Cow {
   String? _kSBNumber;
   String? _datePurchased;
   String? _source;
-  bool _activeStatus = false;
+  bool _activeStatus = true;
   String? _damId;
   String? _sireId;
 
