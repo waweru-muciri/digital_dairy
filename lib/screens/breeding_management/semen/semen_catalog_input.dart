@@ -192,7 +192,7 @@ class SemenCatalogFormState extends State<SemenCatalogInputScreen> {
                                       initialDate: getDateFromString(
                                           _purchaseDateController.text))
                                 ])),
-                        saveButton(
+                        SaveButton(
                             onPressed: () async {
                               // Validate returns true if the form is valid, or false otherwise.
                               if (_formKey.currentState!.validate()) {

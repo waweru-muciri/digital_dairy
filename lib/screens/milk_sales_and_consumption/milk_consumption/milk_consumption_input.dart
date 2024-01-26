@@ -165,7 +165,7 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                           )
                         ],
                       )),
-                  saveButton(
+                  SaveButton(
                       onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/controllers/cow_controller.dart';
 import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
+import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -129,30 +130,13 @@ class CowsScreenState extends State<CowsScreen> {
                               flex: 2,
                               child:
                                   Text('Sire: ${cow.getSire?.getName ?? ''}')),
-                          Chip(
-                              backgroundColor: cowActiveStatus
-                                  ? Colors.tealAccent.withOpacity(0.1)
-                                  : Colors.redAccent.withOpacity(0.1),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 0),
-                              side: ChipTheme.of(context)
-                                  .copyWith(
-                                      side: BorderSide(
-                                          color: cowActiveStatus
-                                              ? Colors.tealAccent
-                                                  .withOpacity(0.3)
-                                              : Colors.redAccent
-                                                  .withOpacity(0.3)))
-                                  .side,
-                              labelPadding: const EdgeInsets.all(0),
-                              label: Text(
-                                cowActiveStatus ? "Active" : "Inactive",
-                              )),
+                          getActiveStatusChip(context, cowActiveStatus),
                         ],
                       )
                     ],
                   ),
-                  onTap: () {},
+                  onTap: () => context.pushNamed("cowDetails",
+                      pathParameters: {"cowId": '${cow.getId}'}),
                 );
               },
             ),

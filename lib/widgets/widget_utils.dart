@@ -1,13 +1,24 @@
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:flutter/material.dart';
 
-const InputDecoration textFormFieldDecoration = InputDecoration(
-  border: OutlineInputBorder(),
-  isDense: true,
-);
-
-const EdgeInsetsDirectional textFormFieldPadding =
-    EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10);
+Chip getActiveStatusChip(BuildContext context, bool activeStatus) {
+  return Chip(
+      backgroundColor: activeStatus
+          ? Colors.tealAccent.withOpacity(0.1)
+          : Colors.redAccent.withOpacity(0.1),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      side: ChipTheme.of(context)
+          .copyWith(
+              side: BorderSide(
+                  color: activeStatus
+                      ? Colors.tealAccent.withOpacity(0.3)
+                      : Colors.redAccent.withOpacity(0.3)))
+          .side,
+      labelPadding: const EdgeInsets.all(0),
+      label: Text(
+        activeStatus ? "Active" : "Inactive",
+      ));
+}
 
 Future<void> showDeleteItemDialog(
     BuildContext context, Future<void> Function() deleteItemFuture) async {

@@ -31,7 +31,7 @@ final ThemeData myTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     height: 36,
     layoutBehavior: ButtonBarLayoutBehavior.padded,
-    padding: EdgeInsets.fromLTRB(24, 4, 24, 4),
+    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
     colorScheme: ColorScheme(
         brightness: Brightness.light,
         primary: Color(0xff006a60),
