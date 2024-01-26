@@ -1,5 +1,24 @@
 import 'package:intl/intl.dart';
 
+enum MonthsOfTheYear {
+  january("January", 1),
+  february("February", 2),
+  march("March", 3),
+  april("April", 4),
+  may("May", 5),
+  june("June", 6),
+  july("July", 7),
+  august("August", 8),
+  september("September", 9),
+  october("October", 10),
+  november("November", 11),
+  december("December", 12);
+
+  const MonthsOfTheYear(this.month, this.monthNumber);
+  final String month;
+  final int monthNumber;
+}
+
 DateTime getDateFromString(String dateString) {
   late final DateTime date;
   try {

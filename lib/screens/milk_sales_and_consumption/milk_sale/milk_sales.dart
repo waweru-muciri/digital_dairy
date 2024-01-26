@@ -1,6 +1,5 @@
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
-import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';

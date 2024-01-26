@@ -47,7 +47,7 @@ class CowDetailsScreenState extends State<CowDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Stack(alignment: Alignment.bottomCenter, children: <Widget>[
+              Stack(clipBehavior: Clip.none, children: <Widget>[
                 SizedBox(
                     height: 300,
                     child: Image.asset(
@@ -59,33 +59,47 @@ class CowDetailsScreenState extends State<CowDetailsScreen> {
                         );
                       },
                     )),
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: Card(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                  "Code: ${cow.getCowCode} Name: ${cow.getName}"),
-                            )),
-                            Expanded(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: getActiveStatusChip(
-                                        context, cow.getActiveStatus))),
-                          ],
+                Positioned(
+                  bottom: -50,
+                  right: 50,
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Card(
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Text("Code: ${cow.getCowCode}"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Text("Name: ${cow.getName}"),
+                                  )
+                                ],
+                              )),
+                              Expanded(
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: getActiveStatusChip(
+                                          context, cow.getActiveStatus))),
+                            ],
+                          ),
                         ),
-                      ),
-                    ))
+                      )),
+                )
               ]),
               Card(
-                margin: const EdgeInsets.all(10),
+                margin: const EdgeInsets.fromLTRB(10, 60, 10, 10),
                 child: Column(
                   children: [
                     getInfoRow("Dam", cow.getDam?.getName ?? ''),
