@@ -67,17 +67,15 @@ class CowSalesScreenState extends State<CowSalesScreen> {
                           ),
                           Expanded(
                               flex: 1,
-                              child: IconButton(
-                                  icon: const Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showDatesFilterBottomSheet(
-                                        context,
-                                        _fromDateFilterController,
-                                        _toDateFilterController,
-                                        context
-                                            .read<CowSaleController>()
-                                            .filterCowSalesByDates);
-                                  })),
+                              child: getFilterIconButton(onPressed: () {
+                                showDatesFilterBottomSheet(
+                                    context,
+                                    _fromDateFilterController,
+                                    _toDateFilterController,
+                                    context
+                                        .read<CowSaleController>()
+                                        .filterCowSalesByDates);
+                              })),
                         ],
                       )))),
         ),

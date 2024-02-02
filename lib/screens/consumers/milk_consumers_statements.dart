@@ -132,10 +132,7 @@ class MilkConsumersStatementsScreenState
                         ],
                       )))),
         ),
-        IconButton(
-          icon: const Icon(
-            Icons.filter_list,
-          ),
+        getFilterIconButton(
           onPressed: () {
             showDatesFilterBottomSheet(
                 context,
@@ -143,7 +140,7 @@ class MilkConsumersStatementsScreenState
                 _toDateFilterController,
                 context
                     .read<MilkConsumptionController>()
-                    .filterMilkConsumptionByDate);
+                    .filterMilkConsumptionsByDate);
           },
         ),
         Container(

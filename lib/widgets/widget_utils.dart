@@ -233,3 +233,7 @@ Widget inputFieldLabel(BuildContext context, String text) {
     ),
   );
 }
+
+IconButton getFilterIconButton({required void Function()? onPressed}) {
+  return IconButton(onPressed: onPressed, icon: const Icon(Icons.tune));
+}

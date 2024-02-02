@@ -29,7 +29,7 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
     super.initState();
     Future.microtask(() => context
         .read<MilkConsumptionController>()
-        .filterMilkConsumptionByDate(getTodaysDateAsString()));
+        .filterMilkConsumptionsByDate(getTodaysDateAsString()));
   }
 
   @override
@@ -71,17 +71,15 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                           ),
                           Expanded(
                               flex: 1,
-                              child: IconButton(
-                                  icon: const Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showDatesFilterBottomSheet(
-                                        context,
-                                        _fromDateFilterController,
-                                        _toDateFilterController,
-                                        context
-                                            .read<MilkConsumptionController>()
-                                            .filterMilkConsumptionByDate);
-                                  })),
+                              child: getFilterIconButton(onPressed: () {
+                                showDatesFilterBottomSheet(
+                                    context,
+                                    _fromDateFilterController,
+                                    _toDateFilterController,
+                                    context
+                                        .read<MilkConsumptionController>()
+                                        .filterMilkConsumptionsByDate);
+                              })),
                         ],
                       )))),
         ),

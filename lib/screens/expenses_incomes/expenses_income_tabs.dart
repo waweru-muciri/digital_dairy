@@ -1,5 +1,5 @@
-import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expenses.dart';
-import 'package:DigitalDairy/screens/expenses_income_tabs/income/incomes.dart';
+import 'package:DigitalDairy/screens/expenses_incomes/expenses/expenses.dart';
+import 'package:DigitalDairy/screens/expenses_incomes/income/incomes.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 

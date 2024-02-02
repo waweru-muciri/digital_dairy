@@ -5,8 +5,8 @@ import 'package:DigitalDairy/screens/clients/clients_tab_view.dart';
 import 'package:DigitalDairy/screens/clients/client_input.dart';
 import 'package:DigitalDairy/screens/consumers/consumers_tab_view.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
-import 'package:DigitalDairy/screens/expenses_income_tabs/expenses/expense_input.dart';
-import 'package:DigitalDairy/screens/expenses_income_tabs/expenses_income_tabs.dart';
+import 'package:DigitalDairy/screens/expenses_incomes/expenses/expense_input.dart';
+import 'package:DigitalDairy/screens/expenses_incomes/expenses_income_tabs.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
 import 'package:DigitalDairy/screens/health_management/health_management_tabbed_view.dart';
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
@@ -27,7 +27,7 @@ import 'package:DigitalDairy/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:DigitalDairy/screens/expenses_income_tabs/income/income_input.dart';
+import 'package:DigitalDairy/screens/expenses_incomes/income/income_input.dart';
 
 class AppRouter {
 // GoRouter configuration

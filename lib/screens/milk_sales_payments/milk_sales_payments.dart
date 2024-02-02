@@ -89,17 +89,15 @@ class MilkSalesPaymentsScreenState extends State<MilkSalesPaymentsScreen> {
                           ),
                           Expanded(
                               flex: 1,
-                              child: IconButton(
-                                  icon: const Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showDatesFilterBottomSheet(
-                                        context,
-                                        _fromDateFilterController,
-                                        _toDateFilterController,
-                                        context
-                                            .read<MilkSalePaymentController>()
-                                            .filterMilkSalePaymentsByDates);
-                                  })),
+                              child: getFilterIconButton(onPressed: () {
+                                showDatesFilterBottomSheet(
+                                    context,
+                                    _fromDateFilterController,
+                                    _toDateFilterController,
+                                    context
+                                        .read<MilkSalePaymentController>()
+                                        .filterMilkSalePaymentsByDates);
+                              })),
                         ],
                       )))),
         ),

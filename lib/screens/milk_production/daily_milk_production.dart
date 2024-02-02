@@ -73,18 +73,15 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                             ),
                             Expanded(
                               flex: 1,
-                              child: IconButton(
-                                  icon: const Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showDatesFilterBottomSheet(
-                                        context,
-                                        _fromDateFilterController,
-                                        _toDateFilterController,
-                                        context
-                                            .read<
-                                                DailyMilkProductionController>()
-                                            .filterDailyMilkProductionsByDates);
-                                  }),
+                              child: getFilterIconButton(onPressed: () {
+                                showDatesFilterBottomSheet(
+                                    context,
+                                    _fromDateFilterController,
+                                    _toDateFilterController,
+                                    context
+                                        .read<DailyMilkProductionController>()
+                                        .filterDailyMilkProductionsByDates);
+                              }),
                             )
                           ],
                         )))),

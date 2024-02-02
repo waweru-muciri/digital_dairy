@@ -68,7 +68,7 @@ class MilkSaleController with ChangeNotifier {
     notifyListeners();
   }
 
-  void filterMilkSalesByDates(String startDate, {String? endDate}) async {
+  void filterMilkSalesByDate(String startDate, {String? endDate}) async {
     List<MilkSale> fetchedList = await _milkSaleService
         .getMilkSalesListBetweenDates(startDate, endDate: endDate);
     _milkSaleList.clear();

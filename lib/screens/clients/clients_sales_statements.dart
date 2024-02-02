@@ -201,7 +201,7 @@ class ClientsMilkSalesStatementsScreenState
                         } else {
                           context
                               .read<MilkSaleController>()
-                              .filterMilkSalesByDates(
+                              .filterMilkSalesByDate(
                                   _fromDateFilterController.text,
                                   endDate: _fromDateFilterController.text);
                         }
@@ -238,10 +238,7 @@ class ClientsMilkSalesStatementsScreenState
                 textAlign: TextAlign.right,
               ),
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.filter_list,
-              ),
+            getFilterIconButton(
               onPressed: () {
                 showDatesAndClientFilterBottomSheet();
               },

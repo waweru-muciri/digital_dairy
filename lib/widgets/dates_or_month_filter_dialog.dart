@@ -1,5 +1,5 @@
 import 'package:DigitalDairy/util/utils.dart';
-import 'package:DigitalDairy/widgets/widget_utils.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 class FilterByDatesOrMonthDialog extends StatefulWidget {
@@ -11,189 +11,98 @@ class FilterByDatesOrMonthDialog extends StatefulWidget {
 }
 
 class ScreenState extends State<FilterByDatesOrMonthDialog> {
-  TextEditingController fromDateFilterController = TextEditingController();
-  TextEditingController toDateFilterController = TextEditingController();
-  TextEditingController yearController = TextEditingController(text: "2023");
+  late final TextEditingController yearController;
 
-  String filterByDateOrMonth = "date";
   int _selectedMonth = DateTime.now().month;
+  final int _defaultYear = DateTime.now().year;
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    yearController = TextEditingController(text: '$_defaultYear');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: const Text('Filter'),
-      children: <Widget>[
-        Row(
-          children: [
-            const Expanded(child: Text("Filter by month")),
-            Expanded(
-                child: Radio<String>(
-              value: 'month',
-              groupValue: filterByDateOrMonth,
-              onChanged: (String? value) {
-                setState(() {
-                  filterByDateOrMonth = value ?? 'month';
-                });
-              },
-            )),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-                child: Padding(
+    return AlertDialog(
+      title: const Text('Filter By Month'),
+      content: Form(
+          key: _formKey,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Column(
+              children: [
+                Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
                     child: TextFormField(
                         controller: yearController,
                         keyboardType: TextInputType.number,
                         validator: (String? yearInput) {
-                          if (filterByDateOrMonth == "month" &&
-                              yearInput != null &&
-                              yearInput.isNotEmpty) {
+                          if (yearInput != null && yearInput.isNotEmpty) {
                             int? year = int.tryParse(yearInput);
-                            if (year == null) return "Year must be number!";
+                            if (year == null) {
+                              return "Year must be number!";
+                            }
+                            return null;
                           }
                           return "Year is required!";
                         },
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           isDense: true,
-                        )))),
-            Expanded(
-              child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                  child: DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    value: _selectedMonth,
-                    isDense: true,
-                    iconEnabledColor: Colors.green,
-                    decoration:
-                        const InputDecoration(border: OutlineInputBorder()),
-                    items: MonthsOfTheYear.values
-                        .map<DropdownMenuItem<int>>((month) =>
-                            DropdownMenuItem<int>(
-                                value: month.monthNumber,
-                                child: Text(month.month)))
-                        .toList(),
-                    onChanged: (int? monthNumber) {
-                      setState(() {
-                        _selectedMonth = monthNumber ?? 0;
-                      });
-                    },
-                    validator: (int? monthNumber) {
-                      if (filterByDateOrMonth == "month") {
+                        ))),
+                Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                    child: DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      value: _selectedMonth,
+                      isDense: true,
+                      iconEnabledColor: Colors.green,
+                      decoration:
+                          const InputDecoration(border: OutlineInputBorder()),
+                      items: MonthsOfTheYear.values
+                          .map<DropdownMenuItem<int>>((month) =>
+                              DropdownMenuItem<int>(
+                                  value: month.monthNumber,
+                                  child: Text(month.month)))
+                          .toList(),
+                      onChanged: (int? monthNumber) {
+                        setState(() {
+                          _selectedMonth = monthNumber ?? 0;
+                        });
+                      },
+                      validator: (int? monthNumber) {
                         if (monthNumber == null) {
                           return "Month must be selected!";
                         }
-                      }
-                      return null;
-                    },
-                  )),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            const Expanded(child: Text("Filter by dates")),
-            Expanded(
-                child: Radio<String>(
-              value: 'month',
-              groupValue: filterByDateOrMonth,
-              onChanged: (String? value) {
-                setState(() {
-                  filterByDateOrMonth = value ?? 'month';
-                });
-              },
-            )),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: TextFormField(
-                    controller: fromDateFilterController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: const OutlineInputBorder(),
-                      labelText: 'From Date',
-                      suffixIcon: IconButton(
-                          onPressed: () async {
-                            final DateTime? pickedDateTime =
-                                await showCustomDatePicker(
-                                    context,
-                                    getDateFromString(
-                                        fromDateFilterController.text));
-                            fromDateFilterController.text =
-                                getStringFromDate(pickedDateTime);
-                          },
-                          icon: const Align(
-                              widthFactor: 1.0,
-                              heightFactor: 1.0,
-                              child: Icon(
-                                Icons.calendar_month,
-                              ))),
-                    ),
-                  )),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: TextFormField(
-                    controller: toDateFilterController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: const OutlineInputBorder(),
-                      labelText: 'To Date',
-                      suffixIcon: IconButton(
-                          onPressed: () async {
-                            final DateTime? pickedDateTime =
-                                await showCustomDatePicker(
-                                    context,
-                                    getDateFromString(
-                                        toDateFilterController.text));
-
-                            toDateFilterController.text =
-                                getStringFromDate(pickedDateTime);
-                          },
-                          icon: const Align(
-                              widthFactor: 1.0,
-                              heightFactor: 1.0,
-                              child: Icon(
-                                Icons.calendar_month,
-                              ))),
-                    ),
-                  )),
-            ),
-          ],
-        ),
-        ButtonBar(
-          alignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FilledButton(
-                child: const Text('Reset'),
-                onPressed: () {
-                  fromDateFilterController.clear();
-                  toDateFilterController.clear();
-                }),
-            FilledButton(
-                child: const Text('Apply Filters'),
-                onPressed: () {
-                  widget.filterFunction(fromDateFilterController.text,
-                      endDate: toDateFilterController.text);
-                  Navigator.pop(context);
-                }),
-          ],
-        )
+                        return null;
+                      },
+                    )),
+              ],
+            )
+          ])),
+      actions: <Widget>[
+        CancelButton(
+            text: 'Reset',
+            onPressed: () {
+              _selectedMonth = DateTime.now().month;
+            }),
+        SaveButton(
+            text: 'Apply Filters',
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                int year = int.tryParse(yearController.text) ?? _defaultYear;
+                DateTime startDateOfMonth = DateTime(year, _selectedMonth, 1);
+                DateTime endDateOfMonth = DateTime(year, _selectedMonth + 1, 0);
+                String startDateOfMonthString =
+                    getStringFromDate(startDateOfMonth);
+                String endDateOfMonthString = getStringFromDate(endDateOfMonth);
+                widget.filterFunction(startDateOfMonthString,
+                    endDate: endDateOfMonthString);
+                Navigator.pop(context);
+              }
+            }),
       ],
     );
   }

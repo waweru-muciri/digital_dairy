@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
+import 'package:DigitalDairy/widgets/dates_or_month_filter_dialog.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
     _dataTableSource = _DataSource(context: context);
     Future.microtask(() => context
         .read<MilkSaleController>()
-        .filterMilkSalesByDates(getTodaysDateAsString()));
+        .filterMilkSalesByDate(getTodaysDateAsString()));
   }
 
   @override
@@ -83,17 +84,15 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                           ),
                           Expanded(
                               flex: 1,
-                              child: IconButton(
-                                  icon: const Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showDatesFilterBottomSheet(
-                                        context,
-                                        _fromDateFilterController,
-                                        _toDateFilterController,
-                                        context
-                                            .read<MilkSaleController>()
-                                            .filterMilkSalesByDates);
-                                  })),
+                              child: getFilterIconButton(
+                                  onPressed: () => showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return FilterByDatesOrMonthDialog(
+                                            filterFunction: context
+                                                .read<MilkSaleController>()
+                                                .filterMilkSalesByDate);
+                                      }))),
                         ],
                       )))),
         ),

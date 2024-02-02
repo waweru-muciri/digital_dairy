@@ -1,5 +1,5 @@
-import 'package:DigitalDairy/controllers/income_controller.dart';
-import 'package:DigitalDairy/models/income.dart';
+import 'package:DigitalDairy/controllers/expense_controller.dart';
+import 'package:DigitalDairy/models/expense.dart';
 import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
@@ -7,18 +7,17 @@ import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
-class IncomesScreen extends StatefulWidget {
-  const IncomesScreen({super.key});
-  static const routePath = '/incomes';
+class ExpensesScreen extends StatefulWidget {
+  const ExpensesScreen({super.key});
+  static const routePath = '/expenses';
 
   @override
-  State<StatefulWidget> createState() => IncomeScreenState();
+  State<StatefulWidget> createState() => ExpensesScreenState();
 }
 
-class IncomeScreenState extends State<IncomesScreen> {
-  late List<Income> _incomesList;
+class ExpensesScreenState extends State<ExpensesScreen> {
+  late List<Expense> _expensesList;
   final TextEditingController _cowNameController = TextEditingController();
   final TextEditingController _fromDateFilterController =
       TextEditingController(text: getTodaysDateAsString());
@@ -28,23 +27,22 @@ class IncomeScreenState extends State<IncomesScreen> {
   @override
   void initState() {
     super.initState();
-    //get current day's income list
     Future.microtask(() => context
-        .read<IncomeController>()
-        .filterIncomeByDates(getTodaysDateAsString()));
+        .read<ExpenseController>()
+        .filterExpenseByDates(getTodaysDateAsString()));
   }
 
   @override
   void dispose() {
-    _cowNameController.dispose();
     _fromDateFilterController.dispose();
     _toDateFilterController.dispose();
+    _cowNameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _incomesList = context.watch<IncomeController>().incomesList;
+    _expensesList = context.watch<ExpenseController>().expensesList;
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -68,22 +66,21 @@ class IncomeScreenState extends State<IncomesScreen> {
                                       const EdgeInsets.fromLTRB(0, 10, 0, 10),
                                   child: FilterInputField(
                                       onQueryChanged: context
-                                          .read<IncomeController>()
-                                          .filterIncomes)),
+                                          .read<ExpenseController>()
+                                          .filterExpenses)),
                             ),
                             Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                    icon: const Icon(Icons.filter_list),
-                                    onPressed: () {
-                                      showDatesFilterBottomSheet(
-                                          context,
-                                          _fromDateFilterController,
-                                          _toDateFilterController,
-                                          context
-                                              .read<IncomeController>()
-                                              .filterIncomeByDates);
-                                    })),
+                              flex: 1,
+                              child: getFilterIconButton(onPressed: () {
+                                showDatesFilterBottomSheet(
+                                    context,
+                                    _fromDateFilterController,
+                                    _toDateFilterController,
+                                    context
+                                        .read<ExpenseController>()
+                                        .filterExpenseByDates);
+                              }),
+                            )
                           ],
                         )))),
           ),
@@ -96,34 +93,22 @@ class IncomeScreenState extends State<IncomesScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Row(children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "Total Income Amount:",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                                "${context.read<IncomeController>().getTotalIncome} Ksh"),
-                          )
-                        ]),
+                        summaryTextDisplayRow("Total Expenses Amount:",
+                            "${context.read<ExpenseController>().getTotalExpenses} Ksh"),
                       ],
                     )),
               )),
           PaginatedDataTable(
-              header: const Text("Incomes List"),
+              header: const Text("Expenses List"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               sortAscending: false,
               sortColumnIndex: 0,
-              actions: [
+              actions: <Widget>[
                 OutlinedButton.icon(
                   icon: const Icon(Icons.add),
-                  onPressed: () => context.pushNamed("addIncomeDetails"),
-                  label: const Text("New"),
+                  onPressed: () => context.pushNamed("addExpenseDetails"),
+                  label: const Text("Add Expense"),
                 )
               ],
               columns: const [
@@ -133,7 +118,7 @@ class IncomeScreenState extends State<IncomesScreen> {
                 DataColumn(label: Text("Edit")),
                 DataColumn(label: Text("Delete")),
               ],
-              source: _DataSource(data: _incomesList, context: context))
+              source: _DataSource(data: _expensesList, context: context))
         ]),
       ),
     ));
@@ -141,7 +126,7 @@ class IncomeScreenState extends State<IncomesScreen> {
 }
 
 class _DataSource extends DataTableSource {
-  final List<Income> data;
+  final List<Expense> data;
   final BuildContext context;
   _DataSource({required this.data, required this.context});
 
@@ -154,15 +139,15 @@ class _DataSource extends DataTableSource {
     final item = data[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.getIncomeDate)),
-      DataCell(Text('${item.getIncomeAmount}')),
+      DataCell(Text(item.getExpenseDate)),
+      DataCell(Text('${item.getExpenseAmount}')),
       DataCell(Text(item.getDetails)),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editIncomeDetails",
-              pathParameters: {"editIncomeId": '${item.getId}'})),
+          onTap: () => context.pushNamed("editExpenseDetails",
+              pathParameters: {"editExpenseId": '${item.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
-          return await context.read<IncomeController>().deleteIncome(item);
+          return await context.read<ExpenseController>().deleteExpense(item);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

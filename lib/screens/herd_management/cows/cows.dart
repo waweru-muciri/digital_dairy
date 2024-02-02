@@ -58,10 +58,7 @@ class CowsScreenState extends State<CowsScreen> {
                                 context.read<CowController>().filterCows)),
                   ),
                   Expanded(
-                      flex: 1,
-                      child: IconButton(
-                          icon: const Icon(Icons.filter_list),
-                          onPressed: () {})),
+                      flex: 1, child: getFilterIconButton(onPressed: () {})),
                 ],
               )),
           Container(

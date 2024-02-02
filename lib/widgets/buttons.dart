@@ -50,3 +50,29 @@ class DeleteButton extends StatelessWidget {
     );
   }
 }
+
+class CancelButton extends StatelessWidget {
+  const CancelButton({super.key, this.onPressed, this.text});
+  final void Function()? onPressed;
+  final String? text;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          )),
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+          textStyle:
+              MaterialStateProperty.all<TextStyle>(const TextStyle().copyWith(
+            fontSize: 16,
+          ))),
+      child: Text(text ?? "Cancel",
+          style: const TextStyle(color: Colors.redAccent)),
+    );
+  }
+}
