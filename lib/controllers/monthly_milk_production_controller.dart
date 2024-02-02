@@ -1,8 +1,8 @@
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/services/milk_production_service.dart';
 import 'package:DigitalDairy/models/daily_milk_production.dart';
-import 'package:intl/intl.dart';
 
 class MonthlyMilkProductionController with ChangeNotifier {
   MonthlyMilkProductionController();
@@ -12,7 +12,7 @@ class MonthlyMilkProductionController with ChangeNotifier {
 
   final List<DailyMilkProduction> _monthMilkProductionList = [];
   final List<Map<String, double>> _monthDailyMilkProductionList = [];
-  final List<Map<String, double>> _yearMonthlyMilkProductionList = [];
+  final List<Map<int, double>> _yearMonthlyMilkProductionList = [];
 
   // Allow Widgets to read the filtered dailyMilkProductions list.
   List<Map<String, double>> get monthDailyMilkProductionsList =>
@@ -39,7 +39,7 @@ class MonthlyMilkProductionController with ChangeNotifier {
     return selectedMonthMilkProductions;
   }
 
-  void filterMonthlyMilkProductionsByMonth(int month, int year) async {
+  void getMonthDailyMilkProductions(int month, int year) async {
     DateTime monthStartDate = DateTime(year, month, 1);
     DateTime monthEndDate = DateTime(year, month + 1, 0);
     String monthStartDateString = getStringFromDate(monthStartDate);
@@ -48,10 +48,21 @@ class MonthlyMilkProductionController with ChangeNotifier {
     List<DailyMilkProduction> fetchedList = await _dailyMilkProductionService
         .getDailyMilkProductionsListBetweenDates(monthStartDateString,
             endDate: monthEndDateString);
+    Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
+        groupBy(fetchedList,
+            (dailyMilkProduction) => dailyMilkProduction.getMilkProductionDate);
+    List<Map<String, double>> totalDailyMilkProductionList =
+        milkProductionsGroupedByDate.entries
+            .map((dateMilkProduction) => {
+                  dateMilkProduction.key: dateMilkProduction.value.fold(
+                      0.0,
+                      (previousValue, milkProduction) =>
+                          (previousValue + milkProduction.totalMilkQuantity))
+                })
+            .toList();
+
     _monthMilkProductionList.clear();
     _monthMilkProductionList.addAll(fetchedList);
-    List<Map<String, double>> totalDailyMilkProductionList =
-        getMonthDailyMilkProduction(monthStartDate, monthEndDate, fetchedList);
     _monthDailyMilkProductionList.addAll(totalDailyMilkProductionList);
     notifyListeners();
   }
@@ -66,23 +77,20 @@ class MonthlyMilkProductionController with ChangeNotifier {
         .getDailyMilkProductionsListBetweenDates(yearStartDateString,
             endDate: yearEndDateString);
 
-    List<Map<String, double>> selectedYearMonthlyMilkProductions = [];
-    for (var i = 1; i <= 12; i++) {
-      DateTime monthStartDate = DateTime(year, i, 1);
-      DateTime monthEndDate = DateTime(year, i + 1, 0);
-      List<Map<String, double>> monthMilkProductionList =
-          getMonthDailyMilkProduction(
-              monthStartDate, monthEndDate, fetchedList);
-      double totalMonthMilkProductionQuantity = monthMilkProductionList.fold(
-          0.0,
-          (previousValue, element) =>
-              element.values.reduce((value, element) => element));
-      _yearMonthlyMilkProductionList.add({
-        DateFormat("MMMM").format(monthStartDate):
-            totalMonthMilkProductionQuantity
-      });
-    }
-    _yearMonthlyMilkProductionList.addAll(selectedYearMonthlyMilkProductions);
+    Map<int, List<DailyMilkProduction>> milkProductionsGroupedByMonth = groupBy(
+        fetchedList,
+        (dailyMilkProduction) =>
+            getDateFromString(dailyMilkProduction.getMilkProductionDate).month);
+    List<Map<int, double>> totalMonthlyMilkProductionList =
+        milkProductionsGroupedByMonth.entries
+            .map((monthMilkProduction) => {
+                  monthMilkProduction.key: monthMilkProduction.value.fold(
+                      0.0,
+                      (previousValue, milkProduction) =>
+                          (previousValue + milkProduction.totalMilkQuantity))
+                })
+            .toList();
+    _yearMonthlyMilkProductionList.addAll(totalMonthlyMilkProductionList);
     notifyListeners();
   }
 
