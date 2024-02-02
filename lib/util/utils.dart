@@ -44,14 +44,6 @@ String getStringFromDate(DateTime? date) {
   return dateString;
 }
 
-enum Foo {
-  one(1),
-  two(2);
-
-  const Foo(this.value);
-  final num value;
-}
-
 enum CowGrade {
   pedigree("Pedigree"),
   appendix("Appendix"),

@@ -1,5 +1,5 @@
-import 'package:DigitalDairy/screens/health_management/treatments/treatments.dart';
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart';
+import 'package:DigitalDairy/screens/milk_production/monthly_milk_production.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +29,7 @@ class MilkProductionTabView extends StatelessWidget {
         body: const TabBarView(
           children: [
             DailyMilkProductionScreen(),
-            TreatmentsScreen(),
+            MonthlyMilkProductionScreen(),
           ],
         ),
       ),
