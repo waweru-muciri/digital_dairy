@@ -1,3 +1,4 @@
+import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,15 @@ class MonthlyMilkProductionController with ChangeNotifier {
   final List<DailyMilkProduction> _monthMilkProductionList = [];
   final List<Map<String, double>> _monthDailyMilkProductionList = [];
   final List<Map<int, double>> _yearMonthlyMilkProductionList = [];
-
+  final List<Map<Cow, double>> _allCowsMonthMilkProductionTotalsList = [];
   // Allow Widgets to read the filtered dailyMilkProductions list.
   List<Map<String, double>> get monthDailyMilkProductionsList =>
       _monthDailyMilkProductionList;
+
+  List<Map<int, double>> get yearMonthlyMilkProductionsList =>
+      _yearMonthlyMilkProductionList;
+  List<Map<Cow, double>> get allCowsTotalMonthMilkProductionList =>
+      _allCowsMonthMilkProductionTotalsList;
 
   List<Map<String, double>> getMonthDailyMilkProduction(DateTime monthStartDate,
       DateTime monthEndDate, List<DailyMilkProduction> milkProductionList) {
@@ -48,6 +54,26 @@ class MonthlyMilkProductionController with ChangeNotifier {
     List<DailyMilkProduction> fetchedList = await _dailyMilkProductionService
         .getDailyMilkProductionsListBetweenDates(monthStartDateString,
             endDate: monthEndDateString);
+    //add all the fetched milk productions to the local list for computations later
+    _monthMilkProductionList.clear();
+    _monthMilkProductionList.addAll(fetchedList);
+    //group milk productions by cow id
+    Map<Cow, List<DailyMilkProduction>> dailyMilkProductionsGroupedByCow =
+        groupBy(
+            fetchedList, (dailyMilkProduction) => dailyMilkProduction.getCow);
+    List<Map<Cow, double>> totalMonthMilkProductionGroupedByCow =
+        dailyMilkProductionsGroupedByCow.entries
+            .map((cowMonthMilkProduction) => {
+                  cowMonthMilkProduction.key: cowMonthMilkProduction.value.fold(
+                      0.0,
+                      (previousValue, element) =>
+                          previousValue + element.totalMilkQuantity)
+                })
+            .toList();
+    _allCowsMonthMilkProductionTotalsList.clear();
+    _allCowsMonthMilkProductionTotalsList
+        .addAll(totalMonthMilkProductionGroupedByCow);
+    //group the milk productions for the month by each date of the month
     Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
         groupBy(fetchedList,
             (dailyMilkProduction) => dailyMilkProduction.getMilkProductionDate);
@@ -60,9 +86,6 @@ class MonthlyMilkProductionController with ChangeNotifier {
                           (previousValue + milkProduction.totalMilkQuantity))
                 })
             .toList();
-
-    _monthMilkProductionList.clear();
-    _monthMilkProductionList.addAll(fetchedList);
     _monthDailyMilkProductionList.addAll(totalDailyMilkProductionList);
     notifyListeners();
   }
