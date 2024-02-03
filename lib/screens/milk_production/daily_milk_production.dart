@@ -28,9 +28,9 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
   @override
   void initState() {
     super.initState();
-    context
+    Future.microtask(() => context
         .read<DailyMilkProductionController>()
-        .filterDailyMilkProductionsByDates(getTodaysDateAsString());
+        .filterDailyMilkProductionsByDates(getTodaysDateAsString()));
   }
 
   @override

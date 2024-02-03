@@ -14,8 +14,8 @@ enum MonthsOfTheYear {
   november("November", 11),
   december("December", 12);
 
-  const MonthsOfTheYear(this.month, this.monthNumber);
-  final String month;
+  const MonthsOfTheYear(this.monthName, this.monthNumber);
+  final String monthName;
   final int monthNumber;
 }
 

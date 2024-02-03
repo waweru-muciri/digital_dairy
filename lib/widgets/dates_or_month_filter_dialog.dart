@@ -65,7 +65,7 @@ class ScreenState extends State<FilterByDatesOrMonthDialog> {
                           .map<DropdownMenuItem<int>>((month) =>
                               DropdownMenuItem<int>(
                                   value: month.monthNumber,
-                                  child: Text(month.month)))
+                                  child: Text(month.monthName)))
                           .toList(),
                       onChanged: (int? monthNumber) {
                         setState(() {

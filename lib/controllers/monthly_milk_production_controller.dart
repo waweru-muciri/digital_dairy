@@ -12,16 +12,16 @@ class MonthlyMilkProductionController with ChangeNotifier {
       DailyMilkProductionService();
 
   final List<DailyMilkProduction> _monthMilkProductionList = [];
-  final List<Map<String, double>> _monthDailyMilkProductionList = [];
-  final List<Map<int, double>> _yearMonthlyMilkProductionList = [];
-  final List<Map<Cow, double>> _allCowsMonthMilkProductionTotalsList = [];
+  final Map<String, double> _monthDailyMilkProductionList = {};
+  final Map<int, double> _yearMonthlyMilkProductionList = {};
+  final Map<Cow, double> _allCowsMonthMilkProductionTotalsList = {};
   // Allow Widgets to read the filtered dailyMilkProductions list.
-  List<Map<String, double>> get monthDailyMilkProductionsList =>
+  Map<String, double> get monthDailyMilkProductionsList =>
       _monthDailyMilkProductionList;
 
-  List<Map<int, double>> get yearMonthlyMilkProductionsList =>
+  Map<int, double> get yearMonthlyMilkProductionsList =>
       _yearMonthlyMilkProductionList;
-  List<Map<Cow, double>> get allCowsTotalMonthMilkProductionList =>
+  Map<Cow, double> get allCowsTotalMonthMilkProductionList =>
       _allCowsMonthMilkProductionTotalsList;
 
   List<Map<String, double>> getMonthDailyMilkProduction(DateTime monthStartDate,
@@ -45,7 +45,8 @@ class MonthlyMilkProductionController with ChangeNotifier {
     return selectedMonthMilkProductions;
   }
 
-  void getMonthDailyMilkProductions(int month, int year) async {
+  void getMonthDailyMilkProductions(
+      {required int year, required int month}) async {
     DateTime monthStartDate = DateTime(year, month, 1);
     DateTime monthEndDate = DateTime(year, month + 1, 0);
     String monthStartDateString = getStringFromDate(monthStartDate);
@@ -61,15 +62,15 @@ class MonthlyMilkProductionController with ChangeNotifier {
     Map<Cow, List<DailyMilkProduction>> dailyMilkProductionsGroupedByCow =
         groupBy(
             fetchedList, (dailyMilkProduction) => dailyMilkProduction.getCow);
-    List<Map<Cow, double>> totalMonthMilkProductionGroupedByCow =
-        dailyMilkProductionsGroupedByCow.entries
-            .map((cowMonthMilkProduction) => {
-                  cowMonthMilkProduction.key: cowMonthMilkProduction.value.fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue + element.totalMilkQuantity)
-                })
-            .toList();
+    Map<Cow, double> totalMonthMilkProductionGroupedByCow = {};
+    for (var cowMonthMilkProduction
+        in dailyMilkProductionsGroupedByCow.entries) {
+      totalMonthMilkProductionGroupedByCow[cowMonthMilkProduction.key] =
+          cowMonthMilkProduction.value.fold(
+              0.0,
+              (previousValue, element) =>
+                  previousValue + element.totalMilkQuantity);
+    }
     _allCowsMonthMilkProductionTotalsList.clear();
     _allCowsMonthMilkProductionTotalsList
         .addAll(totalMonthMilkProductionGroupedByCow);
@@ -77,20 +78,20 @@ class MonthlyMilkProductionController with ChangeNotifier {
     Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
         groupBy(fetchedList,
             (dailyMilkProduction) => dailyMilkProduction.getMilkProductionDate);
-    List<Map<String, double>> totalDailyMilkProductionList =
-        milkProductionsGroupedByDate.entries
-            .map((dateMilkProduction) => {
-                  dateMilkProduction.key: dateMilkProduction.value.fold(
-                      0.0,
-                      (previousValue, milkProduction) =>
-                          (previousValue + milkProduction.totalMilkQuantity))
-                })
-            .toList();
+    final Map<String, double> totalDailyMilkProductionList = {};
+    for (var dateMilkProduction in milkProductionsGroupedByDate.entries) {
+      totalDailyMilkProductionList[dateMilkProduction.key] =
+          dateMilkProduction.value.fold(
+              0.0,
+              (previousValue, milkProduction) =>
+                  (previousValue + milkProduction.totalMilkQuantity));
+    }
+    _monthDailyMilkProductionList.clear();
     _monthDailyMilkProductionList.addAll(totalDailyMilkProductionList);
     notifyListeners();
   }
 
-  void getYearMonthlyMilkProductions(int year) async {
+  void getYearMonthlyMilkProductions({required int year}) async {
     DateTime yearStartDate = DateTime(year, 1, 1);
     DateTime yearEndDate = DateTime(year + 1, 1, 0);
     String yearStartDateString = getStringFromDate(yearStartDate);
@@ -99,21 +100,20 @@ class MonthlyMilkProductionController with ChangeNotifier {
     List<DailyMilkProduction> fetchedList = await _dailyMilkProductionService
         .getDailyMilkProductionsListBetweenDates(yearStartDateString,
             endDate: yearEndDateString);
-
+    //group the milk productions by the month number
     Map<int, List<DailyMilkProduction>> milkProductionsGroupedByMonth = groupBy(
         fetchedList,
         (dailyMilkProduction) =>
             getDateFromString(dailyMilkProduction.getMilkProductionDate).month);
-    List<Map<int, double>> totalMonthlyMilkProductionList =
-        milkProductionsGroupedByMonth.entries
-            .map((monthMilkProduction) => {
-                  monthMilkProduction.key: monthMilkProduction.value.fold(
-                      0.0,
-                      (previousValue, milkProduction) =>
-                          (previousValue + milkProduction.totalMilkQuantity))
-                })
-            .toList();
-    _yearMonthlyMilkProductionList.addAll(totalMonthlyMilkProductionList);
+    final Map<int, double> monthsMilkProductionList = {};
+    for (var monthMilkProduction in milkProductionsGroupedByMonth.entries) {
+      monthsMilkProductionList[monthMilkProduction.key] =
+          monthMilkProduction.value.fold(
+              0.0,
+              (previousValue, milkProduction) =>
+                  (previousValue + milkProduction.totalMilkQuantity));
+    }
+    _yearMonthlyMilkProductionList.addAll(monthsMilkProductionList);
     notifyListeners();
   }
 
