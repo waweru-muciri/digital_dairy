@@ -54,7 +54,7 @@ class DailyMilkProductionChartState extends State<DailyMilkProductionChart> {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: AspectRatio(
-          aspectRatio: 1,
+          aspectRatio: 2,
           child: LayoutBuilder(
             builder: (context, constraints) {
               return LineChart(

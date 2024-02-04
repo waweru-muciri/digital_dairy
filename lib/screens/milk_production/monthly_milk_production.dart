@@ -1,8 +1,7 @@
 import 'package:DigitalDairy/controllers/monthly_milk_production_controller.dart';
-import 'package:DigitalDairy/models/daily_milk_production.dart';
+import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/screens/milk_production/month_milk_production_chart.dart';
 import 'package:DigitalDairy/screens/milk_production/year_milk_production_chart.dart';
-import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +19,7 @@ class MonthlyMilkProductionScreenState
     extends State<MonthlyMilkProductionScreen> {
   late Map<String, double> monthDailyMilkProductionList;
   late Map<int, double> yearMilkProductionList;
+  late List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow;
   final DateTime currentDate = DateTime.now();
   @override
   void initState() {
@@ -49,11 +49,15 @@ class MonthlyMilkProductionScreenState
             .length;
 
     monthDailyMilkProductionList = context
-        .read<MonthlyMilkProductionController>()
+        .watch<MonthlyMilkProductionController>()
         .monthDailyMilkProductionsList;
 
+    totalMonthMilkProductionGroupedByCow = context
+        .watch<MonthlyMilkProductionController>()
+        .allCowsTotalMonthMilkProductionList;
+
     yearMilkProductionList = context
-        .read<MonthlyMilkProductionController>()
+        .watch<MonthlyMilkProductionController>()
         .yearMonthlyMilkProductionsList;
 
     return Scaffold(
@@ -72,7 +76,7 @@ class MonthlyMilkProductionScreenState
                     children: <Widget>[
                       Text(
                         "Month Summary",
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
                       summaryTextDisplayRow("Total Am Quantity:",
                           "${context.read<MonthlyMilkProductionController>().getTotalAmMilkProductionQuantity} Kgs"),
@@ -87,25 +91,29 @@ class MonthlyMilkProductionScreenState
                     ],
                   )),
             )),
-        // PaginatedDataTable(
-        //   header: const Text("Month Milk Production List"),
-        //   rowsPerPage: 20,
-        //   availableRowsPerPage: const [10],
-        //   columns: const [
-        //     DataColumn(label: Text("Cow Name")),
-        //     DataColumn(label: Text("Am")),
-        //     DataColumn(label: Text("Noon")),
-        //     DataColumn(label: Text("Pm")),
-        //     DataColumn(label: Text("Total (Kgs)")),
-        //   ],
-        //   source: _DataSource(data: _milkProductionList, context: context)),
+        Container(
+            margin: const EdgeInsets.symmetric(vertical: 20.0),
+            child: PaginatedDataTable(
+                header: const Text("Month Milk Production List"),
+                rowsPerPage: 20,
+                availableRowsPerPage: const [10],
+                columns: const [
+                  DataColumn(label: Text("Cow Name")),
+                  DataColumn(label: Text("Am (Kgs)")),
+                  DataColumn(label: Text("Noon (Kgs)")),
+                  DataColumn(label: Text("Pm (Kgs)")),
+                  DataColumn(label: Text("Total (Kgs)")),
+                ],
+                source: _DataSource(
+                    data: totalMonthMilkProductionGroupedByCow,
+                    context: context))),
         Container(
           margin: const EdgeInsets.symmetric(vertical: 20.0),
           child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SizedBox(
-                  width: 700,
+                  width: 800,
                   height: 400,
                   child: DailyMilkProductionChart(
                       monthDailyMilkProductionList:
@@ -125,4 +133,38 @@ class MonthlyMilkProductionScreenState
       ]),
     )));
   }
+}
+
+class _DataSource extends DataTableSource {
+  List<Map<String, dynamic>> data;
+  final BuildContext context;
+
+  _DataSource({required this.data, required this.context});
+
+  @override
+  DataRow? getRow(int index) {
+    if (index >= data.length) {
+      return null;
+    }
+
+    final item = data[index];
+    final cow = item['cow'] as Cow;
+
+    return DataRow(cells: [
+      DataCell(Text(cow.getName)),
+      DataCell(Text('${item['am_quantity']}')),
+      DataCell(Text('${item['noon_quantity']}')),
+      DataCell(Text('${item['pm_quantity']}')),
+      DataCell(Text('${item['total_quantity']}')),
+    ]);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => data.length;
+
+  @override
+  int get selectedRowCount => 0;
 }

@@ -14,14 +14,14 @@ class MonthlyMilkProductionController with ChangeNotifier {
   final List<DailyMilkProduction> _monthMilkProductionList = [];
   final Map<String, double> _monthDailyMilkProductionList = {};
   final Map<int, double> _yearMonthlyMilkProductionList = {};
-  final Map<Cow, double> _allCowsMonthMilkProductionTotalsList = {};
+  final List<Map<String, dynamic>> _allCowsMonthMilkProductionTotalsList = [];
   // Allow Widgets to read the filtered dailyMilkProductions list.
   Map<String, double> get monthDailyMilkProductionsList =>
       _monthDailyMilkProductionList;
 
   Map<int, double> get yearMonthlyMilkProductionsList =>
       _yearMonthlyMilkProductionList;
-  Map<Cow, double> get allCowsTotalMonthMilkProductionList =>
+  List<Map<String, dynamic>> get allCowsTotalMonthMilkProductionList =>
       _allCowsMonthMilkProductionTotalsList;
 
   List<Map<String, double>> getMonthDailyMilkProduction(DateTime monthStartDate,
@@ -58,22 +58,29 @@ class MonthlyMilkProductionController with ChangeNotifier {
     //add all the fetched milk productions to the local list for computations later
     _monthMilkProductionList.clear();
     _monthMilkProductionList.addAll(fetchedList);
+
     //group milk productions by cow id
-    Map<Cow, List<DailyMilkProduction>> dailyMilkProductionsGroupedByCow =
-        groupBy(
-            fetchedList, (dailyMilkProduction) => dailyMilkProduction.getCow);
-    Map<Cow, double> totalMonthMilkProductionGroupedByCow = {};
-    for (var cowMonthMilkProduction
-        in dailyMilkProductionsGroupedByCow.entries) {
-      totalMonthMilkProductionGroupedByCow[cowMonthMilkProduction.key] =
-          cowMonthMilkProduction.value.fold(
-              0.0,
-              (previousValue, element) =>
-                  previousValue + element.totalMilkQuantity);
-    }
+    List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow =
+        fetchedList
+            .groupFoldBy<Cow, Map<String, double>>(
+                (element) => element.getCow,
+                (previousValue, element) => {
+                      'am_quantity': previousValue?['am_quantity'] ??
+                          0 + element.getAmQuantity,
+                      'noon_quantity': previousValue?['noon_quantity'] ??
+                          0 + element.getNoonQuantity,
+                      'pm_quantity': previousValue?['pm_quantity'] ??
+                          0 + element.getPmQuantity,
+                      'total_quantity': previousValue?['total_quantity'] ??
+                          0 + element.totalMilkQuantity,
+                    })
+            .entries
+            .map((e) => {...e.value, 'cow': e.key})
+            .toList();
     _allCowsMonthMilkProductionTotalsList.clear();
     _allCowsMonthMilkProductionTotalsList
         .addAll(totalMonthMilkProductionGroupedByCow);
+
     //group the milk productions for the month by each date of the month
     Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
         groupBy(fetchedList,
