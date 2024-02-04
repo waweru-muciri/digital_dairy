@@ -22,7 +22,7 @@ enum MonthsOfTheYear {
 DateTime getDateFromString(String dateString) {
   late final DateTime date;
   try {
-    date = DateFormat("dd/MM/yyyy").parse(dateString);
+    date = DateFormat("yyyy/MM/dd").parse(dateString);
   } catch (e) {
     date = DateTime.now();
   }
@@ -30,14 +30,14 @@ DateTime getDateFromString(String dateString) {
 }
 
 String getTodaysDateAsString() {
-  return DateFormat("dd/MM/yyyy").format(DateTime.now());
+  return DateFormat("yyyy/MM/dd").format(DateTime.now());
 }
 
 String getStringFromDate(DateTime? date) {
   final dateToFormat = date ?? DateTime.now();
   late final String dateString;
   try {
-    dateString = DateFormat("dd/MM/yyyy").format(dateToFormat);
+    dateString = DateFormat("yyyy/MM/dd").format(dateToFormat);
   } catch (e) {
     dateString = "";
   }

@@ -45,7 +45,18 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
   Widget build(BuildContext context) {
     _milkProductionList =
         context.watch<DailyMilkProductionController>().dailyMilkProductionsList;
-
+    double dailyTotalAmMilkProduction = context
+        .read<DailyMilkProductionController>()
+        .getTotalAmMilkProductionQuantity;
+    double dailyTotalNoonMilkProduction = context
+        .read<DailyMilkProductionController>()
+        .getTotalNoonMilkProductionQuantity;
+    double dailyTotalPmMilkProduction = context
+        .read<DailyMilkProductionController>()
+        .getTotalPmMilkProductionQuantity;
+    double dailyTotalMilkProduction = dailyTotalAmMilkProduction +
+        dailyTotalNoonMilkProduction +
+        dailyTotalPmMilkProduction;
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
@@ -96,13 +107,13 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         summaryTextDisplayRow("Total Am Quantity:",
-                            "${context.read<DailyMilkProductionController>().getTotalAmMilkProductionQuantity} Kgs"),
+                            "${dailyTotalAmMilkProduction.toStringAsFixed(2)} Kgs"),
                         summaryTextDisplayRow("Total Noon Quantity:",
-                            "${context.read<DailyMilkProductionController>().getTotalNoonMilkProductionQuantity} Kgs"),
+                            "${dailyTotalNoonMilkProduction.toStringAsFixed(2)} Kgs"),
                         summaryTextDisplayRow("Total Pm Quantity:",
-                            "${context.read<DailyMilkProductionController>().getTotalPmMilkProductionQuantity} Kgs"),
+                            "${dailyTotalPmMilkProduction.toStringAsFixed(2)} Kgs"),
                         summaryTextDisplayRow("Total Quantity:",
-                            "${context.read<DailyMilkProductionController>().getTotalMilkProductionQuantity} Kgs"),
+                            "${dailyTotalMilkProduction.toStringAsFixed(2)} Kgs"),
                       ],
                     )),
               )),

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +22,7 @@ class DailyMilkProductionChartState extends State<DailyMilkProductionChart> {
             FlSpot(index.toDouble(), dailyMilkProduction.value))
         .toList();
     daysOfMonth = widget.monthDailyMilkProductionList.keys
-        .map((e) => e.substring(0, 2))
+        .map((e) => e.split('/').lastOrNull ?? '')
         .toList();
     super.initState();
   }
@@ -51,10 +50,13 @@ class DailyMilkProductionChartState extends State<DailyMilkProductionChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+    debugPrint(
+        "Length of days => ${widget.monthDailyMilkProductionList.length}");
+    return SizedBox(
+        width: 800,
+        height: 500,
         child: AspectRatio(
-          aspectRatio: 2,
+          aspectRatio: 1.6,
           child: LayoutBuilder(
             builder: (context, constraints) {
               return LineChart(
@@ -114,11 +116,11 @@ class DailyMilkProductionChartState extends State<DailyMilkProductionChart> {
                       axisNameSize: 20,
                       axisNameWidget: const Text("Days of the Month"),
                       sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) => bottomTitleWidgets(
-                            value, meta, constraints.maxWidth),
-                        interval: 1,
-                      ),
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) => bottomTitleWidgets(
+                              value, meta, constraints.maxWidth),
+                          interval: 1,
+                          reservedSize: 32),
                       drawBelowEverything: true,
                     ),
                     topTitles: const AxisTitles(

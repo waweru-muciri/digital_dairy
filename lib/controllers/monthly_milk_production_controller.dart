@@ -24,27 +24,6 @@ class MonthlyMilkProductionController with ChangeNotifier {
   List<Map<String, dynamic>> get allCowsTotalMonthMilkProductionList =>
       _allCowsMonthMilkProductionTotalsList;
 
-  List<Map<String, double>> getMonthDailyMilkProduction(DateTime monthStartDate,
-      DateTime monthEndDate, List<DailyMilkProduction> milkProductionList) {
-    List<Map<String, double>> selectedMonthMilkProductions = [];
-    for (var date = monthStartDate;
-        date.compareTo(monthEndDate) <= 0;
-        date.add(const Duration(days: 1))) {
-      String dateString = getStringFromDate(date);
-      double totalMonthMilkProduction = milkProductionList
-          .where((milkProduction) =>
-              milkProduction.getMilkProductionDate == dateString)
-          .fold(
-              0.0,
-              (previousValue, milkProduction) =>
-                  previousValue + milkProduction.totalMilkQuantity);
-
-      selectedMonthMilkProductions
-          .add(<String, double>{dateString: totalMonthMilkProduction});
-    }
-    return selectedMonthMilkProductions;
-  }
-
   void getMonthDailyMilkProductions(
       {required int year, required int month}) async {
     DateTime monthStartDate = DateTime(year, month, 1);
@@ -60,10 +39,11 @@ class MonthlyMilkProductionController with ChangeNotifier {
     _monthMilkProductionList.addAll(fetchedList);
 
     //group milk productions by cow id
+    final cowsWithMilkData = fetchedList.map((e) => e.getCow).toSet();
     List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow =
         fetchedList
-            .groupFoldBy<Cow, Map<String, double>>(
-                (element) => element.getCow,
+            .groupFoldBy<String?, Map<String, double>>(
+                (element) => element.getCow.getId,
                 (previousValue, element) => {
                       'am_quantity': previousValue?['am_quantity'] ??
                           0 + element.getAmQuantity,
@@ -75,7 +55,11 @@ class MonthlyMilkProductionController with ChangeNotifier {
                           0 + element.totalMilkQuantity,
                     })
             .entries
-            .map((e) => {...e.value, 'cow': e.key})
+            .map((e) => {
+                  ...e.value,
+                  'cow': cowsWithMilkData
+                      .firstWhere((element) => element.getId == e.key)
+                })
             .toList();
     _allCowsMonthMilkProductionTotalsList.clear();
     _allCowsMonthMilkProductionTotalsList
@@ -124,11 +108,6 @@ class MonthlyMilkProductionController with ChangeNotifier {
     notifyListeners();
   }
 
-  double get getTotalMilkProductionQuantity =>
-      getTotalAmMilkProductionQuantity +
-      getTotalNoonMilkProductionQuantity +
-      getTotalPmMilkProductionQuantity;
-
   double get getTotalAmMilkProductionQuantity => _monthMilkProductionList.fold(
       0,
       (previousValue, dailyMilkProduction) =>
@@ -138,7 +117,6 @@ class MonthlyMilkProductionController with ChangeNotifier {
       _monthMilkProductionList.fold(
           0,
           (previousValue, dailyMilkProduction) =>
-              previousValue +
               (previousValue + dailyMilkProduction.getNoonQuantity));
 
   double get getTotalPmMilkProductionQuantity => _monthMilkProductionList.fold(

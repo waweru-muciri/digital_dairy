@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class FilterByDatesOrMonthDialog extends StatefulWidget {
   const FilterByDatesOrMonthDialog({super.key, required this.filterFunction});
-  final void Function(String startDate, {String endDate}) filterFunction;
+  final void Function({required int year, required int month}) filterFunction;
 
   @override
   State<StatefulWidget> createState() => ScreenState();
@@ -93,13 +93,7 @@ class ScreenState extends State<FilterByDatesOrMonthDialog> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 int year = int.tryParse(yearController.text) ?? _defaultYear;
-                DateTime startDateOfMonth = DateTime(year, _selectedMonth, 1);
-                DateTime endDateOfMonth = DateTime(year, _selectedMonth + 1, 0);
-                String startDateOfMonthString =
-                    getStringFromDate(startDateOfMonth);
-                String endDateOfMonthString = getStringFromDate(endDateOfMonth);
-                widget.filterFunction(startDateOfMonthString,
-                    endDate: endDateOfMonthString);
+                widget.filterFunction(year: year, month: _selectedMonth);
                 Navigator.pop(context);
               }
             }),

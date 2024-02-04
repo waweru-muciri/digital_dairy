@@ -2,17 +2,11 @@ import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
-class YearMilkProductionChart extends StatefulWidget {
-  const YearMilkProductionChart(
-      {super.key, required this.yearMilkProductionList});
+class YearMilkProductionChart extends StatelessWidget {
+  YearMilkProductionChart({super.key, required this.yearMilkProductionList});
   final Map<int, double> yearMilkProductionList;
-
-  @override
-  State<StatefulWidget> createState() => YearMilkProductionChartState();
-}
-
-class YearMilkProductionChartState extends State<YearMilkProductionChart> {
   final List<String> monthsOfYear = MonthsOfTheYear.values
       .map((monthOfYear) => monthOfYear.monthName)
       .toList();
@@ -22,10 +16,12 @@ class YearMilkProductionChartState extends State<YearMilkProductionChart> {
       fontSize: 12,
     );
     return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child:
-          Text(monthsOfYear.elementAtOrNull(value.toInt()) ?? '', style: style),
-    );
+        axisSide: meta.axisSide,
+        child: Transform.rotate(
+          angle: -math.pi / 4,
+          child: Text(monthsOfYear.elementAtOrNull(value.toInt()) ?? '',
+              style: style),
+        ));
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta, double chartWidth) {
@@ -47,7 +43,7 @@ class YearMilkProductionChartState extends State<YearMilkProductionChart> {
         end: Alignment.topCenter,
       );
 
-  List<BarChartGroupData> get barGroups => widget.yearMilkProductionList.entries
+  List<BarChartGroupData> get barGroups => yearMilkProductionList.entries
       .mapIndexed(
         (index, monthMilkProduction) => BarChartGroupData(
           x: index,
@@ -57,15 +53,16 @@ class YearMilkProductionChartState extends State<YearMilkProductionChart> {
               gradient: _barsGradient,
             )
           ],
-          showingTooltipIndicators: [index],
+          showingTooltipIndicators: [0],
         ),
       )
       .toList();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+    return SizedBox(
+        width: 500,
+        height: 500,
         child: AspectRatio(
           aspectRatio: 1,
           child: LayoutBuilder(
@@ -104,7 +101,7 @@ class YearMilkProductionChartState extends State<YearMilkProductionChart> {
                         showTitles: true,
                         getTitlesWidget: (value, meta) =>
                             leftTitleWidgets(value, meta, constraints.maxWidth),
-                        reservedSize: 56,
+                        reservedSize: 50,
                       ),
                       drawBelowEverything: true,
                     ),
@@ -118,7 +115,7 @@ class YearMilkProductionChartState extends State<YearMilkProductionChart> {
                         showTitles: true,
                         getTitlesWidget: (value, meta) => bottomTitleWidgets(
                             value, meta, constraints.maxWidth),
-                        interval: 1,
+                        reservedSize: 50,
                       ),
                       drawBelowEverything: true,
                     ),

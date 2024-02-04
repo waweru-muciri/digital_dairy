@@ -48,11 +48,6 @@ class DailyMilkProductionController with ChangeNotifier {
     notifyListeners();
   }
 
-  double get getTotalMilkProductionQuantity =>
-      getTotalAmMilkProductionQuantity +
-      getTotalNoonMilkProductionQuantity +
-      getTotalPmMilkProductionQuantity;
-
   double get getTotalAmMilkProductionQuantity =>
       _filteredDailyMilkProductionList.fold(
           0,
@@ -63,7 +58,6 @@ class DailyMilkProductionController with ChangeNotifier {
       _filteredDailyMilkProductionList.fold(
           0,
           (previousValue, dailyMilkProduction) =>
-              previousValue +
               (previousValue + dailyMilkProduction.getNoonQuantity));
 
   double get getTotalPmMilkProductionQuantity =>
