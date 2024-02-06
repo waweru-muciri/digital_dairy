@@ -19,6 +19,9 @@ enum MonthsOfTheYear {
   final int monthNumber;
 }
 
+final List<String> namesOfMonthsInYearList =
+    MonthsOfTheYear.values.map((monthOfYear) => monthOfYear.monthName).toList();
+
 DateTime getDateFromString(String dateString) {
   late final DateTime date;
   try {

@@ -3,8 +3,10 @@ import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 class FilterByDatesOrMonthDialog extends StatefulWidget {
-  const FilterByDatesOrMonthDialog({super.key, required this.filterFunction});
-  final void Function({required int year, required int month}) filterFunction;
+  FilterByDatesOrMonthDialog({super.key, this.initialYear, this.initialMonth});
+
+  int? initialYear;
+  int? initialMonth;
 
   @override
   State<StatefulWidget> createState() => ScreenState();
@@ -13,15 +15,18 @@ class FilterByDatesOrMonthDialog extends StatefulWidget {
 class ScreenState extends State<FilterByDatesOrMonthDialog> {
   late final TextEditingController yearController;
 
-  int _selectedMonth = DateTime.now().month;
-  final int _defaultYear = DateTime.now().year;
+  late int _selectedMonth;
+  late int _defaultYear;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    yearController = TextEditingController(text: '$_defaultYear');
     super.initState();
+    _defaultYear = widget.initialYear ?? DateTime.now().year;
+    _selectedMonth = widget.initialMonth ?? DateTime.now().month;
+    yearController =
+        TextEditingController(text: '${widget.initialYear ?? _defaultYear}');
   }
 
   @override
@@ -69,7 +74,7 @@ class ScreenState extends State<FilterByDatesOrMonthDialog> {
                           .toList(),
                       onChanged: (int? monthNumber) {
                         setState(() {
-                          _selectedMonth = monthNumber ?? 0;
+                          _selectedMonth = monthNumber ?? 1;
                         });
                       },
                       validator: (int? monthNumber) {
@@ -83,18 +88,13 @@ class ScreenState extends State<FilterByDatesOrMonthDialog> {
             )
           ])),
       actions: <Widget>[
-        CancelButton(
-            text: 'Reset',
-            onPressed: () {
-              _selectedMonth = DateTime.now().month;
-            }),
+        CancelButton(text: 'Cancel', onPressed: () => Navigator.pop(context)),
         SaveButton(
             text: 'Apply Filters',
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 int year = int.tryParse(yearController.text) ?? _defaultYear;
-                widget.filterFunction(year: year, month: _selectedMonth);
-                Navigator.pop(context);
+                Navigator.pop(context, {"year": year, "month": _selectedMonth});
               }
             }),
       ],

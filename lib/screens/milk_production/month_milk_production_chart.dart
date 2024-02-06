@@ -1,31 +1,15 @@
+import 'package:DigitalDairy/controllers/monthly_milk_production_controller.dart';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class DailyMilkProductionChart extends StatefulWidget {
-  const DailyMilkProductionChart(
-      {super.key, required this.monthDailyMilkProductionList});
-  final Map<String, double> monthDailyMilkProductionList;
+class DailyMilkProductionChart extends StatelessWidget {
+  DailyMilkProductionChart({super.key});
 
-  @override
-  State<StatefulWidget> createState() => DailyMilkProductionChartState();
-}
-
-class DailyMilkProductionChartState extends State<DailyMilkProductionChart> {
   late List<String> daysOfMonth;
   late List<FlSpot> spots;
-
-  @override
-  void initState() {
-    spots = widget.monthDailyMilkProductionList.entries
-        .mapIndexed((index, dailyMilkProduction) =>
-            FlSpot(index.toDouble(), dailyMilkProduction.value))
-        .toList();
-    daysOfMonth = widget.monthDailyMilkProductionList.keys
-        .map((e) => e.split('/').lastOrNull ?? '')
-        .toList();
-    super.initState();
-  }
+  late Map<String, double> monthDailyMilkProductionList;
 
   Widget bottomTitleWidgets(double value, TitleMeta meta, double chartWidth) {
     const style = TextStyle(
@@ -50,8 +34,16 @@ class DailyMilkProductionChartState extends State<DailyMilkProductionChart> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(
-        "Length of days => ${widget.monthDailyMilkProductionList.length}");
+    monthDailyMilkProductionList = context
+        .watch<MonthlyMilkProductionController>()
+        .monthDailyMilkProductionsList;
+    spots = monthDailyMilkProductionList.entries
+        .mapIndexed((index, dailyMilkProduction) =>
+            FlSpot(index.toDouble(), dailyMilkProduction.value))
+        .toList();
+    daysOfMonth = monthDailyMilkProductionList.keys
+        .map((e) => e.split('/').lastOrNull ?? '')
+        .toList();
     return SizedBox(
         width: 800,
         height: 500,

@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class YearMilkProductionChart extends StatelessWidget {
-  YearMilkProductionChart({super.key, required this.yearMilkProductionList});
+  const YearMilkProductionChart(
+      {super.key, required this.yearMilkProductionList});
   final Map<int, double> yearMilkProductionList;
-  final List<String> monthsOfYear = MonthsOfTheYear.values
-      .map((monthOfYear) => monthOfYear.monthName)
-      .toList();
 
   Widget bottomTitleWidgets(double value, TitleMeta meta, double chartWidth) {
     const style = TextStyle(
@@ -19,7 +17,8 @@ class YearMilkProductionChart extends StatelessWidget {
         axisSide: meta.axisSide,
         child: Transform.rotate(
           angle: -math.pi / 4,
-          child: Text(monthsOfYear.elementAtOrNull(value.toInt()) ?? '',
+          child: Text(
+              namesOfMonthsInYearList.elementAtOrNull(value.toInt()) ?? '',
               style: style),
         ));
   }

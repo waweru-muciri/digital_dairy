@@ -1,4 +1,3 @@
-import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +23,24 @@ class MonthlyMilkProductionController with ChangeNotifier {
   List<Map<String, dynamic>> get allCowsTotalMonthMilkProductionList =>
       _allCowsMonthMilkProductionTotalsList;
 
+  void groupMonthMilkProductionsByDate(List<DailyMilkProduction> fetchedList) {
+    //group the milk productions for the month by each date of the month
+    Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
+        groupBy(fetchedList,
+            (dailyMilkProduction) => dailyMilkProduction.getMilkProductionDate);
+    final Map<String, double> totalDailyMilkProductionList = {};
+    for (var dateMilkProduction in milkProductionsGroupedByDate.entries) {
+      totalDailyMilkProductionList[dateMilkProduction.key] =
+          dateMilkProduction.value.fold(
+              0.0,
+              (previousValue, milkProduction) =>
+                  (previousValue + milkProduction.totalMilkQuantity));
+    }
+    _monthDailyMilkProductionList.clear();
+    _monthDailyMilkProductionList.addAll(totalDailyMilkProductionList);
+    notifyListeners();
+  }
+
   void getMonthDailyMilkProductions(
       {required int year, required int month}) async {
     DateTime monthStartDate = DateTime(year, month, 1);
@@ -40,46 +57,44 @@ class MonthlyMilkProductionController with ChangeNotifier {
 
     //group milk productions by cow id
     final cowsWithMilkData = fetchedList.map((e) => e.getCow).toSet();
-    List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow =
-        fetchedList
-            .groupFoldBy<String?, Map<String, double>>(
-                (element) => element.getCow.getId,
-                (previousValue, element) => {
-                      'am_quantity': previousValue?['am_quantity'] ??
-                          0 + element.getAmQuantity,
-                      'noon_quantity': previousValue?['noon_quantity'] ??
-                          0 + element.getNoonQuantity,
-                      'pm_quantity': previousValue?['pm_quantity'] ??
-                          0 + element.getPmQuantity,
-                      'total_quantity': previousValue?['total_quantity'] ??
-                          0 + element.totalMilkQuantity,
-                    })
-            .entries
-            .map((e) => {
-                  ...e.value,
-                  'cow': cowsWithMilkData
-                      .firstWhere((element) => element.getId == e.key)
-                })
-            .toList();
+    List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow = groupBy(
+            fetchedList,
+            (dailyMilkProduction) => dailyMilkProduction.getCow.getId)
+        .entries
+        .map((e) => {
+              'cow': cowsWithMilkData
+                  .firstWhereOrNull((element) => element.getId == e.key),
+              'am_quantity': e.value
+                  .fold(
+                      0.0,
+                      (previousValue, element) =>
+                          previousValue + element.getAmQuantity)
+                  .toStringAsFixed(2),
+              'noon_quantity': e.value
+                  .fold(
+                      0.0,
+                      (previousValue, element) =>
+                          previousValue + element.getNoonQuantity)
+                  .toStringAsFixed(2),
+              'pm_quantity': e.value
+                  .fold(
+                      0.0,
+                      (previousValue, element) =>
+                          previousValue + element.getPmQuantity)
+                  .toStringAsFixed(2),
+              'total_quantity': e.value
+                  .fold(
+                      0.0,
+                      (previousValue, element) =>
+                          previousValue + element.totalMilkQuantity)
+                  .toStringAsFixed(2),
+            })
+        .toList();
     _allCowsMonthMilkProductionTotalsList.clear();
     _allCowsMonthMilkProductionTotalsList
         .addAll(totalMonthMilkProductionGroupedByCow);
-
-    //group the milk productions for the month by each date of the month
-    Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
-        groupBy(fetchedList,
-            (dailyMilkProduction) => dailyMilkProduction.getMilkProductionDate);
-    final Map<String, double> totalDailyMilkProductionList = {};
-    for (var dateMilkProduction in milkProductionsGroupedByDate.entries) {
-      totalDailyMilkProductionList[dateMilkProduction.key] =
-          dateMilkProduction.value.fold(
-              0.0,
-              (previousValue, milkProduction) =>
-                  (previousValue + milkProduction.totalMilkQuantity));
-    }
-    _monthDailyMilkProductionList.clear();
-    _monthDailyMilkProductionList.addAll(totalDailyMilkProductionList);
     notifyListeners();
+    groupMonthMilkProductionsByDate(fetchedList);
   }
 
   void getYearMonthlyMilkProductions({required int year}) async {

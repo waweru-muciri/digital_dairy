@@ -17,6 +17,7 @@ class BreedingManagementTabView extends StatelessWidget {
         drawer: const MyDrawer(),
         appBar: AppBar(
           bottom: const TabBar(
+            isScrollable: true,
             tabs: [
               Tab(
                 text: "Semen Catalog",

@@ -2,6 +2,7 @@ import 'package:DigitalDairy/controllers/monthly_milk_production_controller.dart
 import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/screens/milk_production/month_milk_production_chart.dart';
 import 'package:DigitalDairy/screens/milk_production/year_milk_production_chart.dart';
+import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/month_filter_dialog.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -20,18 +21,18 @@ class MonthlyMilkProductionScreenState
     extends State<MonthlyMilkProductionScreen> {
   late Map<int, double> yearMilkProductionList;
   late List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow;
-  final DateTime currentDate = DateTime.now();
+  late int filterMonth = DateTime.now().month;
+  late int filterYear = DateTime.now().year;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() => context
         .read<MonthlyMilkProductionController>()
-        .getMonthDailyMilkProductions(
-            year: currentDate.year, month: currentDate.month));
+        .getMonthDailyMilkProductions(year: filterYear, month: filterMonth));
     Future.microtask(() => context
         .read<MonthlyMilkProductionController>()
-        .getYearMonthlyMilkProductions(year: currentDate.year));
+        .getYearMonthlyMilkProductions(year: filterYear));
   }
 
   @override
@@ -83,16 +84,32 @@ class MonthlyMilkProductionScreenState
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         InkWell(
-                          onTap: () => showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return FilterByDatesOrMonthDialog(
-                                    filterFunction: context
-                                        .read<MonthlyMilkProductionController>()
-                                        .getMonthDailyMilkProductions);
-                              }),
+                          onTap: () async {
+                            await showDialog<Map<String, int>>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return FilterByDatesOrMonthDialog(
+                                    initialYear: filterYear,
+                                    initialMonth: filterMonth,
+                                  );
+                                }).then((value) {
+                              if (value != null) {
+                                int selectedFilterYear = value['year'] ?? 0;
+                                int selectedFilterMonth = value['month'] ?? 0;
+                                setState(() {
+                                  filterYear = selectedFilterYear;
+                                  filterMonth = selectedFilterMonth;
+                                });
+                                context
+                                    .read<MonthlyMilkProductionController>()
+                                    .getMonthDailyMilkProductions(
+                                        year: selectedFilterYear,
+                                        month: selectedFilterMonth);
+                              }
+                            });
+                          },
                           child: Text(
-                            "January",
+                            "${namesOfMonthsInYearList.elementAt(filterMonth - 1)} - $filterYear",
                             textAlign: TextAlign.end,
                           ),
                         ),
@@ -106,9 +123,12 @@ class MonthlyMilkProductionScreenState
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text(
-                          "Month Summary",
-                          style: Theme.of(context).textTheme.titleLarge,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            "Month Summary",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
                         ),
                         summaryTextDisplayRow("Total Am Quantity:",
                             "${monthTotalAmMilkProduction.toStringAsFixed(2)} Kgs"),
@@ -128,6 +148,7 @@ class MonthlyMilkProductionScreenState
                       child: PaginatedDataTable(
                           header: Text(
                             "Month Milk Production List",
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           rowsPerPage: 10,
@@ -156,11 +177,7 @@ class MonthlyMilkProductionScreenState
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Container(
                                   margin: const EdgeInsets.only(top: 50),
-                                  child: DailyMilkProductionChart(
-                                      monthDailyMilkProductionList: context
-                                          .watch<
-                                              MonthlyMilkProductionController>()
-                                          .monthDailyMilkProductionsList))),
+                                  child: DailyMilkProductionChart())),
                         ],
                       )),
                   Container(
