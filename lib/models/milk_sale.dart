@@ -23,6 +23,7 @@ class MilkSale {
   set setClient(Client client) {
     _client = client;
     _clientId = client.getId;
+    _milkSaleUnitPrice = client.getUnitPrice;
   }
 
   set setMilkSaleQuantity(double milkSaleQuantity) {

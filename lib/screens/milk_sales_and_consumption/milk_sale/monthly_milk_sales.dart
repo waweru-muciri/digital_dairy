@@ -8,8 +8,8 @@ import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MonthlyMilkSaleScreen extends StatefulWidget {
-  const MonthlyMilkSaleScreen({super.key});
+class MonthlyMilkSalesScreen extends StatefulWidget {
+  const MonthlyMilkSalesScreen({super.key});
 
   static const routePath = '/monthly_milk_sales';
 
@@ -17,7 +17,7 @@ class MonthlyMilkSaleScreen extends StatefulWidget {
   State<StatefulWidget> createState() => MonthlyMilkSaleScreenState();
 }
 
-class MonthlyMilkSaleScreenState extends State<MonthlyMilkSaleScreen> {
+class MonthlyMilkSaleScreenState extends State<MonthlyMilkSalesScreen> {
   late List<Map<String, dynamic>> eachMonthMilkSalesGroupedByClient;
   late int filterMonth = DateTime.now().month;
   late int filterYear = DateTime.now().year;
@@ -202,12 +202,11 @@ class _DataSource extends DataTableSource {
     }
 
     final item = data[index];
-    final cow = item['cow'] as Client;
+    final cow = item['client'] as Client;
 
     return DataRow(cells: [
       DataCell(Text(cow.clientName)),
       DataCell(Text('${item['milk_quantity']}')),
-      DataCell(Text('${item['noon_quantity']}')),
       DataCell(Text('${item['money_amount']}')),
     ]);
   }

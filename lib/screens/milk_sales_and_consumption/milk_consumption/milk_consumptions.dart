@@ -50,38 +50,29 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: Card(
-              child: Container(
-                  margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                child: FilterInputField(
-                                    onQueryChanged: context
-                                        .read<MilkConsumptionController>()
-                                        .filterMilkConsumptionBySearchTerm)),
-                          ),
-                          Expanded(
-                              flex: 1,
-                              child: getFilterIconButton(onPressed: () {
-                                showDatesFilterBottomSheet(
-                                    context,
-                                    _fromDateFilterController,
-                                    _toDateFilterController,
-                                    context
-                                        .read<MilkConsumptionController>()
-                                        .filterMilkConsumptionsByDate);
-                              })),
-                        ],
-                      )))),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                  flex: 4,
+                  child: FilterInputField(
+                      onQueryChanged: context
+                          .read<MilkConsumptionController>()
+                          .filterMilkConsumptionBySearchTerm)),
+              Expanded(
+                  flex: 1,
+                  child: getFilterIconButton(onPressed: () {
+                    showDatesFilterBottomSheet(
+                        context,
+                        _fromDateFilterController,
+                        _toDateFilterController,
+                        context
+                            .read<MilkConsumptionController>()
+                            .filterMilkConsumptionsByDate);
+                  })),
+            ],
+          ),
         ),
         Container(
             margin: const EdgeInsets.only(bottom: 10),

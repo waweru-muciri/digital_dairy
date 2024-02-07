@@ -166,7 +166,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           showLoadingDialog(context);
                           double milkSaleQuantity = double.parse(
                               _milkSaleAmountController.text.trim());
-                          final newMilkSale = MilkSale();
+                          MilkSale newMilkSale = MilkSale();
                           newMilkSale.setMilkSaleQuantity = milkSaleQuantity;
                           newMilkSale.setMilkSaleDate =
                               _milkSaleDateController.text;

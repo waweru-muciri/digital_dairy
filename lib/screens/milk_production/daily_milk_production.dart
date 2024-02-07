@@ -24,10 +24,14 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
       TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
       TextEditingController(text: getTodaysDateAsString());
+  int _sortColumnIndex = 0;
+  bool _sortColumnAscending = true;
+  late _DataSource _dataTableSource;
 
   @override
   void initState() {
     super.initState();
+    _dataTableSource = _DataSource(context: context);
     Future.microtask(() => context
         .read<DailyMilkProductionController>()
         .filterDailyMilkProductionsByDates(getTodaysDateAsString()));
@@ -41,10 +45,22 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
     _cowNameSearchFilterController.dispose();
   }
 
+  void _sort(int columnIndex, bool ascending) {
+    setState(() {
+      _sortColumnIndex = columnIndex;
+      _sortColumnAscending = ascending;
+      _dataTableSource.setData(
+          _milkProductionList, _sortColumnIndex, _sortColumnAscending);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _milkProductionList =
         context.watch<DailyMilkProductionController>().dailyMilkProductionsList;
+
+    _dataTableSource.setData(
+        _milkProductionList, _sortColumnIndex, _sortColumnAscending);
     double dailyTotalAmMilkProduction = context
         .read<DailyMilkProductionController>()
         .getTotalAmMilkProductionQuantity;
@@ -64,38 +80,32 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
         child: Column(mainAxisSize: MainAxisSize.max, children: [
           Container(
             margin: const EdgeInsets.only(bottom: 8),
-            child: Card(
-                child: Container(
-                    margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                    child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                  child: FilterInputField(
-                                      onQueryChanged: context
-                                          .read<DailyMilkProductionController>()
-                                          .filterDailyMilkProductionsByCowName)),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: getFilterIconButton(onPressed: () {
-                                showDatesFilterBottomSheet(
-                                    context,
-                                    _fromDateFilterController,
-                                    _toDateFilterController,
-                                    context
-                                        .read<DailyMilkProductionController>()
-                                        .filterDailyMilkProductionsByDates);
-                              }),
-                            )
-                          ],
-                        )))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: FilterInputField(
+                          onQueryChanged: context
+                              .read<DailyMilkProductionController>()
+                              .filterDailyMilkProductionsByCowName)),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: getFilterIconButton(onPressed: () {
+                    showDatesFilterBottomSheet(
+                        context,
+                        _fromDateFilterController,
+                        _toDateFilterController,
+                        context
+                            .read<DailyMilkProductionController>()
+                            .filterDailyMilkProductionsByDates);
+                  }),
+                )
+              ],
+            ),
           ),
           Container(
               margin: const EdgeInsets.only(bottom: 10),
@@ -129,17 +139,23 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                   label: const Text("Add"),
                 ),
               ],
-              columns: const [
-                DataColumn(label: Text("Date")),
-                DataColumn(label: Text("Cow Name")),
-                DataColumn(label: Text("Am")),
-                DataColumn(label: Text("Noon")),
-                DataColumn(label: Text("Pm")),
-                DataColumn(label: Text("Total (Kgs)")),
-                DataColumn(label: Text("Edit")),
-                DataColumn(label: Text("Delete")),
+              columns: [
+                const DataColumn(label: Text("Date")),
+                const DataColumn(label: Text("Cow Name")),
+                DataColumn(
+                    label: const Text("Am"), numeric: true, onSort: _sort),
+                DataColumn(
+                    label: const Text("Noon"), numeric: true, onSort: _sort),
+                DataColumn(
+                    label: const Text("Pm"), numeric: true, onSort: _sort),
+                DataColumn(
+                    label: const Text("Total (Kgs)"),
+                    numeric: true,
+                    onSort: _sort),
+                const DataColumn(label: Text("Edit")),
+                const DataColumn(label: Text("Delete")),
               ],
-              source: _DataSource(data: _milkProductionList, context: context))
+              source: _dataTableSource)
         ]),
       ),
     ));
@@ -147,17 +163,49 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
 }
 
 class _DataSource extends DataTableSource {
-  final List<DailyMilkProduction> data;
   final BuildContext context;
+  _DataSource({required this.context});
 
-  _DataSource({required this.data, required this.context});
+  late List<DailyMilkProduction> sortedData = [];
+
+  void setData(
+      List<DailyMilkProduction> rawData, int sortColumn, bool sortAscending) {
+    sortedData = rawData
+      ..sort((DailyMilkProduction a, DailyMilkProduction b) {
+        late final Comparable<Object> cellA;
+        late final Comparable<Object> cellB;
+        switch (sortColumn) {
+          case 0:
+            cellA = a.getMilkProductionDate;
+            cellB = b.getMilkProductionDate;
+            break;
+          case 2:
+            cellA = a.getAmQuantity;
+            cellB = b.getAmQuantity;
+          case 3:
+            cellA = a.getNoonQuantity;
+            cellB = b.getNoonQuantity;
+          case 4:
+            cellA = a.getPmQuantity;
+            cellB = b.getPmQuantity;
+          case 5:
+            cellA = a.totalMilkQuantity;
+            cellB = b.totalMilkQuantity;
+            break;
+          default:
+        }
+        return cellA.compareTo(cellB) * (sortAscending ? 1 : -1);
+      });
+    notifyListeners();
+  }
+
   @override
   DataRow? getRow(int index) {
-    if (index >= data.length) {
+    if (index >= sortedData.length) {
       return null;
     }
 
-    final item = data[index];
+    final item = sortedData[index];
 
     return DataRow(cells: [
       DataCell(Text(item.getMilkProductionDate)),
@@ -185,7 +233,7 @@ class _DataSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => data.length;
+  int get rowCount => sortedData.length;
 
   @override
   int get selectedRowCount => 0;

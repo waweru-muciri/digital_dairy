@@ -15,7 +15,7 @@ class MilkProductionTabView extends StatelessWidget {
         drawer: const MyDrawer(),
         appBar: AppBar(
           bottom: const TabBar(
-            isScrollable: true,
+            isScrollable: false,
             tabs: [
               Tab(
                 text: "Daily Milk Production",

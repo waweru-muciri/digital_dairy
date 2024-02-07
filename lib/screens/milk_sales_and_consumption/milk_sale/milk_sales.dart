@@ -1,6 +1,5 @@
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
-import 'package:DigitalDairy/widgets/month_filter_dialog.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -63,41 +62,30 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: Card(
-              child: Container(
-                  margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                child: FilterInputField(
-                                    onQueryChanged: context
-                                        .read<MilkSaleController>()
-                                        .filterMilkSalesBySearchTerm)),
-                          ),
-                          Expanded(flex: 1, child: Text("")
-                              // child: getFilterIconButton(
-                              //     // onPressed: () => showDialog<void>(
-                              //     //     context: context,
-                              //     //     builder: (BuildContext context) {
-                              //     //       // return FilterByDatesOrMonthDialog(
-                              //     //       //     filterFunction: context
-                              //     //       //         .read<MilkSaleController>()
-                              //     //       //         .filterMilkSalesByDate);
-                              //     //     })
-
-                              //         )
-                              ),
-                        ],
-                      )))),
-        ),
+            margin: const EdgeInsets.fromLTRB(0, 6, 0, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    flex: 4,
+                    child: FilterInputField(
+                        onQueryChanged: context
+                            .read<MilkSaleController>()
+                            .filterMilkSalesBySearchTerm)),
+                Expanded(
+                  flex: 1,
+                  child: getFilterIconButton(onPressed: () {
+                    showDatesFilterBottomSheet(
+                        context,
+                        _fromDateFilterController,
+                        _toDateFilterController,
+                        context
+                            .read<MilkSaleController>()
+                            .filterMilkSalesByDate);
+                  }),
+                ),
+              ],
+            )),
         Container(
             margin: const EdgeInsets.only(bottom: 10),
             child: Card(
@@ -107,10 +95,10 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      summaryTextDisplayRow("Total Milk Sales Quantity:",
+                          "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
                       summaryTextDisplayRow("Total Milk Sales Amount:",
                           "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
-                      summaryTextDisplayRow("Total Milk Sales Quantity:",
-                          "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs")
                     ],
                   )),
             )),

@@ -69,7 +69,10 @@ class MilkSaleService {
 
 //update a milkSale
   Future<MilkSale> editMilkSale(MilkSale milkSale) async {
-    await _milkSaleReference.doc(milkSale.getId).update(milkSale.toFirestore());
+    await _milkSaleReference.doc(milkSale.getId).update({
+      ...milkSale.toFirestore(),
+      'client': milkSale.getClient.toFirestore()
+    });
     return milkSale;
   }
 }

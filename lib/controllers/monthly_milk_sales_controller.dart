@@ -31,6 +31,7 @@ class MonthlyMilkSaleController with ChangeNotifier {
           (previousValue, milkSale) =>
               (previousValue + milkSale.getMilkSaleMoneyAmount));
     }
+    print(eachDayTotalMilkSalesMap);
     _eachDayOfTheMonthMilkSalesMap.clear();
     _eachDayOfTheMonthMilkSalesMap.addAll(eachDayTotalMilkSalesMap);
     notifyListeners();
