@@ -1,26 +1,24 @@
-import 'package:DigitalDairy/controllers/monthly_milk_production_controller.dart';
-import 'package:DigitalDairy/models/cow.dart';
-import 'package:DigitalDairy/screens/milk_production/month_milk_production_chart.dart';
-import 'package:DigitalDairy/screens/milk_production/year_milk_production_chart.dart';
+import 'package:DigitalDairy/controllers/monthly_milk_sales_controller.dart';
+import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/month_milk_sales_chart.dart';
+import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/year_milk_sales_chart.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/month_filter_dialog.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MonthlyMilkProductionScreen extends StatefulWidget {
-  const MonthlyMilkProductionScreen({super.key});
+class MonthlyMilkSaleScreen extends StatefulWidget {
+  const MonthlyMilkSaleScreen({super.key});
 
-  static const routePath = '/monthly_milk_production';
+  static const routePath = '/monthly_milk_sales';
 
   @override
-  State<StatefulWidget> createState() => MonthlyMilkProductionScreenState();
+  State<StatefulWidget> createState() => MonthlyMilkSaleScreenState();
 }
 
-class MonthlyMilkProductionScreenState
-    extends State<MonthlyMilkProductionScreen> {
-  late Map<int, double> yearMilkProductionList;
-  late List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow;
+class MonthlyMilkSaleScreenState extends State<MonthlyMilkSaleScreen> {
+  late List<Map<String, dynamic>> eachMonthMilkSalesGroupedByClient;
   late int filterMonth = DateTime.now().month;
   late int filterYear = DateTime.now().year;
 
@@ -28,11 +26,11 @@ class MonthlyMilkProductionScreenState
   void initState() {
     super.initState();
     Future.microtask(() => context
-        .read<MonthlyMilkProductionController>()
-        .getMonthDailyMilkProductions(year: filterYear, month: filterMonth));
+        .read<MonthlyMilkSaleController>()
+        .getMonthMilkSales(year: filterYear, month: filterMonth));
     Future.microtask(() => context
-        .read<MonthlyMilkProductionController>()
-        .getYearMonthlyMilkProductions(year: filterYear));
+        .read<MonthlyMilkSaleController>()
+        .getYearMonthlyMilkSalesMoneyAmount(year: filterYear));
   }
 
   @override
@@ -42,31 +40,24 @@ class MonthlyMilkProductionScreenState
 
   @override
   Widget build(BuildContext context) {
-    totalMonthMilkProductionGroupedByCow = context
-        .watch<MonthlyMilkProductionController>()
-        .allCowsTotalMonthMilkProductionList;
+    eachMonthMilkSalesGroupedByClient = context
+        .watch<MonthlyMilkSaleController>()
+        .allClientsTotalMonthMilkSaleList;
 
-    yearMilkProductionList = context
-        .watch<MonthlyMilkProductionController>()
-        .yearMonthlyMilkProductionsList;
+    double monthTotalMilkSalesMoneyAmount = context
+        .read<MonthlyMilkSaleController>()
+        .getTotalMonthMilkSalesMoneyAmount;
+    double monthTotalMilkSaleQuantity = context
+        .read<MonthlyMilkSaleController>()
+        .getTotalMonthMilkSalesQuantity;
+    double totalYearMilkSalesMoneyAmount = context
+        .read<MonthlyMilkSaleController>()
+        .getTotalYearMilkSalesMoneyAmount;
 
-    double monthTotalAmMilkProduction = context
-        .read<MonthlyMilkProductionController>()
-        .getTotalAmMilkProductionQuantity;
-    double monthTotalNoonMilkProduction = context
-        .read<MonthlyMilkProductionController>()
-        .getTotalNoonMilkProductionQuantity;
-    double monthTotalPmMilkProduction = context
-        .read<MonthlyMilkProductionController>()
-        .getTotalPmMilkProductionQuantity;
-    double monthTotalMilkProduction = monthTotalAmMilkProduction +
-        monthTotalNoonMilkProduction +
-        monthTotalPmMilkProduction;
-
-    double cowsAverageMonthMilkProduction = monthTotalMilkProduction /
+    double averageMonthlyMilkSalesMoneyAmount = totalYearMilkSalesMoneyAmount /
         context
-            .read<MonthlyMilkProductionController>()
-            .allCowsTotalMonthMilkProductionList
+            .read<MonthlyMilkSaleController>()
+            .yearMonthlyMilkSalesGraphData
             .length;
 
     return Scaffold(
@@ -101,8 +92,8 @@ class MonthlyMilkProductionScreenState
                                   filterMonth = selectedFilterMonth;
                                 });
                                 context
-                                    .read<MonthlyMilkProductionController>()
-                                    .getMonthDailyMilkProductions(
+                                    .read<MonthlyMilkSaleController>()
+                                    .getMonthMilkSales(
                                         year: selectedFilterYear,
                                         month: selectedFilterMonth);
                               }
@@ -130,16 +121,14 @@ class MonthlyMilkProductionScreenState
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
-                        summaryTextDisplayRow("Total Am Quantity:",
-                            "${monthTotalAmMilkProduction.toStringAsFixed(2)} Kgs"),
-                        summaryTextDisplayRow("Total Noon Quantity:",
-                            "${monthTotalNoonMilkProduction.toStringAsFixed(2)} Kgs"),
-                        summaryTextDisplayRow("Total Pm Quantity:",
-                            "${monthTotalPmMilkProduction.toStringAsFixed(2)} Kgs"),
                         summaryTextDisplayRow("Total Quantity:",
-                            "${monthTotalMilkProduction.toStringAsFixed(2)} Kgs"),
-                        summaryTextDisplayRow("Cow Average:",
-                            "${cowsAverageMonthMilkProduction.toStringAsFixed(2)} Kgs"),
+                            "${monthTotalMilkSaleQuantity.toStringAsFixed(2)} Kgs"),
+                        summaryTextDisplayRow("Total Sales:",
+                            "${monthTotalMilkSalesMoneyAmount.toStringAsFixed(2)} Ksh"),
+                        summaryTextDisplayRow("Year sales:",
+                            "${totalYearMilkSalesMoneyAmount.toStringAsFixed(2)} Ksh"),
+                        summaryTextDisplayRow("Month Average:",
+                            "${averageMonthlyMilkSalesMoneyAmount.toStringAsFixed(2)} Ksh"),
                       ],
                     ),
                   )),
@@ -147,21 +136,19 @@ class MonthlyMilkProductionScreenState
                       margin: const EdgeInsets.symmetric(vertical: 10.0),
                       child: PaginatedDataTable(
                           header: Text(
-                            "Month Milk Production List",
+                            "Month Milk Sales List",
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           rowsPerPage: 10,
                           availableRowsPerPage: const [10],
                           columns: const [
-                            DataColumn(label: Text("Cow Name")),
-                            DataColumn(label: Text("Am (Kgs)")),
-                            DataColumn(label: Text("Noon (Kgs)")),
-                            DataColumn(label: Text("Pm (Kgs)")),
-                            DataColumn(label: Text("Total (Kgs)")),
+                            DataColumn(label: Text("Client Name")),
+                            DataColumn(label: Text("Milk Quantity (Kgs)")),
+                            DataColumn(label: Text("Sales (Ksh)")),
                           ],
                           source: _DataSource(
-                              data: totalMonthMilkProductionGroupedByCow,
+                              data: eachMonthMilkSalesGroupedByClient,
                               context: context))),
                   Container(
                       margin: const EdgeInsets.symmetric(vertical: 20.0),
@@ -177,7 +164,7 @@ class MonthlyMilkProductionScreenState
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Container(
                                   margin: const EdgeInsets.only(top: 50),
-                                  child: DailyMilkProductionChart())),
+                                  child: MonthMilkSaleChart())),
                         ],
                       )),
                   Container(
@@ -186,7 +173,7 @@ class MonthlyMilkProductionScreenState
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Text(
-                          "Year Milk Production Graph",
+                          "Year Milk Sales Graph",
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
@@ -195,9 +182,7 @@ class MonthlyMilkProductionScreenState
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Container(
                               margin: const EdgeInsets.only(top: 30),
-                              child: YearMilkProductionChart(
-                                  yearMilkProductionList:
-                                      yearMilkProductionList))),
+                              child: YearMilkSaleChart())),
                     ]),
                   )
                 ]))));
@@ -217,14 +202,13 @@ class _DataSource extends DataTableSource {
     }
 
     final item = data[index];
-    final cow = item['cow'] as Cow;
+    final cow = item['cow'] as Client;
 
     return DataRow(cells: [
-      DataCell(Text(cow.getName)),
-      DataCell(Text('${item['am_quantity']}')),
+      DataCell(Text(cow.clientName)),
+      DataCell(Text('${item['milk_quantity']}')),
       DataCell(Text('${item['noon_quantity']}')),
-      DataCell(Text('${item['pm_quantity']}')),
-      DataCell(Text('${item['total_quantity']}')),
+      DataCell(Text('${item['money_amount']}')),
     ]);
   }
 
