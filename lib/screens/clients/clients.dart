@@ -40,48 +40,24 @@ class ClientsScreenState extends State<ClientsScreen> {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(mainAxisSize: MainAxisSize.max, children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: Card(
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              child: OutlinedButton.icon(
-                                icon: const Icon(Icons.add),
-                                onPressed: () =>
-                                    context.pushNamed("addClientDetails"),
-                                label: const Text("New"),
-                              )),
-                        ],
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: FilterInputField(
-                              onQueryChanged: context
-                                  .read<ClientController>()
-                                  .filterClients)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: FilterInputField(
+                  onQueryChanged:
+                      context.read<ClientController>().filterClients)),
           PaginatedDataTable(
               header: const Text("Clients List"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               sortAscending: false,
               sortColumnIndex: 0,
+              actions: [
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => context.pushNamed("addClientDetails"),
+                  label: const Text("New"),
+                )
+              ],
               columns: const [
                 DataColumn(label: Text("Name")),
                 DataColumn(label: Text("Contacts")),
@@ -115,7 +91,7 @@ class _DataSource extends DataTableSource {
             client.clientName,
           ), onTap: () {
         //show the past milk purchase history of the client by redirecting to new route
-        () => context.pushNamed("clientMilkPurchaseHistory",
+        () => context.pushNamed("client_statements",
             pathParameters: {"clientId": '${client.getId}'});
       }),
       DataCell(Text(client.getContacts)),

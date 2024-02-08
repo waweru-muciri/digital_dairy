@@ -132,17 +132,19 @@ class MilkConsumersStatementsScreenState
                         ],
                       )))),
         ),
-        getFilterIconButton(
-          onPressed: () {
-            showDatesFilterBottomSheet(
-                context,
-                _fromDateFilterController,
-                _toDateFilterController,
-                context
-                    .read<MilkConsumptionController>()
-                    .filterMilkConsumptionsByDate);
-          },
-        ),
+        getFilterIconButton(onPressed: () async {
+          await showDatesFilterBottomSheet(
+                  context, _fromDateFilterController, _toDateFilterController)
+              .then((Map<String, String>? selectedDatesMap) {
+            if (selectedDatesMap != null) {
+              String startDate = selectedDatesMap['start_date'] ?? '';
+              String endDate = selectedDatesMap['start_date'] ?? '';
+              context
+                  .read<MilkConsumptionController>()
+                  .filterMilkConsumptionsByDate(startDate, endDate: endDate);
+            }
+          });
+        }),
         Container(
             margin: const EdgeInsets.only(bottom: 10),
             child: Card(

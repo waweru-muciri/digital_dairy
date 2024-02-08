@@ -3,13 +3,15 @@ import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class ClientsMilkSalesStatementsScreen extends StatefulWidget {
-  const ClientsMilkSalesStatementsScreen({super.key});
+  const ClientsMilkSalesStatementsScreen({super.key, required this.clientId});
   static const routePath = '/client_statements';
+  final String clientId;
 
   @override
   State<StatefulWidget> createState() =>
@@ -23,8 +25,6 @@ class ClientsMilkSalesStatementsScreenState
       TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
       TextEditingController(text: getTodaysDateAsString());
-  final TextEditingController _clientController = TextEditingController();
-  late List<Client> _clientsList;
   Client? selectedClient;
 
   int _sortColumnIndex = 0;
@@ -36,8 +36,6 @@ class ClientsMilkSalesStatementsScreenState
   void initState() {
     super.initState();
     _dataTableSource = _DataSource(context: context);
-    //get the list of clients
-    Future.microtask(() => context.read<ClientController>().getClients());
   }
 
   @override
@@ -56,169 +54,18 @@ class ClientsMilkSalesStatementsScreenState
     });
   }
 
-  Future<void> showDatesAndClientFilterBottomSheet() {
-    return showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Filter',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: DropdownMenu<Client>(
-                  label: const Text("Select Client"),
-                  controller: _clientController,
-                  requestFocusOnTap: true,
-                  initialSelection: selectedClient,
-                  expandedInsets: EdgeInsets.zero,
-                  onSelected: (Client? client) {
-                    setState(() {
-                      selectedClient = client;
-                    });
-                  },
-                  enableFilter: true,
-                  enableSearch: true,
-                  inputDecorationTheme: const InputDecorationTheme(
-                      isDense: true, border: OutlineInputBorder()),
-                  dropdownMenuEntries: _clientsList
-                      .map<DropdownMenuEntry<Client>>((Client client) {
-                    return DropdownMenuEntry<Client>(
-                      value: client,
-                      label: client.clientName,
-                      enabled: true,
-                    );
-                  }).toList(),
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: TextFormField(
-                              controller: _fromDateFilterController,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                border: const OutlineInputBorder(),
-                                labelText: 'From Date',
-                                suffixIcon: IconButton(
-                                    onPressed: () async {
-                                      final DateTime? pickedDateTime =
-                                          await showCustomDatePicker(
-                                              context,
-                                              getDateFromString(
-                                                  _fromDateFilterController
-                                                      .text));
-                                      _fromDateFilterController.text =
-                                          getStringFromDate(pickedDateTime);
-                                    },
-                                    icon: const Align(
-                                        widthFactor: 1.0,
-                                        heightFactor: 1.0,
-                                        child: Icon(
-                                          Icons.calendar_month,
-                                        ))),
-                              ),
-                            )),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: TextFormField(
-                              controller: _toDateFilterController,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                border: const OutlineInputBorder(),
-                                labelText: 'To Date',
-                                suffixIcon: IconButton(
-                                    onPressed: () async {
-                                      final DateTime? pickedDateTime =
-                                          await showCustomDatePicker(
-                                              context,
-                                              getDateFromString(
-                                                  _toDateFilterController
-                                                      .text));
-
-                                      _toDateFilterController.text =
-                                          getStringFromDate(pickedDateTime);
-                                    },
-                                    icon: const Align(
-                                        widthFactor: 1.0,
-                                        heightFactor: 1.0,
-                                        child: Icon(
-                                          Icons.calendar_month,
-                                        ))),
-                              ),
-                            )),
-                      ),
-                    ],
-                  )),
-              ButtonBar(
-                alignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FilledButton(
-                      child: const Text('Reset'),
-                      onPressed: () {
-                        _fromDateFilterController.clear();
-                        _toDateFilterController.clear();
-                        setState(() {
-                          selectedClient = null;
-                        });
-                      }),
-                  FilledButton(
-                      child: const Text('Apply Filters'),
-                      onPressed: () {
-                        if (selectedClient != null) {
-                          context
-                              .read<MilkSaleController>()
-                              .filterMilkSalesByDatesAndClientId(
-                                  _fromDateFilterController.text,
-                                  _fromDateFilterController.text,
-                                  selectedClient?.getId ?? '');
-                        } else {
-                          context
-                              .read<MilkSaleController>()
-                              .filterMilkSalesByDate(
-                                  _fromDateFilterController.text,
-                                  endDate: _fromDateFilterController.text);
-                        }
-                        Navigator.pop(context);
-                      }),
-                ],
-              )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
-    _clientsList = context.watch<ClientController>().clientsList;
+    selectedClient = context
+        .read<ClientController>()
+        .clientsList
+        .firstWhereOrNull((client) => client.getId == widget.clientId);
+
+    _milkSalesList = context
+        .watch<MilkSaleController>()
+        .milkSalesList
+        .where((milkSale) => milkSale.getClient.getId == widget.clientId)
+        .toList();
 
     _dataTableSource.setData(
         _milkSalesList, _sortColumnIndex, _sortColumnAscending);
@@ -231,17 +78,29 @@ class ClientsMilkSalesStatementsScreenState
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Text(
-                '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
-                textAlign: TextAlign.right,
-              ),
-            ),
-            getFilterIconButton(
-              onPressed: () {
-                showDatesAndClientFilterBottomSheet();
-              },
-            ),
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: InkWell(
+                    onTap: () async {
+                      await showDatesFilterBottomSheet(
+                        context,
+                        _fromDateFilterController,
+                        _toDateFilterController,
+                      ).then((Map<String, String>? selectedDatesMap) {
+                        if (selectedDatesMap != null) {
+                          String startDate =
+                              selectedDatesMap['start_date'] ?? '';
+                          String endDate = selectedDatesMap['start_date'] ?? '';
+                          context
+                              .read<MilkSaleController>()
+                              .filterMilkSalesByDatesAndClientId(
+                                  startDate, endDate, widget.clientId);
+                        }
+                      });
+                    },
+                    child: Text(
+                      '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
+                      textAlign: TextAlign.right,
+                    ))),
             Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 child: Card(
@@ -252,7 +111,7 @@ class ClientsMilkSalesStatementsScreenState
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           summaryTextDisplayRow("Client Name:",
-                              selectedClient?.clientName ?? "All Clients"),
+                              selectedClient?.clientName ?? "No client found!"),
                           summaryTextDisplayRow("Total Quantity Sold:",
                               "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
                           summaryTextDisplayRow("Total Quantity Sold:",
@@ -270,7 +129,6 @@ class ClientsMilkSalesStatementsScreenState
                 sortColumnIndex: _sortColumnIndex,
                 sortAscending: _sortColumnAscending,
                 columns: [
-                  DataColumn(label: const Text("Client Name"), onSort: _sort),
                   DataColumn(label: const Text("Date"), onSort: _sort),
                   DataColumn(
                       label: const Text("Milk Quantity (Kgs)"),
@@ -330,7 +188,6 @@ class _DataSource extends DataTableSource {
     final item = sortedData[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.getClient.clientName)),
       DataCell(Text(item.getMilkSaleDate)),
       DataCell(Text('${item.getMilkSaleQuantity}')),
       DataCell(Text('${item.getUnitPrice}')),

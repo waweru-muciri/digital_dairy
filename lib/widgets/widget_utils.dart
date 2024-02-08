@@ -83,12 +83,11 @@ Future<DateTime?> showCustomDatePicker(
   return picked;
 }
 
-Future<void> showDatesFilterBottomSheet(
+Future<Map<String, String>?> showDatesFilterBottomSheet(
     BuildContext context,
     TextEditingController fromDateFilterController,
-    TextEditingController toDateFilterController,
-    void Function(String startDate, {String endDate}) filterFunction) {
-  return showModalBottomSheet<void>(
+    TextEditingController toDateFilterController) {
+  return showModalBottomSheet<Map<String, String>?>(
     context: context,
     builder: (BuildContext context) {
       return Container(
@@ -181,15 +180,15 @@ Future<void> showDatesFilterBottomSheet(
                   FilledButton(
                       child: const Text('Reset'),
                       onPressed: () {
-                        fromDateFilterController.clear();
-                        toDateFilterController.clear();
+                        Navigator.pop(context);
                       }),
                   FilledButton(
                       child: const Text('Apply Filters'),
                       onPressed: () {
-                        filterFunction(fromDateFilterController.text,
-                            endDate: toDateFilterController.text);
-                        Navigator.pop(context);
+                        Navigator.pop(context, {
+                          'start_date': fromDateFilterController.text,
+                          'end_date': toDateFilterController.text
+                        });
                       }),
                 ],
               )

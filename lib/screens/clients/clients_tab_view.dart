@@ -1,5 +1,4 @@
 import 'package:DigitalDairy/screens/clients/clients.dart';
-import 'package:DigitalDairy/screens/clients/clients_sales_statements.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +8,7 @@ class ClientsTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 1,
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
@@ -18,9 +17,6 @@ class ClientsTabView extends StatelessWidget {
               Tab(
                 text: "Clients",
               ),
-              Tab(
-                text: "Client Statements",
-              ),
             ],
           ),
           title: const Text('Clients'),
@@ -28,7 +24,6 @@ class ClientsTabView extends StatelessWidget {
         body: const TabBarView(
           children: [
             ClientsScreen(),
-            ClientsMilkSalesStatementsScreen(),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore_platform_interface/src/set_options.dart';
+
 import '../models/milk_sale.dart';
 import "db_service.dart";
 
@@ -69,10 +71,9 @@ class MilkSaleService {
 
 //update a milkSale
   Future<MilkSale> editMilkSale(MilkSale milkSale) async {
-    await _milkSaleReference.doc(milkSale.getId).update({
-      ...milkSale.toFirestore(),
-      'client': milkSale.getClient.toFirestore()
-    });
+    await _milkSaleReference
+        .doc(milkSale.getId)
+        .set(milkSale, SetOptions(merge: false));
     return milkSale;
   }
 }

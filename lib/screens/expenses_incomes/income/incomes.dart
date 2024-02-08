@@ -7,7 +7,6 @@ import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class IncomesScreen extends StatefulWidget {
   const IncomesScreen({super.key});
@@ -73,14 +72,24 @@ class IncomeScreenState extends State<IncomesScreen> {
                             ),
                             Expanded(
                                 flex: 1,
-                                child: getFilterIconButton(onPressed: () {
-                                  showDatesFilterBottomSheet(
-                                      context,
-                                      _fromDateFilterController,
-                                      _toDateFilterController,
+                                child: getFilterIconButton(onPressed: () async {
+                                  await showDatesFilterBottomSheet(
+                                          context,
+                                          _fromDateFilterController,
+                                          _toDateFilterController)
+                                      .then((Map<String, String>?
+                                          selectedDatesMap) {
+                                    if (selectedDatesMap != null) {
+                                      String startDate =
+                                          selectedDatesMap['start_date'] ?? '';
+                                      String endDate =
+                                          selectedDatesMap['start_date'] ?? '';
                                       context
                                           .read<IncomeController>()
-                                          .filterIncomeByDates);
+                                          .filterIncomeByDates(startDate,
+                                              endDate: endDate);
+                                    }
+                                  });
                                 })),
                           ],
                         )))),

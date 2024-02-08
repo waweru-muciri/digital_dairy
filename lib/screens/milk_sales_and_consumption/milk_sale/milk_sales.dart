@@ -74,14 +74,18 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                             .filterMilkSalesBySearchTerm)),
                 Expanded(
                   flex: 1,
-                  child: getFilterIconButton(onPressed: () {
-                    showDatesFilterBottomSheet(
-                        context,
-                        _fromDateFilterController,
-                        _toDateFilterController,
+                  child: getFilterIconButton(onPressed: () async {
+                    await showDatesFilterBottomSheet(context,
+                            _fromDateFilterController, _toDateFilterController)
+                        .then((Map<String, String>? selectedDatesMap) {
+                      if (selectedDatesMap != null) {
+                        String startDate = selectedDatesMap['start_date'] ?? '';
+                        String endDate = selectedDatesMap['start_date'] ?? '';
                         context
                             .read<MilkSaleController>()
-                            .filterMilkSalesByDate);
+                            .filterMilkSalesByDate(startDate, endDate: endDate);
+                      }
+                    });
                   }),
                 ),
               ],

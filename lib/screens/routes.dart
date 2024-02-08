@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/screens/breeding_management/abortions_miscarriages/abortion_miscarriage_input.dart';
 import 'package:DigitalDairy/screens/breeding_management/breeding_management_tab_view.dart';
 import 'package:DigitalDairy/screens/breeding_management/pregnancy_diagnosis/pregnancy_diagnosis_input.dart';
+import 'package:DigitalDairy/screens/clients/clients_sales_statements.dart';
 import 'package:DigitalDairy/screens/clients/clients_tab_view.dart';
 import 'package:DigitalDairy/screens/clients/client_input.dart';
 import 'package:DigitalDairy/screens/consumers/consumers_tab_view.dart';
@@ -48,6 +49,13 @@ class AppRouter {
         name: "clients",
         path: "/clients",
         builder: (context, state) => const ClientsTabView(),
+      ),
+      GoRoute(
+        name: "clients_statements",
+        path: ClientsMilkSalesStatementsScreen.routePath,
+        builder: (context, state) => ClientsMilkSalesStatementsScreen(
+          clientId: state.pathParameters["clientId"] ?? '',
+        ),
       ),
       //consumers route
       GoRoute(
