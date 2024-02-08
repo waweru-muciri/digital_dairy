@@ -100,7 +100,7 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                         .then((Map<String, String>? selectedDatesMap) {
                       if (selectedDatesMap != null) {
                         String startDate = selectedDatesMap['start_date'] ?? '';
-                        String endDate = selectedDatesMap['start_date'] ?? '';
+                        String endDate = selectedDatesMap['end_date'] ?? '';
                         context
                             .read<DailyMilkProductionController>()
                             .filterDailyMilkProductionsByDates(startDate,

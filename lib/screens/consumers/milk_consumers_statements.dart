@@ -138,7 +138,7 @@ class MilkConsumersStatementsScreenState
               .then((Map<String, String>? selectedDatesMap) {
             if (selectedDatesMap != null) {
               String startDate = selectedDatesMap['start_date'] ?? '';
-              String endDate = selectedDatesMap['start_date'] ?? '';
+              String endDate = selectedDatesMap['end_date'] ?? '';
               context
                   .read<MilkConsumptionController>()
                   .filterMilkConsumptionsByDate(startDate, endDate: endDate);

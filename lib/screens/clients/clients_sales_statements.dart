@@ -10,7 +10,7 @@ import 'package:DigitalDairy/util/utils.dart';
 
 class ClientsMilkSalesStatementsScreen extends StatefulWidget {
   const ClientsMilkSalesStatementsScreen({super.key, required this.clientId});
-  static const routePath = '/client_statements';
+  static const routePath = '/client_statements/:clientId';
   final String clientId;
 
   @override
@@ -61,91 +61,103 @@ class ClientsMilkSalesStatementsScreenState
         .clientsList
         .firstWhereOrNull((client) => client.getId == widget.clientId);
 
-    _milkSalesList = context
-        .watch<MilkSaleController>()
-        .milkSalesList
-        .where((milkSale) => milkSale.getClient.getId == widget.clientId)
-        .toList();
+    _milkSalesList = context.watch<MilkSaleController>().milkSalesList.toList();
 
     _dataTableSource.setData(
         _milkSalesList, _sortColumnIndex, _sortColumnAscending);
 
-    return SingleChildScrollView(
-        child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                child: InkWell(
-                    onTap: () async {
-                      await showDatesFilterBottomSheet(
-                        context,
-                        _fromDateFilterController,
-                        _toDateFilterController,
-                      ).then((Map<String, String>? selectedDatesMap) {
-                        if (selectedDatesMap != null) {
-                          String startDate =
-                              selectedDatesMap['start_date'] ?? '';
-                          String endDate = selectedDatesMap['start_date'] ?? '';
-                          context
-                              .read<MilkSaleController>()
-                              .filterMilkSalesByDatesAndClientId(
-                                  startDate, endDate, widget.clientId);
-                        }
-                      });
-                    },
-                    child: Text(
-                      '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
-                      textAlign: TextAlign.right,
-                    ))),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                child: Card(
-                  child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          summaryTextDisplayRow("Client Name:",
-                              selectedClient?.clientName ?? "No client found!"),
-                          summaryTextDisplayRow("Total Quantity Sold:",
-                              "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
-                          summaryTextDisplayRow("Total Quantity Sold:",
-                              "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
-                          summaryTextDisplayRow("Total Payments:",
-                              "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
-                          summaryTextDisplayRow("Outstanding Balances:",
-                              "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
-                        ],
-                      )),
-                )),
-            PaginatedDataTable(
-                rowsPerPage: 20,
-                availableRowsPerPage: const [20, 30, 50],
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortColumnAscending,
-                columns: [
-                  DataColumn(label: const Text("Date"), onSort: _sort),
-                  DataColumn(
-                      label: const Text("Milk Quantity (Kgs)"),
-                      numeric: true,
-                      onSort: _sort),
-                  DataColumn(
-                      label: const Text("Unit Price (Ksh)"),
-                      numeric: true,
-                      onSort: _sort),
-                  DataColumn(
-                      label: const Text("Sales Amount (Ksh)"),
-                      numeric: true,
-                      onSort: _sort),
-                ],
-                source: _dataTableSource)
-          ]),
-    ));
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Client Statement',
+          ),
+        ),
+        body: SingleChildScrollView(
+            child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        InkWell(
+                            onTap: () async {
+                              await showDatesFilterBottomSheet(
+                                context,
+                                _fromDateFilterController,
+                                _toDateFilterController,
+                              ).then((Map<String, String>? selectedDatesMap) {
+                                if (selectedDatesMap != null) {
+                                  String startDate =
+                                      selectedDatesMap['start_date'] ?? '';
+                                  String endDate =
+                                      selectedDatesMap['end_date'] ?? '';
+                                  context
+                                      .read<MilkSaleController>()
+                                      .filterMilkSalesByDatesAndClientId(
+                                          startDate, endDate, widget.clientId);
+                                }
+                              });
+                            },
+                            child: Text(
+                              '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
+                              textAlign: TextAlign.right,
+                            ))
+                      ],
+                    )),
+                Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Card(
+                      child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              summaryTextDisplayRow(
+                                  "Client Name:",
+                                  selectedClient?.clientName ??
+                                      "No client found!"),
+                              summaryTextDisplayRow("Total Quantity Sold:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
+                              summaryTextDisplayRow("Total Quantity Sold:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
+                              summaryTextDisplayRow("Total Payments:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
+                              summaryTextDisplayRow("Outstanding Balances:",
+                                  "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),
+                            ],
+                          )),
+                    )),
+                PaginatedDataTable(
+                    rowsPerPage: 20,
+                    availableRowsPerPage: const [20, 30, 50],
+                    sortColumnIndex: _sortColumnIndex,
+                    sortAscending: _sortColumnAscending,
+                    columns: [
+                      DataColumn(label: const Text("Date"), onSort: _sort),
+                      DataColumn(
+                          label: const Text("Milk Quantity (Kgs)"),
+                          numeric: true,
+                          onSort: _sort),
+                      DataColumn(
+                          label: const Text("Unit Price (Ksh)"),
+                          numeric: true,
+                          onSort: _sort),
+                      DataColumn(
+                          label: const Text("Sales Amount (Ksh)"),
+                          numeric: true,
+                          onSort: _sort),
+                    ],
+                    source: _dataTableSource)
+              ]),
+        )));
   }
 }
 

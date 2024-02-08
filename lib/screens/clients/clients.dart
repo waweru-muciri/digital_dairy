@@ -36,39 +36,45 @@ class ClientsScreenState extends State<ClientsScreen> {
     _clientsList = context.watch<ClientController>().clientsList;
 
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Column(mainAxisSize: MainAxisSize.max, children: [
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: FilterInputField(
-                  onQueryChanged:
-                      context.read<ClientController>().filterClients)),
-          PaginatedDataTable(
-              header: const Text("Clients List"),
-              rowsPerPage: 20,
-              availableRowsPerPage: const [20, 30, 50],
-              sortAscending: false,
-              sortColumnIndex: 0,
-              actions: [
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.add),
-                  onPressed: () => context.pushNamed("addClientDetails"),
-                  label: const Text("New"),
-                )
-              ],
-              columns: const [
-                DataColumn(label: Text("Name")),
-                DataColumn(label: Text("Contacts")),
-                DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
-                DataColumn(label: Text("Edit")),
-                DataColumn(label: Text("Delete")),
-              ],
-              source: _DataSource(data: _clientsList, context: context))
-        ]),
-      ),
-    ));
+        appBar: AppBar(
+          title: const Text(
+            'Clients',
+          ),
+        ),
+        body: Scaffold(
+            body: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Column(mainAxisSize: MainAxisSize.max, children: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: FilterInputField(
+                      onQueryChanged:
+                          context.read<ClientController>().filterClients)),
+              PaginatedDataTable(
+                  header: const Text("Clients List"),
+                  rowsPerPage: 20,
+                  availableRowsPerPage: const [20, 30, 50],
+                  sortAscending: false,
+                  sortColumnIndex: 0,
+                  actions: [
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.add),
+                      onPressed: () => context.pushNamed("addClientDetails"),
+                      label: const Text("New"),
+                    )
+                  ],
+                  columns: const [
+                    DataColumn(label: Text("Name")),
+                    DataColumn(label: Text("Contacts")),
+                    DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
+                    DataColumn(label: Text("Edit")),
+                    DataColumn(label: Text("Delete")),
+                  ],
+                  source: _DataSource(data: _clientsList, context: context))
+            ]),
+          ),
+        )));
   }
 }
 
@@ -89,11 +95,10 @@ class _DataSource extends DataTableSource {
       DataCell(
           Text(
             client.clientName,
-          ), onTap: () {
-        //show the past milk purchase history of the client by redirecting to new route
-        () => context.pushNamed("client_statements",
-            pathParameters: {"clientId": '${client.getId}'});
-      }),
+            style: const TextStyle(decoration: TextDecoration.underline),
+          ),
+          onTap: () => context.pushNamed("clients_statements",
+              pathParameters: {"clientId": '${client.getId}'})),
       DataCell(Text(client.getContacts)),
       DataCell(Text('${client.getUnitPrice}')),
       DataCell(const Icon(Icons.edit),
