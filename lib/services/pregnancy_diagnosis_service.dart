@@ -15,11 +15,25 @@ class PregnancyDiagnosisService {
       );
 
   /// Loads the pregnancyDiagnosiss list from firebase firestore.
-  Future<List<PregnancyDiagnosis>> getPregnancyDiagnosissList() async {
-    return await _pregnancyDiagnosisReference.get().then((querySnapshot) =>
-        querySnapshot.docs
-            .map((documentSnapshot) => documentSnapshot.data())
-            .toList());
+  Future<List<PregnancyDiagnosis>> getPregnancyDiagnosisListBetweenDates(
+      String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _pregnancyDiagnosisReference
+          .where("diagnosis_date", isGreaterThanOrEqualTo: startDate)
+          .where("diagnosis_date", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _pregnancyDiagnosisReference
+          .where("diagnosis_date", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
   }
 
 //add a pregnancyDiagnosis

@@ -38,7 +38,7 @@ class BreedingManagementTabView extends StatelessWidget {
         body: const TabBarView(
           children: [
             SemenCatalogsScreen(),
-            SemenCatalogsScreen(),
+            Text("AI Records"),
             PregnancyDiagnosisScreen(),
             AbortionMiscarriagesScreen(),
           ],

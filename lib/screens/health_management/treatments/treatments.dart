@@ -28,7 +28,10 @@ class TreatmentsScreenState extends State<TreatmentsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<TreatmentController>().getTreatments());
+    Future.microtask(() => context
+        .read<TreatmentController>()
+        .filterTreatmentsByDate(getStartOfMonthDateAsString(),
+            endDate: getEndOfMonthDateAsString()));
   }
 
   @override

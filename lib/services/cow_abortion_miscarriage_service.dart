@@ -15,11 +15,25 @@ class AbortionMiscarriageService {
       );
 
   /// Loads the abortionMiscarriages list from firebase firestore.
-  Future<List<AbortionMiscarriage>> getAbortionMiscarriagesList() async {
-    return await _abortionMiscarriageReference.get().then((querySnapshot) =>
-        querySnapshot.docs
-            .map((documentSnapshot) => documentSnapshot.data())
-            .toList());
+  Future<List<AbortionMiscarriage>> getAbortionMiscarriagesListBetweenDates(
+      String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _abortionMiscarriageReference
+          .where("diagnosis_date", isGreaterThanOrEqualTo: startDate)
+          .where("diagnosis_date", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _abortionMiscarriageReference
+          .where("diagnosis_date", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
   }
 
 //add a abortionMiscarriage

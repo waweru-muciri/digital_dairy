@@ -12,14 +12,6 @@ class DiseaseService {
         toFirestore: (Disease disease, _) => disease.toFirestore(),
       );
 
-  /// Loads the diseases list from firebase firestore.
-  Future<List<Disease>> getDiseasesList() async {
-    return await _diseaseReference.get().then((querySnapshot) => querySnapshot
-        .docs
-        .map((documentSnapshot) => documentSnapshot.data())
-        .toList());
-  }
-
   Future<List<Disease>> getDiseasesListBetweenDates(String startDate,
       {String? endDate}) async {
     if (startDate.isNotEmpty && endDate != null) {

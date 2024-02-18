@@ -20,7 +20,7 @@ class AbortionMiscarriageController with ChangeNotifier {
   List<AbortionMiscarriage> get abortionMiscarriagesList =>
       _filteredAbortionMiscarriageList;
 
-  void filterAbortionMiscarriages(String? query) {
+  void filterAbortionMiscarriagesBySearchQuery(String? query) {
     if (query != null && query.isNotEmpty) {
       List<AbortionMiscarriage> fetchedList = _abortionMiscarriageList
           .where((item) => item.getCow.cowName
@@ -37,9 +37,10 @@ class AbortionMiscarriageController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAbortionMiscarriages() async {
-    List<AbortionMiscarriage> fetchedList =
-        await _abortionMiscarriageService.getAbortionMiscarriagesList();
+  Future<void> filterAbortionMiscarriagesByDate(String startDate,
+      {String? endDate}) async {
+    List<AbortionMiscarriage> fetchedList = await _abortionMiscarriageService
+        .getAbortionMiscarriagesListBetweenDates(startDate, endDate: endDate);
     _abortionMiscarriageList.clear();
     _filteredAbortionMiscarriageList.clear();
     _abortionMiscarriageList.addAll(fetchedList);

@@ -12,14 +12,6 @@ class TreatmentService {
         toFirestore: (Treatment treatment, _) => treatment.toFirestore(),
       );
 
-  /// Loads the treatments list from firebase firestore.
-  Future<List<Treatment>> getTreatmentsList() async {
-    return await _treatmentReference.get().then((querySnapshot) => querySnapshot
-        .docs
-        .map((documentSnapshot) => documentSnapshot.data())
-        .toList());
-  }
-
   Future<List<Treatment>> getTreatmentsListBetweenDates(String startDate,
       {String? endDate}) async {
     if (startDate.isNotEmpty && endDate != null) {

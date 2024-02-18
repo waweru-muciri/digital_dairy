@@ -12,14 +12,6 @@ class VaccinationService {
         toFirestore: (Vaccination vaccination, _) => vaccination.toFirestore(),
       );
 
-  /// Loads the vaccinations list from firebase firestore.
-  Future<List<Vaccination>> getVaccinationsList() async {
-    return await _vaccinationReference.get().then((querySnapshot) =>
-        querySnapshot.docs
-            .map((documentSnapshot) => documentSnapshot.data())
-            .toList());
-  }
-
   Future<List<Vaccination>> getVaccinationsListBetweenDates(String startDate,
       {String? endDate}) async {
     if (startDate.isNotEmpty && endDate != null) {

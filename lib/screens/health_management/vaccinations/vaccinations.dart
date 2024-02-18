@@ -28,8 +28,10 @@ class VaccinationsScreenState extends State<VaccinationsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<VaccinationController>().getVaccinations());
+    Future.microtask(() => context
+        .read<VaccinationController>()
+        .filterVaccinationsByDate(getStartOfMonthDateAsString(),
+            endDate: getEndOfMonthDateAsString()));
   }
 
   @override

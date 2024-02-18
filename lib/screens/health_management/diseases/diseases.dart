@@ -28,7 +28,10 @@ class DiseasesScreenState extends State<DiseasesScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<DiseaseController>().getDiseases());
+    Future.microtask(() => context
+        .read<DiseaseController>()
+        .filterDiseasesByDate(getStartOfMonthDateAsString(),
+            endDate: getEndOfMonthDateAsString()));
   }
 
   @override

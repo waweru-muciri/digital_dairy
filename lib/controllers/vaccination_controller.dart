@@ -46,17 +46,6 @@ class VaccinationController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getVaccinations() async {
-    List<Vaccination> fetchedList =
-        await _vaccinationService.getVaccinationsList();
-    _vaccinationList.clear();
-    _filteredVaccinationList.clear();
-    _vaccinationList.addAll(fetchedList);
-    _filteredVaccinationList.addAll(fetchedList);
-    // Important! Inform listeners a change has occurred.
-    notifyListeners();
-  }
-
   Future<void> addVaccination(Vaccination vaccination) async {
     //call to the service to add the item to the database
     final savedVaccination =

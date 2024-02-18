@@ -46,16 +46,6 @@ class TreatmentController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getTreatments() async {
-    List<Treatment> fetchedList = await _treatmentService.getTreatmentsList();
-    _treatmentList.clear();
-    _filteredTreatmentList.clear();
-    _treatmentList.addAll(fetchedList);
-    _filteredTreatmentList.addAll(fetchedList);
-    // Important! Inform listeners a change has occurred.
-    notifyListeners();
-  }
-
   Future<void> addTreatment(Treatment treatment) async {
     //call to the service to add the item to the database
     final savedTreatment = await _treatmentService.addTreatment(treatment);

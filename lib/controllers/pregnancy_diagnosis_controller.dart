@@ -20,7 +20,7 @@ class PregnancyDiagnosisController with ChangeNotifier {
   List<PregnancyDiagnosis> get pregnancyDiagnosissList =>
       _filteredPregnancyDiagnosisList;
 
-  void filterPregnancyDiagnosiss(String? query) {
+  void filterPregnancyDiagnosisBySearchQuery(String? query) {
     if (query != null && query.isNotEmpty) {
       List<PregnancyDiagnosis> fetchedList = _pregnancyDiagnosisList
           .where((item) => item.getCow.cowName
@@ -37,9 +37,10 @@ class PregnancyDiagnosisController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getPregnancyDiagnosiss() async {
-    List<PregnancyDiagnosis> fetchedList =
-        await _pregnancyDiagnosisService.getPregnancyDiagnosissList();
+  Future<void> filterPregnancyDiagnosisByDate(String startDate,
+      {String? endDate}) async {
+    List<PregnancyDiagnosis> fetchedList = await _pregnancyDiagnosisService
+        .getPregnancyDiagnosisListBetweenDates(startDate, endDate: endDate);
     _pregnancyDiagnosisList.clear();
     _filteredPregnancyDiagnosisList.clear();
     _pregnancyDiagnosisList.addAll(fetchedList);
