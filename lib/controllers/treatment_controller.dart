@@ -18,7 +18,7 @@ class TreatmentController with ChangeNotifier {
   // Allow Widgets to read the filtered treatments list.
   List<Treatment> get treatmentsList => _filteredTreatmentList;
 
-  void filterTreatments(String? query) {
+  void filterTreatmentsByQueryString(String? query) {
     if (query != null && query.isNotEmpty) {
       List<Treatment> fetchedList = _treatmentList
           .where((item) => item.getTreatment
@@ -32,6 +32,17 @@ class TreatmentController with ChangeNotifier {
       _filteredTreatmentList.clear();
       _filteredTreatmentList.addAll(_treatmentList);
     }
+    notifyListeners();
+  }
+
+  Future<void> filterTreatmentsByDate(String startDate,
+      {String? endDate}) async {
+    List<Treatment> fetchedList = await _treatmentService
+        .getTreatmentsListBetweenDates(startDate, endDate: endDate);
+    _treatmentList.clear();
+    _filteredTreatmentList.clear();
+    _treatmentList.addAll(fetchedList);
+    _filteredTreatmentList.addAll(fetchedList);
     notifyListeners();
   }
 

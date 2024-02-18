@@ -20,6 +20,26 @@ class VaccinationService {
             .toList());
   }
 
+  Future<List<Vaccination>> getVaccinationsListBetweenDates(String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _vaccinationReference
+          .where("vaccination_date", isGreaterThanOrEqualTo: startDate)
+          .where("vaccination_date", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _vaccinationReference
+          .where("vaccination_date", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
+  }
+
 //add a vaccination
   Future<Vaccination?> addVaccination(Vaccination vaccination) async {
     return await _vaccinationReference

@@ -4,7 +4,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 class Vaccination {
   String? _id;
   late String _vaccination;
-  late String _treamentDate;
+  late String _vaccinationDate;
   late String _vetName;
   late double _vaccinationCost;
   late Cow _cow;
@@ -32,9 +32,9 @@ class Vaccination {
 
   set setVaccination(String value) => _vaccination = value;
 
-  String get getVaccinationDate => _treamentDate;
+  String get getVaccinationDate => _vaccinationDate;
 
-  set setVaccinationDate(String value) => _treamentDate = value;
+  set setVaccinationDate(String value) => _vaccinationDate = value;
 
   factory Vaccination.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -55,7 +55,7 @@ class Vaccination {
   Map<String, dynamic> toFirestore() {
     return {
       'cow': _cow.toFirestore(),
-      'vaccination_date': _treamentDate,
+      'vaccination_date': _vaccinationDate,
       'vaccination': _vaccination,
       "vet_name": _vetName,
       "cost": _vaccinationCost,

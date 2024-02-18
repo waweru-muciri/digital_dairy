@@ -18,7 +18,7 @@ class DiseaseController with ChangeNotifier {
   // Allow Widgets to read the filtered diseases list.
   List<Disease> get diseasesList => _filteredDiseaseList;
 
-  void filterDiseases(String? query) {
+  void filterDiseasesByQueryString(String? query) {
     if (query != null && query.isNotEmpty) {
       List<Disease> fetchedList = _diseaseList
           .where((item) => item.getName
@@ -32,6 +32,16 @@ class DiseaseController with ChangeNotifier {
       _filteredDiseaseList.clear();
       _filteredDiseaseList.addAll(_diseaseList);
     }
+    notifyListeners();
+  }
+
+  Future<void> filterDiseasesByDate(String startDate, {String? endDate}) async {
+    List<Disease> fetchedList = await _diseaseService
+        .getDiseasesListBetweenDates(startDate, endDate: endDate);
+    _diseaseList.clear();
+    _filteredDiseaseList.clear();
+    _diseaseList.addAll(fetchedList);
+    _filteredDiseaseList.addAll(fetchedList);
     notifyListeners();
   }
 

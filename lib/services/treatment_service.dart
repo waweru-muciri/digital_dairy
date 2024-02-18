@@ -20,6 +20,26 @@ class TreatmentService {
         .toList());
   }
 
+  Future<List<Treatment>> getTreatmentsListBetweenDates(String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _treatmentReference
+          .where("treatment_date", isGreaterThanOrEqualTo: startDate)
+          .where("treatment_date", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _treatmentReference
+          .where("treatment_date", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
+  }
+
 //add a treatment
   Future<Treatment?> addTreatment(Treatment treatment) async {
     return await _treatmentReference

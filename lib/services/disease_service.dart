@@ -20,6 +20,26 @@ class DiseaseService {
         .toList());
   }
 
+  Future<List<Disease>> getDiseasesListBetweenDates(String startDate,
+      {String? endDate}) async {
+    if (startDate.isNotEmpty && endDate != null) {
+      return await _diseaseReference
+          .where("dateDiscovered", isGreaterThanOrEqualTo: startDate)
+          .where("dateDiscovered", isLessThanOrEqualTo: endDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    } else {
+      return await _diseaseReference
+          .where("dateDiscovered", isEqualTo: startDate)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs
+              .map((documentSnapshot) => documentSnapshot.data())
+              .toList());
+    }
+  }
+
 //add a disease
   Future<Disease?> addDisease(Disease disease) async {
     return await _diseaseReference

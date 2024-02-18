@@ -18,7 +18,7 @@ class VaccinationController with ChangeNotifier {
   // Allow Widgets to read the filtered vaccinations list.
   List<Vaccination> get vaccinationsList => _filteredVaccinationList;
 
-  void filterVaccinations(String? query) {
+  void filterVaccinationsByQueryString(String? query) {
     if (query != null && query.isNotEmpty) {
       List<Vaccination> fetchedList = _vaccinationList
           .where((item) => item.getVaccination
@@ -32,6 +32,17 @@ class VaccinationController with ChangeNotifier {
       _filteredVaccinationList.clear();
       _filteredVaccinationList.addAll(_vaccinationList);
     }
+    notifyListeners();
+  }
+
+  Future<void> filterVaccinationsByDate(String startDate,
+      {String? endDate}) async {
+    List<Vaccination> fetchedList = await _vaccinationService
+        .getVaccinationsListBetweenDates(startDate, endDate: endDate);
+    _vaccinationList.clear();
+    _filteredVaccinationList.clear();
+    _vaccinationList.addAll(fetchedList);
+    _filteredVaccinationList.addAll(fetchedList);
     notifyListeners();
   }
 

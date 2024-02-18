@@ -50,50 +50,38 @@ class ExpensesScreenState extends State<ExpensesScreen> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(mainAxisSize: MainAxisSize.max, children: [
           Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: Card(
-                child: Container(
-                    margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                    child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                  child: FilterInputField(
-                                      onQueryChanged: context
-                                          .read<ExpenseController>()
-                                          .filterExpenses)),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: getFilterIconButton(onPressed: () async {
-                                await showDatesFilterBottomSheet(
-                                        context,
-                                        _fromDateFilterController,
-                                        _toDateFilterController)
-                                    .then((Map<String, String>?
-                                        selectedDatesMap) {
-                                  if (selectedDatesMap != null) {
-                                    String startDate =
-                                        selectedDatesMap['start_date'] ?? '';
-                                    String endDate =
-                                        selectedDatesMap['start_date'] ?? '';
-                                    context
-                                        .read<ExpenseController>()
-                                        .filterExpenseByDates(startDate,
-                                            endDate: endDate);
-                                  }
-                                });
-                              }),
-                            )
-                          ],
-                        )))),
-          ),
+              margin: const EdgeInsets.fromLTRB(0, 6, 0, 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                      flex: 4,
+                      child: FilterInputField(
+                          onQueryChanged: context
+                              .read<ExpenseController>()
+                              .filterExpenses)),
+                  Expanded(
+                    flex: 1,
+                    child: getFilterIconButton(onPressed: () async {
+                      await showDatesFilterBottomSheet(
+                              context,
+                              _fromDateFilterController,
+                              _toDateFilterController)
+                          .then((Map<String, String>? selectedDatesMap) {
+                        if (selectedDatesMap != null) {
+                          String startDate =
+                              selectedDatesMap['start_date'] ?? '';
+                          String endDate = selectedDatesMap['end_date'] ?? '';
+                          context
+                              .read<ExpenseController>()
+                              .filterExpenseByDates(startDate,
+                                  endDate: endDate);
+                        }
+                      });
+                    }),
+                  ),
+                ],
+              )),
           Container(
               margin: const EdgeInsets.only(bottom: 10),
               child: Card(
