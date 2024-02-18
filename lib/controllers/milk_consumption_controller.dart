@@ -42,10 +42,24 @@ class MilkConsumptionController with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> filterMilkConsumptionsByDatesAndMilkConsumerId(
+      String startDate, String endDate, String clientId) async {
+    if (startDate.isNotEmpty && endDate.isNotEmpty && clientId.isNotEmpty) {
+      List<MilkConsumption> fetchedList = await _milkConsumptionService
+          .filterMilkConsumptionsByDatesAndMilkConsumerId(
+              startDate, endDate, clientId);
+      _milkConsumptionList.clear();
+      _filteredMilkConsumptionList.clear();
+      _milkConsumptionList.addAll(fetchedList);
+      _filteredMilkConsumptionList.addAll(fetchedList);
+      notifyListeners();
+    }
+  }
+
   Future<void> filterMilkConsumptionsByMilkConsumerId(
       String milkConsumerId) async {
     List<MilkConsumption> fetchedList = await _milkConsumptionService
-        .getMilkConsumptionsForClient(milkConsumerId);
+        .getMilkConsumptionsForMilkConsumer(milkConsumerId);
     _milkConsumptionList.clear();
     _filteredMilkConsumptionList.clear();
     _milkConsumptionList.addAll(fetchedList);

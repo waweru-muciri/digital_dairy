@@ -61,7 +61,7 @@ class ClientsMilkSalesStatementsScreenState
         .clientsList
         .firstWhereOrNull((client) => client.getId == widget.clientId);
 
-    _milkSalesList = context.watch<MilkSaleController>().milkSalesList.toList();
+    _milkSalesList = context.watch<MilkSaleController>().milkSalesList;
 
     _dataTableSource.setData(
         _milkSalesList, _sortColumnIndex, _sortColumnAscending);
@@ -92,13 +92,14 @@ class ClientsMilkSalesStatementsScreenState
                                 context,
                                 _fromDateFilterController,
                                 _toDateFilterController,
-                              ).then((Map<String, String>? selectedDatesMap) {
+                              ).then((Map<String, String>?
+                                  selectedDatesMap) async {
                                 if (selectedDatesMap != null) {
                                   String startDate =
                                       selectedDatesMap['start_date'] ?? '';
                                   String endDate =
                                       selectedDatesMap['end_date'] ?? '';
-                                  context
+                                  await context
                                       .read<MilkSaleController>()
                                       .filterMilkSalesByDatesAndClientId(
                                           startDate, endDate, widget.clientId);
@@ -126,7 +127,7 @@ class ClientsMilkSalesStatementsScreenState
                                       "No client found!"),
                               summaryTextDisplayRow("Total Quantity Sold:",
                                   "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Kgs"),
-                              summaryTextDisplayRow("Total Quantity Sold:",
+                              summaryTextDisplayRow("Total Sales:",
                                   "${context.read<MilkSaleController>().getTotalMilkSalesMoneyAmount} Ksh"),
                               summaryTextDisplayRow("Total Payments:",
                                   "${context.read<MilkSaleController>().getTotalMilkSalesKgsAmount} Ksh"),

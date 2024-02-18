@@ -3,6 +3,7 @@ import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:DigitalDairy/models/milk_consumption.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
@@ -10,7 +11,7 @@ import 'package:DigitalDairy/util/utils.dart';
 class MilkConsumersStatementsScreen extends StatefulWidget {
   const MilkConsumersStatementsScreen(
       {super.key, required this.milkConsumerId});
-  static const routePath = '/milk_consumers_statements';
+  static const routePath = '/milk_consumers_statements/:milkConsumerId';
   final String milkConsumerId;
 
   @override
@@ -19,13 +20,11 @@ class MilkConsumersStatementsScreen extends StatefulWidget {
 
 class MilkConsumersStatementsScreenState
     extends State<MilkConsumersStatementsScreen> {
-  late List<MilkConsumption> _milkConsumptionsList;
+  late List<MilkConsumption> _milkSalesList;
   final TextEditingController _fromDateFilterController =
       TextEditingController(text: getTodaysDateAsString());
   final TextEditingController _toDateFilterController =
       TextEditingController(text: getTodaysDateAsString());
-  final TextEditingController _milkConsumerController = TextEditingController();
-  late List<MilkConsumer> _milkConsumersList;
   MilkConsumer? selectedMilkConsumer;
 
   int _sortColumnIndex = 0;
@@ -37,9 +36,6 @@ class MilkConsumersStatementsScreenState
   void initState() {
     super.initState();
     _dataTableSource = _DataSource(context: context);
-    //get the list of milkConsumers
-    Future.microtask(
-        () => context.read<MilkConsumerController>().getMilkConsumers());
   }
 
   @override
@@ -54,130 +50,105 @@ class MilkConsumersStatementsScreenState
       _sortColumnIndex = columnIndex;
       _sortColumnAscending = ascending;
       _dataTableSource.setData(
-          _milkConsumptionsList, _sortColumnIndex, _sortColumnAscending);
+          _milkSalesList, _sortColumnIndex, _sortColumnAscending);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _milkConsumptionsList =
+    selectedMilkConsumer = context
+        .read<MilkConsumerController>()
+        .milkConsumersList
+        .firstWhereOrNull(
+            (milkconsumer) => milkconsumer.getId == widget.milkConsumerId);
+
+    _milkSalesList =
         context.watch<MilkConsumptionController>().milkConsumptionsList;
-    _milkConsumersList =
-        context.watch<MilkConsumerController>().milkConsumersList;
 
     _dataTableSource.setData(
-        _milkConsumptionsList, _sortColumnIndex, _sortColumnAscending);
+        _milkSalesList, _sortColumnIndex, _sortColumnAscending);
 
-    return SingleChildScrollView(
-        child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Column(mainAxisSize: MainAxisSize.max, children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: Card(
-              child: Container(
-                  margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: DropdownMenu<MilkConsumer>(
-                                controller: _milkConsumerController,
-                                requestFocusOnTap: true,
-                                initialSelection: selectedMilkConsumer,
-                                expandedInsets: EdgeInsets.zero,
-                                onSelected: (MilkConsumer? milkConsumer) {
-                                  setState(() {
-                                    selectedMilkConsumer = milkConsumer;
-                                  });
-                                },
-                                errorText: selectedMilkConsumer == null
-                                    ? 'Consumer cannot be empty!'
-                                    : null,
-                                enableFilter: true,
-                                enableSearch: true,
-                                inputDecorationTheme:
-                                    const InputDecorationTheme(
-                                        isDense: true,
-                                        border: OutlineInputBorder()),
-                                dropdownMenuEntries: _milkConsumersList
-                                    .map<DropdownMenuEntry<MilkConsumer>>(
-                                        (MilkConsumer milkConsumer) {
-                                  return DropdownMenuEntry<MilkConsumer>(
-                                    value: milkConsumer,
-                                    label: milkConsumer.getMilkConsumerName,
-                                    enabled: true,
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                              flex: 1,
-                              child: FilledButton(
-                                  child: const Text("Search"),
-                                  onPressed: () {
-                                    if (selectedMilkConsumer != null) {
-                                      String milkConsumerId =
-                                          '${selectedMilkConsumer!.getId}';
-                                      context
-                                          .read<MilkConsumptionController>()
-                                          .filterMilkConsumptionsByMilkConsumerId(
-                                              milkConsumerId);
-                                    }
-                                  })),
-                        ],
-                      )))),
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Milk Consumer Statement',
+          ),
         ),
-        getFilterIconButton(onPressed: () async {
-          await showDatesFilterBottomSheet(
-                  context, _fromDateFilterController, _toDateFilterController)
-              .then((Map<String, String>? selectedDatesMap) {
-            if (selectedDatesMap != null) {
-              String startDate = selectedDatesMap['start_date'] ?? '';
-              String endDate = selectedDatesMap['end_date'] ?? '';
-              context
-                  .read<MilkConsumptionController>()
-                  .filterMilkConsumptionsByDate(startDate, endDate: endDate);
-            }
-          });
-        }),
-        Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: Card(
-              child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      summaryTextDisplayRow("Total Quantity:",
-                          "${context.read<MilkConsumptionController>().getTotalMilkConsumptionKgsAmount} Kgs"),
+        body: SingleChildScrollView(
+            child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        InkWell(
+                            onTap: () async {
+                              await showDatesFilterBottomSheet(
+                                context,
+                                _fromDateFilterController,
+                                _toDateFilterController,
+                              ).then((Map<String, String>?
+                                  selectedDatesMap) async {
+                                if (selectedDatesMap != null) {
+                                  String startDate =
+                                      selectedDatesMap['start_date'] ?? '';
+                                  String endDate =
+                                      selectedDatesMap['end_date'] ?? '';
+                                  await context
+                                      .read<MilkConsumptionController>()
+                                      .filterMilkConsumptionsByDatesAndMilkConsumerId(
+                                          startDate,
+                                          endDate,
+                                          widget.milkConsumerId);
+                                }
+                              });
+                            },
+                            child: Text(
+                              '${_fromDateFilterController.text} - ${_toDateFilterController.text}',
+                              textAlign: TextAlign.right,
+                            ))
+                      ],
+                    )),
+                Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Card(
+                      child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              summaryTextDisplayRow(
+                                  "Consumer Name:",
+                                  selectedMilkConsumer?.getMilkConsumerName ??
+                                      "No Consumer found!"),
+                              summaryTextDisplayRow("Total Quantity Sold:",
+                                  "${context.read<MilkConsumptionController>().getTotalMilkConsumptionKgsAmount} Kgs"),
+                            ],
+                          )),
+                    )),
+                PaginatedDataTable(
+                    rowsPerPage: 20,
+                    availableRowsPerPage: const [20, 30, 50],
+                    sortColumnIndex: _sortColumnIndex,
+                    sortAscending: _sortColumnAscending,
+                    columns: [
+                      DataColumn(label: const Text("Date"), onSort: _sort),
+                      DataColumn(
+                          label: const Text("Milk Quantity (Kgs)"),
+                          numeric: true,
+                          onSort: _sort),
                     ],
-                  )),
-            )),
-        PaginatedDataTable(
-            header: const Text("Milk Consumption List"),
-            rowsPerPage: 20,
-            availableRowsPerPage: const [20, 30, 50],
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortColumnAscending,
-            columns: [
-              const DataColumn(label: Text("Name")),
-              DataColumn(label: const Text("Date"), onSort: _sort),
-              DataColumn(
-                  label: const Text("Total Consumption (Kgs)"),
-                  numeric: true,
-                  onSort: _sort),
-            ],
-            source: _dataTableSource)
-      ]),
-    ));
+                    source: _dataTableSource)
+              ]),
+        )));
   }
 }
 
@@ -194,11 +165,11 @@ class _DataSource extends DataTableSource {
         late final Comparable<Object> cellA;
         late final Comparable<Object> cellB;
         switch (sortColumn) {
-          case 1:
+          case 0:
             cellA = a.getMilkConsumptionDate;
             cellB = b.getMilkConsumptionDate;
             break;
-          case 2:
+          case 1:
             cellA = a.getMilkConsumptionAmount;
             cellB = b.getMilkConsumptionAmount;
             break;
@@ -214,7 +185,6 @@ class _DataSource extends DataTableSource {
     final item = sortedData[index];
 
     return DataRow(cells: [
-      DataCell(Text(item.getMilkConsumer.getMilkConsumerName)),
       DataCell(Text(item.getMilkConsumptionDate)),
       DataCell(Text('${item.getMilkConsumptionAmount}')),
     ]);

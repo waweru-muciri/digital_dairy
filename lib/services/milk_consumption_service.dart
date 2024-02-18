@@ -35,7 +35,19 @@ class MilkConsumptionService {
     }
   }
 
-  Future<List<MilkConsumption>> getMilkConsumptionsForClient(
+  Future<List<MilkConsumption>> filterMilkConsumptionsByDatesAndMilkConsumerId(
+      String startDate, String endDate, String clientId) async {
+    return await _milkConsumptionReference
+        .where("client_id", isEqualTo: clientId)
+        .where("milkConsumptionDate", isGreaterThanOrEqualTo: startDate)
+        .where("milkConsumptionDate", isLessThanOrEqualTo: endDate)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
+  }
+
+  Future<List<MilkConsumption>> getMilkConsumptionsForMilkConsumer(
       String milkConsumerId) async {
     return await _milkConsumptionReference
         .where("milk_consumer_id", isEqualTo: milkConsumerId)

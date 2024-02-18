@@ -43,45 +43,31 @@ class SemenCatalogsScreenState extends State<SemenCatalogsScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: Card(
-              child: Container(
-                  margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                  child: OutlinedButton.icon(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () => context
-                                        .pushNamed("addSemenCatalogDetails"),
-                                    label: const Text("New"),
-                                  )),
-                            ],
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: FilterInputField(
-                                  onQueryChanged: context
-                                      .read<SemenCatalogController>()
-                                      .filterSemenCatalogs)),
-                        ],
-                      )))),
-        ),
+            margin: const EdgeInsets.fromLTRB(0, 6, 0, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: FilterInputField(
+                        onQueryChanged: context
+                            .read<SemenCatalogController>()
+                            .filterSemenCatalogs)),
+              ],
+            )),
         PaginatedDataTable(
             header: const Text(DisplayTextUtil.semenCatalogsList),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,
             sortColumnIndex: 0,
+            actions: <Widget>[
+              OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                onPressed: () => context.pushNamed("addSemenCatalogDetails"),
+                label: const Text("New"),
+              )
+            ],
             columns: const [
               DataColumn(label: Text("Purchase Date")),
               DataColumn(label: Text("Bull Code")),

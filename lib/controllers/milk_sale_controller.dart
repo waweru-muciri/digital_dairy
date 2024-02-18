@@ -45,7 +45,7 @@ class MilkSaleController with ChangeNotifier {
     notifyListeners();
   }
 
-  void filterMilkSalesByDatesAndClientId(
+  Future<void> filterMilkSalesByDatesAndClientId(
       String startDate, String endDate, String clientId) async {
     if (startDate.isNotEmpty && endDate.isNotEmpty && clientId.isNotEmpty) {
       List<MilkSale> fetchedList = await _milkSaleService
