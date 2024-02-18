@@ -47,10 +47,9 @@ class MilkSaleService {
   Future<List<MilkSale>> filterMilkSalesByDatesAndClientId(
       String startDate, String endDate, String clientId) async {
     return await _milkSaleReference
-        .orderBy('milkSaleDate')
+        .where("client_id", isEqualTo: clientId)
         .where("milkSaleDate", isGreaterThanOrEqualTo: startDate)
         .where("milkSaleDate", isLessThanOrEqualTo: endDate)
-        .where("client_id", isEqualTo: clientId)
         .get()
         .then((querySnapshot) => querySnapshot.docs
             .map((documentSnapshot) => documentSnapshot.data())

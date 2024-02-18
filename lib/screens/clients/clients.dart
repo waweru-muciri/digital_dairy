@@ -1,5 +1,6 @@
 import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,7 @@ class ClientsScreenState extends State<ClientsScreen> {
             'Clients',
           ),
         ),
+        drawer: const MyDrawer(),
         body: Scaffold(
             body: SingleChildScrollView(
           child: Container(

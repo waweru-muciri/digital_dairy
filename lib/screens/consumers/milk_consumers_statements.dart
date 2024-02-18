@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class MilkConsumersStatementsScreen extends StatefulWidget {
-  const MilkConsumersStatementsScreen({super.key});
+  const MilkConsumersStatementsScreen(
+      {super.key, required this.milkConsumerId});
   static const routePath = '/milk_consumers_statements';
+  final String milkConsumerId;
 
   @override
   State<StatefulWidget> createState() => MilkConsumersStatementsScreenState();

@@ -4,8 +4,9 @@ import 'package:DigitalDairy/screens/breeding_management/pregnancy_diagnosis/pre
 import 'package:DigitalDairy/screens/clients/clients.dart';
 import 'package:DigitalDairy/screens/clients/clients_sales_statements.dart';
 import 'package:DigitalDairy/screens/clients/client_input.dart';
-import 'package:DigitalDairy/screens/consumers/consumers_tab_view.dart';
+import 'package:DigitalDairy/screens/consumers/milk_consumers.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
+import 'package:DigitalDairy/screens/consumers/milk_consumers_statements.dart';
 import 'package:DigitalDairy/screens/expenses_incomes/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_incomes/expenses_income_tabs.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
@@ -59,9 +60,16 @@ class AppRouter {
       ),
       //consumers route
       GoRoute(
-        name: "consumers",
-        path: "/consumers",
-        builder: (context, state) => const MilkConsumersTabView(),
+        name: "milk_consumers",
+        path: "/milk_consumers",
+        builder: (context, state) => const MilkConsumersScreen(),
+      ),
+      GoRoute(
+        name: "milk_consumers_statements",
+        path: MilkConsumersStatementsScreen.routePath,
+        builder: (context, state) => MilkConsumersStatementsScreen(
+          milkConsumerId: state.pathParameters["milkConsumerId"] ?? '',
+        ),
       ),
       //main milk production route
       GoRoute(
