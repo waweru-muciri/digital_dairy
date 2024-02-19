@@ -2,6 +2,7 @@ import 'package:DigitalDairy/controllers/milk_consumer_controller.dart';
 import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:DigitalDairy/models/milk_consumer.dart';
 import 'package:DigitalDairy/models/milk_consumption.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +75,7 @@ class MilkConsumersStatementsScreenState
             'Milk Consumer Statement',
           ),
         ),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
             child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

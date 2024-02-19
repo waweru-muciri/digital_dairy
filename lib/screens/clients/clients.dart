@@ -54,7 +54,7 @@ class ClientsScreenState extends State<ClientsScreen> {
                       onQueryChanged:
                           context.read<ClientController>().filterClients)),
               PaginatedDataTable(
-                  header: const Text("Clients List"),
+                  header: const Text("Clients"),
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
                   sortAscending: false,

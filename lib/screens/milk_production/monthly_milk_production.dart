@@ -147,7 +147,7 @@ class MonthlyMilkProductionScreenState
                       margin: const EdgeInsets.symmetric(vertical: 10.0),
                       child: PaginatedDataTable(
                           header: Text(
-                            "Month Milk Production List",
+                            "Month Milk Production",
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),

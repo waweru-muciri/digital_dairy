@@ -136,7 +136,7 @@ class MonthlyMilkSaleScreenState extends State<MonthlyMilkSalesScreen> {
                       margin: const EdgeInsets.symmetric(vertical: 10.0),
                       child: PaginatedDataTable(
                           header: Text(
-                            "Month Milk Sales List",
+                            "Month Milk Sales",
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),

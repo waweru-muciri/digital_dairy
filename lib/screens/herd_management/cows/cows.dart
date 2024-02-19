@@ -45,7 +45,7 @@ class CowsScreenState extends State<CowsScreen> {
         margin: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(mainAxisSize: MainAxisSize.max, children: [
           Container(
-              margin: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -69,7 +69,7 @@ class CowsScreenState extends State<CowsScreen> {
                 Expanded(
                     flex: 2,
                     child: Text(
-                      "Cows List",
+                      "${_cowList.length} Cows Found",
                       style: Theme.of(context).textTheme.titleLarge,
                     )),
                 Expanded(
@@ -89,9 +89,9 @@ class CowsScreenState extends State<CowsScreen> {
               separatorBuilder: (context, index) {
                 return const Divider();
               },
-              itemCount: _cowList.length * 10,
+              itemCount: _cowList.length,
               itemBuilder: (context, index) {
-                final cow = _cowList[0];
+                final cow = _cowList[index];
                 bool cowActiveStatus = cow.getActiveStatus;
                 final cowInitials = cow.getName.split(" ").fold('',
                     (previousValue, newValue) => previousValue + newValue[0]);

@@ -97,7 +97,7 @@ class ExpensesScreenState extends State<ExpensesScreen> {
                     )),
               )),
           PaginatedDataTable(
-              header: const Text("Expenses List"),
+              header: const Text("Expenses"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               sortAscending: false,

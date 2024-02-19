@@ -133,7 +133,7 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
                     )),
               )),
           PaginatedDataTable(
-              header: const Text("Milk Production List"),
+              header: const Text("Milk Production"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               actions: [

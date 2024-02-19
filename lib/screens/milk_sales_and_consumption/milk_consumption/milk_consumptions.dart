@@ -94,7 +94,7 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
                   )),
             )),
         PaginatedDataTable(
-            header: const Text("Milk Consumption List"),
+            header: const Text("Milk Consumption"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortAscending: false,

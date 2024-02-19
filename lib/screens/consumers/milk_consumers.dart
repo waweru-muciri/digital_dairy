@@ -57,7 +57,7 @@ class MilkConsumersScreenState extends State<MilkConsumersScreen> {
                           .read<MilkConsumerController>()
                           .filterMilkConsumers)),
               PaginatedDataTable(
-                  header: const Text("Milk Consumers List"),
+                  header: const Text("Milk Consumers"),
                   rowsPerPage: 20,
                   availableRowsPerPage: const [20, 30, 50],
                   sortAscending: false,

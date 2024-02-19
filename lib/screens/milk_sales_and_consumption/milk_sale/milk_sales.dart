@@ -107,7 +107,7 @@ class MilkSalesScreenState extends State<MilkSalesScreen> {
                   )),
             )),
         PaginatedDataTable(
-            header: const Text("Milk Sales List"),
+            header: const Text("Milk Sales"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortColumnIndex: _sortColumnIndex,

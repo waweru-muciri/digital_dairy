@@ -108,7 +108,7 @@ class IncomeScreenState extends State<IncomesScreen> {
                     )),
               )),
           PaginatedDataTable(
-              header: const Text("Incomes List"),
+              header: const Text("Incomes"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               sortAscending: false,

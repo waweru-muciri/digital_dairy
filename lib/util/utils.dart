@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 final DateTime todaysDate = DateTime.now();
+const String myDateFormat = "yyyy/MM/dd";
 
 enum MonthsOfTheYear {
   january("January", 1),
@@ -27,7 +28,7 @@ final List<String> namesOfMonthsInYearList =
 DateTime getDateFromString(String dateString) {
   late final DateTime date;
   try {
-    date = DateFormat("yyyy/MM/dd").parse(dateString);
+    date = DateFormat(myDateFormat).parse(dateString);
   } catch (e) {
     date = DateTime.now();
   }
@@ -35,16 +36,16 @@ DateTime getDateFromString(String dateString) {
 }
 
 String getTodaysDateAsString() {
-  return DateFormat("yyyy/MM/dd").format(todaysDate);
+  return DateFormat(myDateFormat).format(todaysDate);
 }
 
 String getStartOfMonthDateAsString() {
-  return DateFormat("yyyy/MM/dd")
+  return DateFormat(myDateFormat)
       .format(DateTime(todaysDate.year, todaysDate.month, 1));
 }
 
 String getEndOfMonthDateAsString() {
-  return DateFormat("yyyy/MM/dd")
+  return DateFormat(myDateFormat)
       .format(DateTime(todaysDate.year, (todaysDate.month + 1), 0));
 }
 
@@ -52,7 +53,7 @@ String getStringFromDate(DateTime? date) {
   final dateToFormat = date ?? DateTime.now();
   late final String dateString;
   try {
-    dateString = DateFormat("yyyy/MM/dd").format(dateToFormat);
+    dateString = DateFormat(myDateFormat).format(dateToFormat);
   } catch (e) {
     dateString = "";
   }

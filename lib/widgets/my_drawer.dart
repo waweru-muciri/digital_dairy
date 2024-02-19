@@ -76,7 +76,7 @@ class MyDrawer extends StatelessWidget {
             selected: selectedIndex == 4,
             onTap: () {
               context.read<SettingsController>().setSelectedIndex(4);
-              context.pushNamed("consumers");
+              context.pushNamed("milk_consumers");
               Navigator.pop(context);
             },
           ),

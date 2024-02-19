@@ -131,7 +131,7 @@ class MilkSalesPaymentsScreenState extends State<MilkSalesPaymentsScreen> {
                   )),
             )),
         PaginatedDataTable(
-            header: const Text("Payments List"),
+            header: const Text("Payments"),
             rowsPerPage: 20,
             availableRowsPerPage: const [20, 30, 50],
             sortColumnIndex: _sortColumnIndex,

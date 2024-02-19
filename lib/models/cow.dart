@@ -158,7 +158,7 @@ class Cow {
     int diffYears = diff.inDays ~/ 365;
     int diffMonths = diff.inDays ~/ 30;
 
-    return diffYears > 0 ? '$diffYears Yr(s)' : "$diffMonths Mon(s)";
+    return diffYears > 0 ? '$diffYears Yr(s)' : "$diffMonths Mo(s)";
   }
 
   String get cowName => '$_cowCode $_name ';

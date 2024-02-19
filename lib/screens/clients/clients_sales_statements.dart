@@ -2,6 +2,7 @@ import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/models/milk_sale.dart';
+import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,7 @@ class ClientsMilkSalesStatementsScreenState
             'Client Statement',
           ),
         ),
+        drawer: const MyDrawer(),
         body: SingleChildScrollView(
             child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

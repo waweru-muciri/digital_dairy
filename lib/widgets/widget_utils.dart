@@ -6,7 +6,7 @@ Chip getActiveStatusChip(BuildContext context, bool activeStatus) {
       backgroundColor: activeStatus
           ? Colors.tealAccent.withOpacity(0.1)
           : Colors.redAccent.withOpacity(0.1),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       side: ChipTheme.of(context)
           .copyWith(
               side: BorderSide(
@@ -15,6 +15,8 @@ Chip getActiveStatusChip(BuildContext context, bool activeStatus) {
                       : Colors.redAccent.withOpacity(0.3)))
           .side,
       labelPadding: const EdgeInsets.all(0),
+      visualDensity: const VisualDensity(horizontal: 0.0, vertical: -2),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       label: Text(
         activeStatus ? "Active" : "Inactive",
       ));
