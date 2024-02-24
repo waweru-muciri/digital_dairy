@@ -2,6 +2,7 @@ import 'package:DigitalDairy/screens/breeding_management/abortions_miscarriages/
 import 'package:DigitalDairy/screens/breeding_management/pregnancy_diagnosis/pregnancy_diagnosis.dart';
 import 'package:DigitalDairy/screens/breeding_management/semen/semen_catalogs.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
+import 'package:DigitalDairy/widgets/my_tab.dart';
 import 'package:flutter/material.dart';
 
 class BreedingManagementTabView extends StatelessWidget {
@@ -16,19 +17,28 @@ class BreedingManagementTabView extends StatelessWidget {
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
-          bottom: const TabBar(
+          bottom: TabBar(
             isScrollable: true,
-            tabs: [
-              Tab(
+            tabAlignment: TabAlignment.start,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border:
+                    Border.all(color: const Color.fromRGBO(0, 121, 107, 0.8))),
+            labelStyle: const TextStyle(
+              fontSize: 16,
+            ),
+            tabs: const [
+              MyTab(
                 text: "Semen Catalog",
               ),
-              Tab(
+              MyTab(
                 text: "AI Records",
               ),
-              Tab(
+              MyTab(
                 text: "Pregnancies",
               ),
-              Tab(
+              MyTab(
                 text: "Abortions/Miscarriages",
               ),
             ],

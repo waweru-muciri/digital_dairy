@@ -14,21 +14,20 @@ class MilkSalesConsumptionTabView extends StatelessWidget {
         drawer: const MyDrawer(),
         appBar: AppBar(
           bottom: TabBar(
-            indicatorColor: Colors.transparent,
-            // dividerColor: Colors.transparent,
+            dividerColor: Colors.transparent,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
             indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: const Color.fromRGBO(0, 121, 107, 0.8),
-                    style: BorderStyle.solid)),
+                border:
+                    Border.all(color: const Color.fromRGBO(0, 121, 107, 0.8))),
             labelStyle: const TextStyle(
               fontSize: 16,
             ),
             tabs: [
               Tab(
                 child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
                   decoration: const ShapeDecoration(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
@@ -42,8 +41,8 @@ class MilkSalesConsumptionTabView extends StatelessWidget {
               ),
               Tab(
                   child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 4),
                 alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
                 decoration: const ShapeDecoration(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
