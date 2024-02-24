@@ -1,6 +1,6 @@
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:DigitalDairy/services/milk_production_service.dart';
 import 'package:DigitalDairy/models/daily_milk_production.dart';
 
@@ -12,18 +12,16 @@ class MonthlyMilkProductionController with ChangeNotifier {
 
   final List<DailyMilkProduction> _monthMilkProductionList = [];
   final Map<String, double> _monthDailyMilkProductionList = {};
-  final Map<int, double> _yearMonthlyMilkProductionList = {};
-  final List<Map<String, dynamic>> _allCowsMonthMilkProductionTotalsList = [];
-  // Allow Widgets to read the filtered dailyMilkProductions list.
+  final List<Map<String, dynamic>> _cowsTotalDailyMilkProductionList = [];
+
   Map<String, double> get monthDailyMilkProductionsList =>
       _monthDailyMilkProductionList;
 
-  Map<int, double> get yearMonthlyMilkProductionsList =>
-      _yearMonthlyMilkProductionList;
   List<Map<String, dynamic>> get allCowsTotalMonthMilkProductionList =>
-      _allCowsMonthMilkProductionTotalsList;
+      _cowsTotalDailyMilkProductionList;
 
-  void groupMonthMilkProductionsByDate(List<DailyMilkProduction> fetchedList) {
+  Map<String, double> groupMonthMilkProductionsByDate(
+      List<DailyMilkProduction> fetchedList) {
     //group the milk productions for the month by each date of the month
     Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
         groupBy(fetchedList,
@@ -36,29 +34,14 @@ class MonthlyMilkProductionController with ChangeNotifier {
               (previousValue, milkProduction) =>
                   (previousValue + milkProduction.totalMilkQuantity));
     }
-    _monthDailyMilkProductionList.clear();
-    _monthDailyMilkProductionList.addAll(totalDailyMilkProductionList);
-    notifyListeners();
+    return totalDailyMilkProductionList;
   }
 
-  void getMonthDailyMilkProductions(
-      {required int year, required int month}) async {
-    DateTime monthStartDate = DateTime(year, month, 1);
-    DateTime monthEndDate = DateTime(year, month + 1, 0);
-    String monthStartDateString = getStringFromDate(monthStartDate);
-    String monthEndDateString = getStringFromDate(monthEndDate);
-    //get the milk production list for all the days of the month
-    List<DailyMilkProduction> fetchedList = await _dailyMilkProductionService
-        .getDailyMilkProductionsListBetweenDates(monthStartDateString,
-            endDate: monthEndDateString);
-    //add all the fetched milk productions to the local list for computations later
-    _monthMilkProductionList.clear();
-    _monthMilkProductionList.addAll(fetchedList);
-
-    //group milk productions by cow id
+  List<Map<String, dynamic>> groupMilkProductionsByCow(
+      List<DailyMilkProduction> fetchedList) {
     final cowsWithMilkData = fetchedList.map((e) => e.getCow).toSet();
-    List<Map<String, dynamic>> totalMonthMilkProductionGroupedByCow = groupBy(
-            fetchedList,
+
+    return groupBy(fetchedList,
             (dailyMilkProduction) => dailyMilkProduction.getCow.getId)
         .entries
         .map((e) => {
@@ -90,36 +73,30 @@ class MonthlyMilkProductionController with ChangeNotifier {
                   .toStringAsFixed(2),
             })
         .toList();
-    _allCowsMonthMilkProductionTotalsList.clear();
-    _allCowsMonthMilkProductionTotalsList
-        .addAll(totalMonthMilkProductionGroupedByCow);
-    notifyListeners();
-    groupMonthMilkProductionsByDate(fetchedList);
   }
 
-  void getYearMonthlyMilkProductions({required int year}) async {
-    DateTime yearStartDate = DateTime(year, 1, 1);
-    DateTime yearEndDate = DateTime(year + 1, 1, 0);
-    String yearStartDateString = getStringFromDate(yearStartDate);
-    String yearEndDateString = getStringFromDate(yearEndDate);
-    //get the milk production list for all the months of the year
+  Future<void> getMonthDailyMilkProductions(
+      {required int year, required int month}) async {
+    DateTime monthStartDate = DateTime(year, month, 1);
+    DateTime monthEndDate = DateTime(year, month + 1, 0);
+    String monthStartDateString = getStringFromDate(monthStartDate);
+    String monthEndDateString = getStringFromDate(monthEndDate);
+    //get the milk production list for all the days of the month
     List<DailyMilkProduction> fetchedList = await _dailyMilkProductionService
-        .getDailyMilkProductionsListBetweenDates(yearStartDateString,
-            endDate: yearEndDateString);
-    //group the milk productions by the month number
-    Map<int, List<DailyMilkProduction>> milkProductionsGroupedByMonth = groupBy(
-        fetchedList,
-        (dailyMilkProduction) =>
-            getDateFromString(dailyMilkProduction.getMilkProductionDate).month);
-    final Map<int, double> monthsMilkProductionList = {};
-    for (var monthMilkProduction in milkProductionsGroupedByMonth.entries) {
-      monthsMilkProductionList[monthMilkProduction.key] =
-          monthMilkProduction.value.fold(
-              0.0,
-              (previousValue, milkProduction) =>
-                  (previousValue + milkProduction.totalMilkQuantity));
-    }
-    _yearMonthlyMilkProductionList.addAll(monthsMilkProductionList);
+        .getDailyMilkProductionsListBetweenDates(monthStartDateString,
+            endDate: monthEndDateString);
+    //add all the fetched milk productions to the local list for computations later
+    _monthMilkProductionList.clear();
+    _monthMilkProductionList.addAll(fetchedList);
+    List<Map<String, dynamic>> milkProductionsGroupedByCow =
+        await compute(groupMilkProductionsByCow, fetchedList);
+    _cowsTotalDailyMilkProductionList.clear();
+    _cowsTotalDailyMilkProductionList.addAll(milkProductionsGroupedByCow);
+    //group milk productions by cow id
+    Map<String, double> milkProductionsGroupedByDate =
+        await compute(groupMonthMilkProductionsByDate, fetchedList);
+    _monthDailyMilkProductionList.clear();
+    _monthDailyMilkProductionList.addAll(milkProductionsGroupedByDate);
     notifyListeners();
   }
 
