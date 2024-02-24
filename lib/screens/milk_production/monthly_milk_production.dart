@@ -1,7 +1,6 @@
 import 'package:DigitalDairy/controllers/monthly_milk_production_controller.dart';
 import 'package:DigitalDairy/models/cow.dart';
 import 'package:DigitalDairy/screens/milk_production/month_milk_production_chart.dart';
-import 'package:DigitalDairy/screens/milk_production/year_milk_production_chart.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/month_filter_dialog.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
@@ -30,9 +29,6 @@ class MonthlyMilkProductionScreenState
     Future.microtask(() => context
         .read<MonthlyMilkProductionController>()
         .getMonthDailyMilkProductions(year: filterYear, month: filterMonth));
-    Future.microtask(() => context
-        .read<MonthlyMilkProductionController>()
-        .getYearMonthlyMilkProductions(year: filterYear));
   }
 
   @override
@@ -45,10 +41,6 @@ class MonthlyMilkProductionScreenState
     totalMonthMilkProductionGroupedByCow = context
         .watch<MonthlyMilkProductionController>()
         .allCowsTotalMonthMilkProductionList;
-
-    yearMilkProductionList = context
-        .watch<MonthlyMilkProductionController>()
-        .yearMonthlyMilkProductionsList;
 
     double monthTotalAmMilkProduction = context
         .read<MonthlyMilkProductionController>()
@@ -180,26 +172,6 @@ class MonthlyMilkProductionScreenState
                                   child: DailyMilkProductionChart())),
                         ],
                       )),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          "Year Milk Production Graph",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-                      SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Container(
-                              margin: const EdgeInsets.only(top: 30),
-                              child: YearMilkProductionChart(
-                                  yearMilkProductionList:
-                                      yearMilkProductionList))),
-                    ]),
-                  )
                 ]))));
   }
 }

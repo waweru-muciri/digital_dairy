@@ -25,7 +25,7 @@ import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_s
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sales_consumption_tabs.dart';
 import 'package:DigitalDairy/screens/milk_sales_payments/milk_sale_payment_input.dart';
 import 'package:go_router/go_router.dart';
-import 'package:DigitalDairy/screens/home_screen.dart';
+import 'package:DigitalDairy/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';

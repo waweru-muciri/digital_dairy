@@ -18,11 +18,13 @@ class MilkSalesConsumptionTabView extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(
-                text: "Sales",
-              ),
+                  child: Chip(
+                label: Text("Sales"),
+              )),
               Tab(
-                text: "Consumption",
-              ),
+                  child: Chip(
+                label: Text("Consumption"),
+              )),
             ],
           ),
           title: const Text('Milk Sales & Consumption'),
