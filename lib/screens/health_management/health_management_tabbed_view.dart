@@ -2,6 +2,7 @@ import 'package:DigitalDairy/screens/health_management/diseases/diseases.dart';
 import 'package:DigitalDairy/screens/health_management/treatments/treatments.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccinations.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
+import 'package:DigitalDairy/widgets/my_tab.dart';
 import 'package:flutter/material.dart';
 
 class HealthManagementTabView extends StatelessWidget {
@@ -10,20 +11,33 @@ class HealthManagementTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
-              Tab(
+          bottom: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border:
+                    Border.all(color: const Color.fromRGBO(0, 121, 107, 0.8))),
+            labelStyle: const TextStyle(
+              fontSize: 16,
+            ),
+            tabs: const [
+              MyTab(
                 text: "Diseases",
               ),
-              Tab(
+              MyTab(
                 text: "Vaccinations",
               ),
-              Tab(
+              MyTab(
                 text: "Treatments",
+              ),
+              MyTab(
+                text: "Cow Deaths",
               ),
             ],
           ),
@@ -34,6 +48,7 @@ class HealthManagementTabView extends StatelessWidget {
             DiseasesScreen(),
             VaccinationsScreen(),
             TreatmentsScreen(),
+            Text("Cow Deaths")
           ],
         ),
       ),

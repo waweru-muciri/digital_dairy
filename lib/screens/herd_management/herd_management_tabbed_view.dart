@@ -2,6 +2,7 @@ import 'package:DigitalDairy/screens/herd_management/cow-sales/cow_sales.dart';
 import 'package:DigitalDairy/screens/herd_management/cows/cows.dart';
 import 'package:DigitalDairy/screens/breeding_management/semen/semen_catalogs.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
+import 'package:DigitalDairy/widgets/my_tab.dart';
 import 'package:flutter/material.dart';
 
 class HerdManagementTabView extends StatelessWidget {
@@ -12,19 +13,26 @@ class HerdManagementTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
-              Tab(
+          bottom: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border:
+                    Border.all(color: const Color.fromRGBO(0, 121, 107, 0.8))),
+            labelStyle: const TextStyle(
+              fontSize: 16,
+            ),
+            tabs: const [
+              MyTab(
                 text: "Cows",
               ),
-              Tab(
-                text: "Calvings",
-              ),
-              Tab(
+              MyTab(
                 text: "Cow Sales",
               ),
             ],
@@ -34,7 +42,6 @@ class HerdManagementTabView extends StatelessWidget {
         body: const TabBarView(
           children: [
             CowsScreen(),
-            CowSalesScreen(),
             CowSalesScreen(),
           ],
         ),

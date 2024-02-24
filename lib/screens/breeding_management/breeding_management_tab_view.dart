@@ -13,7 +13,7 @@ class BreedingManagementTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
@@ -39,6 +39,9 @@ class BreedingManagementTabView extends StatelessWidget {
                 text: "Pregnancies",
               ),
               MyTab(
+                text: "Calvings",
+              ),
+              MyTab(
                 text: "Abortions/Miscarriages",
               ),
             ],
@@ -51,6 +54,7 @@ class BreedingManagementTabView extends StatelessWidget {
             Text("AI Records"),
             PregnancyDiagnosisScreen(),
             AbortionMiscarriagesScreen(),
+            Text("AI Records"),
           ],
         ),
       ),
