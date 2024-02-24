@@ -34,7 +34,7 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text(
-              'Dashboard',
+              'Home',
             ),
             selected: selectedIndex == 0,
             onTap: () {

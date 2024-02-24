@@ -12,10 +12,10 @@ class YearMilkProductionController with ChangeNotifier {
   final DailyMilkProductionService _dailyMilkProductionService =
       DailyMilkProductionService();
 
-  final Map<int, double> _yearYearMilkProductionList = {};
+  final Map<int, double> _yearMonthlyMilkProductionList = {};
 
   Map<int, double> get yearYearMilkProductionsList =>
-      _yearYearMilkProductionList;
+      _yearMonthlyMilkProductionList;
 
   Future<void> getYearMonthlyMilkProductions({required int year}) async {
     DateTime yearStartDate = DateTime(year, 1, 1);
@@ -42,7 +42,8 @@ class YearMilkProductionController with ChangeNotifier {
                 (previousValue, milkProduction) =>
                     (previousValue + milkProduction.totalMilkQuantity));
       }
-      _yearYearMilkProductionList.addAll(monthsMilkProductionList);
+      _yearMonthlyMilkProductionList.clear();
+      _yearMonthlyMilkProductionList.addAll(monthsMilkProductionList);
       notifyListeners();
     });
   }

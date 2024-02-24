@@ -1,3 +1,4 @@
+import 'package:DigitalDairy/controllers/year_milk_production_controller.dart';
 import 'package:DigitalDairy/screens/breeding_management/abortions_miscarriages/abortion_miscarriage_input.dart';
 import 'package:DigitalDairy/screens/breeding_management/breeding_management_tab_view.dart';
 import 'package:DigitalDairy/screens/breeding_management/pregnancy_diagnosis/pregnancy_diagnosis_input.dart';
@@ -30,6 +31,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:DigitalDairy/screens/expenses_incomes/income/income_input.dart';
+import 'package:provider/provider.dart';
 
 class AppRouter {
 // GoRouter configuration
@@ -43,7 +45,11 @@ class AppRouter {
       GoRoute(
         name: "dashboard",
         path: HomeScreen.routePath,
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) {
+          return ChangeNotifierProvider(
+              create: (context) => YearMilkProductionController(),
+              child: const HomeScreen());
+        },
       ),
       //clients route
       GoRoute(
