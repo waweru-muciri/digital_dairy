@@ -15,15 +15,27 @@ class MilkSalesConsumptionTabView extends StatelessWidget {
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            indicatorColor: Colors.transparent,
+            dividerColor: Colors.transparent,
+            indicator: BoxDecoration(
+                color: const Color.fromRGBO(0, 121, 107, 1),
+                borderRadius: BorderRadius.circular(20)),
+            labelStyle: const TextStyle(
+              color: Colors.white,
+            ),
+            // unselectedLabelColor: Colors.orange,
+            tabs: const [
               Tab(
-                  child: Chip(
-                label: Text("Sales"),
-              )),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Text("Sales"),
+                ),
+              ),
               Tab(
-                  child: Chip(
-                label: Text("Consumption"),
+                  child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text("Consumption"),
               )),
             ],
           ),

@@ -1,8 +1,6 @@
-import 'dart:isolate';
-
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:DigitalDairy/services/milk_production_service.dart';
 import 'package:DigitalDairy/models/daily_milk_production.dart';
 
@@ -26,25 +24,29 @@ class YearMilkProductionController with ChangeNotifier {
     List<DailyMilkProduction> fetchedList = await _dailyMilkProductionService
         .getDailyMilkProductionsListBetweenDates(yearStartDateString,
             endDate: yearEndDateString);
-    await Isolate.run(() {
-      //group the milk productions by the month number
-      Map<int, List<DailyMilkProduction>> milkProductionsGroupedByMonth =
-          groupBy(
-              fetchedList,
-              (dailyMilkProduction) =>
-                  getDateFromString(dailyMilkProduction.getMilkProductionDate)
-                      .month);
-      final Map<int, double> monthsMilkProductionList = {};
-      for (var monthMilkProduction in milkProductionsGroupedByMonth.entries) {
-        monthsMilkProductionList[monthMilkProduction.key] =
-            monthMilkProduction.value.fold(
-                0.0,
-                (previousValue, milkProduction) =>
-                    (previousValue + milkProduction.totalMilkQuantity));
-      }
-      _yearMonthlyMilkProductionList.clear();
-      _yearMonthlyMilkProductionList.addAll(monthsMilkProductionList);
-      notifyListeners();
-    });
+    Map<int, double> milkProductionGroupedByMonthMap =
+        await compute(groupMilkProductionsByMonth, fetchedList);
+    _yearMonthlyMilkProductionList.clear();
+    _yearMonthlyMilkProductionList.addAll(milkProductionGroupedByMonthMap);
+    notifyListeners();
   }
+}
+
+Map<int, double> groupMilkProductionsByMonth(
+    List<DailyMilkProduction> fetchedList) {
+  //group the milk productions by the month number
+  Map<int, List<DailyMilkProduction>> milkProductionsGroupedByMonth = groupBy(
+      fetchedList,
+      (dailyMilkProduction) =>
+          getDateFromString(dailyMilkProduction.getMilkProductionDate).month);
+  final Map<int, double> monthsMilkProductionList = {};
+  for (var monthMilkProduction in milkProductionsGroupedByMonth.entries) {
+    monthsMilkProductionList[monthMilkProduction.key] =
+        monthMilkProduction.value.fold(
+            0.0,
+            (previousValue, milkProduction) =>
+                (previousValue + milkProduction.totalMilkQuantity));
+  }
+
+  return monthsMilkProductionList;
 }

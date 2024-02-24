@@ -54,6 +54,7 @@ class YearMilkProductionChart extends StatelessWidget {
           x: index,
           barRods: [
             BarChartRodData(
+              width: 18,
               toY: monthMilkProduction.value,
               gradient: barsGradient(),
             )
@@ -89,7 +90,7 @@ class YearMilkProductionChart extends StatelessWidget {
                           return BarTooltipItem(
                             rod.toY.round().toString(),
                             const TextStyle(
-                              color: Colors.cyanAccent,
+                              color: Colors.lightGreen,
                               fontWeight: FontWeight.bold,
                             ),
                           );

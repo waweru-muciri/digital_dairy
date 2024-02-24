@@ -20,61 +20,6 @@ class MonthlyMilkProductionController with ChangeNotifier {
   List<Map<String, dynamic>> get allCowsTotalMonthMilkProductionList =>
       _cowsTotalDailyMilkProductionList;
 
-  Map<String, double> groupMonthMilkProductionsByDate(
-      List<DailyMilkProduction> fetchedList) {
-    //group the milk productions for the month by each date of the month
-    Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate =
-        groupBy(fetchedList,
-            (dailyMilkProduction) => dailyMilkProduction.getMilkProductionDate);
-    final Map<String, double> totalDailyMilkProductionList = {};
-    for (var dateMilkProduction in milkProductionsGroupedByDate.entries) {
-      totalDailyMilkProductionList[dateMilkProduction.key] =
-          dateMilkProduction.value.fold(
-              0.0,
-              (previousValue, milkProduction) =>
-                  (previousValue + milkProduction.totalMilkQuantity));
-    }
-    return totalDailyMilkProductionList;
-  }
-
-  List<Map<String, dynamic>> groupMilkProductionsByCow(
-      List<DailyMilkProduction> fetchedList) {
-    final cowsWithMilkData = fetchedList.map((e) => e.getCow).toSet();
-
-    return groupBy(fetchedList,
-            (dailyMilkProduction) => dailyMilkProduction.getCow.getId)
-        .entries
-        .map((e) => {
-              'cow': cowsWithMilkData
-                  .firstWhereOrNull((element) => element.getId == e.key),
-              'am_quantity': e.value
-                  .fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue + element.getAmQuantity)
-                  .toStringAsFixed(2),
-              'noon_quantity': e.value
-                  .fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue + element.getNoonQuantity)
-                  .toStringAsFixed(2),
-              'pm_quantity': e.value
-                  .fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue + element.getPmQuantity)
-                  .toStringAsFixed(2),
-              'total_quantity': e.value
-                  .fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue + element.totalMilkQuantity)
-                  .toStringAsFixed(2),
-            })
-        .toList();
-  }
-
   Future<void> getMonthDailyMilkProductions(
       {required int year, required int month}) async {
     DateTime monthStartDate = DateTime(year, month, 1);
@@ -115,4 +60,59 @@ class MonthlyMilkProductionController with ChangeNotifier {
       0,
       (previousValue, dailyMilkProduction) =>
           (previousValue + dailyMilkProduction.getPmQuantity));
+}
+
+Map<String, double> groupMonthMilkProductionsByDate(
+    List<DailyMilkProduction> fetchedList) {
+  //group the milk productions for the month by each date of the month
+  Map<String, List<DailyMilkProduction>> milkProductionsGroupedByDate = groupBy(
+      fetchedList,
+      (dailyMilkProduction) => dailyMilkProduction.getMilkProductionDate);
+  final Map<String, double> totalDailyMilkProductionList = {};
+  for (var dateMilkProduction in milkProductionsGroupedByDate.entries) {
+    totalDailyMilkProductionList[dateMilkProduction.key] =
+        dateMilkProduction.value.fold(
+            0.0,
+            (previousValue, milkProduction) =>
+                (previousValue + milkProduction.totalMilkQuantity));
+  }
+  return totalDailyMilkProductionList;
+}
+
+List<Map<String, dynamic>> groupMilkProductionsByCow(
+    List<DailyMilkProduction> fetchedList) {
+  final cowsWithMilkData = fetchedList.map((e) => e.getCow).toSet();
+
+  return groupBy(fetchedList,
+          (dailyMilkProduction) => dailyMilkProduction.getCow.getId)
+      .entries
+      .map((e) => {
+            'cow': cowsWithMilkData
+                .firstWhereOrNull((element) => element.getId == e.key),
+            'am_quantity': e.value
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue + element.getAmQuantity)
+                .toStringAsFixed(2),
+            'noon_quantity': e.value
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue + element.getNoonQuantity)
+                .toStringAsFixed(2),
+            'pm_quantity': e.value
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue + element.getPmQuantity)
+                .toStringAsFixed(2),
+            'total_quantity': e.value
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue + element.totalMilkQuantity)
+                .toStringAsFixed(2),
+          })
+      .toList();
 }

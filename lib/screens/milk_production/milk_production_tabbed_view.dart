@@ -15,6 +15,7 @@ class MilkProductionTabView extends StatelessWidget {
         drawer: const MyDrawer(),
         appBar: AppBar(
           bottom: const TabBar(
+            dividerHeight: null,
             isScrollable: false,
             tabs: [
               Tab(
