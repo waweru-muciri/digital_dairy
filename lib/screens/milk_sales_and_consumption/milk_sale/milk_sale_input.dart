@@ -127,8 +127,16 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                  isDense: true, border: OutlineInputBorder()),
+                              inputDecorationTheme: InputDecorationTheme(
+                                isDense: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                              ),
                               dropdownMenuEntries: _clientsList
                                   .map<DropdownMenuEntry<Client>>(
                                       (Client client) {

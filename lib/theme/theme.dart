@@ -21,7 +21,7 @@ final ThemeData myTheme = ThemeData(
   hintColor: const Color(0x99000000),
   hoverColor: const Color(0x0a000000),
   iconTheme: const IconThemeData(color: Color(0xdd000000)),
-  inputDecorationTheme: const InputDecorationTheme(
+  inputDecorationTheme: InputDecorationTheme(
       filled: false,
       alignLabelWithHint: false,
       floatingLabelAlignment: FloatingLabelAlignment.start,

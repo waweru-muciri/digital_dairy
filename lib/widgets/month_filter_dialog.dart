@@ -53,8 +53,14 @@ class ScreenState extends State<FilterByDatesOrMonthDialog> {
                           }
                           return "Year is required!";
                         },
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
                           isDense: true,
                         ))),
                 Padding(
@@ -64,8 +70,15 @@ class ScreenState extends State<FilterByDatesOrMonthDialog> {
                       value: _selectedMonth,
                       isDense: true,
                       iconEnabledColor: Colors.green,
-                      decoration:
-                          const InputDecoration(border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                      ),
                       items: MonthsOfTheYear.values
                           .map<DropdownMenuItem<int>>((month) =>
                               DropdownMenuItem<int>(

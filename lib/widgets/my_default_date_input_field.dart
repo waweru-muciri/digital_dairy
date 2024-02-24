@@ -18,8 +18,14 @@ class MyDefaultDateInputTextField extends StatelessWidget {
           validator: validator,
           readOnly: true,
           decoration: InputDecoration(
-            border: const OutlineInputBorder(),
             isDense: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: const BorderSide(
+                width: 0,
+                style: BorderStyle.solid,
+              ),
+            ),
             suffixIcon: IconButton(
                 onPressed: () async {
                   final DateTime? pickedDateTime = await showCustomDatePicker(

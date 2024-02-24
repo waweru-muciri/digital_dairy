@@ -204,8 +204,15 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                         return 'Amount cannot be empty';
                                       },
                                       keyboardType: TextInputType.number,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          borderSide: const BorderSide(
+                                            width: 0,
+                                            style: BorderStyle.solid,
+                                          ),
+                                        ),
                                         isDense: true,
                                       ),
                                     )),
@@ -223,8 +230,15 @@ class MilkSalePaymentFormState extends State<MilkSalePaymentInputScreen> {
                                     child: TextFormField(
                                       controller: _detailsController,
                                       keyboardType: TextInputType.text,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          borderSide: const BorderSide(
+                                            width: 0,
+                                            style: BorderStyle.solid,
+                                          ),
+                                        ),
                                         isDense: true,
                                       ),
                                     ))

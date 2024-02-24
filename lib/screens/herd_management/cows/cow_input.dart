@@ -172,8 +172,15 @@ class CowInputFormState extends State<CowInputScreen> {
                                 value: _selectedCowBreed,
                                 isDense: true,
                                 iconEnabledColor: Colors.green,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder()),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: const BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                ),
                                 items: CowBreed.values
                                     .map<DropdownMenuItem<String>>((cowBreed) =>
                                         DropdownMenuItem<String>(
@@ -204,8 +211,15 @@ class CowInputFormState extends State<CowInputScreen> {
                                 value: _selectedCowType,
                                 isDense: true,
                                 iconEnabledColor: Colors.green,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder()),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: const BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                ),
                                 items: CowType.values
                                     .map<DropdownMenuItem<String>>((cowType) =>
                                         DropdownMenuItem<String>(
@@ -236,8 +250,15 @@ class CowInputFormState extends State<CowInputScreen> {
                                 value: _selectedCowGrade,
                                 isDense: true,
                                 iconEnabledColor: Colors.green,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder()),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: const BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                ),
                                 items: CowGrade.values
                                     .map<DropdownMenuItem<String>>((cowGrade) =>
                                         DropdownMenuItem<String>(
@@ -297,8 +318,16 @@ class CowInputFormState extends State<CowInputScreen> {
                               },
                               enableFilter: true,
                               enableSearch: true,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                  isDense: true, border: OutlineInputBorder()),
+                              inputDecorationTheme: InputDecorationTheme(
+                                isDense: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                              ),
                               dropdownMenuEntries: _cowsList
                                   .map<DropdownMenuEntry<Cow>>((Cow cow) {
                                 return DropdownMenuEntry<Cow>(

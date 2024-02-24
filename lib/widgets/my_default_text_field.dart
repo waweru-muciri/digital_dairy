@@ -24,9 +24,14 @@ class MyDefaultTextField extends StatelessWidget {
             minLines: minLines,
             maxLines: maxLines,
             validator: validator,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              isDense: true,
-            )));
+            decoration: InputDecoration(
+                isDense: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    width: 0,
+                    style: BorderStyle.solid,
+                  ),
+                ))));
   }
 }

@@ -134,8 +134,16 @@ class MilkConsumptionFormState extends State<MilkConsumptionInputScreen> {
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                  isDense: true, border: OutlineInputBorder()),
+                              inputDecorationTheme: InputDecorationTheme(
+                                isDense: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                              ),
                               dropdownMenuEntries: _milkConsumersList
                                   .map<DropdownMenuEntry<MilkConsumer>>(
                                       (MilkConsumer milkConsumer) {

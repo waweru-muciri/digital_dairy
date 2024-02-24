@@ -143,8 +143,16 @@ class AbortionMiscarriageFormState
                                   : null,
                               enableFilter: true,
                               enableSearch: true,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                  isDense: true, border: OutlineInputBorder()),
+                              inputDecorationTheme: InputDecorationTheme(
+                                isDense: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                              ),
                               dropdownMenuEntries: _cowsList
                                   .map<DropdownMenuEntry<Cow>>((Cow cow) {
                                 return DropdownMenuEntry<Cow>(
@@ -167,8 +175,15 @@ class AbortionMiscarriageFormState
                                 value: _abortionOrMiscarriage,
                                 isDense: true,
                                 iconEnabledColor: Colors.green,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder()),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: const BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                ),
                                 items: AbortionOrMiscarriage.values
                                     .map<DropdownMenuItem<String>>(
                                         (abortionOrMiscarriage) =>

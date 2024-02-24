@@ -99,8 +99,14 @@ class MilkConsumerFormState extends State<MilkConsumerInputScreen> {
                                 }
                                 return null;
                               },
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
                               ),
                             ),
                           ),

@@ -1,7 +1,5 @@
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_consumption/milk_consumptions.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/milk_sales.dart';
-import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/monthly_milk_sales.dart';
-import 'package:DigitalDairy/screens/milk_sales_payments/milk_sales_payments.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -17,29 +15,48 @@ class MilkSalesConsumptionTabView extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             indicatorColor: Colors.transparent,
-            dividerColor: Colors.transparent,
+            // dividerColor: Colors.transparent,
             indicator: BoxDecoration(
-                color: const Color.fromRGBO(0, 121, 107, 1),
-                borderRadius: BorderRadius.circular(20)),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                    color: const Color.fromRGBO(0, 121, 107, 0.8),
+                    style: BorderStyle.solid)),
             labelStyle: const TextStyle(
-              color: Colors.white,
+              fontSize: 16,
             ),
-            // unselectedLabelColor: Colors.orange,
-            tabs: const [
+            tabs: [
               Tab(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: Text("Sales"),
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  decoration: const ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    color: Color.fromRGBO(0, 121, 107, 0.1),
+                  ),
+                  child: const Text("Sales"),
                 ),
               ),
               Tab(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text("Consumption"),
+                  child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  color: Color.fromRGBO(0, 121, 107, 0.1),
+                ),
+                child: const Text("Consumption"),
               )),
             ],
           ),
-          title: const Text('Milk Sales & Consumption'),
+          title: const Text("Milk Sales & Consumption"),
         ),
         body: const TabBarView(
           children: [
