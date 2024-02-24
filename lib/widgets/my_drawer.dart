@@ -39,7 +39,7 @@ class MyDrawer extends StatelessWidget {
             selected: selectedIndex == 0,
             onTap: () {
               context.read<SettingsController>().setSelectedIndex(0);
-              context.pushNamed("dashboard");
+              context.pushNamed("home");
               //close the drawer
               Navigator.pop(context);
             },

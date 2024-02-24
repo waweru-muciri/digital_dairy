@@ -33,14 +33,20 @@ class YearMilkProductionChart extends StatelessWidget {
     );
   }
 
-  LinearGradient get _barsGradient => const LinearGradient(
-        colors: [
-          Colors.blue,
-          Colors.cyanAccent,
-        ],
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-      );
+  Color get getRandomColor =>
+      Color((math.Random().nextDouble() * 0xFFFFFF).toInt());
+
+  LinearGradient barsGradient() {
+    final Color barsColor = getRandomColor;
+    return LinearGradient(
+      colors: [
+        barsColor.withOpacity(0.2),
+        barsColor.withOpacity(1.0),
+      ],
+      begin: Alignment.bottomCenter,
+      end: Alignment.topCenter,
+    );
+  }
 
   List<BarChartGroupData> get barGroups => yearMilkProductionList.entries
       .mapIndexed(
@@ -49,7 +55,7 @@ class YearMilkProductionChart extends StatelessWidget {
           barRods: [
             BarChartRodData(
               toY: monthMilkProduction.value,
-              gradient: _barsGradient,
+              gradient: barsGradient(),
             )
           ],
           showingTooltipIndicators: [0],

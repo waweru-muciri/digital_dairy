@@ -83,7 +83,7 @@ class DailyMilkProductionChart extends StatelessWidget {
                       isStrokeCapRound: true,
                       barWidth: 3,
                       belowBarData: BarAreaData(
-                        show: false,
+                        show: true,
                       ),
                       dotData: const FlDotData(show: true),
                     ),

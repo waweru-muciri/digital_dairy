@@ -43,7 +43,7 @@ class AppRouter {
           builder: (context, state) => const FirebaseSignInScreen()),
       //dashboard route
       GoRoute(
-        name: "dashboard",
+        name: "home",
         path: HomeScreen.routePath,
         builder: (context, state) {
           return ChangeNotifierProvider(
