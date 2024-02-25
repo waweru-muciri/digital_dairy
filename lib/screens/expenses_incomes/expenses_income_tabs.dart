@@ -15,7 +15,7 @@ class ExpensesIncomesTabView extends StatelessWidget {
         drawer: const MyDrawer(),
         appBar: AppBar(
           bottom: TabBar(
-            isScrollable: true,
+            isScrollable: false,
             dividerColor: Colors.transparent,
             tabAlignment: TabAlignment.start,
             indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
