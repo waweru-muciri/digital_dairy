@@ -53,30 +53,43 @@ class HomeScreenState extends State<HomeScreen> {
         drawer: const MyDrawer(),
         body: SingleChildScrollView(
             child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "Year Milk Production Graph",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: Column(children: <Widget>[
+                  Container(
+                      margin: const EdgeInsets.only(bottom: 10.0),
+                      child: Column(children: [
+                        Text(
+                          "Year Milk Production Graph",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
+                                margin: const EdgeInsets.only(top: 40),
+                                child: YearMilkProductionChart(
+                                    yearMilkProductionList:
+                                        yearMilkProductionList))),
+                      ])),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(children: [
+                      Text(
+                        "Year Milk Sales Graph",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Container(
+                              margin: const EdgeInsets.only(top: 40),
+                              child: YearMilkProductionChart(
+                                  yearMilkProductionList:
+                                      yearMilkProductionList))),
+                    ]),
                   ),
-                  SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                          margin: const EdgeInsets.only(top: 30),
-                          child: YearMilkProductionChart(
-                              yearMilkProductionList: yearMilkProductionList))),
-                ]),
-              )
-            ],
-          ),
-        )));
+                ]))));
   }
 }

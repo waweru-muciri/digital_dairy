@@ -17,6 +17,7 @@ class HealthManagementTabView extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             isScrollable: true,
+            dividerColor: Colors.transparent,
             tabAlignment: TabAlignment.start,
             indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
             indicator: BoxDecoration(

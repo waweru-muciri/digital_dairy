@@ -4,10 +4,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class YearMilkProductionChart extends StatelessWidget {
-  const YearMilkProductionChart(
-      {super.key, required this.yearMilkProductionList});
-  final Map<int, double> yearMilkProductionList;
+class YearMilkSalesChart extends StatelessWidget {
+  const YearMilkSalesChart({super.key, required this.yearMilkSalesList});
+  final Map<int, double> yearMilkSalesList;
 
   Widget bottomTitleWidgets(double value, TitleMeta meta, double chartWidth) {
     const style = TextStyle(
@@ -48,14 +47,14 @@ class YearMilkProductionChart extends StatelessWidget {
     );
   }
 
-  List<BarChartGroupData> get barGroups => yearMilkProductionList.entries
+  List<BarChartGroupData> get barGroups => yearMilkSalesList.entries
       .mapIndexed(
-        (index, monthMilkProduction) => BarChartGroupData(
+        (index, monthMilkSales) => BarChartGroupData(
           x: index,
           barRods: [
             BarChartRodData(
               width: 18,
-              toY: monthMilkProduction.value,
+              toY: monthMilkSales.value,
               gradient: barsGradient(),
             )
           ],
@@ -101,7 +100,7 @@ class YearMilkProductionChart extends StatelessWidget {
                   titlesData: FlTitlesData(
                     leftTitles: AxisTitles(
                       axisNameSize: 20,
-                      axisNameWidget: const Text("Milk Quantity (Kgs)"),
+                      axisNameWidget: const Text("Sales (Kshs)"),
                       sideTitles: SideTitles(
                         showTitles: true,
                         getTitlesWidget: (value, meta) =>
