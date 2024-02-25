@@ -12,7 +12,7 @@ class YearMilkProductionController with ChangeNotifier {
 
   final Map<int, double> _yearMonthlyMilkProductionList = {};
 
-  Map<int, double> get yearYearMilkProductionsList =>
+  Map<int, double> get yearMilkProductionsList =>
       _yearMonthlyMilkProductionList;
 
   Future<void> getYearMonthlyMilkProductions({required int year}) async {

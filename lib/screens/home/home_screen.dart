@@ -1,5 +1,7 @@
 import 'package:DigitalDairy/controllers/year_milk_production_controller.dart';
+import 'package:DigitalDairy/controllers/year_milk_sales_controller.dart';
 import 'package:DigitalDairy/screens/home/year_milk_production_chart.dart';
+import 'package:DigitalDairy/screens/home/year_milk_sales_chart.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,8 @@ class HomeScreenState extends State<HomeScreen> {
       TextEditingController(text: getTodaysDateAsString());
   late TextEditingController _cowNameController;
 
-  late Map<int, double> yearMilkProductionList;
+  late Map<int, double> yearMilkProductionChartList;
+  late Map<int, double> yearChartMilkSaleList;
   late int filterYear = DateTime.now().year;
 
   @override
@@ -29,6 +32,9 @@ class HomeScreenState extends State<HomeScreen> {
     Future.microtask(() => context
         .read<YearMilkProductionController>()
         .getYearMonthlyMilkProductions(year: filterYear));
+    Future.microtask(() => context
+        .read<YearMilkSaleController>()
+        .getYearMonthlyMilkSales(year: filterYear));
   }
 
   @override
@@ -40,9 +46,11 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    yearMilkProductionList = context
-        .watch<YearMilkProductionController>()
-        .yearYearMilkProductionsList;
+    yearMilkProductionChartList =
+        context.watch<YearMilkProductionController>().yearMilkProductionsList;
+
+    yearChartMilkSaleList =
+        context.watch<YearMilkSaleController>().yearYearMilkSalesList;
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -71,7 +79,7 @@ class HomeScreenState extends State<HomeScreen> {
                                 margin: const EdgeInsets.only(top: 40),
                                 child: YearMilkProductionChart(
                                     yearMilkProductionList:
-                                        yearMilkProductionList))),
+                                        yearMilkProductionChartList))),
                       ])),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 20),
@@ -85,9 +93,8 @@ class HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Container(
                               margin: const EdgeInsets.only(top: 40),
-                              child: YearMilkProductionChart(
-                                  yearMilkProductionList:
-                                      yearMilkProductionList))),
+                              child: YearMilkSalesChart(
+                                  yearMilkSalesList: yearChartMilkSaleList))),
                     ]),
                   ),
                 ]))));
