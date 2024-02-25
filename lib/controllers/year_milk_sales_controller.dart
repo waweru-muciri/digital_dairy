@@ -4,8 +4,8 @@ import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
-class YearMilkSaleController with ChangeNotifier {
-  YearMilkSaleController();
+class YearMilkSalesController with ChangeNotifier {
+  YearMilkSalesController();
 
   final MilkSaleService _milkSaleService = MilkSaleService();
 

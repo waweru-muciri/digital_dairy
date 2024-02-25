@@ -33,7 +33,7 @@ class HomeScreenState extends State<HomeScreen> {
         .read<YearMilkProductionController>()
         .getYearMonthlyMilkProductions(year: filterYear));
     Future.microtask(() => context
-        .read<YearMilkSaleController>()
+        .read<YearMilkSalesController>()
         .getYearMonthlyMilkSales(year: filterYear));
   }
 
@@ -50,7 +50,7 @@ class HomeScreenState extends State<HomeScreen> {
         context.watch<YearMilkProductionController>().yearMilkProductionsList;
 
     yearChartMilkSaleList =
-        context.watch<YearMilkSaleController>().yearYearMilkSalesList;
+        context.watch<YearMilkSalesController>().yearYearMilkSalesList;
     return Scaffold(
         appBar: AppBar(
           title: const Text(

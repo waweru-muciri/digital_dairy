@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/controllers/year_milk_production_controller.dart';
+import 'package:DigitalDairy/controllers/year_milk_sales_controller.dart';
 import 'package:DigitalDairy/screens/breeding_management/abortions_miscarriages/abortion_miscarriage_input.dart';
 import 'package:DigitalDairy/screens/breeding_management/breeding_management_tab_view.dart';
 import 'package:DigitalDairy/screens/breeding_management/pregnancy_diagnosis/pregnancy_diagnosis_input.dart';
@@ -46,9 +47,12 @@ class AppRouter {
         name: "home",
         path: HomeScreen.routePath,
         builder: (context, state) {
-          return ChangeNotifierProvider(
-              create: (context) => YearMilkProductionController(),
-              child: const HomeScreen());
+          return MultiProvider(providers: [
+            ChangeNotifierProvider(
+                create: (context) => YearMilkProductionController()),
+            ChangeNotifierProvider(
+                create: (context) => YearMilkSalesController())
+          ], child: const HomeScreen());
         },
       ),
       //clients route

@@ -66,9 +66,6 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
           TextEditingValue(text: _milkSaleToEdit?.getMilkSaleDate ?? '');
       _milkSaleAmountController.value = TextEditingValue(
           text: _milkSaleToEdit?.getMilkSaleQuantity.toString() ?? '');
-      setState(() {
-        selectedClient = _milkSaleToEdit?.getClient;
-      });
     }
 
     return Scaffold(
@@ -115,7 +112,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                             child: DropdownMenu<Client>(
                               controller: _clientFilterController,
                               requestFocusOnTap: true,
-                              initialSelection: selectedClient,
+                              initialSelection: editMilkSaleId != null
+                                  ? _milkSaleToEdit?.getClient
+                                  : selectedClient,
                               expandedInsets: EdgeInsets.zero,
                               onSelected: (Client? client) {
                                 setState(() {
