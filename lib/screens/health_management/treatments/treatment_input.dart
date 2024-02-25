@@ -98,7 +98,7 @@ class TreatmentFormState extends State<TreatmentInputScreen> {
             child: Form(
           key: _formKey,
           child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,

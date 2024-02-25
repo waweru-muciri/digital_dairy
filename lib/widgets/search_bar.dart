@@ -6,11 +6,15 @@ class FilterInputField extends StatelessWidget {
   final void Function(String) onQueryChanged;
   @override
   Widget build(BuildContext context) {
-    return PhysicalModel(
-      elevation: 8,
-      shadowColor: Colors.grey.withOpacity(0.8),
-      color: Colors.grey.withOpacity(0.8),
-      borderRadius: BorderRadius.circular(30.0),
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.8),
+                spreadRadius: 1,
+                blurRadius: 7)
+          ]),
       child: TextFormField(
           onChanged: onQueryChanged,
           decoration: InputDecoration(

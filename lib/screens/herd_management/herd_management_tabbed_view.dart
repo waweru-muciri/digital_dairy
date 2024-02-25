@@ -19,7 +19,6 @@ class HerdManagementTabView extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             dividerColor: Colors.transparent,
-            tabAlignment: TabAlignment.start,
             indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
             indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),

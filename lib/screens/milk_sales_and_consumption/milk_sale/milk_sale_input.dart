@@ -66,6 +66,9 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
           TextEditingValue(text: _milkSaleToEdit?.getMilkSaleDate ?? '');
       _milkSaleAmountController.value = TextEditingValue(
           text: _milkSaleToEdit?.getMilkSaleQuantity.toString() ?? '');
+      setState(() {
+        selectedClient = _milkSaleToEdit?.getClient;
+      });
     }
 
     return Scaffold(
@@ -80,7 +83,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
             child: Form(
           key: _formKey,
           child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -112,9 +115,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                             child: DropdownMenu<Client>(
                               controller: _clientFilterController,
                               requestFocusOnTap: true,
-                              initialSelection: editMilkSaleId != null
-                                  ? _milkSaleToEdit?.getClient
-                                  : selectedClient,
+                              initialSelection: selectedClient,
                               expandedInsets: EdgeInsets.zero,
                               onSelected: (Client? client) {
                                 setState(() {
@@ -143,6 +144,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                   value: client,
                                   label: client.clientName,
                                   enabled: true,
+                                  labelWidget: Text(client.clientName),
                                 );
                               }).toList(),
                             ),

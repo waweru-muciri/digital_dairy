@@ -98,7 +98,7 @@ class DailyMilkProductionFormState
             child: Form(
           key: _formKey,
           child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -158,6 +158,7 @@ class DailyMilkProductionFormState
                                 return DropdownMenuEntry<Cow>(
                                   value: cow,
                                   label: cow.cowName,
+                                  labelWidget: Text(cow.cowName),
                                   enabled: true,
                                 );
                               }).toList(),
