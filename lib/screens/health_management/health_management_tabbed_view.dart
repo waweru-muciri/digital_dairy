@@ -1,3 +1,4 @@
+import 'package:DigitalDairy/screens/health_management/cow_deaths/cow_deaths.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/diseases.dart';
 import 'package:DigitalDairy/screens/health_management/treatments/treatments.dart';
 import 'package:DigitalDairy/screens/health_management/vaccinations/vaccinations.dart';
@@ -49,7 +50,7 @@ class HealthManagementTabView extends StatelessWidget {
             DiseasesScreen(),
             VaccinationsScreen(),
             TreatmentsScreen(),
-            Text("Cow Deaths")
+            CowDeathsScreen()
           ],
         ),
       ),

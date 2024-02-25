@@ -1,5 +1,6 @@
 class DisplayTextUtil {
   static const cowDetails = "Cow Details";
+  static const cowDeathDetails = "Cow Death Details";
   static const aiRecordDetails = "AI Record Details";
   static const abortionMiscarriageDetails = "Diagnosis Details";
   static const pregnancyDiagnosisDetails = "Diagnosis Details";
@@ -28,4 +29,5 @@ class DisplayTextUtil {
   static const calvingsList = "Calvings";
   static const abortionsList = "Abortions";
   static const miscarriagesList = "Miscarriages";
+  static const cowDeathsList = "Cow Deaths";
 }

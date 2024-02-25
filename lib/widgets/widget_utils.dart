@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/util/utils.dart';
+import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 Chip getActiveStatusChip(BuildContext context, bool activeStatus) {
@@ -33,14 +34,14 @@ Future<void> showDeleteItemDialog(
         content: const Text(
             'Permanently delete this item? This action cannot be undone!'),
         actions: <Widget>[
-          OutlinedButton(
-            child: const Text('Cancel'),
+          CancelButton(
+            text: 'Cancel',
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
-          FilledButton(
-            child: const Text('Delete Item'),
+          DeleteButton(
+            text: 'Delete Item',
             onPressed: () async {
               Navigator.of(context).pop();
               await deleteItemFuture();
@@ -57,19 +58,19 @@ Future<void> showLoadingDialog(BuildContext context) async {
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
-      return Dialog(
-          // title: Center(child: Text("Loading...")),
-          child: SizedBox(
-              height: 200.0,
-              width: 200.0,
-              child: Transform.scale(
-                scale: 0.3,
-                child: const CircularProgressIndicator(
-                  value: null,
-                  semanticsLabel: "Loading",
-                  strokeWidth: 6,
-                ),
-              )));
+      return const AlertDialog(
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              width: 150,
+              height: 150,
+              child: CircularProgressIndicator(),
+            ),
+          ],
+        ),
+      );
     },
   );
 }

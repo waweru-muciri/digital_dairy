@@ -15,7 +15,7 @@ class SaveButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           )),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-              const EdgeInsets.symmetric(vertical: 14, horizontal: 20)),
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 20)),
           textStyle:
               MaterialStateProperty.all<TextStyle>(const TextStyle().copyWith(
             fontSize: 18,
@@ -40,13 +40,14 @@ class DeleteButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           )),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-              const EdgeInsets.symmetric(vertical: 14, horizontal: 20)),
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 20)),
           textStyle:
               MaterialStateProperty.all<TextStyle>(const TextStyle().copyWith(
-            fontSize: 16,
-          ))),
-      child: Text(text ?? "Delete",
-          style: const TextStyle(color: Colors.redAccent)),
+            fontSize: 18,
+          )),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent)),
+      child:
+          Text(text ?? "Delete", style: const TextStyle(color: Colors.white)),
     );
   }
 }
@@ -66,7 +67,7 @@ class CancelButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           )),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 20)),
           textStyle:
               MaterialStateProperty.all<TextStyle>(const TextStyle().copyWith(
             fontSize: 16,
