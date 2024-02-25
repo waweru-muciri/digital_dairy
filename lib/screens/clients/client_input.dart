@@ -81,12 +81,12 @@ class ClientFormState extends State<ClientInputScreen> {
           child: Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
               child: Column(
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 36),
+                          const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.center,

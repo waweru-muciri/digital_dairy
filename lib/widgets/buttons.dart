@@ -15,10 +15,10 @@ class SaveButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           )),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+              const EdgeInsets.symmetric(vertical: 14, horizontal: 20)),
           textStyle:
               MaterialStateProperty.all<TextStyle>(const TextStyle().copyWith(
-            fontSize: 16,
+            fontSize: 18,
           ))),
       child: Text(text ?? "Save Details"),
     );
@@ -40,7 +40,7 @@ class DeleteButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           )),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+              const EdgeInsets.symmetric(vertical: 14, horizontal: 20)),
           textStyle:
               MaterialStateProperty.all<TextStyle>(const TextStyle().copyWith(
             fontSize: 16,

@@ -101,7 +101,7 @@ class VaccinationFormState extends State<VaccinationInputScreen> {
                 children: [
                   Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 36),
+                          const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.center,
