@@ -84,14 +84,11 @@ class DailyMilkProductionScreenState extends State<DailyMilkProductionScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  flex: 4,
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: FilterInputField(
-                          onQueryChanged: context
-                              .read<DailyMilkProductionController>()
-                              .filterDailyMilkProductionsByCowName)),
-                ),
+                    flex: 4,
+                    child: FilterInputField(
+                        onQueryChanged: context
+                            .read<DailyMilkProductionController>()
+                            .filterDailyMilkProductionsByCowName)),
                 Expanded(
                   flex: 1,
                   child: getFilterIconButton(onPressed: () async {

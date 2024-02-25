@@ -68,10 +68,7 @@ class MonthlyMilkProductionScreenState
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: Column(mainAxisSize: MainAxisSize.max, children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 16,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[

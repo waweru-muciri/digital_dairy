@@ -50,7 +50,7 @@ class MilkConsumptionsScreenState extends State<MilkConsumptionsScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 6),
+          margin: const EdgeInsets.only(bottom: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

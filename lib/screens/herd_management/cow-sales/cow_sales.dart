@@ -45,7 +45,7 @@ class CowSalesScreenState extends State<CowSalesScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Container(
-            margin: const EdgeInsets.fromLTRB(0, 6, 0, 10),
+            margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

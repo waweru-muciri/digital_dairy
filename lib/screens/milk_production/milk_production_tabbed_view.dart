@@ -1,6 +1,7 @@
 import 'package:DigitalDairy/screens/milk_production/daily_milk_production.dart';
 import 'package:DigitalDairy/screens/milk_production/monthly_milk_production.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
+import 'package:DigitalDairy/widgets/my_tab.dart';
 import 'package:flutter/material.dart';
 
 class MilkProductionTabView extends StatelessWidget {
@@ -14,14 +15,22 @@ class MilkProductionTabView extends StatelessWidget {
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: AppBar(
-          bottom: const TabBar(
-            dividerHeight: null,
-            isScrollable: false,
-            tabs: [
-              Tab(
+          bottom: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border:
+                    Border.all(color: const Color.fromRGBO(0, 121, 107, 0.8))),
+            labelStyle: const TextStyle(
+              fontSize: 16,
+            ),
+            tabs: const [
+              MyTab(
                 text: "Daily Milk Production",
               ),
-              Tab(
+              MyTab(
                 text: "Monthly Milk Production",
               ),
             ],

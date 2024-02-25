@@ -49,7 +49,7 @@ class ClientsScreenState extends State<ClientsScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(mainAxisSize: MainAxisSize.max, children: [
               Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                   child: FilterInputField(
                       onQueryChanged:
                           context.read<ClientController>().filterClients)),

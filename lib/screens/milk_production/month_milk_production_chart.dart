@@ -32,6 +32,15 @@ class DailyMilkProductionChart extends StatelessWidget {
     );
   }
 
+  LinearGradient get _lineGradient => LinearGradient(
+        colors: [
+          Colors.greenAccent.withOpacity(0.2),
+          Colors.greenAccent.withOpacity(1.0),
+        ],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+      );
+
   @override
   Widget build(BuildContext context) {
     monthDailyMilkProductionList = context
@@ -56,12 +65,10 @@ class DailyMilkProductionChart extends StatelessWidget {
                   lineTouchData: LineTouchData(
                     touchTooltipData: LineTouchTooltipData(
                       maxContentWidth: 100,
-                      tooltipBgColor: Colors.greenAccent,
+                      tooltipBgColor: Colors.lightGreen,
                       getTooltipItems: (touchedSpots) {
                         return touchedSpots.map((LineBarSpot touchedSpot) {
-                          final textStyle = TextStyle(
-                            color: touchedSpot.bar.gradient?.colors[0] ??
-                                touchedSpot.bar.color,
+                          const textStyle = TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           );
@@ -77,14 +84,15 @@ class DailyMilkProductionChart extends StatelessWidget {
                   ),
                   lineBarsData: [
                     LineChartBarData(
-                      color: Colors.blue,
+                      color: Colors.greenAccent,
                       spots: spots,
                       isCurved: true,
                       isStrokeCapRound: true,
                       barWidth: 3,
                       belowBarData: BarAreaData(
-                        show: true,
-                      ),
+                          show: true,
+                          color: Colors.greenAccent,
+                          gradient: _lineGradient),
                       dotData: const FlDotData(show: true),
                     ),
                   ],

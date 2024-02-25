@@ -90,7 +90,6 @@ class YearMilkProductionChart extends StatelessWidget {
                           return BarTooltipItem(
                             rod.toY.round().toString(),
                             const TextStyle(
-                              color: Colors.lightGreen,
                               fontWeight: FontWeight.bold,
                             ),
                           );
