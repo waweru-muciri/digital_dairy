@@ -48,6 +48,21 @@ class DailyMilkProductionController with ChangeNotifier {
     notifyListeners();
   }
 
+  Map<String, double> getTotalDayMilkProductionInfo() {
+    double totalAmQuanity = getTotalAmMilkProductionQuantity;
+    double totalNoonQuanity = getTotalNoonMilkProductionQuantity;
+    double totalPmQuanity = getTotalPmMilkProductionQuantity;
+    double totalMilkQuantity =
+        totalAmQuanity + totalNoonQuanity + totalPmQuanity;
+
+    return {
+      'am_total': totalAmQuanity,
+      'noon_quantity': totalNoonQuanity,
+      'pm_quantity': totalPmQuanity,
+      'total_quantity': totalMilkQuantity
+    };
+  }
+
   double get getTotalAmMilkProductionQuantity =>
       _filteredDailyMilkProductionList.fold(
           0,
