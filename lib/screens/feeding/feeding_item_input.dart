@@ -11,6 +11,9 @@ import 'package:provider/provider.dart';
 class FeedingItemInputScreen extends StatefulWidget {
   const FeedingItemInputScreen({super.key, this.editFeedingItemId});
   final String? editFeedingItemId;
+  static const String addDetailsRoutePath = "/add_feeding_item_details";
+  static const String editDetailsRoutePath =
+      "/edit_feeding_item_details/:editFeedingItemId";
 
   @override
   FeedingItemFormState createState() {

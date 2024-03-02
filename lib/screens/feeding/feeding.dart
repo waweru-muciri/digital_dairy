@@ -47,7 +47,7 @@ class FeedingsScreenState extends State<FeedingsScreen> {
                       .read<FeedingItemController>()
                       .filterFeedingItems)),
           PaginatedDataTable(
-              header: const Text("Feeding Items"),
+              header: const Text("Feed Items"),
               rowsPerPage: 20,
               availableRowsPerPage: const [20, 30, 50],
               sortAscending: false,
@@ -60,7 +60,7 @@ class FeedingsScreenState extends State<FeedingsScreen> {
                 )
               ],
               columns: const [
-                DataColumn(label: Text("Name")),
+                DataColumn(label: Text("Item Name")),
                 DataColumn(label: Text("Current quantity")),
                 DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
                 DataColumn(label: Text("Edit")),
@@ -94,7 +94,7 @@ class _DataSource extends DataTableSource {
           ),
           onTap: () => context.pushNamed("feedingItemsStatements",
               pathParameters: {"feedingItemId": '${feedingItem.getId}'})),
-      DataCell(Text(feedingItem.getLocation)),
+      DataCell(Text('${feedingItem.getCurrentQuantity}')),
       DataCell(Text('${feedingItem.getUnitPrice}')),
       DataCell(const Icon(Icons.edit),
           onTap: () => context.pushNamed("editFeedingItemDetails",

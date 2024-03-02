@@ -11,6 +11,7 @@ import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers_statements.dart';
 import 'package:DigitalDairy/screens/expenses_incomes/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_incomes/expenses_income_tabs.dart';
+import 'package:DigitalDairy/screens/feeding/feeding_item_input.dart';
 import 'package:DigitalDairy/screens/feeding/feeding_tabbed_view.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
 import 'package:DigitalDairy/screens/health_management/health_management_tabbed_view.dart';
@@ -116,6 +117,20 @@ class AppRouter {
       //     editMilkSalePaymentId: state.pathParameters["editMilkSalePaymentId"],
       //   ),
       // ),
+      //add & edit daily milk production routes
+      GoRoute(
+        name: "addFeedingItemDetails",
+        path: FeedingItemInputScreen.addDetailsRoutePath,
+        builder: (context, state) => const FeedingItemInputScreen(),
+      ),
+      //add & edit diseases routes
+      GoRoute(
+        name: "editFeedingItemDetails",
+        path: FeedingItemInputScreen.editDetailsRoutePath,
+        builder: (context, state) => FeedingItemInputScreen(
+          editFeedingItemId: state.pathParameters["editFeedingItemId"],
+        ),
+      ),
       //add & edit daily milk production routes
       GoRoute(
         name: "addDailyMilkProductionDetails",
