@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'screens/app.dart';
 import 'controllers/settings_controller.dart';
-import 'services/settings_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 

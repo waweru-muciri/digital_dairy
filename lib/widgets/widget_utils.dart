@@ -59,14 +59,15 @@ Future<void> showLoadingDialog(BuildContext context) async {
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return const AlertDialog(
+        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 6),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             SizedBox(
-              width: 150,
-              height: 150,
-              child: CircularProgressIndicator(),
+              width: 100,
+              height: 100,
+              child: CircularProgressIndicator(strokeWidth: 4),
             ),
           ],
         ),
@@ -181,7 +182,7 @@ Future<Map<String, String>?> showDatesFilterBottomSheet(
                 alignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FilledButton(
-                      child: const Text('Reset'),
+                      child: const Text('Cancel'),
                       onPressed: () {
                         Navigator.pop(context);
                       }),

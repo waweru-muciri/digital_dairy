@@ -169,64 +169,66 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                       )),
                   SaveButton(
                       onPressed: () async {
-                        // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState!.validate()) {
-                          //show a loading dialog to the user while we save the info
-                          showLoadingDialog(context);
-                          double milkSaleQuantity = double.parse(
-                              _milkSaleAmountController.text.trim());
-                          MilkSale newMilkSale = MilkSale();
-                          newMilkSale.setMilkSaleQuantity = milkSaleQuantity;
-                          newMilkSale.setMilkSaleDate =
-                              _milkSaleDateController.text;
-                          newMilkSale.setClient = selectedClient!;
-                          newMilkSale.setUnitPrice =
-                              selectedClient!.getUnitPrice;
+                        if (selectedClient != null) {
+                          // Validate returns true if the form is valid, or false otherwise.
+                          if (_formKey.currentState!.validate()) {
+                            //show a loading dialog to the user while we save the info
+                            showLoadingDialog(context);
+                            double milkSaleQuantity = double.parse(
+                                _milkSaleAmountController.text.trim());
+                            MilkSale newMilkSale = MilkSale();
+                            newMilkSale.setMilkSaleQuantity = milkSaleQuantity;
+                            newMilkSale.setMilkSaleDate =
+                                _milkSaleDateController.text;
+                            newMilkSale.setClient = selectedClient!;
+                            newMilkSale.setUnitPrice =
+                                selectedClient!.getUnitPrice;
 
-                          if (editMilkSaleId != null) {
-                            newMilkSale.setId = editMilkSaleId;
-                            //update the milk sale details in the db
-                            await context
-                                .read<MilkSaleController>()
-                                .editMilkSale(newMilkSale)
-                                .then((value) {
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  successSnackBar(
-                                      "Milk sale edited successfully!"));
-                            }).catchError((error) {
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  errorSnackBar("Saving failed!"));
-                            });
-                          } else {
-                            //add the client in the db
-                            await context
-                                .read<MilkSaleController>()
-                                .addMilkSale(newMilkSale)
-                                .then((value) {
-                              //reset the form
-                              _clientFilterController.clear();
-                              setState(() {
-                                selectedClient = null;
+                            if (editMilkSaleId != null) {
+                              newMilkSale.setId = editMilkSaleId;
+                              //update the milk sale details in the db
+                              await context
+                                  .read<MilkSaleController>()
+                                  .editMilkSale(newMilkSale)
+                                  .then((value) {
+                                //remove the loading dialog
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    successSnackBar(
+                                        "Milk sale edited successfully!"));
+                              }).catchError((error) {
+                                //remove the loading dialog
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    errorSnackBar("Saving failed!"));
                               });
-                              _milkSaleAmountController.clear();
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              //show a snackbar showing the user that saving has been successful
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  successSnackBar(
-                                      "Milk sale added successfully."));
-                            }).catchError((error) {
-                              debugPrint("Error saving milk sale!");
-                              debugPrint(error);
-                              //remove the loading dialog
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  errorSnackBar("Saving failed!"));
-                            });
+                            } else {
+                              //add the client in the db
+                              await context
+                                  .read<MilkSaleController>()
+                                  .addMilkSale(newMilkSale)
+                                  .then((value) {
+                                //reset the form
+                                _clientFilterController.clear();
+                                setState(() {
+                                  selectedClient = null;
+                                });
+                                _milkSaleAmountController.clear();
+                                //remove the loading dialog
+                                Navigator.of(context).pop();
+                                //show a snackbar showing the user that saving has been successful
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    successSnackBar(
+                                        "Milk sale added successfully."));
+                              }).catchError((error) {
+                                debugPrint("Error saving milk sale!");
+                                debugPrint(error);
+                                //remove the loading dialog
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    errorSnackBar("Saving failed!"));
+                              });
+                            }
                           }
                         }
                       },

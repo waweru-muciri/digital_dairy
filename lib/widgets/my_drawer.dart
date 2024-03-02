@@ -63,26 +63,8 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Clients'),
-            selected: selectedIndex == 3,
-            onTap: () {
-              context.read<SettingsController>().setSelectedIndex(3);
-              context.pushNamed("clients");
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Consumers'),
-            selected: selectedIndex == 4,
-            onTap: () {
-              context.read<SettingsController>().setSelectedIndex(4);
-              context.pushNamed("milk_consumers");
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
             title: const Text('Herd Management'),
-            selected: selectedIndex == 5,
+            selected: selectedIndex == 3,
             onTap: () {
               context.read<SettingsController>().setSelectedIndex(5);
               context.pushNamed("herd_management");
@@ -91,7 +73,7 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Breeding'),
-            selected: selectedIndex == 6,
+            selected: selectedIndex == 4,
             onTap: () {
               context.read<SettingsController>().setSelectedIndex(6);
               context.pushNamed("breeding_management");
@@ -100,10 +82,28 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Health Management'),
-            selected: selectedIndex == 7,
+            selected: selectedIndex == 5,
             onTap: () {
               context.read<SettingsController>().setSelectedIndex(7);
               context.pushNamed("healthManagement");
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Clients'),
+            selected: selectedIndex == 6,
+            onTap: () {
+              context.read<SettingsController>().setSelectedIndex(3);
+              context.pushNamed("clients");
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Consumers'),
+            selected: selectedIndex == 7,
+            onTap: () {
+              context.read<SettingsController>().setSelectedIndex(4);
+              context.pushNamed("milk_consumers");
               Navigator.pop(context);
             },
           ),
@@ -113,6 +113,24 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               context.read<SettingsController>().setSelectedIndex(8);
               context.pushNamed("expenses_incomes");
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Feeding'),
+            selected: selectedIndex == 9,
+            onTap: () {
+              context.read<SettingsController>().setSelectedIndex(8);
+              context.pushNamed("feeding");
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Alerts'),
+            selected: selectedIndex == 10,
+            onTap: () {
+              context.read<SettingsController>().setSelectedIndex(8);
+              context.pushNamed("alerts");
               Navigator.pop(context);
             },
           ),

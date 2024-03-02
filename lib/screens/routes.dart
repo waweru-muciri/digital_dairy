@@ -55,6 +55,18 @@ class AppRouter {
           ], child: const HomeScreen());
         },
       ),
+      //feeding route
+      GoRoute(
+        name: "feeding",
+        path: "/feeding",
+        builder: (context, state) => const ClientsScreen(),
+      ),
+      //alerts route
+      GoRoute(
+        name: "alerts",
+        path: "/alerts",
+        builder: (context, state) => const ClientsScreen(),
+      ),
       //clients route
       GoRoute(
         name: "clients",

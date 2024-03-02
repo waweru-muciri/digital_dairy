@@ -2,6 +2,7 @@ import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:DigitalDairy/controllers/cow_abortion_miscarriage_controller.dart';
 import 'package:DigitalDairy/controllers/cow_calving_controller.dart';
 import 'package:DigitalDairy/controllers/cow_controller.dart';
+import 'package:DigitalDairy/controllers/cow_death_controller.dart';
 import 'package:DigitalDairy/controllers/cow_sale_controller.dart';
 import 'package:DigitalDairy/controllers/disease_controller.dart';
 import 'package:DigitalDairy/controllers/expense_controller.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
                 create: (_) => MonthlyMilkProductionController()),
             ChangeNotifierProvider(create: (_) => MonthlyMilkSaleController()),
+            ChangeNotifierProvider(create: (_) => CowDeathController()),
           ],
           builder: (context, child) {
             return MaterialApp.router(
