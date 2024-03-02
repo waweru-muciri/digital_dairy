@@ -1,41 +1,43 @@
 import 'package:DigitalDairy/models/feeding_item.dart';
 import "db_service.dart";
 
-/// A service that gets, updates and deletes client information.
+/// A service that gets, updates and deletes feedingItem information.
 ///
 class FeedingItemService {
   // Create a CollectionReference called milk_production that references the firestore collection
-  final _clientReference = DbService.currentUserDbReference
+  final _feedingItemReference = DbService.currentUserDbReference
       .collection('feeding_items')
       .withConverter<FeedingItem>(
         fromFirestore: FeedingItem.fromFirestore,
-        toFirestore: (FeedingItem client, _) => client.toFirestore(),
+        toFirestore: (FeedingItem feedingItem, _) => feedingItem.toFirestore(),
       );
 
-  /// Loads the clients list from firebase firestore.
+  /// Loads the feedingItems list from firebase firestore.
   Future<List<FeedingItem>> getFeedingItemsList() async {
-    return await _clientReference.get().then((querySnapshot) => querySnapshot
-        .docs
-        .map((documentSnapshot) => documentSnapshot.data())
-        .toList());
+    return await _feedingItemReference.get().then((querySnapshot) =>
+        querySnapshot.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList());
   }
 
-//add a client
-  Future<FeedingItem?> addFeedingItem(FeedingItem client) async {
-    return await _clientReference
-        .add(client)
+//add a feedingItem
+  Future<FeedingItem?> addFeedingItem(FeedingItem feedingItem) async {
+    return await _feedingItemReference
+        .add(feedingItem)
         .then((docRef) => docRef.get())
         .then((docSnap) => docSnap.data());
   }
 
-//add a client
-  Future<void> deleteFeedingItem(FeedingItem client) async {
-    return await _clientReference.doc(client.getId).delete();
+//add a feedingItem
+  Future<void> deleteFeedingItem(FeedingItem feedingItem) async {
+    return await _feedingItemReference.doc(feedingItem.getId).delete();
   }
 
-//update a client
-  Future<FeedingItem> editFeedingItem(FeedingItem client) async {
-    await _clientReference.doc(client.getId).update(client.toFirestore());
-    return client;
+//update a feedingItem
+  Future<FeedingItem> editFeedingItem(FeedingItem feedingItem) async {
+    await _feedingItemReference
+        .doc(feedingItem.getId)
+        .update(feedingItem.toFirestore());
+    return feedingItem;
   }
 }

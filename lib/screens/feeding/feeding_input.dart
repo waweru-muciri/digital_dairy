@@ -1,37 +1,38 @@
-import 'package:DigitalDairy/models/client.dart';
+import 'package:DigitalDairy/controllers/feeding_item_controller.dart';
+import 'package:DigitalDairy/models/feeding_item.dart';
 import 'package:DigitalDairy/widgets/buttons.dart';
 import 'package:DigitalDairy/widgets/my_default_text_field.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/snackbars.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:DigitalDairy/controllers/client_controller.dart';
 import 'package:provider/provider.dart';
 
-class ClientInputScreen extends StatefulWidget {
-  const ClientInputScreen({super.key, this.editClientId});
-  final String? editClientId;
+class FeedingItemInputScreen extends StatefulWidget {
+  const FeedingItemInputScreen({super.key, this.editFeedingItemId});
+  final String? editFeedingItemId;
 
   @override
-  ClientFormState createState() {
-    return ClientFormState();
+  FeedingItemFormState createState() {
+    return FeedingItemFormState();
   }
 }
 
-class ClientFormState extends State<ClientInputScreen> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _contactsController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
+class FeedingItemFormState extends State<FeedingItemInputScreen> {
+  final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _alertQuantityController =
+      TextEditingController();
+  final TextEditingController _currentQuantityController =
+      TextEditingController();
   final TextEditingController _unitPriceController =
       TextEditingController(text: "0");
-  Client? _clientToEdit;
+  FeedingItem? _feedingItemToEdit;
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
   // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<ClientFormState>.
+  // not a GlobalKey<FeedingItemFormState>.
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -41,38 +42,38 @@ class ClientFormState extends State<ClientInputScreen> {
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _contactsController.dispose();
-    _locationController.dispose();
+    _itemNameController.dispose();
+    _alertQuantityController.dispose();
+    _currentQuantityController.dispose();
     _unitPriceController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    String? editClientId = widget.editClientId;
-    if (editClientId != null) {
-      final clientsList = context.read<ClientController>().clientsList;
-      _clientToEdit = clientsList.firstWhereOrNull(
-        (client) => client.getId == editClientId,
+    String? editFeedingItemId = widget.editFeedingItemId;
+    if (editFeedingItemId != null) {
+      final feedingItemsList =
+          context.read<FeedingItemController>().feedingItemsList;
+      _feedingItemToEdit = feedingItemsList.firstWhereOrNull(
+        (feedingItem) => feedingItem.getId == editFeedingItemId,
       );
-      _firstNameController.value =
-          TextEditingValue(text: _clientToEdit?.getFirstName ?? '');
-      _lastNameController.value =
-          TextEditingValue(text: _clientToEdit?.getLastName ?? '');
-      _contactsController.value =
-          TextEditingValue(text: _clientToEdit?.getContacts ?? '');
-      _locationController.value =
-          TextEditingValue(text: _clientToEdit?.getLocation ?? '');
-      _unitPriceController.value =
-          TextEditingValue(text: _clientToEdit?.getUnitPrice.toString() ?? '');
+      _alertQuantityController.value = TextEditingValue(
+          text: _feedingItemToEdit?.getAlertQuantity.toString() ?? '');
+      _itemNameController.value =
+          TextEditingValue(text: _feedingItemToEdit?.getName ?? '');
+      _currentQuantityController.value = TextEditingValue(
+          text: _feedingItemToEdit?.getCurrentQuantity.toString() ?? '');
+      _unitPriceController.value = TextEditingValue(
+          text: _feedingItemToEdit?.getUnitPrice.toString() ?? '');
     }
 
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            editClientId != null ? 'Edit Client Details' : 'Add Client Details',
+            editFeedingItemId != null
+                ? 'Edit Feeding Item Details'
+                : 'Add Feeding Item Details',
           ),
         ),
         body: SingleChildScrollView(
@@ -94,43 +95,32 @@ class ClientFormState extends State<ClientInputScreen> {
                         children: [
                           inputFieldLabel(
                             context,
-                            "First Name",
+                            "Name",
                           ),
                           MyDefaultTextField(
-                            controller: _firstNameController,
+                            controller: _itemNameController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'First name cannot be empty';
+                                return 'Item name cannot be empty';
                               }
                               return null;
                             },
                           ),
                           inputFieldLabel(
                             context,
-                            "Last Name",
+                            "Current Quantity",
                           ),
                           MyDefaultTextField(
-                            controller: _lastNameController,
+                            controller: _currentQuantityController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Last name cannot be empty';
+                                return 'Quantity cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Quantity must be a number";
                               }
                               return null;
                             },
-                          ),
-                          inputFieldLabel(
-                            context,
-                            "Contacts",
-                          ),
-                          MyDefaultTextField(
-                            controller: _contactsController,
-                          ),
-                          inputFieldLabel(
-                            context,
-                            "Location",
-                          ),
-                          MyDefaultTextField(
-                            controller: _locationController,
+                            keyboardType: TextInputType.number,
                           ),
                           inputFieldLabel(
                             context,
@@ -147,7 +137,23 @@ class ClientFormState extends State<ClientInputScreen> {
                               return null;
                             },
                             keyboardType: TextInputType.number,
-                          )
+                          ),
+                          inputFieldLabel(
+                            context,
+                            "Alert Quantity",
+                          ),
+                          MyDefaultTextField(
+                            controller: _alertQuantityController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Alert quantity cannot be empty';
+                              } else if (double.tryParse(value) == null) {
+                                return "Alert quantity must be a number";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                          ),
                         ],
                       )),
                   SaveButton(
@@ -156,32 +162,32 @@ class ClientFormState extends State<ClientInputScreen> {
                         if (_formKey.currentState!.validate()) {
                           //show a loading dialog to the user while we save the info
                           showLoadingDialog(context);
-                          String firstName = _firstNameController.text.trim();
-                          String lastName = _lastNameController.text.trim();
-                          String contacts = _contactsController.text.trim();
-                          String location = _locationController.text.trim();
+                          String itemName = _itemNameController.text.trim();
+                          double currentQuantity = double.parse(
+                              _currentQuantityController.text.trim());
+                          int alertQuantity =
+                              int.parse(_alertQuantityController.text.trim());
                           double unitPrice =
                               double.parse(_unitPriceController.text);
                           //edit the properties as required
-                          final newClient = Client();
-                          newClient.setFirstName = firstName;
-                          newClient.setLastName = lastName;
-                          newClient.setContacts = contacts;
-                          newClient.setLocation = location;
-                          newClient.setUnitPrice = unitPrice;
+                          final newFeedingItem = FeedingItem();
+                          newFeedingItem.setName = itemName;
+                          newFeedingItem.setCurrentQuantity = currentQuantity;
+                          newFeedingItem.setAlertQuantity = alertQuantity;
+                          newFeedingItem.setUnitPrice = unitPrice;
 
-                          if (editClientId != null) {
-                            newClient.setId = editClientId;
-                            //update the client in the db
+                          if (editFeedingItemId != null) {
+                            newFeedingItem.setId = editFeedingItemId;
+                            //update the feedingItem in the db
                             await context
-                                .read<ClientController>()
-                                .editClient(newClient)
+                                .read<FeedingItemController>()
+                                .editFeedingItem(newFeedingItem)
                                 .then((value) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Client edited successfully!"));
+                                      "Feeding Item edited successfully!"));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -189,23 +195,21 @@ class ClientFormState extends State<ClientInputScreen> {
                                   errorSnackBar("Saving failed!"));
                             });
                           } else {
-                            //add the client in the db
+                            //add the feedingItem in the db
                             await context
-                                .read<ClientController>()
-                                .addClient(newClient)
+                                .read<FeedingItemController>()
+                                .addFeedingItem(newFeedingItem)
                                 .then((value) {
                               //reset the form
-                              _firstNameController.clear();
-                              _lastNameController.clear();
-                              _contactsController.clear();
-                              _locationController.clear();
+                              _itemNameController.clear();
+                              _currentQuantityController.clear();
                               _unitPriceController.clear();
                               //remove the loading dialog
                               Navigator.of(context).pop();
                               //show a snackbar showing the user that saving has been successful
                               ScaffoldMessenger.of(context).showSnackBar(
                                   successSnackBar(
-                                      "Client added successfully."));
+                                      "Feeding Item added successfully."));
                             }).catchError((error) {
                               //remove the loading dialog
                               Navigator.of(context).pop();
@@ -215,7 +219,7 @@ class ClientFormState extends State<ClientInputScreen> {
                           }
                         }
                       },
-                      text: "Save Client")
+                      text: "Save Feeding Item")
                 ],
               )),
         )));

@@ -1,5 +1,5 @@
+import 'package:DigitalDairy/controllers/feeding_item_controller.dart';
 import 'package:DigitalDairy/models/feeding_item.dart';
-import 'package:DigitalDairy/widgets/my_drawer.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,8 @@ class FeedingsScreenState extends State<FeedingsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<FeedingController>().getFeedings());
+    Future.microtask(
+        () => context.read<FeedingItemController>().getFeedingItems());
   }
 
   @override
@@ -33,50 +34,42 @@ class FeedingsScreenState extends State<FeedingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _feedingItemsList = context.watch<FeedingController>().feedingItemsList;
+    _feedingItemsList = context.watch<FeedingItemController>().feedingItemsList;
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Feedings',
-          ),
-        ),
-        drawer: const MyDrawer(),
-        body: Scaffold(
-            body: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: FilterInputField(
-                      onQueryChanged:
-                          context.read<FeedingController>().filterFeedings)),
-              PaginatedDataTable(
-                  header: const Text("Feedings"),
-                  rowsPerPage: 20,
-                  availableRowsPerPage: const [20, 30, 50],
-                  sortAscending: false,
-                  sortColumnIndex: 0,
-                  actions: [
-                    OutlinedButton.icon(
-                      icon: const Icon(Icons.add),
-                      onPressed: () => context.pushNamed("addFeedingDetails"),
-                      label: const Text("New"),
-                    )
-                  ],
-                  columns: const [
-                    DataColumn(label: Text("Name")),
-                    DataColumn(label: Text("Current quantity")),
-                    DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
-                    DataColumn(label: Text("Edit")),
-                    DataColumn(label: Text("Delete")),
-                  ],
-                  source:
-                      _DataSource(data: _feedingItemsList, context: context))
-            ]),
-          ),
-        )));
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Column(mainAxisSize: MainAxisSize.max, children: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: FilterInputField(
+                  onQueryChanged: context
+                      .read<FeedingItemController>()
+                      .filterFeedingItems)),
+          PaginatedDataTable(
+              header: const Text("Feeding Items"),
+              rowsPerPage: 20,
+              availableRowsPerPage: const [20, 30, 50],
+              sortAscending: false,
+              sortColumnIndex: 0,
+              actions: [
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => context.pushNamed("addFeedingItemDetails"),
+                  label: const Text("New"),
+                )
+              ],
+              columns: const [
+                DataColumn(label: Text("Name")),
+                DataColumn(label: Text("Current quantity")),
+                DataColumn(label: Text("Unit Price (Ksh)"), numeric: true),
+                DataColumn(label: Text("Edit")),
+                DataColumn(label: Text("Delete")),
+              ],
+              source: _DataSource(data: _feedingItemsList, context: context))
+        ]),
+      ),
+    );
   }
 }
 
@@ -96,21 +89,21 @@ class _DataSource extends DataTableSource {
     return DataRow(cells: [
       DataCell(
           Text(
-            feedingItem.feedingItemName,
+            feedingItem.getName,
             style: const TextStyle(decoration: TextDecoration.underline),
           ),
-          onTap: () => context.pushNamed("feedingItems_statements",
+          onTap: () => context.pushNamed("feedingItemsStatements",
               pathParameters: {"feedingItemId": '${feedingItem.getId}'})),
-      DataCell(Text(feedingItem.getContacts)),
+      DataCell(Text(feedingItem.getLocation)),
       DataCell(Text('${feedingItem.getUnitPrice}')),
       DataCell(const Icon(Icons.edit),
-          onTap: () => context.pushNamed("editFeedingDetails",
+          onTap: () => context.pushNamed("editFeedingItemDetails",
               pathParameters: {"editFeedingId": '${feedingItem.getId}'})),
       DataCell(const Icon(Icons.delete), onTap: () async {
         deleteFunc() async {
           return await context
-              .read<FeedingController>()
-              .deleteFeeding(feedingItem);
+              .read<FeedingItemController>()
+              .deleteFeedingItem(feedingItem);
         }
 
         await showDeleteItemDialog(context, deleteFunc);

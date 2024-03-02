@@ -11,6 +11,7 @@ import 'package:DigitalDairy/screens/consumers/milk_consumers_input.dart';
 import 'package:DigitalDairy/screens/consumers/milk_consumers_statements.dart';
 import 'package:DigitalDairy/screens/expenses_incomes/expenses/expense_input.dart';
 import 'package:DigitalDairy/screens/expenses_incomes/expenses_income_tabs.dart';
+import 'package:DigitalDairy/screens/feeding/feeding_tabbed_view.dart';
 import 'package:DigitalDairy/screens/health_management/diseases/disease_input.dart';
 import 'package:DigitalDairy/screens/health_management/health_management_tabbed_view.dart';
 import 'package:DigitalDairy/screens/health_management/treatments/treatment_input.dart';
@@ -59,7 +60,7 @@ class AppRouter {
       GoRoute(
         name: "feeding",
         path: "/feeding",
-        builder: (context, state) => const ClientsScreen(),
+        builder: (context, state) => const FeedingTabView(),
       ),
       //alerts route
       GoRoute(

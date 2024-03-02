@@ -2,9 +2,10 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 class FeedingItem {
   String? _id;
-  late String name;
-  late String _quantity;
+  late String _name;
+  late double _quantity;
   late double _unitPrice;
+  late int _alertQuantity;
 
   FeedingItem();
 
@@ -12,13 +13,17 @@ class FeedingItem {
 
   set setId(id) => _id = id;
 
-  String get getName => name;
+  String get getName => _name;
 
-  set setName(String name) => name = name;
+  set setName(String name) => _name = name;
 
-  String get getLocation => _quantity;
+  double get getCurrentQuantity => _quantity;
 
-  set setLocation(String location) => _quantity = location;
+  set setCurrentQuantity(double quantity) => _quantity = quantity;
+
+  int get getAlertQuantity => _alertQuantity;
+
+  set setAlertQuantity(int quantity) => _alertQuantity = quantity;
 
   double get getUnitPrice => _unitPrice;
 
@@ -33,8 +38,9 @@ class FeedingItem {
 
     FeedingItem newFeedingItem = FeedingItem();
     newFeedingItem.setName = data?["name"];
-    newFeedingItem.setLocation = data?["location"];
-    newFeedingItem.setUnitPrice = data?["unitPrice"];
+    newFeedingItem.setCurrentQuantity = data?["current_quantity"];
+    newFeedingItem.setAlertQuantity = data?["alert_quantity"];
+    newFeedingItem.setUnitPrice = data?["unit_price"];
     newFeedingItem.setId = id;
 
     return newFeedingItem;
@@ -44,13 +50,14 @@ class FeedingItem {
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
-    final data = snapshot.data()?["client"];
+    final data = snapshot.data()?["feeding_item"];
     final String id = snapshot.id;
 
     FeedingItem newFeedingItem = FeedingItem();
     newFeedingItem.setName = data?["name"];
-    newFeedingItem.setLocation = data?["location"];
-    newFeedingItem.setUnitPrice = data?["unitPrice"];
+    newFeedingItem.setCurrentQuantity = data?["current_quantity"];
+    newFeedingItem.setAlertQuantity = data?["alert_quantity"];
+    newFeedingItem.setUnitPrice = data?["unit_price"];
     newFeedingItem.setId = id;
 
     return newFeedingItem;
@@ -58,9 +65,10 @@ class FeedingItem {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'location': _quantity,
-      'name': name,
-      'unitPrice': _unitPrice,
+      'current_quantity': _quantity,
+      'alert_quantity': _alertQuantity,
+      'name': _name,
+      'unit_price': _unitPrice,
       'id': _id,
     };
   }
