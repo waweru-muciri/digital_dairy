@@ -2,7 +2,7 @@ import 'package:DigitalDairy/models/milk_sale.dart';
 import 'package:DigitalDairy/services/milk_sale_service.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class MonthlyMilkSaleController with ChangeNotifier {
   MonthlyMilkSaleController();
@@ -20,24 +20,8 @@ class MonthlyMilkSaleController with ChangeNotifier {
   List<Map<String, dynamic>> get allClientsTotalMonthMilkSaleList =>
       _allClientsMonthMilkSaleTotalsList;
 
-  void groupMonthMilkSalesByDate(List<MilkSale> fetchedList) {
-    //group the milk productions for the month by each date of the month
-    Map<String, List<MilkSale>> milkSalesGroupedByDate =
-        groupBy(fetchedList, (dailyMilkSale) => dailyMilkSale.getMilkSaleDate);
-    final Map<String, double> eachDayTotalMilkSalesMap = {};
-    for (var dateMilkSale in milkSalesGroupedByDate.entries) {
-      eachDayTotalMilkSalesMap[dateMilkSale.key] = dateMilkSale.value.fold(
-          0.0,
-          (previousValue, milkSale) =>
-              (previousValue + milkSale.getMilkSaleMoneyAmount));
-    }
-    print(eachDayTotalMilkSalesMap);
-    _eachDayOfTheMonthMilkSalesMap.clear();
-    _eachDayOfTheMonthMilkSalesMap.addAll(eachDayTotalMilkSalesMap);
-    notifyListeners();
-  }
-
-  void getMonthMilkSales({required int year, required int month}) async {
+  Future<void> getMonthMilkSales(
+      {required int year, required int month}) async {
     DateTime monthStartDate = DateTime(year, month, 1);
     DateTime monthEndDate = DateTime(year, month + 1, 0);
     String monthStartDateString = getStringFromDate(monthStartDate);
@@ -50,33 +34,18 @@ class MonthlyMilkSaleController with ChangeNotifier {
     _monthMilkSaleList.clear();
     _monthMilkSaleList.addAll(fetchedList);
 
-    //group milk productions by cow id
-    final clientsWithMilkSales = fetchedList.map((e) => e.getClient).toSet();
+    //group milk sales by client
     List<Map<String, dynamic>> totalMonthMilkSalesGroupedByClient =
-        groupBy(fetchedList, (dailyMilkSale) => dailyMilkSale.getClientId)
-            .entries
-            .map((e) => {
-                  'client': clientsWithMilkSales
-                      .firstWhereOrNull((element) => element.getId == e.key),
-                  'milk_quantity': e.value
-                      .fold(
-                          0.0,
-                          (previousValue, element) =>
-                              previousValue + element.getMilkSaleQuantity)
-                      .toStringAsFixed(2),
-                  'money_amount': e.value
-                      .fold(
-                          0.0,
-                          (previousValue, element) =>
-                              previousValue + element.getMilkSaleMoneyAmount)
-                      .toStringAsFixed(2),
-                })
-            .toList();
+        await compute(groupMilkSalesByClient, fetchedList);
     _allClientsMonthMilkSaleTotalsList.clear();
     _allClientsMonthMilkSaleTotalsList
         .addAll(totalMonthMilkSalesGroupedByClient);
     notifyListeners();
-    groupMonthMilkSalesByDate(fetchedList);
+    Map<String, double> milkSalesGroupedByDate =
+        await compute(groupMonthMilkSalesByDate, fetchedList);
+    _eachDayOfTheMonthMilkSalesMap.clear();
+    _eachDayOfTheMonthMilkSalesMap.addAll(milkSalesGroupedByDate);
+    notifyListeners();
   }
 
   void getYearMonthlyMilkSalesMoneyAmount({required int year}) async {
@@ -88,19 +57,9 @@ class MonthlyMilkSaleController with ChangeNotifier {
     List<MilkSale> fetchedList = await _dailyMilkSaleService
         .getMilkSalesListBetweenDates(yearStartDateString,
             endDate: yearEndDateString);
-    //group the milk productions by the month number
-    Map<int, List<MilkSale>> milkSalesGroupedByMonth = groupBy(
-        fetchedList,
-        (dailyMilkSale) =>
-            getDateFromString(dailyMilkSale.getMilkSaleDate).month);
-    final Map<int, double> monthsMilkSaleList = {};
-    for (var monthMilkSale in milkSalesGroupedByMonth.entries) {
-      monthsMilkSaleList[monthMilkSale.key] = monthMilkSale.value.fold(
-          0.0,
-          (previousValue, milkSale) =>
-              (previousValue + milkSale.getMilkSaleMoneyAmount));
-    }
-    _yearMonthlyMilkSaleMap.addAll(monthsMilkSaleList);
+    Map<int, double> monthlyMilkSalesList = await compute(
+        groupMilkSalesByMonthNumberAndReduceByMoneyAmount, fetchedList);
+    _yearMonthlyMilkSaleMap.addAll(monthlyMilkSalesList);
     notifyListeners();
   }
 
@@ -119,4 +78,58 @@ class MonthlyMilkSaleController with ChangeNotifier {
       0,
       (previousValue, dailyMilkSale) =>
           (previousValue + dailyMilkSale.getMilkSaleQuantity));
+}
+
+Map<String, double> groupMonthMilkSalesByDate(List<MilkSale> fetchedList) {
+  //group the milk productions for the month by each date of the month
+  Map<String, List<MilkSale>> milkSalesGroupedByDate =
+      groupBy(fetchedList, (dailyMilkSale) => dailyMilkSale.getMilkSaleDate);
+  final Map<String, double> eachDayTotalMilkSalesMap = {};
+  for (var dateMilkSale in milkSalesGroupedByDate.entries) {
+    eachDayTotalMilkSalesMap[dateMilkSale.key] = dateMilkSale.value.fold(
+        0.0,
+        (previousValue, milkSale) =>
+            (previousValue + milkSale.getMilkSaleMoneyAmount));
+  }
+  return eachDayTotalMilkSalesMap;
+}
+
+List<Map<String, dynamic>> groupMilkSalesByClient(List<MilkSale> fetchedList) {
+  final clientsWithMilkSales = fetchedList.map((e) => e.getClient).toSet();
+  return groupBy(fetchedList, (dailyMilkSale) => dailyMilkSale.getClientId)
+      .entries
+      .map((e) => {
+            'client': clientsWithMilkSales
+                .firstWhereOrNull((element) => element.getId == e.key),
+            'milk_quantity': e.value
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue + element.getMilkSaleQuantity)
+                .toStringAsFixed(2),
+            'money_amount': e.value
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue + element.getMilkSaleMoneyAmount)
+                .toStringAsFixed(2),
+          })
+      .toList();
+}
+
+Map<int, double> groupMilkSalesByMonthNumberAndReduceByMoneyAmount(
+    List<MilkSale> fetchedList) {
+//group the milk sales by the month number
+  Map<int, List<MilkSale>> milkSalesGroupedByMonth = groupBy(
+      fetchedList,
+      (dailyMilkSale) =>
+          getDateFromString(dailyMilkSale.getMilkSaleDate).month);
+  final Map<int, double> monthsMilkSaleList = {};
+  for (var monthMilkSale in milkSalesGroupedByMonth.entries) {
+    monthsMilkSaleList[monthMilkSale.key] = monthMilkSale.value.fold(
+        0.0,
+        (previousValue, milkSale) =>
+            (previousValue + milkSale.getMilkSaleMoneyAmount));
+  }
+  return monthsMilkSaleList;
 }

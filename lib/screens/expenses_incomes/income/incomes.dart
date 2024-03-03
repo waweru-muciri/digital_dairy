@@ -1,6 +1,5 @@
 import 'package:DigitalDairy/controllers/income_controller.dart';
 import 'package:DigitalDairy/models/income.dart';
-import 'package:DigitalDairy/util/display_text_util.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:DigitalDairy/widgets/widget_utils.dart';
 import 'package:DigitalDairy/widgets/search_bar.dart';

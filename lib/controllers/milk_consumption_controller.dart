@@ -1,4 +1,3 @@
-import 'package:DigitalDairy/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:DigitalDairy/services/milk_consumption_service.dart';
 import 'package:DigitalDairy/models/milk_consumption.dart';
