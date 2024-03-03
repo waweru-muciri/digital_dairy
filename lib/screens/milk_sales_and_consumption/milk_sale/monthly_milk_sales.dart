@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/controllers/monthly_milk_sales_controller.dart';
+import 'package:DigitalDairy/controllers/year_milk_sales_controller.dart';
 import 'package:DigitalDairy/models/client.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/month_milk_sales_chart.dart';
 import 'package:DigitalDairy/screens/milk_sales_and_consumption/milk_sale/year_milk_sales_chart.dart';
@@ -29,8 +30,8 @@ class MonthlyMilkSaleScreenState extends State<MonthlyMilkSalesScreen> {
         .read<MonthlyMilkSaleController>()
         .getMonthMilkSales(year: filterYear, month: filterMonth));
     Future.microtask(() => context
-        .read<MonthlyMilkSaleController>()
-        .getYearMonthlyMilkSalesMoneyAmount(year: filterYear));
+        .read<YearMilkSalesController>()
+        .getYearMonthlyMilkSales(year: filterYear));
   }
 
   @override
@@ -51,14 +52,11 @@ class MonthlyMilkSaleScreenState extends State<MonthlyMilkSalesScreen> {
         .read<MonthlyMilkSaleController>()
         .getTotalMonthMilkSalesQuantity;
     double totalYearMilkSalesMoneyAmount = context
-        .read<MonthlyMilkSaleController>()
+        .read<YearMilkSalesController>()
         .getTotalYearMilkSalesMoneyAmount;
 
     double averageMonthlyMilkSalesMoneyAmount = totalYearMilkSalesMoneyAmount /
-        context
-            .read<MonthlyMilkSaleController>()
-            .yearMonthlyMilkSalesGraphData
-            .length;
+        context.read<YearMilkSalesController>().yearYearMilkSalesList.length;
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -122,7 +120,7 @@ class MonthlyMilkSaleScreenState extends State<MonthlyMilkSalesScreen> {
                             "${monthTotalMilkSaleQuantity.toStringAsFixed(2)} Kgs"),
                         summaryTextDisplayRow("Total Sales:",
                             "${monthTotalMilkSalesMoneyAmount.toStringAsFixed(2)} Ksh"),
-                        summaryTextDisplayRow("Year sales:",
+                        summaryTextDisplayRow("Year Sales:",
                             "${totalYearMilkSalesMoneyAmount.toStringAsFixed(2)} Ksh"),
                         summaryTextDisplayRow("Month Average:",
                             "${averageMonthlyMilkSalesMoneyAmount.toStringAsFixed(2)} Ksh"),
@@ -152,7 +150,7 @@ class MonthlyMilkSaleScreenState extends State<MonthlyMilkSalesScreen> {
                       child: Column(
                         children: [
                           Text(
-                            "Month Milk Production Graph",
+                            "Month Milk Sales",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           SingleChildScrollView(
@@ -170,7 +168,7 @@ class MonthlyMilkSaleScreenState extends State<MonthlyMilkSalesScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Text(
-                          "Year Milk Sales Graph",
+                          "Year Milk Sales",
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
@@ -199,10 +197,10 @@ class _DataSource extends DataTableSource {
     }
 
     final item = data[index];
-    final cow = item['client'] as Client;
+    final client = item['client'] as Client;
 
     return DataRow(cells: [
-      DataCell(Text(cow.clientName)),
+      DataCell(Text(client.clientName)),
       DataCell(Text('${item['milk_quantity']}')),
       DataCell(Text('${item['money_amount']}')),
     ]);

@@ -7,16 +7,15 @@ import 'package:flutter/foundation.dart';
 class MonthlyMilkSaleController with ChangeNotifier {
   MonthlyMilkSaleController();
 
-  final MilkSaleService _dailyMilkSaleService = MilkSaleService();
+  final MilkSaleService _milkSaleService = MilkSaleService();
+
   final List<MilkSale> _monthMilkSaleList = [];
   final Map<String, double> _eachDayOfTheMonthMilkSalesMap = {};
-  final Map<int, double> _yearMonthlyMilkSaleMap = {};
   final List<Map<String, dynamic>> _allClientsMonthMilkSaleTotalsList = [];
   // Allow Widgets to read the filtered dailyMilkSales list.
   Map<String, double> get eachMonthMilkSalesGraphData =>
       _eachDayOfTheMonthMilkSalesMap;
 
-  Map<int, double> get yearMonthlyMilkSalesGraphData => _yearMonthlyMilkSaleMap;
   List<Map<String, dynamic>> get allClientsTotalMonthMilkSaleList =>
       _allClientsMonthMilkSaleTotalsList;
 
@@ -27,7 +26,7 @@ class MonthlyMilkSaleController with ChangeNotifier {
     String monthStartDateString = getStringFromDate(monthStartDate);
     String monthEndDateString = getStringFromDate(monthEndDate);
     //get the milk production list for all the days of the month
-    List<MilkSale> fetchedList = await _dailyMilkSaleService
+    List<MilkSale> fetchedList = await _milkSaleService
         .getMilkSalesListBetweenDates(monthStartDateString,
             endDate: monthEndDateString);
     //add all the fetched milk productions to the local list for computations later
@@ -42,32 +41,11 @@ class MonthlyMilkSaleController with ChangeNotifier {
         .addAll(totalMonthMilkSalesGroupedByClient);
     notifyListeners();
     Map<String, double> milkSalesGroupedByDate =
-        await compute(groupMonthMilkSalesByDate, fetchedList);
+        await compute(groupMilkSalesByDateAndReduceByMoneyAmount, fetchedList);
     _eachDayOfTheMonthMilkSalesMap.clear();
     _eachDayOfTheMonthMilkSalesMap.addAll(milkSalesGroupedByDate);
     notifyListeners();
   }
-
-  void getYearMonthlyMilkSalesMoneyAmount({required int year}) async {
-    DateTime yearStartDate = DateTime(year, 1, 1);
-    DateTime yearEndDate = DateTime(year + 1, 1, 0);
-    String yearStartDateString = getStringFromDate(yearStartDate);
-    String yearEndDateString = getStringFromDate(yearEndDate);
-    //get the milk production list for all the months of the year
-    List<MilkSale> fetchedList = await _dailyMilkSaleService
-        .getMilkSalesListBetweenDates(yearStartDateString,
-            endDate: yearEndDateString);
-    Map<int, double> monthlyMilkSalesList = await compute(
-        groupMilkSalesByMonthNumberAndReduceByMoneyAmount, fetchedList);
-    _yearMonthlyMilkSaleMap.addAll(monthlyMilkSalesList);
-    notifyListeners();
-  }
-
-  double get getTotalYearMilkSalesMoneyAmount =>
-      _yearMonthlyMilkSaleMap.values.fold(
-          0,
-          (previousValue, monthMilkSalesMoneyAmount) =>
-              (previousValue + monthMilkSalesMoneyAmount));
 
   double get getTotalMonthMilkSalesMoneyAmount => _monthMilkSaleList.fold(
       0,
@@ -80,7 +58,8 @@ class MonthlyMilkSaleController with ChangeNotifier {
           (previousValue + dailyMilkSale.getMilkSaleQuantity));
 }
 
-Map<String, double> groupMonthMilkSalesByDate(List<MilkSale> fetchedList) {
+Map<String, double> groupMilkSalesByDateAndReduceByMoneyAmount(
+    List<MilkSale> fetchedList) {
   //group the milk productions for the month by each date of the month
   Map<String, List<MilkSale>> milkSalesGroupedByDate =
       groupBy(fetchedList, (dailyMilkSale) => dailyMilkSale.getMilkSaleDate);
@@ -115,21 +94,4 @@ List<Map<String, dynamic>> groupMilkSalesByClient(List<MilkSale> fetchedList) {
                 .toStringAsFixed(2),
           })
       .toList();
-}
-
-Map<int, double> groupMilkSalesByMonthNumberAndReduceByMoneyAmount(
-    List<MilkSale> fetchedList) {
-//group the milk sales by the month number
-  Map<int, List<MilkSale>> milkSalesGroupedByMonth = groupBy(
-      fetchedList,
-      (dailyMilkSale) =>
-          getDateFromString(dailyMilkSale.getMilkSaleDate).month);
-  final Map<int, double> monthsMilkSaleList = {};
-  for (var monthMilkSale in milkSalesGroupedByMonth.entries) {
-    monthsMilkSaleList[monthMilkSale.key] = monthMilkSale.value.fold(
-        0.0,
-        (previousValue, milkSale) =>
-            (previousValue + milkSale.getMilkSaleMoneyAmount));
-  }
-  return monthsMilkSaleList;
 }

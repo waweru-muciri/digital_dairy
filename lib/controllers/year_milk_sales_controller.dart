@@ -13,6 +13,12 @@ class YearMilkSalesController with ChangeNotifier {
 
   Map<int, double> get yearYearMilkSalesList => _yearMonthlyMilkSaleList;
 
+  double get getTotalYearMilkSalesMoneyAmount =>
+      _yearMonthlyMilkSaleList.values.fold(
+          0,
+          (previousValue, monthMilkSalesMoneyAmount) =>
+              (previousValue + monthMilkSalesMoneyAmount));
+
   Future<void> getYearMonthlyMilkSales({required int year}) async {
     DateTime yearStartDate = DateTime(year, 1, 1);
     DateTime yearEndDate = DateTime(year + 1, 1, 0);
@@ -22,15 +28,16 @@ class YearMilkSalesController with ChangeNotifier {
     List<MilkSale> fetchedList =
         await _milkSaleService.getMilkSalesListBetweenDates(yearStartDateString,
             endDate: yearEndDateString);
-    Map<int, double> milkProductionGroupedByMonthMap =
-        await compute(groupMilkSalesByMonth, fetchedList);
+    Map<int, double> milkProductionGroupedByMonthMap = await compute(
+        groupMilkSalesByMonthNumberAndReduceByMoneyAmount, fetchedList);
     _yearMonthlyMilkSaleList.clear();
     _yearMonthlyMilkSaleList.addAll(milkProductionGroupedByMonthMap);
     notifyListeners();
   }
 }
 
-Map<int, double> groupMilkSalesByMonth(List<MilkSale> fetchedList) {
+Map<int, double> groupMilkSalesByMonthNumberAndReduceByMoneyAmount(
+    List<MilkSale> fetchedList) {
   //group the milk productions by the month number
   Map<int, List<MilkSale>> milkProductionsGroupedByMonth = groupBy(
       fetchedList,

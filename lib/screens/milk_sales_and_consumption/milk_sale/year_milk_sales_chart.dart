@@ -1,4 +1,5 @@
 import 'package:DigitalDairy/controllers/monthly_milk_sales_controller.dart';
+import 'package:DigitalDairy/controllers/year_milk_sales_controller.dart';
 import 'package:DigitalDairy/util/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -61,9 +62,8 @@ class YearMilkSaleChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    yearMilkSaleList = context
-        .watch<MonthlyMilkSaleController>()
-        .yearMonthlyMilkSalesGraphData;
+    yearMilkSaleList =
+        context.watch<YearMilkSalesController>().yearYearMilkSalesList;
     return SizedBox(
         width: 500,
         height: 500,
