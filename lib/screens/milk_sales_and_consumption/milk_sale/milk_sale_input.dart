@@ -169,17 +169,23 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                       )),
                   SaveButton(
                       onPressed: () async {
-                        if (selectedClient != null) {
+                        if (selectedClient == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              errorSnackBar("Client must be selected!"));
+                          return;
+                        } else {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
                             //show a loading dialog to the user while we save the info
                             showLoadingDialog(context);
                             double milkSaleQuantity = double.parse(
                                 _milkSaleAmountController.text.trim());
+                            String milkSaleDate =
+                                _milkSaleDateController.text.trim();
+                            //create instance of milk sale to save
                             MilkSale newMilkSale = MilkSale();
                             newMilkSale.setMilkSaleQuantity = milkSaleQuantity;
-                            newMilkSale.setMilkSaleDate =
-                                _milkSaleDateController.text;
+                            newMilkSale.setMilkSaleDate = milkSaleDate;
                             newMilkSale.setClient = selectedClient!;
                             newMilkSale.setUnitPrice =
                                 selectedClient!.getUnitPrice;
@@ -209,11 +215,10 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                                   .addMilkSale(newMilkSale)
                                   .then((value) {
                                 //reset the form
-                                _clientFilterController.clear();
+                                _formKey.currentState?.reset();
                                 setState(() {
                                   selectedClient = null;
                                 });
-                                _milkSaleAmountController.clear();
                                 //remove the loading dialog
                                 Navigator.of(context).pop();
                                 //show a snackbar showing the user that saving has been successful
@@ -232,7 +237,7 @@ class MilkSaleFormState extends State<MilkSaleInputScreen> {
                           }
                         }
                       },
-                      text: "Save Details")
+                      text: "Save Milk Sale")
                 ],
               )),
         )));
