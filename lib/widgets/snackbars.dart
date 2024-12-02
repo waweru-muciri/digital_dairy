@@ -5,7 +5,7 @@ SnackBar errorSnackBar(String message) {
     content: Text(message),
     backgroundColor: const Color.fromRGBO(220, 76, 100, 0.6),
     padding: const EdgeInsets.symmetric(
-      horizontal: 8.0, // Inner padding for SnackBar content.
+      horizontal: 10.0, // Inner padding for SnackBar content.
       vertical: 16,
     ),
     behavior: SnackBarBehavior.floating,
