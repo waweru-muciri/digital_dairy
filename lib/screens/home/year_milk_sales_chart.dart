@@ -77,7 +77,7 @@ class YearMilkSalesChart extends StatelessWidget {
                   barTouchData: BarTouchData(
                     touchTooltipData: BarTouchTooltipData(
                         maxContentWidth: 100,
-                        tooltipBgColor: Colors.transparent,
+                        getTooltipColor: (data) => Colors.transparent,
                         tooltipPadding: EdgeInsets.zero,
                         tooltipMargin: 8,
                         getTooltipItem: (

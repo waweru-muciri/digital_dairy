@@ -55,7 +55,7 @@ class MonthMilkSaleChart extends StatelessWidget {
                   lineTouchData: LineTouchData(
                     touchTooltipData: LineTouchTooltipData(
                       maxContentWidth: 100,
-                      tooltipBgColor: Colors.greenAccent,
+                      getTooltipColor: (data) => Colors.greenAccent,
                       getTooltipItems: (touchedSpots) {
                         return touchedSpots.map((LineBarSpot touchedSpot) {
                           final textStyle = TextStyle(

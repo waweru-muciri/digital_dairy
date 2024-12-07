@@ -65,7 +65,7 @@ class DailyMilkProductionChart extends StatelessWidget {
                   lineTouchData: LineTouchData(
                     touchTooltipData: LineTouchTooltipData(
                       maxContentWidth: 100,
-                      tooltipBgColor: Colors.lightGreen,
+                      getTooltipColor: (data) => Colors.lightGreen,
                       getTooltipItems: (touchedSpots) {
                         return touchedSpots.map((LineBarSpot touchedSpot) {
                           const textStyle = TextStyle(
