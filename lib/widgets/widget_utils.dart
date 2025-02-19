@@ -178,8 +178,8 @@ Future<Map<String, String>?> showDatesFilterBottomSheet(
                   ),
                 ],
               ),
-              ButtonBar(
-                alignment: MainAxisAlignment.spaceEvenly,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FilledButton(
                       child: const Text('Cancel'),

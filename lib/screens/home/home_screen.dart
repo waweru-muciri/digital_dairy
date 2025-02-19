@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:DigitalDairy/controllers/milk_consumption_controller.dart';
 import 'package:DigitalDairy/controllers/milk_production_controller.dart';
 import 'package:DigitalDairy/controllers/milk_sale_controller.dart';
@@ -6,8 +9,6 @@ import 'package:DigitalDairy/controllers/year_milk_sales_controller.dart';
 import 'package:DigitalDairy/screens/home/year_milk_production_chart.dart';
 import 'package:DigitalDairy/screens/home/year_milk_sales_chart.dart';
 import 'package:DigitalDairy/widgets/my_drawer.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:DigitalDairy/util/utils.dart';
 
 class HomeScreen extends StatefulWidget {
